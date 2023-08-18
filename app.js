@@ -3,12 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 
 var indexRouter = require('./routes/index');
 var groupCoursesRouter = require('./routes/GroupCourses');
 var CommentsRouter = require('./routes/Comments');
-var RegisterRouter = require('./routes/User');
+var RegisterRouter = require('./routes/Register');
+var LoginRouter = require('./routes/Login');
 
 var app = express();
 // const options = './swagger_output.json';
@@ -21,6 +23,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
@@ -28,6 +31,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(require("./controlers/swag
 app.use('/api/v2/courses', groupCoursesRouter);
 app.use('/api/v2/comments', CommentsRouter);
 app.use('/api/v2/register', RegisterRouter);
+app.use('/api/v2/user', LoginRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

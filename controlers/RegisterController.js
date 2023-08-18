@@ -133,7 +133,7 @@ const UserRegistartionVerification = async (req, res) => {
       User.token = jwt.sign(
         { user_id: User.id, email: User.email },
         process.env.SECRET
-      );
+      );  
       User.tokenCreatedAt = moment();
       await User.save();
 
