@@ -105,7 +105,7 @@ const UserRegistartionSendEmail = async (req, res) => {
             >
               Tesvan Platform
               </h1>
-             <a src="http://localhost:3000/verify?token=${User.token}">http://localhost:3000/verify?token=${User.token}</a>
+             <a href="http://localhost:3000/verify?token=${User.token}">http://localhost:3000/verify?token=${User.token}</a>
         </body>
       </html>
       `,
