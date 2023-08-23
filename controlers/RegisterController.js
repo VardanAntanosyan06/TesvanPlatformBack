@@ -122,8 +122,9 @@ const UserRegistartionSendEmail = async (req, res) => {
 
 const UserRegistartionVerification = async (req, res) => {
   try {
-    const { token } = req.query;
-
+    const { token } = req.body;
+    
+    if(!token) return res.status(403).json("token can't be empty")
     const User = await Users.findOne({
       where: { token },
     });
