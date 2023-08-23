@@ -1,5 +1,6 @@
 const { GroupCourses } = require("../models");
 const { CoursesContents } = require("../models");
+const { Levels } = require("../models");
 const { Op } = require("sequelize");
 
 const moment = require("moment");
@@ -93,7 +94,47 @@ const getCoursesByLimit = async (req, res) => {
   }
 };
 
+const getCoursesByLFilter = async (req, res) => {
+  try {
+    const { level, minPrice=0, maxPrice=1000000000000000, format, isDiscount=false, language="en" } =
+      req.query;
+      if(!(level && format && language)) return res.status(403).json({message:"level, format, isDiscount and language is requred values"});
+      if((!["Online", "Offline", "Hybrid"].includes(format)) && !["Beginner", "Intermediate", "Advanced"].includes(level)) return res.status(403).json({message:"Level must be 'Beginner', 'Intermediate, or 'Advanced, format must be Online, Offline, or 'Hybrid, and isDiscount must be true, or false."})
+    let type = { [Op.gt]: 0 };
+    !isDiscount && (type = { [Op.lte]: 0 });
+
+    const Courses = await GroupCourses.findAll({
+      where: {
+        sale: type,
+      },
+      include: [
+        {
+          model: CoursesContents,
+          where: {
+            language,
+            level,
+            lessonType: format,
+            price: {
+              [Op.gte]: minPrice,
+              [Op.lte]: maxPrice,
+            },
+          },
+          attributes: { exclude: ["id", "language", "courseId"] },
+          // include:[Levels]
+        },
+      ],
+      order: [["bought", "DESC"]],
+      attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+    });
+    if(Courses.length===0) return res.status(403).json({message:"No data was found for this filter."})
+    return res.status(200).json({ Courses });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllCourses,
   getCoursesByLimit,
+  getCoursesByLFilter,
 };

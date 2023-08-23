@@ -103,9 +103,9 @@ const UserRegistartionSendEmail = async (req, res) => {
                 line-height: 48px;
               "
             >
-              HIII
+              Tesvan Platform
               </h1>
-             <a src="">${User.token}</a>
+             <a src="http://localhost:3000/verify?token=${User.token}">http://localhost:3000/verify?token=${User.token}</a>
         </body>
       </html>
       `,
