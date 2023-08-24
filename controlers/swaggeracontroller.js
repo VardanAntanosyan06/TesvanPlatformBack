@@ -204,6 +204,97 @@ const options = {
  *         description: No valid data
  */
 
+/**
+ * @swagger
+ * /api/v2/courses/getByFilter:
+ *   get:
+ *     summary: Get courses by filter
+ *     parameters:
+ *      - name: language
+ *        in: query
+ *        description: Language
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: en
+ *      - name: level
+ *        in: query
+ *        description: Level
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: Beginner
+ *      - name: format
+ *        in: query
+ *        description: Format
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: Online
+ *      - name: maxPrice
+ *        in: query
+ *        description: max Price
+ *        required: false
+ *        schema:
+ *          type: integer
+ *          example: 75
+ *      - name: minPrice
+ *        in: query
+ *        description: min Price
+ *        required: false
+ *        schema:
+ *          type: integer
+ *          example: 10
+ *      - name: isDiscount
+ *        in: query
+ *        description: is Discount
+ *        required: false
+ *        schema:
+ *          type: boolean
+ *          example: false
+ *     responses:
+ *       200:
+ *         description: Object
+ *       403:
+ *         description: No valid data
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Login:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: user@example.com
+ *         password:
+ *           type: string
+ *           example: test1234
+ */
+
+/**
+ * @swagger
+ * /api/v2/user/login:
+ *   post:
+ *     summary: Login User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Login'
+ *     responses:
+ *       200:
+ *         description: success true
+ *       403:
+ *         description: Invalid email or password!.
+ */
 
 
 const swaggerSpec = swaggerJSDOC(options);

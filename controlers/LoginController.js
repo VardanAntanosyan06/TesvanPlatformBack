@@ -12,7 +12,7 @@ const LoginUsers = async (req, res) => {
     if (User && User.isVerified && (await bcrypt.compare(password,User.password))){
       return res.status(200).json({ User });
     }
-    return res.status(404).json({ message: "Invalid email or password!" });
+    return res.status(403).json({ message: "Invalid email or password!" });
   } catch (error) {
     console.log(error);
   }
