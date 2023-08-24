@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   // const CoursesContents = sequelize.define("CoursesContents")
 
   // Levels.hasOne(CoursesContents,{
-  //   targetKey:"title"
+  //   foreignKey:"slug"
   // })
   return Levels;
 };

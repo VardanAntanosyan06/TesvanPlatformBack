@@ -62,8 +62,9 @@ const UserRegistartionSendEmail = async (req, res) => {
     const User = await Users.findOne({
       where: { email },
     });
-    if (!User || User.isVerified) return res.status(404).json({ message: "There is not unverified user!" });
-    User.token = jwt.sign({ user_id: User.id, email }, process.env.SECRET);
+    if (!User || User.isVerified)
+      return res.status(404).json({ message: "There is not unverified user!" });
+    User.token = jwt.sign({ user_id: User.id, email}, process.env.SECRET,{ expiresIn: '1m'});
     User.tokenCreatedAt = moment();
     await User.save();
     const transporter = nodemailer.createTransport({
@@ -123,8 +124,8 @@ const UserRegistartionSendEmail = async (req, res) => {
 const UserRegistartionVerification = async (req, res) => {
   try {
     const { token } = req.body;
-    
-    if(!token) return res.status(403).json("token can't be empty")
+
+    if (!token) return res.status(403).json("token can't be empty");
     const User = await Users.findOne({
       where: { token },
     });
@@ -134,7 +135,7 @@ const UserRegistartionVerification = async (req, res) => {
       User.token = jwt.sign(
         { user_id: User.id, email: User.email },
         process.env.SECRET
-      );  
+      );
       User.tokenCreatedAt = moment();
       await User.save();
 

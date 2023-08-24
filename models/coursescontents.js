@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
   // const Levels = sequelize.define("Levels")
 
   // CoursesContents.belongsTo(Levels,{
-  //   foreignKey:"slug"
+  //   foreignKey:"title"
   // })
   return CoursesContents;
 };
