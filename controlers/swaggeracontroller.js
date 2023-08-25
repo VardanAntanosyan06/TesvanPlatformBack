@@ -354,6 +354,46 @@ const options = {
  *         description: token timeout!
 */
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ResetEmail:
+ *       type: object
+ *       required:
+ *         - email
+ *         - newEmail
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *           example: test@example.com
+ *         newEmail:
+ *           type: string
+ *           example: newEmail@example.com
+ */
+
+/**
+ * @swagger
+ * /api/v2/user/ChangeEmail:
+ *   patch:
+ *     summary: Reset Email
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ResetEmail'
+ *     responses:
+ *       200:
+ *         description: success:true
+ *       403:
+ *         description: Invalid Email format
+ *       404:
+ *         description: User not found!
+*/
+
+
 const swaggerSpec = swaggerJSDOC(options);
 module.exports = {
   swaggerSpec,

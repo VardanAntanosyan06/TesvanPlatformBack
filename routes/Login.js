@@ -6,6 +6,7 @@ const controller = require("../controlers/LoginController");
 router.post("/Login", controller.LoginUsers);
 router.get("/ForgotPassword", controller.sendEmailForForgotPassword);
 router.patch("/ChangePassword", controller.forgotPassword)
+router.patch("/ChangeEmail", controller.changeEmail)
 // router.get("/sendEmail", controller.UserRegistartionSendEmail);
 // router.patch("/verification", controller.UserRegistartionVerification);
 

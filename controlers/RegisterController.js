@@ -57,14 +57,14 @@ const UserRegistartion = async (req, res) => {
 
 const UserRegistartionSendEmail = async (req, res) => {
   try {
-    const { email } = req.query;
+    let { email } = req.query;
 
     const User = await Users.findOne({
       where: { email },
     });
     if (!User || User.isVerified)
-      return res.status(404).json({ message: "There is not unverified user!" });
-    User.token = jwt.sign({ user_id: User.id, email}, process.env.SECRET,{ expiresIn: '1m'});
+    return res.status(404).json({ message: "There is not unverified user!" });
+    User.token = jwt.sign({ user_id: User.id, email }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
     const transporter = nodemailer.createTransport({
@@ -77,7 +77,6 @@ const UserRegistartionSendEmail = async (req, res) => {
         pass: process.env.PASSWORD,
       },
     });
-
     const mailOptions = {
       from: "info@sisprogress.com",
       to: email,
