@@ -278,6 +278,7 @@ const options = {
  *           example: test1234
  */
 
+
 /**
  * @swagger
  * /api/v2/user/login:
@@ -293,9 +294,65 @@ const options = {
  *       200:
  *         description: success true
  *       403:
- *         description: Invalid email or password!.
+ *         description: Invaunvlid email or password!.
  */
 
+/**
+ * @swagger
+ * /api/v2/user/ForgotPassword:
+ *   get:
+ *     summary: send mail for reset password
+ *     parameters:
+ *      - name: email
+ *        in: query
+ *        description: email of user
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: user@example.com
+ *     responses:
+ *       200:
+ *         description: success:true
+ *       404:
+ *         description: There is not verified user!
+*/
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ResetPassword:
+ *       type: object
+ *       required:
+ *         - token
+ *         - newPassword
+ *       properties:
+ *         token:
+ *           type: string
+ *           format: email
+ *           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXV...
+ *         newPassword:
+ *           type: string
+ *           example: test1234
+ */
+
+/**
+ * @swagger
+ * /api/v2/user/ChangePassword:
+ *   patch:
+ *     summary: Reset Password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ResetPassword'
+ *     responses:
+ *       200:
+ *         description: success:true
+ *       403:
+ *         description: token timeout!
+*/
 
 const swaggerSpec = swaggerJSDOC(options);
 module.exports = {

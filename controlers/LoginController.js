@@ -1,7 +1,8 @@
 const { Model } = require("sequelize");
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
-const nodemailer = require("nodemailer")
+const nodemailer = require("nodemailer");
+
 const LoginUsers = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -9,7 +10,11 @@ const LoginUsers = async (req, res) => {
     const User = await Users.findOne({
       where: { email },
     });
-    if (User && User.isVerified && (await bcrypt.compare(password,User.password))){
+    if (
+      User &&
+      User.isVerified &&
+      (await bcrypt.compare(password, User.password))
+    ) {
       return res.status(200).json({ User });
     }
     return res.status(403).json({ message: "Invalid email or password!" });
@@ -18,14 +23,14 @@ const LoginUsers = async (req, res) => {
   }
 };
 
-const sendEmailForForgotPassword = async (req,res)=>{
+const sendEmailForForgotPassword = async (req, res) => {
   try {
     const { email } = req.query;
 
-    const User = await Users.findOne({where:{email}})
-    
-    console.log(User);
-    if(!User) return res.status(403).json({message:"User not found!"})
+    const User = await Users.findOne({ where: { email } });
+
+    if (!User || (User && !User.isVerified))
+      return res.status(403).json({ message: "There is not verified user" });
 
     const transporter = nodemailer.createTransport({
       host: "mail.privateemail.com",
@@ -74,30 +79,29 @@ const sendEmailForForgotPassword = async (req,res)=>{
 
     transporter.sendMail(mailOptions);
 
-    return res.status(200).json({success:true})
+    return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
   }
-} 
+};
 
-const forgotPassword = async (req,res)=>{
+const forgotPassword = async (req, res) => {
   try {
-    const {token,newPassword} = req.body
+    const { token, newPassword } = req.body;
     const User = await Users.findOne({
-      where: {token}
-})
-   if (!User) return res.json("User is not defined")
-   const newHashedPassword = await bcrypt.hash(newPassword, 10); 
-   User.password = newHashedPassword
-   User.save()
-
-   return res.json({success:true})
+      where: { token },
+    });
+    if (!User) return res.status(403).json({message:"Token timeout"});
+    const newHashedPassword = await bcrypt.hash(newPassword, 10);
+    User.password = newHashedPassword;
+    User.save();
+    return res.json({ success: true });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-} 
+};
 module.exports = {
   LoginUsers,
   sendEmailForForgotPassword,
-  forgotPassword
-}
+  forgotPassword,
+};
