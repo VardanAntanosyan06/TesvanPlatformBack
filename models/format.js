@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Format.init({
     slug: DataTypes.STRING,
-    contentAm: DataTypes.STRING,
-    contentRu: DataTypes.STRING,
-    contentEn: DataTypes.STRING
+    am: DataTypes.STRING,
+    ru: DataTypes.STRING,
+    en: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Format',

@@ -1,21 +1,21 @@
 const Format = [
   {
     slug: "Online",
-    contentAm: "Առցանց",
-    contentRu: "Онлайн",
-    contentEn: "Online",
+    am: "Առցանց",
+    ru: "Онлайн",
+    en: "Online",
   },
   {
     slug: "Offline",
-    contentAm: "Առկա",
-    contentRu: "оффлайн",
-    contentEn: "Offline",
+    am: "Առկա",
+    ru: "оффлайн",
+    en: "Offline",
   },
   {       
     slug: "Hybrid",
-    contentAm: "Հիբրիդ",
-    contentRu: "Гибридный",
-    contentEn: "Hybrid",
+    am: "Հիբրիդ",
+    ru: "Гибридный",
+    en: "Hybrid",
   },
 ];
 

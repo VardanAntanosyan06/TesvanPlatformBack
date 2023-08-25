@@ -1,12 +1,13 @@
 const { GroupCourses } = require("../models");
 const { CoursesContents } = require("../models");
 const { Levels } = require("../models");
+const { Format } = require("../models");
 const { Users } = require("../models");
 const { Op } = require("sequelize");
 
 const moment = require("moment");
 
-const getAllCourses = async (req, res) => { 
+const getAllCourses = async (req, res) => {
   try {
     const { language } = req.query;
     let months = "months";
@@ -17,15 +18,20 @@ const getAllCourses = async (req, res) => {
         .status(403)
         .json({ message: "The language must be am, ru, or en." });
     }
-    if (language == "am") {
-      months = "ամիս";
-      days = "օր";
-    } else if (language == "ru") {
-      months = "месяц";
-      days = "день";
-    } else {
-      months = "months";
-      days = "days";
+
+    switch (language) {
+      case "am":
+        months = "ամիս";
+        days = "օր";
+        break;
+      case "ru":
+        months = "месяц";
+        days = "день";
+        break;
+      default:
+        months = "months";
+        days = "days";
+        break;
     }
     let Courses = await GroupCourses.findAll({
       include: [
@@ -67,15 +73,19 @@ const getCoursesByLimit = async (req, res) => {
     let months = "months";
     let days = "days";
 
-    if (language == "am") {
-      months = "ամիս";
-      days = "օր";
-    } else if (language == "ru") {
-      months = "месяц";
-      days = "день";
-    } else {
-      months = "months";
-      days = "days";
+    switch (language) {
+      case "am":
+        months = "ամիս";
+        days = "օր";
+        break;
+      case "ru":
+        months = "месяц";
+        days = "день";
+        break;
+      default:
+        months = "months";
+        days = "days";
+        break;
     }
     const allCourses = await GroupCourses.findAll({
       include: [
@@ -99,9 +109,7 @@ const getCoursesByLimit = async (req, res) => {
           attributes: { exclude: ["language", "courseId"] },
         },
       ],
-      order:[
-        ['bought',"DESC"]
-      ],
+      order: [["bought", "DESC"]],
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
 
@@ -123,14 +131,60 @@ const getCoursesByLimit = async (req, res) => {
 
 const getCoursesByLFilter = async (req, res) => {
   try {
-    const { level, minPrice=0, maxPrice=1000000000000000, format, isDiscount=false, language="en" } =
-      req.query;
-      if(!(level && format && language)) return res.status(403).json({message:"level, format, isDiscount and language is requred values"});
-      if((!["Online", "Offline", "Hybrid"].includes(format)) && !["Beginner", "Intermediate", "Advanced"].includes(level)) return res.status(403).json({message:"Level must be 'Beginner', 'Intermediate, or 'Advanced, format must be Online, Offline, or 'Hybrid, and isDiscount must be true, or false."})
+    const {
+      level,
+      minPrice = 0,
+      maxPrice = 1000000000000000,
+      format,
+      isDiscount = false,
+      language = "en",
+    } = req.query;
+
+    if (!["en", "ru", "am"].includes(language)) {
+      return res
+        .status(403)
+        .json({ message: "The language must be am, ru, or en." });
+    }
+    if (!(level && format && language))
+      return res.status(403).json({
+        message: "level, format, isDiscount and language is requred values",
+      });
+    if (
+      !["Online", "Offline", "Hybrid"].includes(format) &&
+      !["Beginner", "Intermediate", "Advanced"].includes(level)
+    )
+      return res.status(403).json({
+        message:
+          "Level must be 'Beginner', 'Intermediate, or 'Advanced, format must be Online, Offline, or 'Hybrid, and isDiscount must be true, or false.",
+      });
+
+    let levelContent = await Levels.findOne({ where: { slug: level } });
+    levelContent= levelContent[language]
+    let formatContent = await Format.findOne({ where: { slug: format } });
+    formatContent= formatContent[language]
+
+
+    console.log(levelContent,formatContent);
     let type = { [Op.gt]: 0 };
     !isDiscount && (type = { [Op.lte]: 0 });
+    let months = "months";
+    let days = "days";
 
-    const Courses = await GroupCourses.findAll({
+    switch (language) {
+      case "am":
+        months = "ամիս";
+        days = "օր";
+        break;
+      case "ru":
+        months = "месяц";
+        days = "день";
+        break;
+      default:
+        months = "months";
+        days = "days";
+        break;
+    }
+    let Courses = await GroupCourses.findAll({
       where: {
         sale: type,
       },
@@ -139,22 +193,25 @@ const getCoursesByLFilter = async (req, res) => {
           model: CoursesContents,
           where: {
             language,
-            level,
-            lessonType: format,
+            level:levelContent,
+            lessonType: formatContent,
             price: {
               [Op.gte]: minPrice,
               [Op.lte]: maxPrice,
             },
           },
           attributes: { exclude: ["id", "language", "courseId"] },
-          include:[Levels]
+          // include: [Levels],
         },
       ],
       order: [["bought", "DESC"]],
       attributes: { exclude: ["id", "createdAt", "updatedAt"] },
     });
-    if(Courses.length===0) return res.status(403).json({message:"No data was found for this filter."})
-     Courses = Courses.map((e) => {
+    if (Courses.length === 0)
+      return res
+        .status(403)
+        .json({ message: "No data was found for this filter." });
+    Courses = Courses.map((e) => {
       return {
         course: e,
         courseStartDate: moment(e.startDate).format("ll"),

@@ -40,10 +40,12 @@ module.exports = (sequelize, DataTypes) => {
   CoursesContents.hasOne(GroupCourses,{
     foreignKey:"id"
   })
-  // const Levels = sequelize.define("Levels")
+  const Levels = sequelize.define("Levels");
 
-  // CoursesContents.belongsTo(Levels,{
-  //   foreignKey:"title"
-  // })
+  CoursesContents.hasOne(Levels, {
+    foreignKey: 'slug',
+    sourceKey: 'level',
+  });
+  
   return CoursesContents;
 };

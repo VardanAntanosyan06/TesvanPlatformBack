@@ -1,21 +1,21 @@
 const Levels = [
   {
     slug: "Beginner",
-    contentAm: "Սկսնակ",
-    contentRu: "Начинающий",
-    contentEn: "Beginner",
+    am: "Սկսնակ",
+    ru: "Начинающий",
+    en: "Beginner",
   },
   {
     slug: "Intermediate",
-    contentAm: "Միջանկյալ",
-    contentRu: "Средний",
-    contentEn: "Intermediate",
+    am: "Միջանկյալ",
+    ru: "Средний",
+    en: "Intermediate",
   },
   {
     slug: "Advanced",
-    contentAm: "առաջադեմ",
-    contentRu: " продвинутый",
-    contentEn: "Advanced",
+    am: "առաջադեմ",
+    ru: " продвинутый",
+    en: "Advanced",
   },
 ];
 

@@ -12,13 +12,13 @@ module.exports = {
       slug:{
         type:Sequelize.STRING
       },
-      contentAm: {
+      am: {
         type: Sequelize.STRING
       },
-      contentRu: {
+      ru: {
         type: Sequelize.STRING
       },
-      contentEn: {
+      en: {
         type: Sequelize.STRING
       }
     });
