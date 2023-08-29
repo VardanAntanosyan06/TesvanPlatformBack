@@ -2,6 +2,7 @@ const { Model } = require("sequelize");
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken")
+const moment = require("moment")
 const nodemailer = require("nodemailer");
 const {
   UserRegistartionSendEmail,
