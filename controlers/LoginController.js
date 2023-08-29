@@ -2,7 +2,9 @@ const { Model } = require("sequelize");
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const {UserRegistartionSendEmail} = require("../controlers/RegisterController")
+const {
+  UserRegistartionSendEmail,
+} = require("../controlers/RegisterController");
 
 const LoginUsers = async (req, res) => {
   try {
@@ -32,6 +34,10 @@ const sendEmailForForgotPassword = async (req, res) => {
 
     if (!User || (User && !User.isVerified))
       return res.status(403).json({ message: "There is not verified user" });
+
+    User.token = jwt.sign({ user_id: User.id, email }, process.env.SECRET);
+    User.tokenCreatedAt = moment();
+    await User.save();
 
     const transporter = nodemailer.createTransport({
       host: "mail.privateemail.com",
@@ -92,11 +98,22 @@ const forgotPassword = async (req, res) => {
     const User = await Users.findOne({
       where: { token },
     });
-    if (!User) return res.status(403).json({message:"Token timeout"});
-    const newHashedPassword = await bcrypt.hash(newPassword, 10);
-    User.password = newHashedPassword;
-    User.save();
-    return res.json({ success: true });
+    if (!User) return res.status(404).json({ message: "User not found!" });
+
+    if (moment().diff(User.tokenCreatedAt, "hours") <= 24) {
+      User.token = jwt.sign(
+        { user_id: User.id, email: User.email },
+        process.env.SECRET
+      );
+      User.tokenCreatedAt = moment();
+      await User.save();
+
+      const newHashedPassword = await bcrypt.hash(newPassword, 10);
+      User.password = newHashedPassword;
+      User.save();
+      return res.json({ success: true });
+    }
+    return res.status(403).json({ message: "Token Timeout!" });
   } catch (error) {
     console.log(error);
   }
@@ -104,17 +121,18 @@ const forgotPassword = async (req, res) => {
 
 const changeEmail = async (req, res) => {
   try {
-    const { email,newEmail } = req.body;
+    const { email, newEmail } = req.body;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if(!emailRegex.test(newEmail)) return res.status(403).json({message:"Invalid email format"})
+    if (!emailRegex.test(newEmail))
+      return res.status(403).json({ message: "Invalid email format" });
     const User = await Users.findOne({
       where: { email },
     });
-    if (!User) return res.status(404).json({message:"User not Found"});
+    if (!User) return res.status(404).json({ message: "User not Found" });
     User.email = newEmail;
     User.save();
 
-    req.query.email = req.body.email
+    req.query.email = req.body.email;
     const transporter = nodemailer.createTransport({
       host: "mail.privateemail.com",
       port: 465,
@@ -127,7 +145,7 @@ const changeEmail = async (req, res) => {
     });
     const mailOptions = {
       from: "info@sisprogress.com",
-      to:newEmail,
+      to: newEmail,
       subject: "test",
       html: `<!DOCTYPE html>
       <html lang="en">
@@ -170,5 +188,5 @@ module.exports = {
   LoginUsers,
   sendEmailForForgotPassword,
   forgotPassword,
-  changeEmail
+  changeEmail,
 };

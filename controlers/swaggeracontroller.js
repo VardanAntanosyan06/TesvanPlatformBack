@@ -352,6 +352,8 @@ const options = {
  *         description: success:true
  *       403:
  *         description: token timeout!
+ *       404:
+ *         description: User not Found!
 */
 
 /**
