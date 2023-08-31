@@ -172,40 +172,6 @@ const options = {
 
 /**
  * @swagger
- * /api/v2/courses/getByLimit:
- *   get:
- *     summary: Get courses by pagination
- *     parameters:
- *      - name: language
- *        in: query
- *        description: Language
- *        required: true
- *        schema:
- *          type: string
- *          example: en
- *      - name: page
- *        in: query
- *        description: Page number
- *        required: true
- *        schema:
- *          type: integer
- *          example: 1
- *      - name: limit
- *        in: query
- *        description: Number of items per page
- *        required: true
- *        schema:
- *          type: integer
- *          example: 10
- *     responses:
- *       200:
- *         description: Success
- *       403:
- *         description: No valid data
- */
-
-/**
- * @swagger
  * /api/v2/courses/getByFilter:
  *   get:
  *     summary: Get courses by filter

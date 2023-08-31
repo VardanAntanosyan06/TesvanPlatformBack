@@ -13,8 +13,8 @@ const Levels = [
   },
   {
     slug: "Advanced",
-    am: "առաջադեմ",
-    ru: " продвинутый",
+    am: "Առաջադեմ",
+    ru: "Продвинутый",
     en: "Advanced",
   },
 ];
