@@ -1,9 +1,44 @@
 const GroupCourses = [
   {
-    bought: 0,
+    bought: 15,
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 0,
+    createdAt:"2022-08-04T08:34:47.881Z",
+    updatedAt:"2022-08-04T08:34:47.881Z"
+  },  {
+    bought: 8,
+    startDate: new Date(),
+    img: "/images/Courses.png",
+    sale: 0,
+    createdAt:"2023-05-04T08:34:47.881Z",
+    updatedAt:"2023-05-04T08:34:47.881Z"
+  },  {
+    bought: 9,
+    startDate: "2023-05-04T08:34:47.881Z",
+    img: "/images/Courses.png",
+    sale: 20,
+    createdAt:"2023-05-01T08:34:47.881Z",
+    updatedAt:"2023-05-01T08:34:47.881Z"
+  },  {
+    bought: 0,
+    startDate: new Date(),
+    img: "/images/Courses.png",
+    sale: 15,
+    createdAt:new Date(),
+    updatedAt:new Date()
+  },  {
+    bought: 1,
+    startDate: new Date(),
+    img: "/images/Courses.png",
+    sale: 5,
+    createdAt:new Date(),
+    updatedAt:new Date()
+  },  {
+    bought: 0,
+    startDate: new Date(),
+    img: "/images/Courses.png",
+    sale: 10,
     createdAt:new Date(),
     updatedAt:new Date()
   },  {
@@ -66,42 +101,7 @@ const GroupCourses = [
     bought: 0,
     startDate: new Date(),
     img: "/images/Courses.png",
-    sale: 0,
-    createdAt:new Date(),
-    updatedAt:new Date()
-  },  {
-    bought: 0,
-    startDate: new Date(),
-    img: "/images/Courses.png",
-    sale: 0,
-    createdAt:new Date(),
-    updatedAt:new Date()
-  },  {
-    bought: 0,
-    startDate: new Date(),
-    img: "/images/Courses.png",
-    sale: 0,
-    createdAt:new Date(),
-    updatedAt:new Date()
-  },  {
-    bought: 0,
-    startDate: new Date(),
-    img: "/images/Courses.png",
-    sale: 0,
-    createdAt:new Date(),
-    updatedAt:new Date()
-  },  {
-    bought: 0,
-    startDate: new Date(),
-    img: "/images/Courses.png",
-    sale: 0,
-    createdAt:new Date(),
-    updatedAt:new Date()
-  },  {
-    bought: 0,
-    startDate: new Date(),
-    img: "/images/Courses.png",
-    sale: 0,
+    sale: 15,
     createdAt:new Date(),
     updatedAt:new Date()
   },
@@ -117,7 +117,7 @@ const GroupCorsesContent = [
     courseType: "Group",
     lessonType: "Online",
     level: "Beginner",
-    price: 75,
+    price: 100,
   },
   {
     courseId:1,
@@ -128,7 +128,7 @@ const GroupCorsesContent = [
     courseType: "Group",
     lessonType: "Online",
     level: "Beginner",
-    price: 7500,
+    price: 11000,
   },
   {
     courseId:1,
@@ -139,7 +139,7 @@ const GroupCorsesContent = [
     courseType: "Group",
     lessonType: "Online",
     level: "Beginner",
-    price: 28900,
+    price: 45000,
   },
   {
     courseId:2,
@@ -150,7 +150,7 @@ const GroupCorsesContent = [
     courseType: "Group",
     lessonType: "Online",
     level: "Beginner",
-    price: 75,
+    price: 90,
   },
   {
     courseId:2,
@@ -161,7 +161,7 @@ const GroupCorsesContent = [
     courseType: "Group",
     lessonType: "Online",
     level: "Beginner",
-    price: 7500,
+    price: 7960,
   },
   {
     courseId:2,
@@ -172,7 +172,7 @@ const GroupCorsesContent = [
     courseType: "Group",
     lessonType: "Online",
     level: "Beginner",
-    price: 28900,
+    price: 4623,
   },
   {
     courseId:3,

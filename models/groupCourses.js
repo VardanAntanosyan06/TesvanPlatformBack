@@ -11,7 +11,15 @@ module.exports = (sequelize, DataTypes) => {
     bought: DataTypes.INTEGER,
     startDate: DataTypes.DATE,
     img: DataTypes.STRING,
-    sale: DataTypes.INTEGER
+    sale: DataTypes.INTEGER,
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE
+    }
   }, {
     sequelize,
     modelName: 'GroupCourses',

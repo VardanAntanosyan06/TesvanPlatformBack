@@ -32,7 +32,7 @@ app.use('/api/v2/courses', groupCoursesRouter);
 app.use('/api/v2/comments', CommentsRouter);
 app.use('/api/v2/register', RegisterRouter);
 app.use('/api/v2/user', LoginRouter);
-
+app.use(require('express-status-monitor')())
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -4,7 +4,7 @@ const { Levels } = require("../models");
 const { CourseType } = require("../models");
 const { Format } = require("../models");
 const { Users } = require("../models");
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 const CircularJSON = require("circular-json");
 
 const moment = require("moment");
@@ -75,6 +75,7 @@ const getCoursesByLFilter = async (req, res) => {
       language = "en",
       page = 1,
       limit = 9,
+      order="popularity"
     } = req.query;
     format = format.split("_");
     level = level.split("_");
@@ -83,6 +84,11 @@ const getCoursesByLFilter = async (req, res) => {
       return res
         .status(403)
         .json({ message: "The language must be am, ru, or en." });
+    }
+    if (!["popularity", "newest", "lowToHigh","highToLow"].includes(order)) {
+      return res
+        .status(403)
+        .json({ message: "The Order must be popularity or newest."});
     }
     if (!(level && format && language))
       return res.status(403).json({
@@ -94,7 +100,12 @@ const getCoursesByLFilter = async (req, res) => {
 
     const months = { am: "ամիս", ru: "месяц", en: "months" };
     const days = { am: "օր", ru: "день", en: "days" };
-
+    const orderTypes = {
+      popularity:"bought",
+      newest:"createdAt", 
+      // lowToHigh:"sequelize.literal('sale/100')",
+      // highToLow:"sequelize.literal('sale/100')"
+    }   
     const levels = {};
     const getLevels = await Levels.findAll({
       attributes: [language, "slug"],
@@ -140,7 +151,6 @@ const getCoursesByLFilter = async (req, res) => {
         },
       ],
     });
-
     let Courses = await GroupCourses.findAll({
       where: {
         sale: type,
@@ -167,8 +177,8 @@ const getCoursesByLFilter = async (req, res) => {
           // include: [Levels],
         },
       ],
-      order: [["bought", "DESC"]],
-      attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+      order: [[orderTypes[order],"DESC"]],
+      attributes: { exclude: ["id", "updatedAt"] },
     });
 
     if (Courses.length === 0)
