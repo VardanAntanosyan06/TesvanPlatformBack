@@ -5,6 +5,7 @@ const { CourseType } = require("../models");
 const { Format } = require("../models");
 const { Users } = require("../models");
 const { Op } = require("sequelize");
+const sequelize = require("sequelize")
 const CircularJSON = require("circular-json");
 
 const moment = require("moment");
@@ -88,24 +89,23 @@ const getCoursesByLFilter = async (req, res) => {
     if (!["popularity", "newest", "lowToHigh","highToLow"].includes(order)) {
       return res
         .status(403)
-        .json({ message: "The Order must be popularity or newest."});
+        .json({ message: "The Order must be popularity or newest lowToHigh or highToLow."});
     }
     if (!(level && format && language))
       return res.status(403).json({
         message: "level, format, isDiscount and language is requred values",
       });
 
-    let type = { [Op.gt]: 0 };
-    !isDiscount && (type = { [Op.lte]: 0 });
+    let type = { [Op.gte]: 0 };
+    isDiscount && (type = { [Op.lte]: 0 });
 
     const months = { am: "ամիս", ru: "месяц", en: "months" };
     const days = { am: "օր", ru: "день", en: "days" };
     const orderTypes = {
-      popularity:"bought",
-      newest:"createdAt", 
-      // lowToHigh:"sequelize.literal('sale/100')",
-      // highToLow:"sequelize.literal('sale/100')"
+      popularity:["bought","DESC"],
+      newest:["createdAt","DESC"], 
     }   
+
     const levels = {};
     const getLevels = await Levels.findAll({
       attributes: [language, "slug"],
@@ -174,11 +174,12 @@ const getCoursesByLFilter = async (req, res) => {
             },
           },
           attributes: { exclude: ["id", "language", "courseId"] },
-          // include: [Levels],
+          include: [Levels],
         },
+        
       ],
-      order: [[orderTypes[order],"DESC"]],
-      attributes: { exclude: ["id", "updatedAt"] },
+      order: orderTypes[order] ? [orderTypes[order]]:[['id',"ASC"]],
+      attributes: { exclude: [ "updatedAt"] },
     });
 
     if (Courses.length === 0)
@@ -198,6 +199,7 @@ const getCoursesByLFilter = async (req, res) => {
         lessonType: formats[course.CoursesContents[0].lessonType],
         level: levels[course.CoursesContents[0].level],
         price: course.CoursesContents[0].price,
+        saledValue: course.sale>0 ? Math.round(course.CoursesContents[0].price*course.sale)/100:null,
         courseStartDate: moment(course.startDate).format("ll"),
         courseDate:
           moment().diff(course.startDate, "months") > 0
@@ -206,10 +208,12 @@ const getCoursesByLFilter = async (req, res) => {
       };
 
       delete course.CoursesContents;
+      delete course.sale;
       return course;
     });
     const pagination = Math.ceil(courseCount / limit);
-
+    if(order==="highToLow") newCourses.sort((a,b)=>b.saledValue-a.saledValue)
+    if(order==="lowToHigh") newCourses.sort((a,b)=>a.saledValue-b.saledValue)
     return res.status(200).json({ pagination,Courses:newCourses });
   } catch (error) {
     console.log(error);
