@@ -189,7 +189,7 @@ const getCoursesByLFilter = async (req, res) => {
 
     Courses = Courses.map((e) => CircularJSON.stringify(e));
 
-    const newCourses = Courses.map((_course) => {
+    let newCourses = Courses.map((_course) => {
       let course = JSON.parse(_course);
       course = {
         ...course,
@@ -199,7 +199,7 @@ const getCoursesByLFilter = async (req, res) => {
         lessonType: formats[course.CoursesContents[0].lessonType],
         level: levels[course.CoursesContents[0].level],
         price: course.CoursesContents[0].price,
-        saledValue: course.sale>0 ? Math.round(course.CoursesContents[0].price*course.sale)/100:null,
+        saledValue: course.sale>0 ? Math.round(course.CoursesContents[0].price*course.sale)/100:course.CoursesContents[0].price,
         courseStartDate: moment(course.startDate).format("ll"),
         courseDate:
           moment().diff(course.startDate, "months") > 0
@@ -212,8 +212,8 @@ const getCoursesByLFilter = async (req, res) => {
       return course;
     });
     const pagination = Math.ceil(courseCount / limit);
-    if(order==="highToLow") newCourses.sort((a,b)=>b.saledValue-a.saledValue)
-    if(order==="lowToHigh") newCourses.sort((a,b)=>a.saledValue-b.saledValue)
+    if(order==="highToLow") newCourses = newCourses.sort((a,b)=>b.saledValue-a.saledValue)
+    if(order==="lowToHigh") newCourses= newCourses.sort((a,b)=>a.saledValue-b.saledValue)
     return res.status(200).json({ pagination,Courses:newCourses });
   } catch (error) {
     console.log(error);
