@@ -153,10 +153,6 @@ const getCoursesByLFilter = async (req, res) => {
       attributes: { exclude: [ "updatedAt"] },
     });
 
-    if (Courses.length === 0)
-      return res
-        .status(403)
-        .json({ message: "No data was found for this filter." });
 
     Courses = Courses.map((e) => CircularJSON.stringify(e));
 
@@ -185,6 +181,11 @@ const getCoursesByLFilter = async (req, res) => {
     if(order==="highToLow") newCourses = newCourses.sort((a,b)=>b.saledValue-a.saledValue)
     if(order==="lowToHigh") newCourses= newCourses.sort((a,b)=>a.saledValue-b.saledValue)
     newCourses  = newCourses.filter((e)=>e.saledValue>=minPrice && e.saledValue<=maxPrice)
+    if (Courses.length === 0)
+    return res
+      .status(403)
+      .json({ message: "No data was found for this filter." });
+      
     return res.status(200).json({Courses:newCourses });
   } catch (error) {
     console.log(error);
