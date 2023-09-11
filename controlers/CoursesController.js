@@ -74,13 +74,11 @@ const getCoursesByLFilter = async (req, res) => {
       format,
       isDiscount = false,
       language = "en",
-      page = 1,
-      limit = 9,
+      limit=null,
       order="popularity"
     } = req.query;
     format = format.split("_");
     level = level.split("_");
-
     if (!["en", "ru", "am"].includes(language)) {
       return res
         .status(403)
@@ -97,7 +95,7 @@ const getCoursesByLFilter = async (req, res) => {
       });
 
     let type = { [Op.gte]: 0 };
-    isDiscount && (type = { [Op.lte]: 0 });
+    isDiscount && (type = { [Op.gt]: 0 });
 
     const months = { am: "ամիս", ru: "месяц", en: "months" };
     const days = { am: "օր", ru: "день", en: "days" };
@@ -129,33 +127,10 @@ const getCoursesByLFilter = async (req, res) => {
     getGroups.map((e) => {
       groups[e.slug] = e[language];
     });
-    const courseCount = await GroupCourses.count({
-      where: {
-        sale: type,
-      },include: [
-        {
-          model: CoursesContents,
-          where: {
-            language,
-            level: {
-              [Op.in]: level,
-            },
-            lessonType: {
-              [Op.in]: format,
-            },
-            price: {
-              [Op.gte]: minPrice,
-              [Op.lte]: maxPrice,
-            },
-          },
-        },
-      ],
-    });
     let Courses = await GroupCourses.findAll({
       where: {
         sale: type,
       },
-      offset: page === 1 ? 0 : (page - 1) * limit,
       limit,
       include: [
         {
@@ -167,10 +142,6 @@ const getCoursesByLFilter = async (req, res) => {
             },
             lessonType: {
               [Op.in]: format,
-            },
-            price: {
-              [Op.gte]: minPrice,
-              [Op.lte]: maxPrice,
             },
           },
           attributes: { exclude: ["id", "language", "courseId"] },
@@ -211,10 +182,10 @@ const getCoursesByLFilter = async (req, res) => {
       delete course.sale;
       return course;
     });
-    const pagination = Math.ceil(courseCount / limit);
     if(order==="highToLow") newCourses = newCourses.sort((a,b)=>b.saledValue-a.saledValue)
     if(order==="lowToHigh") newCourses= newCourses.sort((a,b)=>a.saledValue-b.saledValue)
-    return res.status(200).json({ pagination,Courses:newCourses });
+    newCourses  = newCourses.filter((e)=>e.saledValue>=minPrice && e.saledValue<=maxPrice)
+    return res.status(200).json({Courses:newCourses });
   } catch (error) {
     console.log(error);
   }
