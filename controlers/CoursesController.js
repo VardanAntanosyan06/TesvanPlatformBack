@@ -72,7 +72,7 @@ const getCoursesByLFilter = async (req, res) => {
       minPrice = 0,
       maxPrice = 1000000000000000,
       format,
-      isDiscount = false,
+      isDiscount,
       language = "en",
       limit=null,
       order="popularity"
@@ -95,8 +95,9 @@ const getCoursesByLFilter = async (req, res) => {
       });
 
     let type = { [Op.gte]: 0 };
-    isDiscount && (type = { [Op.gt]: 0 });
-
+    if(isDiscount==="true"){
+      type = { [Op.gt]: 0 };
+    }  
     const months = { am: "ամիս", ru: "месяц", en: "months" };
     const days = { am: "օր", ru: "день", en: "days" };
     const orderTypes = {
@@ -181,11 +182,11 @@ const getCoursesByLFilter = async (req, res) => {
     if(order==="highToLow") newCourses = newCourses.sort((a,b)=>b.saledValue-a.saledValue)
     if(order==="lowToHigh") newCourses= newCourses.sort((a,b)=>a.saledValue-b.saledValue)
     newCourses  = newCourses.filter((e)=>e.saledValue>=minPrice && e.saledValue<=maxPrice)
-    if (Courses.length === 0)
+    if (newCourses.length === 0)
     return res
       .status(403)
       .json({ message: "No data was found for this filter." });
-      
+
     return res.status(200).json({Courses:newCourses });
   } catch (error) {
     console.log(error);
