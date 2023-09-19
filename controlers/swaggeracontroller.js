@@ -9,7 +9,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://165.232.74.168/",
+        url: process.env.HOST,
       },
     ],
   },
