@@ -27,6 +27,15 @@ module.exports = {
       lessonType: {
         type: Sequelize.STRING,
       },
+      lessonsCount: {
+        type: Sequelize.INTEGER
+      },
+      whyThisCourse: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
+      },
+      duration: {
+        type: Sequelize.INTEGER
+      },
       level: {
         type: Sequelize.STRING,
       },

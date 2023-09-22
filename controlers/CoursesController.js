@@ -193,7 +193,23 @@ const getCoursesByLFilter = async (req, res) => {
   }
 };
 
+const getOne = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const {language} = req.query
+    const course = await GroupCourses.findOne({where: {id}, include: {model: CoursesContents, where: {language}}})
+    if(!course) {
+      return res.status(500).json({ message: "Course not found." });
+    }
+    res.send(course)
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+}
+
 module.exports = {
   getAllCourses,
   getCoursesByLFilter,
+  getOne
 };
