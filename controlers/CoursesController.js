@@ -4,8 +4,9 @@ const { Levels } = require("../models");
 const { CourseType } = require("../models");
 const { Format } = require("../models");
 const { Users } = require("../models");
+const { CourseProgram } = require("../models");
 const { Op } = require("sequelize");
-const sequelize = require("sequelize")
+const sequelize = require("sequelize");
 const CircularJSON = require("circular-json");
 
 const moment = require("moment");
@@ -74,8 +75,8 @@ const getCoursesByLFilter = async (req, res) => {
       format,
       isDiscount,
       language = "en",
-      limit=null,
-      order="popularity"
+      limit = null,
+      order = "popularity",
     } = req.query;
     format = format.split("_");
     level = level.split("_");
@@ -84,10 +85,13 @@ const getCoursesByLFilter = async (req, res) => {
         .status(403)
         .json({ message: "The language must be am, ru, or en." });
     }
-    if (!["popularity", "newest", "lowToHigh","highToLow"].includes(order)) {
+    if (!["popularity", "newest", "lowToHigh", "highToLow"].includes(order)) {
       return res
         .status(403)
-        .json({ message: "The Order must be popularity or newest lowToHigh or highToLow."});
+        .json({
+          message:
+            "The Order must be popularity or newest lowToHigh or highToLow.",
+        });
     }
     if (!(level && format && language))
       return res.status(403).json({
@@ -95,15 +99,15 @@ const getCoursesByLFilter = async (req, res) => {
       });
 
     let type = { [Op.gte]: 0 };
-    if(isDiscount==="true"){
+    if (isDiscount === "true") {
       type = { [Op.gt]: 0 };
-    }  
+    }
     const months = { am: "ամիս", ru: "месяц", en: "months" };
     const days = { am: "օր", ru: "день", en: "days" };
     const orderTypes = {
-      popularity:["bought","DESC"],
-      newest:["createdAt","DESC"], 
-    }   
+      popularity: ["bought", "DESC"],
+      newest: ["createdAt", "DESC"],
+    };
 
     const levels = {};
     const getLevels = await Levels.findAll({
@@ -148,12 +152,10 @@ const getCoursesByLFilter = async (req, res) => {
           attributes: { exclude: ["id", "language", "courseId"] },
           include: [Levels],
         },
-        
       ],
-      order: orderTypes[order] ? [orderTypes[order]]:[['id',"ASC"]],
-      attributes: { exclude: [ "updatedAt"] },
+      order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
+      attributes: { exclude: ["updatedAt"] },
     });
-
 
     Courses = Courses.map((e) => CircularJSON.stringify(e));
 
@@ -167,7 +169,10 @@ const getCoursesByLFilter = async (req, res) => {
         lessonType: formats[course.CoursesContents[0].lessonType],
         level: levels[course.CoursesContents[0].level],
         price: course.CoursesContents[0].price,
-        saledValue: course.sale>0 ? Math.round(course.CoursesContents[0].price*course.sale)/100:course.CoursesContents[0].price,
+        saledValue:
+          course.sale > 0
+            ? Math.round(course.CoursesContents[0].price * course.sale) / 100
+            : course.CoursesContents[0].price,
         courseStartDate: moment(course.startDate).format("ll"),
         courseDate:
           moment().diff(course.startDate, "months") > 0
@@ -179,15 +184,19 @@ const getCoursesByLFilter = async (req, res) => {
       delete course.sale;
       return course;
     });
-    if(order==="highToLow") newCourses = newCourses.sort((a,b)=>b.saledValue-a.saledValue)
-    if(order==="lowToHigh") newCourses= newCourses.sort((a,b)=>a.saledValue-b.saledValue)
-    newCourses  = newCourses.filter((e)=>e.saledValue>=minPrice && e.saledValue<=maxPrice)
+    if (order === "highToLow")
+      newCourses = newCourses.sort((a, b) => b.saledValue - a.saledValue);
+    if (order === "lowToHigh")
+      newCourses = newCourses.sort((a, b) => a.saledValue - b.saledValue);
+    newCourses = newCourses.filter(
+      (e) => e.saledValue >= minPrice && e.saledValue <= maxPrice
+    );
     if (newCourses.length === 0)
-    return res
-      .status(403)
-      .json({ message: "No data was found for this filter." });
+      return res
+        .status(403)
+        .json({ message: "No data was found for this filter." });
 
-    return res.status(200).json({Courses:newCourses });
+    return res.status(200).json({ Courses: newCourses });
   } catch (error) {
     console.log(error);
   }
@@ -195,21 +204,28 @@ const getCoursesByLFilter = async (req, res) => {
 
 const getOne = async (req, res) => {
   try {
-    const {id} = req.params;
-    const {language} = req.query
-    const course = await GroupCourses.findOne({where: {id}, include: {model: CoursesContents, where: {language}}})
-    if(!course) {
+    const { id } = req.params;
+    const { language } = req.query;
+    const course = await GroupCourses.findOne({
+      where: { id },
+      include: [{ model: CoursesContents, where: { language }},{ model: CourseProgram, where: { language }}],
+    });
+
+    if (!course) {
       return res.status(500).json({ message: "Course not found." });
     }
-    res.send(course)
+
+    let {CoursePrograms: program, ...data} = course.dataValues;
+
+    res.send({...data, program});
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
-}
+};
 
 module.exports = {
   getAllCourses,
   getCoursesByLFilter,
-  getOne
+  getOne,
 };
