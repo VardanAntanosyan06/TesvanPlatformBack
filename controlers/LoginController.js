@@ -22,7 +22,7 @@ const LoginUsers = async (req, res) => {
     ) {
       return res.status(200).json({ User });
     }
-    return res.status(403).json({ message: "Invalid email or password!" });
+    return res.status(403).json({ message: "Invalid email or password" });
   } catch (error) {
     console.log(error);
   }
