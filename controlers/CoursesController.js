@@ -4,6 +4,7 @@ const { Levels } = require("../models");
 const { CourseType } = require("../models");
 const { Format } = require("../models");
 const { Users } = require("../models");
+const { UserLikes } = require("../models");
 const { CourseProgram } = require("../models");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
@@ -86,12 +87,10 @@ const getCoursesByLFilter = async (req, res) => {
         .json({ message: "The language must be am, ru, or en." });
     }
     if (!["popularity", "newest", "lowToHigh", "highToLow"].includes(order)) {
-      return res
-        .status(403)
-        .json({
-          message:
-            "The Order must be popularity or newest lowToHigh or highToLow.",
-        });
+      return res.status(403).json({
+        message:
+          "The Order must be popularity or newest lowToHigh or highToLow.",
+      });
     }
     if (!(level && format && language))
       return res.status(403).json({
@@ -208,16 +207,44 @@ const getOne = async (req, res) => {
     const { language } = req.query;
     const course = await GroupCourses.findOne({
       where: { id },
-      include: [{ model: CoursesContents, where: { language }},{ model: CourseProgram, where: { language }}],
+      include: [
+        { model: CoursesContents, where: { language } },
+        { model: CourseProgram, where: { language } },
+      ],
     });
 
     if (!course) {
       return res.status(500).json({ message: "Course not found." });
     }
 
-    let {CoursePrograms: program, ...data} = course.dataValues;
+    let { CoursePrograms: program, ...data } = course.dataValues;
 
-    res.send({...data, program});
+    res.send({ ...data, program });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const like = async (req, res) => {
+  try {
+    const { id, courseId } = req.body;
+
+    const user = await Users.findOne({ where: { id } });
+
+    if (!user) {
+      return res.status(500).json({ message: "User not found" });
+    }
+
+    if (user.likedCourses && user.likedCourses.includes(courseId)) {
+      user.likedCourses = user.likedCourses.filter((id) => id !== courseId);
+    } else {
+      user.likedCourses = [...user.likedCourses, courseId];
+    }
+
+    await user.save();
+
+    res.send({ courses: user.likedCourses });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -228,4 +255,5 @@ module.exports = {
   getAllCourses,
   getCoursesByLFilter,
   getOne,
+  like,
 };

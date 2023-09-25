@@ -46,6 +46,10 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
       },
+      likedCourses: {
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
+        defaultValue: [],
+      },
       isVerified: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

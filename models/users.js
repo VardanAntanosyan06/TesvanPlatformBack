@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique:true,
+        unique: true,
         validate: {
           isEmail: {
             args: true,
@@ -88,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Role must be 'Teacher' or 'Student'",
           },
         },
-        allowNull:false
+        allowNull: false,
       },
       token: {
         type: DataTypes.STRING,
@@ -98,11 +98,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      likedCourses: {
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        defaultValue: [],
+      },
     },
     {
       sequelize,
       modelName: "Users",
     }
   );
+
+  const userLikes = sequelize.define("UserLikes");
+
+  Users.hasMany(userLikes, {
+    foreignKey: "id",
+  });
+
   return Users;
 };
