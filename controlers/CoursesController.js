@@ -228,7 +228,8 @@ const getOne = async (req, res) => {
 
 const like = async (req, res) => {
   try {
-    const { id, courseId } = req.body;
+    const { courseId } = req.body;
+    const { user_id: id } = req.user;
 
     const user = await Users.findOne({ where: { id } });
 
