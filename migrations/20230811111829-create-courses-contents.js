@@ -28,23 +28,26 @@ module.exports = {
         type: Sequelize.STRING,
       },
       lessonsCount: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       whyThisCourse: {
-        type: Sequelize.ARRAY(Sequelize.STRING)
+        type: Sequelize.ARRAY(Sequelize.STRING),
       },
       duration: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       level: {
         type: Sequelize.STRING,
+      },
+      levelDescriptions: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
       },
       price: {
         type: Sequelize.INTEGER,
       },
     });
   },
-  
+
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("CoursesContents");
   },

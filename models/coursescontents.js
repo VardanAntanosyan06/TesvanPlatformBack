@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   CoursesContents.init(
     {
-      courseId:DataTypes.INTEGER,
+      courseId: DataTypes.INTEGER,
       language: {
         type: DataTypes.STRING,
         isIn: {
@@ -22,33 +22,34 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       title: DataTypes.STRING,
-      description: DataTypes.TEXT('long'),
+      description: DataTypes.TEXT("long"),
       courseType: DataTypes.STRING,
       lessonType: DataTypes.STRING,
       lessonsCount: DataTypes.INTEGER,
       whyThisCourse: DataTypes.ARRAY(DataTypes.STRING),
       duration: DataTypes.INTEGER,
       level: DataTypes.STRING,
-      price: DataTypes.INTEGER
+      levelDescriptions: DataTypes.ARRAY(DataTypes.STRING),
+      price: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "CoursesContents",
-      timestamps:false
+      timestamps: false,
     }
   );
 
-  const GroupCourses = sequelize.define("GroupCourses")
+  const GroupCourses = sequelize.define("GroupCourses");
 
-  CoursesContents.hasOne(GroupCourses,{
-    foreignKey:"id"
-  })
+  CoursesContents.hasOne(GroupCourses, {
+    foreignKey: "id",
+  });
   const Levels = sequelize.define("Levels");
 
   CoursesContents.hasOne(Levels, {
-    foreignKey: 'slug',
-    sourceKey: 'level',
+    foreignKey: "slug",
+    sourceKey: "level",
   });
-  
+
   return CoursesContents;
 };

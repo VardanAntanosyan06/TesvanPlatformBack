@@ -2,13 +2,14 @@ var express = require("express");
 var router = express.Router();
 
 const controller = require("../controlers/LoginController");
+const checkAuth = require("../middleware/checkAuth");
 
 router.post("/Login", controller.LoginUsers);
 router.get("/ForgotPassword", controller.sendEmailForForgotPassword);
-router.patch("/ChangePassword", controller.forgotPassword)
-router.patch("/ChangeEmail", controller.changeEmail)
+router.patch("/ChangePassword", controller.forgotPassword);
+router.patch("/ChangeEmail", controller.changeEmail);
+router.get("/authMe", checkAuth, controller.authMe);
 // router.get("/sendEmail", controller.UserRegistartionSendEmail);
 // router.patch("/verification", controller.UserRegistartionVerification);
-
 
 module.exports = router;

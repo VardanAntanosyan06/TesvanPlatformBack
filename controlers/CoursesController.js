@@ -4,8 +4,8 @@ const { Levels } = require("../models");
 const { CourseType } = require("../models");
 const { Format } = require("../models");
 const { Users } = require("../models");
-const { UserLikes } = require("../models");
 const { CourseProgram } = require("../models");
+const { Trainer } = require("../models");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 const CircularJSON = require("circular-json");
@@ -213,13 +213,22 @@ const getOne = async (req, res) => {
       ],
     });
 
+    const trainers = await Trainer.findAll({
+      where: {
+        id: {
+          [Op.in]: course.trainers,
+        },
+      },
+      attributes: ["fullName", "img", "profession"],
+    });
+
     if (!course) {
       return res.status(500).json({ message: "Course not found." });
     }
 
     let { CoursePrograms: program, ...data } = course.dataValues;
 
-    res.send({ ...data, program });
+    res.send({ ...data, program, trainers });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });

@@ -4,6 +4,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 0,
+    trainers: [1, 4],
     createdAt: "2022-08-04T08:34:47.881Z",
     updatedAt: "2022-08-04T08:34:47.881Z",
   },
@@ -12,6 +13,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 0,
+    trainers: [1, 3, 4],
     createdAt: "2023-05-04T08:34:47.881Z",
     updatedAt: "2023-05-04T08:34:47.881Z",
   },
@@ -20,6 +22,7 @@ const GroupCourses = [
     startDate: "2023-05-04T08:34:47.881Z",
     img: "/images/Courses.png",
     sale: 20,
+    trainers: [1, 2, 4],
     createdAt: "2023-05-01T08:34:47.881Z",
     updatedAt: "2023-05-01T08:34:47.881Z",
   },
@@ -28,6 +31,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 15,
+    trainers: [1, 2, 3, 5],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -36,6 +40,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 5,
+    trainers: [1, 2, 3, 4],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -44,6 +49,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 10,
+    trainers: [1, 2, 3, 4],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -52,6 +58,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 5,
+    trainers: [1, 2, 3, 4],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -60,6 +67,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 0,
+    trainers: [1, 2, 3, 4],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -68,6 +76,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 80,
+    trainers: [1, 2, 3, 4],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -76,6 +85,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 0,
+    trainers: [1, 2, 3, 4],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -84,6 +94,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 0,
+    trainers: [1, 2, 3, 4],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -92,6 +103,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 20,
+    trainers: [1],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -100,6 +112,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 10,
+    trainers: [1],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -108,6 +121,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 0,
+    trainers: [1, 2, 3, 4],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -116,6 +130,7 @@ const GroupCourses = [
     startDate: new Date(),
     img: "/images/Courses.png",
     sale: 15,
+    trainers: [1],
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -143,6 +158,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 100,
   },
   {
@@ -166,6 +184,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 11000,
   },
   {
@@ -189,6 +210,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 45000,
   },
   {
@@ -212,6 +236,9 @@ const GroupCorsesContent = [
     ],
     duration: 10,
     level: "Advanced",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 90,
   },
   {
@@ -235,6 +262,9 @@ const GroupCorsesContent = [
     ],
     duration: 10,
     level: "Advanced",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7960,
   },
   {
@@ -258,6 +288,9 @@ const GroupCorsesContent = [
     ],
     duration: 10,
     level: "Advanced",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 4623,
   },
   {
@@ -281,6 +314,9 @@ const GroupCorsesContent = [
     ],
     duration: 120,
     level: "Beginner",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -304,6 +340,9 @@ const GroupCorsesContent = [
     ],
     duration: 120,
     level: "Beginner",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -327,6 +366,9 @@ const GroupCorsesContent = [
     ],
     duration: 120,
     level: "Beginner",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -350,6 +392,9 @@ const GroupCorsesContent = [
     ],
     duration: 28,
     level: "Beginner",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -373,6 +418,9 @@ const GroupCorsesContent = [
     ],
     duration: 28,
     level: "Beginner",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -396,6 +444,9 @@ const GroupCorsesContent = [
     ],
     duration: 28,
     level: "Beginner",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -419,6 +470,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -442,6 +496,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -465,6 +522,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -488,6 +548,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Advanced",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -511,6 +574,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Advanced",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -534,6 +600,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Advanced",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -557,6 +626,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -580,6 +652,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -603,6 +678,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -626,6 +704,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -649,6 +730,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -672,6 +756,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -695,6 +782,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -718,6 +808,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -741,6 +834,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -764,6 +860,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Advanced",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -787,6 +886,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Advanced",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -810,6 +912,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Advanced",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -833,6 +938,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -856,6 +964,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -879,6 +990,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -902,6 +1016,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Advanced",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -925,6 +1042,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Advanced",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -948,6 +1068,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Advanced",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -971,6 +1094,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -994,6 +1120,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -1017,6 +1146,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -1040,6 +1172,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -1063,6 +1198,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -1086,6 +1224,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Intermediate",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
   {
@@ -1109,6 +1250,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "For Tech professionals who have knowledge and experience and want to change their career or simply develop skills by learning QA Engineering.",
+    ],
     price: 75,
   },
   {
@@ -1132,6 +1276,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "Для технических специалистов, которые обладают знаниями и опытом и хотят сменить карьеру или просто развить навыки, изучая QA Engineering.",
+    ],
     price: 7500,
   },
   {
@@ -1155,6 +1302,9 @@ const GroupCorsesContent = [
     ],
     duration: 90,
     level: "Beginner",
+    levelDescriptions: [
+      "Տեխնոլոգների համար, ովքեր ունեն գիտելիքներ և փորձ և ցանկանում են փոխել իրենց կարիերան կամ պարզապես զարգացնել հմտություններ՝ սովորելով QA Engineering",
+    ],
     price: 28900,
   },
 ];
@@ -1162,3473 +1312,4007 @@ const GroupCorsesContent = [
 const GroupCorsesProgram = [
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 1,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 1,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 1,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 2,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 2,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 2,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 3,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 3,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 3,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 4,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 4,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 4,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 5,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 5,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 5,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 6,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 6,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 6,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 7,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 7,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 7,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 8,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 8,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 8,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 9,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 9,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 9,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 10,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 10,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 10,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 11,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 11,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 11,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 12,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 12,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 12,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 13,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 13,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 13,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 14,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 14,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 14,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 1,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 1,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 1,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 2,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 2,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 2,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 3,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 3,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 3,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 4,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 4,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 4,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 5,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 5,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 5,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 6,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 6,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 6,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 7,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 7,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 7,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 8,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 8,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 8,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 9,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 9,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 9,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 10,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 10,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 10,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
   {
     courseId: 15,
-    language: 'en',
+    language: "en",
     day: 11,
-    title: 'Testing levels, methods and methodologies',
-    description: 'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",'
+    title: "Testing levels, methods and methodologies",
+    description:
+      'Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some, Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some., Lorem ipsum dolor sit amet, and lorem consectetuer adipiscing some.",',
   },
   {
     courseId: 15,
-    language: 'ru',
+    language: "ru",
     day: 11,
-    title: 'Уровни тестирования, методы и методологии',
-    description: 'Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum'
+    title: "Уровни тестирования, методы и методологии",
+    description:
+      "Lorem Ipsum — это просто фиктивный текст полиграфической и наборной промышленности. Lorem Ipsum был стандартным фиктивным текстом в отрасли с 1500-х годов, когда неизвестный печатник взял гранку шрифта и перемешал ее, чтобы сделать книгу образцов шрифта. Он сохранился. не только пять столетий, но и скачок в электронный набор текста, оставаясь практически неизменным. Он был популяризирован в 1960-х годах с выпуском листов Letraset, содержащих отрывки Lorem Ipsum, а совсем недавно - с помощью программного обеспечения для настольных издательских систем, такого как Aldus PageMaker, включая версии Lorem Ipsum",
   },
   {
     courseId: 15,
-    language: 'am',
+    language: "am",
     day: 11,
-    title: 'Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա',
-    description: 'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",'
+    title: "Թեստավորման մակարդակներ, մեթոդներ և մեթոդիկա",
+    description:
+      'Lorem Ipsum-ը պարզապես տպագրական և տպագրական արդյունաբերության կեղծ տեքստ է: Lorem Ipsum-ը եղել է արդյունաբերության ստանդարտ կեղծ տեքստը դեռևս 1500-ական թվականներից, երբ մի անհայտ տպիչ վերցրեց մի ճաշարան և խառնեց այն, որպեսզի տիպային գիրք պատրաստի: Այն պահպանվել է: ոչ միայն հինգ դար, այլ նաև ցատկ դեպի էլեկտրոնային շարադրություն, որը հիմնականում մնացել է անփոփոխ: Այն հանրաճանաչ դարձավ 1960-ականներին՝ թողարկվելով «Letraset» թերթերը, որոնք պարունակում էին Lorem Ipsum հատվածներ, իսկ վերջերս՝ աշխատասեղանի հրատարակման ծրագրակազմով, ինչպիսին է Aldus PageMaker-ը, ներառյալ Lorem Ipsum-ի տարբերակները",',
   },
-]
+];
+
+const Trainers = [
+  {
+    fullName: "Joanna Smith",
+    profession: "Senior QA Engineer",
+    img: "ec843f79-5cb3-4511-b78f-ab8837cbb8d1.png",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    fullName: "Joanna Smith",
+    profession: "Senior QA Engineer",
+    img: "ec843f79-5cb3-4511-b78f-ab8837cbb8d1.png",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    fullName: "Joanna Smith",
+    profession: "Senior QA Engineer",
+    img: "ec843f79-5cb3-4511-b78f-ab8837cbb8d1.png",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    fullName: "Joanna Smith",
+    profession: "Senior QA Engineer",
+    img: "ec843f79-5cb3-4511-b78f-ab8837cbb8d1.png",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    fullName: "Joanna Smith",
+    profession: "Senior QA Engineer",
+    img: "ec843f79-5cb3-4511-b78f-ab8837cbb8d1.png",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
 
 module.exports = {
   GroupCourses,
   GroupCorsesContent,
-  GroupCorsesProgram
+  GroupCorsesProgram,
+  Trainers,
 };

@@ -1,8 +1,8 @@
 const { Model } = require("sequelize");
 const { Users } = require("../models");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken")
-const moment = require("moment")
+const jwt = require("jsonwebtoken");
+const moment = require("moment");
 const nodemailer = require("nodemailer");
 const {
   UserRegistartionSendEmail,
@@ -186,9 +186,20 @@ const changeEmail = async (req, res) => {
   }
 };
 
+const authMe = async (req, res) => {
+  try {
+    const user = req.user;
+    res.send(user);
+  } catch (e) {
+    res.status(500).json({ succes: false });
+    console.log(e);
+  }
+};
+
 module.exports = {
   LoginUsers,
   sendEmailForForgotPassword,
   forgotPassword,
   changeEmail,
+  authMe,
 };
