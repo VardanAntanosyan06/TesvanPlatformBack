@@ -191,19 +191,19 @@ const changeEmail = async (req, res) => {
 const authMe = async (req, res) => {
   try {
     const { user_id: id } = req.user;
-    const user = await Users.findOne({
+    const User = await Users.findOne({
       where: { id },
     });
-    if (!user) {
-      return res.status(403).json({ message: "User not found" });
+    if (!User) {
+      return res.send({ succes: false });
     }
 
     const courses = await UserCourses.findAll({
       where: { UserId: id },
     });
 
-    user.dataValues.courses = courses;
-    res.send({ user });
+    User.dataValues.courses = courses;
+    res.send({ User });
   } catch (e) {
     res.status(500).json({ succes: false });
     console.log(e);
