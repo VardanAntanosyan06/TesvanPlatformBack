@@ -1,5 +1,6 @@
-const { Model } = require("sequelize");
 const { Users } = require("../models");
+const { GroupCourses } = require("../models");
+const { UserCourses } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
@@ -14,6 +15,7 @@ const LoginUsers = async (req, res) => {
 
     const User = await Users.findOne({
       where: { email },
+      include: [{ model: GroupCourses, as: "courses" }],
     });
     if (
       User &&
@@ -188,8 +190,20 @@ const changeEmail = async (req, res) => {
 
 const authMe = async (req, res) => {
   try {
-    const user = req.user;
-    res.send(user);
+    const { user_id: id } = req.user;
+    const user = await Users.findOne({
+      where: { id },
+    });
+    if (!user) {
+      return res.status(403).json({ message: "User not found" });
+    }
+
+    const courses = await UserCourses.findAll({
+      where: { UserId: id },
+    });
+
+    user.dataValues.courses = courses;
+    res.send({ user });
   } catch (e) {
     res.status(500).json({ succes: false });
     console.log(e);

@@ -37,5 +37,9 @@ module.exports = (sequelize, DataTypes) => {
     foreignKey: "courseId",
   });
 
+  const Users = sequelize.define("Users");
+
+  GroupCourses.belongsToMany(Users, { through: "UserCourses", as: "courses" });
+
   return GroupCourses;
 };

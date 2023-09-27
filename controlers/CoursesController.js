@@ -1,5 +1,6 @@
 const { GroupCourses } = require("../models");
 const { CoursesContents } = require("../models");
+const { UserCourses } = require("../models");
 const { Levels } = require("../models");
 const { CourseType } = require("../models");
 const { Format } = require("../models");
@@ -213,6 +214,10 @@ const getOne = async (req, res) => {
       ],
     });
 
+    if (!course) {
+      return res.status(500).json({ message: "Course not found." });
+    }
+
     const trainers = await Trainer.findAll({
       where: {
         id: {
@@ -221,10 +226,6 @@ const getOne = async (req, res) => {
       },
       attributes: ["fullName", "img", "profession"],
     });
-
-    if (!course) {
-      return res.status(500).json({ message: "Course not found." });
-    }
 
     let { CoursePrograms: program, ...data } = course.dataValues;
 
@@ -237,7 +238,7 @@ const getOne = async (req, res) => {
 
 const like = async (req, res) => {
   try {
-    const { courseId } = req.body;
+    const { courseId } = req.params;
     const { user_id: id } = req.user;
 
     const user = await Users.findOne({ where: { id } });
@@ -261,9 +262,33 @@ const like = async (req, res) => {
   }
 };
 
+const buy = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const { user_id: id } = req.user;
+
+    const user = await Users.findOne({ where: { id } });
+
+    if (!user) {
+      return res.status(500).json({ message: "User not found" });
+    }
+
+    await UserCourses.create({
+      UserId: id,
+      GroupCourseId: courseId,
+    });
+
+    res.send({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 module.exports = {
   getAllCourses,
   getCoursesByLFilter,
   getOne,
   like,
+  buy,
 };

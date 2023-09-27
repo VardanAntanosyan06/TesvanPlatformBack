@@ -34,7 +34,7 @@ const options = {
  *         description: The Object
  *       403:
  *         description: The language must be am, ru, or en
-*/
+ */
 
 /**
  * @swagger
@@ -46,7 +46,7 @@ const options = {
  *         description: The Object
  *       500:
  *         description: Server error
-*/
+ */
 
 /**
  * @swagger
@@ -148,7 +148,7 @@ const options = {
  *         description: success:true
  *       404:
  *         description: There is not unverified user!
-*/
+ */
 
 /**
  * @swagger
@@ -168,7 +168,7 @@ const options = {
  *         description: success:true
  *       403:
  *         description: token timeout!
-*/
+ */
 
 /**
  * @swagger
@@ -244,7 +244,6 @@ const options = {
  *           example: test1234
  */
 
-
 /**
  * @swagger
  * /api/v2/user/login:
@@ -265,6 +264,18 @@ const options = {
 
 /**
  * @swagger
+ * /api/v2/user/authMe:
+ *   get:
+ *     summary: Login User with token
+ *     responses:
+ *       200:
+ *         description: success true
+ *       401:
+ *         description: Invaunvlid token.
+ */
+
+/**
+ * @swagger
  * /api/v2/user/ForgotPassword:
  *   get:
  *     summary: send mail for reset password
@@ -281,7 +292,7 @@ const options = {
  *         description: success:true
  *       404:
  *         description: There is not verified user!
-*/
+ */
 
 /**
  * @swagger
@@ -320,7 +331,7 @@ const options = {
  *         description: token timeout!
  *       404:
  *         description: User not Found!
-*/
+ */
 
 /**
  * @swagger
@@ -359,8 +370,27 @@ const options = {
  *         description: Invalid Email format
  *       404:
  *         description: User not found!
-*/
+ */
 
+/**
+ * @swagger
+ * /api/v2/courses/getOne:
+ *   get:
+ *     summary: get all Courses
+ *     parameters:
+ *      - name: language
+ *        in: query
+ *        description: language (am, ru or en)
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: am
+ *     responses:
+ *       200:
+ *         description: The Object
+ *       403:
+ *         description: The language must be am, ru, or en
+ */
 
 const swaggerSpec = swaggerJSDOC(options);
 module.exports = {

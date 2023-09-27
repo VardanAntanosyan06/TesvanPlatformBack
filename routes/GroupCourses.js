@@ -7,6 +7,7 @@ const checkAuth = require("../middleware/checkAuth");
 router.get("/getAll", controller.getAllCourses);
 router.get("/getByFilter", controller.getCoursesByLFilter);
 router.get("/getOne/:id", controller.getOne);
-router.post("/like", checkAuth, controller.like);
+router.get("/like/:courseId", checkAuth, controller.like);
+router.get("/buy/:courseId", checkAuth, controller.buy);
 
 module.exports = router;
