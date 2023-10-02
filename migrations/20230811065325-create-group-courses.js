@@ -29,6 +29,10 @@ module.exports = {
       trainers: {
         type: Sequelize.ARRAY(Sequelize.INTEGER),
       },
+      maxPoints: {
+        type: Sequelize.INTEGER,
+        defaultValue: 100,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

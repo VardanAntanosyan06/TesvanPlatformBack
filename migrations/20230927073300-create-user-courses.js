@@ -9,10 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      points: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
       GroupCourseId: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -28,6 +24,14 @@ module.exports = {
           model: "Users",
           key: "id",
         },
+      },
+      totalPoints: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+      takenQuizzes: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

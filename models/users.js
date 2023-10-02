@@ -110,14 +110,20 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const userLikes = sequelize.define("UserLikes");
-
   Users.hasMany(userLikes, {
     foreignKey: "id",
   });
 
   const GroupCourses = sequelize.define("GroupCourses");
-
   Users.belongsToMany(GroupCourses, { through: "UserCourses", as: "courses" });
 
+  //
+  // const UserCourses = sequelize.define("UserCourses");
+  // Users.hasMany(UserCourses);
+  //
+
+  const Lessons = sequelize.define("Lessons");
+
+  Users.belongsToMany(Lessons, { through: "UserLesson" });
   return Users;
 };

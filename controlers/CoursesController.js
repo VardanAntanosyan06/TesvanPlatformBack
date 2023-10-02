@@ -7,6 +7,8 @@ const { Format } = require("../models");
 const { Users } = require("../models");
 const { CourseProgram } = require("../models");
 const { Trainer } = require("../models");
+const { UserLesson } = require("../models");
+const { Lesson } = require("../models");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 const CircularJSON = require("circular-json");
@@ -68,7 +70,7 @@ const getAllCourses = async (req, res) => {
   }
 };
 
-const getCoursesByLFilter = async (req, res) => {
+const getCoursesByFilter = async (req, res) => {
   try {
     let {
       level,
@@ -238,13 +240,15 @@ const getOne = async (req, res) => {
 
 const like = async (req, res) => {
   try {
-    const { courseId } = req.params;
+    let { courseId } = req.params;
     const { user_id: id } = req.user;
+
+    courseId = +courseId;
 
     const user = await Users.findOne({ where: { id } });
 
     if (!user) {
-      return res.status(500).json({ message: "User not found" });
+      return res.status(401).json({ message: "User not found" });
     }
 
     if (user.likedCourses && user.likedCourses.includes(courseId)) {
@@ -278,7 +282,105 @@ const buy = async (req, res) => {
       GroupCourseId: courseId,
     });
 
+    let course = await GroupCourses.findOne({
+      where: { id: courseId },
+      include: [{ model: Lesson, as: "lessons" }],
+    });
+
+    course.lessons.forEach((lesson) => {
+      UserLesson.create({
+        UserId: id,
+        GroupCourseId: courseId,
+        LessonId: lesson.dataValues.id,
+      });
+    });
+
     res.send({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const getUserCourses = async (req, res) => {
+  try {
+    const { user_id: id } = req.user;
+    if (!id) {
+      return res.status(500).json({ message: "User not found" });
+    }
+
+    const courses = await UserCourses.findAll({
+      where: { UserId: id },
+      include: [
+        {
+          model: GroupCourses,
+        },
+      ],
+    });
+
+    res.send({ courses });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const getUserCourse = async (req, res) => {
+  try {
+    const { user_id: id } = req.user;
+    const { courseId } = req.params;
+    // const { language } = req.query;
+
+    if (!id) {
+      return res.status(500).json({ message: "User not found" });
+    }
+
+    let course = await UserCourses.findOne({
+      where: { UserId: id, GroupCourseId: courseId },
+      include: [
+        {
+          model: GroupCourses,
+        },
+      ],
+    });
+
+    if (!course) {
+      return res.status(500).json({ message: "Course not found" });
+    }
+
+    // let lessons = await UserLesson.findAll({
+    //   where: { UserId: id, GroupCourseId: courseId },
+    //   attributes: ["points"],
+    //   include: [
+    //     {
+    //       model: Lesson,
+    //       attributes: [
+    //         [`title_${language}`, "title"],
+    //         [`description_${language}`, "description"],
+    //         "maxPoints",
+    //         "courseId",
+    //         "id",
+    //         "number",
+    //       ],
+    //     },
+    //   ],
+    // });
+
+    // lessons = lessons.map((lesson) => {
+    //   return {
+    //     points: lesson.points,
+    //     ...lesson.dataValues.Lesson.dataValues,
+    //   };
+    // });
+
+    course = {
+      totalPoints: course.dataValues.totalPoints,
+      takenQuizzes: course.dataValues.takenQuizzes,
+      ...course.dataValues.GroupCourse.dataValues,
+      // lessons,
+    };
+
+    res.send({ course });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -287,8 +389,10 @@ const buy = async (req, res) => {
 
 module.exports = {
   getAllCourses,
-  getCoursesByLFilter,
+  getCoursesByFilter,
   getOne,
   like,
   buy,
+  getUserCourses,
+  getUserCourse,
 };

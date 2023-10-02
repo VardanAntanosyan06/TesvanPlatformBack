@@ -14,7 +14,8 @@ var CommentsRouter = require("./routes/Comments");
 var RegisterRouter = require("./routes/Register");
 var LoginRouter = require("./routes/Login");
 var ContactMessageRouter = require("./routes/ContactMessage");
-var UploadImgRouter = require("./routes/UploadImg");
+var LessonsRouter = require("./routes/Lesson");
+var UploadFileRouter = require("./routes/UploadFile");
 
 var app = express();
 // const options = './swagger_output.json';
@@ -39,11 +40,12 @@ app.use(
   swaggerUi.setup(require("./controlers/swaggeracontroller").swaggerSpec)
 );
 app.use("/api/v2/courses", groupCoursesRouter);
+app.use("/api/v2/lessons", LessonsRouter);
 app.use("/api/v2/comments", CommentsRouter);
 app.use("/api/v2/register", RegisterRouter);
 app.use("/api/v2/user", LoginRouter);
 app.use("/api/v2/contactMessage", ContactMessageRouter);
-app.use("/api/v2/upload", UploadImgRouter);
+app.use("/api/v2/upload", UploadFileRouter);
 
 app.use(require("express-status-monitor")());
 // catch 404 and forward to error handler

@@ -1,6 +1,4 @@
 const { Users } = require("../models");
-const { GroupCourses } = require("../models");
-const { UserCourses } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
@@ -15,8 +13,12 @@ const LoginUsers = async (req, res) => {
 
     const User = await Users.findOne({
       where: { email },
-      include: [{ model: GroupCourses, as: "courses" }],
     });
+
+    if (User && !User.isVerified) {
+      return res.status(200).json({ isVerified: false });
+    }
+
     if (
       User &&
       User.isVerified &&
@@ -24,6 +26,7 @@ const LoginUsers = async (req, res) => {
     ) {
       return res.status(200).json({ User });
     }
+
     return res.status(403).json({ message: "Invalid email or password" });
   } catch (error) {
     console.log(error);
@@ -198,11 +201,6 @@ const authMe = async (req, res) => {
       return res.send({ succes: false });
     }
 
-    const courses = await UserCourses.findAll({
-      where: { UserId: id },
-    });
-
-    User.dataValues.courses = courses;
     res.send({ User });
   } catch (e) {
     res.status(500).json({ succes: false });

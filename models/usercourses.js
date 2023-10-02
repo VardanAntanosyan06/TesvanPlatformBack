@@ -29,12 +29,22 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-      points: DataTypes.INTEGER,
+      totalPoints: DataTypes.INTEGER,
+      takenQuizzes: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "UserCourses",
     }
   );
+  //
+  const GroupCourses = sequelize.define("GroupCourses");
+  UserCourses.belongsTo(GroupCourses);
+  //
+
+  //
+  const Users = sequelize.define("Users");
+  UserCourses.belongsTo(Users);
+  //
   return UserCourses;
 };
