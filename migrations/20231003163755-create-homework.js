@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Lessons", {
+    await queryInterface.createTable("Homework", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,9 +16,6 @@ module.exports = {
       description_ru: { type: Sequelize.TEXT("long") },
       title_am: { type: Sequelize.STRING },
       description_am: { type: Sequelize.TEXT("long") },
-      number: {
-        type: Sequelize.INTEGER,
-      },
       maxPoints: {
         type: Sequelize.INTEGER,
       },
@@ -33,6 +30,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Lessons");
+    await queryInterface.dropTable("Homework");
   },
 };

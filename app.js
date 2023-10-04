@@ -15,6 +15,8 @@ var RegisterRouter = require("./routes/Register");
 var LoginRouter = require("./routes/Login");
 var ContactMessageRouter = require("./routes/ContactMessage");
 var LessonsRouter = require("./routes/Lesson");
+var HomeworkRouter = require("./routes/Homework");
+var MessageRouter = require("./routes/Message");
 var UploadFileRouter = require("./routes/UploadFile");
 
 var app = express();
@@ -23,6 +25,11 @@ var app = express();
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+app.use((req, res, next) => {
+  req.io = req.app.get("io");
+  next();
+});
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -41,6 +48,8 @@ app.use(
 );
 app.use("/api/v2/courses", groupCoursesRouter);
 app.use("/api/v2/lessons", LessonsRouter);
+app.use("/api/v2/homework", HomeworkRouter);
+app.use("/api/v2/message", MessageRouter);
 app.use("/api/v2/comments", CommentsRouter);
 app.use("/api/v2/register", RegisterRouter);
 app.use("/api/v2/user", LoginRouter);

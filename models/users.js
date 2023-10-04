@@ -123,7 +123,13 @@ module.exports = (sequelize, DataTypes) => {
   //
 
   const Lessons = sequelize.define("Lessons");
-
   Users.belongsToMany(Lessons, { through: "UserLesson" });
+
+  const Homework = sequelize.define("Homework");
+  Users.belongsToMany(Homework, { through: "UserHomework" });
+
+  const Message = sequelize.define("Message");
+  Users.hasMany(Message);
+
   return Users;
 };
