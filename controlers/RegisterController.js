@@ -134,7 +134,7 @@ const UserRegistartionVerification = async (req, res) => {
     const User = await Users.findOne({
       where: { token },
     });
-    if (!User) return res.status(404).json({ message: "user not found!" });
+    if (!User) return res.status(404).json({ message: "User not found!" });
     if (moment().diff(User.tokenCreatedAt, "hours") <= 24) {
       User.isVerified = true;
       User.token = jwt.sign(
