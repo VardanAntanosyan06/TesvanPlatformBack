@@ -1,4 +1,4 @@
-const { Homework, Users, UserHomework, UserCourses } = require("../models");
+const { Homework, UserHomework, UserCourses } = require("../models");
 
 const create = async (req, res) => {
   try {
@@ -65,6 +65,7 @@ const getHomeworks = async (req, res) => {
           ],
         },
       ],
+      order: ["id", "DESC"],
     });
 
     if (!homeworks.length) {
@@ -76,6 +77,7 @@ const getHomeworks = async (req, res) => {
     homeworks = homeworks.map((homework) => {
       return {
         points: homework.points,
+        status: homework.status,
         ...homework.dataValues.Homework.dataValues,
       };
     });
