@@ -42,7 +42,10 @@ const UserRegistartion = async (req, res) => {
       tokenCreatedAt: moment(),
       role,
     });
-    User.token = jwt.sign({ user_id: User.id, email }, process.env.SECRET);
+    User.token = jwt.sign(
+      { user_id: User.id, email, role: "STUDENT" },
+      process.env.SECRET
+    );
     await User.save();
     return res.status(200).json({ succes: true });
   } catch (error) {
@@ -63,8 +66,11 @@ const UserRegistartionSendEmail = async (req, res) => {
       where: { email },
     });
     if (!User || User.isVerified)
-    return res.status(404).json({ message: "There is not unverified user!" });
-    User.token = jwt.sign({ user_id: User.id, email }, process.env.SECRET);
+      return res.status(404).json({ message: "There is not unverified user!" });
+    User.token = jwt.sign(
+      { user_id: User.id, email, role: "STUDENT" },
+      process.env.SECRET
+    );
     User.tokenCreatedAt = moment();
     await User.save();
     const transporter = nodemailer.createTransport({
@@ -132,7 +138,7 @@ const UserRegistartionVerification = async (req, res) => {
     if (moment().diff(User.tokenCreatedAt, "hours") <= 24) {
       User.isVerified = true;
       User.token = jwt.sign(
-        { user_id: User.id, email: User.email },
+        { user_id: User.id, email: User.email, role: User.role },
         process.env.SECRET
       );
       User.tokenCreatedAt = moment();

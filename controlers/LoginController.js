@@ -42,7 +42,10 @@ const sendEmailForForgotPassword = async (req, res) => {
     if (!User || (User && !User.isVerified))
       return res.status(403).json({ message: "There is not verified user" });
 
-    User.token = jwt.sign({ user_id: User.id, email }, process.env.SECRET);
+    User.token = jwt.sign(
+      { user_id: User.id, email, role: User.role },
+      process.env.SECRET
+    );
     User.tokenCreatedAt = moment();
     await User.save();
 
@@ -109,7 +112,7 @@ const forgotPassword = async (req, res) => {
 
     if (moment().diff(User.tokenCreatedAt, "hours") <= 24) {
       User.token = jwt.sign(
-        { user_id: User.id, email: User.email },
+        { user_id: User.id, email: User.email, role: User.role },
         process.env.SECRET
       );
       User.tokenCreatedAt = moment();

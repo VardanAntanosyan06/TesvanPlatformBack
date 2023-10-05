@@ -8,7 +8,11 @@ router.post("/Login", controller.LoginUsers);
 router.get("/ForgotPassword", controller.sendEmailForForgotPassword);
 router.patch("/ChangePassword", controller.forgotPassword);
 router.patch("/ChangeEmail", controller.changeEmail);
-router.get("/authMe", checkAuth, controller.authMe);
+router.get(
+  "/authMe",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.authMe
+);
 // router.get("/sendEmail", controller.UserRegistartionSendEmail);
 // router.patch("/verification", controller.UserRegistartionVerification);
 

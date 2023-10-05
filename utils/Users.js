@@ -14,7 +14,7 @@ const Users = [
     password: "$2b$10$d3ZAK4YSEfUf4PQszTO7Bea9fVes5MRiQyP4EPhuRmx..EDeXWWri",
     likedCourses: [1],
     isVerified: true,
-    role: "Student",
+    role: "STUDENT",
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImJkYmU1ODAxOTg1QGNyaW5nZW1vbnN0ZXIuY29tIiwiaWF0IjoxNjk1ODAyMDc2fQ.FZCzWn0K1bhDUjDHpecqoyut0I495TH3NLGd4wk6ZCg",
     tokenCreatedAt: new Date(),
@@ -36,7 +36,7 @@ const Users = [
     password: "$2b$10$d3ZAK4YSEfUf4PQszTO7Bea9fVes5MRiQyP4EPhuRmx..EDeXWWri",
     likedCourses: [1],
     isVerified: true,
-    role: "Student",
+    role: "STUDENT",
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJlbWFpbCI6Ijc2YzQ1ODAyMjA4QGJlYWNvbm1lc3Nlbmdlci5jb20iLCJpYXQiOjE2OTU4MDIyNjh9.nYR-39s_TL9MArvdA5mlXc5SuQqoccdCtXPpM12W2QI",
     tokenCreatedAt: new Date(),
