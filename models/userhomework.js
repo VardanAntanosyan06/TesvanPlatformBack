@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       answer: DataTypes.TEXT("long"),
       points: DataTypes.INTEGER,
+      status: DataTypes.INTEGER,
     },
     {
       sequelize,

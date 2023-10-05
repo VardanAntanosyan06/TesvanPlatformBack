@@ -95,7 +95,7 @@ const getHomework = async (req, res) => {
 
     let homework = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
-      attributes: ["points"],
+      attributes: ["points", "status", "answer"],
       include: [
         {
           model: Homework,
@@ -118,8 +118,37 @@ const getHomework = async (req, res) => {
 
     homework = {
       points: homework.points,
+      status: homework.status,
+      answer: homework.answer,
       ...homework.dataValues.Homework.dataValues,
     };
+
+    res.send(homework);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const submitHomework = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { user_id: userId } = req.user;
+    const { answer } = req.body;
+
+    let homework = await UserHomework.findOne({
+      where: { HomeworkId: id, UserId: userId },
+    });
+
+    if (!homework) {
+      return res.status(403).json({
+        message: "Homework not found or User doesn't have a homework",
+      });
+    }
+
+    homework.answer = answer;
+    homework.status = 1;
+    await homework.save();
 
     res.send(homework);
   } catch (error) {
@@ -132,4 +161,5 @@ module.exports = {
   create,
   getHomeworks,
   getHomework,
+  submitHomework,
 };
