@@ -94,17 +94,29 @@ function onListening() {
 }
 
 const { userSockets } = require("../userSockets");
+const jwt = require("jsonwebtoken");
+
+console.log("====================================");
+console.log(userSockets);
+console.log("====================================");
 
 io.on("connection", (socket) => {
-  const token = socket?.handshake?.query?.token;
-  if (token) {
-    const decoded = jwt.verify(token, process.env.SECRET);
+  try {
+    const token = socket?.handshake?.query?.token;
+    if (token) {
+      const decoded = jwt.verify(token, process.env.SECRET);
+      if (decoded) {
+        const userId = decoded.user_id;
 
-    const userId = decoded.user_id;
-
-    userSockets.set(userId, socket);
+        userSockets.set(userId, socket);
+        console.log("====================================");
+        console.log(userId);
+        console.log("====================================");
+      }
+    }
+  } catch (e) {
     console.log("====================================");
-    console.log(userId);
+    console.log(e);
     console.log("====================================");
   }
 

@@ -1,5 +1,5 @@
 const { Message, Users, UserHomework, UserCourses } = require("../models");
-const userSocket = require("../userSockets");
+const { userSockets } = require("../userSockets");
 
 const send = async (req, res) => {
   try {
