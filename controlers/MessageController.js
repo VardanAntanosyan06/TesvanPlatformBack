@@ -1,4 +1,5 @@
 const { Message, Users, UserHomework, UserCourses } = require("../models");
+const userSocket = require("../userSockets");
 
 const send = async (req, res) => {
   try {
@@ -24,7 +25,10 @@ const send = async (req, res) => {
       type,
     });
 
-    req.io.emit("new-message", "Hello World!");
+    const userSocket = userSockets.get(userId);
+    if (userSocket) {
+      userSocket.emit(("new-message", "Hello World!"));
+    }
 
     res.send(message);
   } catch (error) {
@@ -36,6 +40,7 @@ const send = async (req, res) => {
 const getNewMessages = async (req, res) => {
   try {
     const { user_id: id } = req.user;
+    const { language } = req.query;
 
     const messages = await Message.findAll({
       where: { UserId: id, isNew: true },
@@ -58,6 +63,7 @@ const getNewMessages = async (req, res) => {
 const getAllMessages = async (req, res) => {
   try {
     const { user_id: id } = req.user;
+    const { language } = req.query;
 
     const messages = await Message.findAll({
       where: { UserId: id },
