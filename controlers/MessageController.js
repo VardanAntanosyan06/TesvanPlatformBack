@@ -39,6 +39,7 @@ const getNewMessages = async (req, res) => {
 
     const messages = await Message.findAll({
       where: { UserId: id, isNew: true },
+      order: [["id", "DESC"]],
     });
 
     res.send(messages);
@@ -54,6 +55,7 @@ const getAllMessages = async (req, res) => {
 
     const messages = await Message.findAll({
       where: { UserId: id },
+      order: [["id", "DESC"]],
     });
 
     res.send(messages);
