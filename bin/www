@@ -96,15 +96,17 @@ function onListening() {
 const { userSockets } = require("../userSockets");
 
 io.on("connection", (socket) => {
-  const token = socket.handshake.query.token;
-  const decoded = jwt.verify(token, process.env.SECRET);
+  const token = socket?.handshake?.query?.token;
+  if (token) {
+    const decoded = jwt.verify(token, process.env.SECRET);
 
-  const userId = decoded.user_id;
+    const userId = decoded.user_id;
 
-  userSockets.set(userId, socket);
-  console.log("====================================");
-  console.log(userId);
-  console.log("====================================");
+    userSockets.set(userId, socket);
+    console.log("====================================");
+    console.log(userId);
+    console.log("====================================");
+  }
 
   socket.on("disconnect", () => {
     userSockets.delete(userId);
