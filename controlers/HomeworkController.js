@@ -65,7 +65,7 @@ const getHomeworks = async (req, res) => {
           ],
         },
       ],
-      order: ["id", "DESC"],
+      order: [["id", "DESC"]],
     });
 
     if (!homeworks.length) {

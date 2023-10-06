@@ -43,7 +43,7 @@ const UserRegistartion = async (req, res) => {
       role,
     });
     User.token = jwt.sign(
-      { user_id: User.id, email, role: "STUDENT" },
+      { user_id: User.id, email, role },
       process.env.SECRET
     );
     await User.save();
@@ -68,7 +68,7 @@ const UserRegistartionSendEmail = async (req, res) => {
     if (!User || User.isVerified)
       return res.status(404).json({ message: "There is not unverified user!" });
     User.token = jwt.sign(
-      { user_id: User.id, email, role: "STUDENT" },
+      { user_id: User.id, email, role: User.role },
       process.env.SECRET
     );
     User.tokenCreatedAt = moment();

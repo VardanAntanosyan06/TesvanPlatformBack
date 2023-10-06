@@ -21,8 +21,19 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-      title: {
+      title_en: DataTypes.STRING,
+      description_en: DataTypes.STRING,
+      title_ru: DataTypes.STRING,
+      description_ru: DataTypes.STRING,
+      title_am: DataTypes.STRING,
+      description_am: DataTypes.STRING,
+      isNew: DataTypes.BOOLEAN,
+      type: {
         type: DataTypes.STRING,
+        isIn: {
+          args: [["info", "success", "warning", "critical"]],
+          msg: "Type must be info, success, warning, or critical",
+        },
       },
     },
     {

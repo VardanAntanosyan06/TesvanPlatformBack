@@ -4,15 +4,16 @@ var router = express.Router();
 const controller = require("../controlers/MessageController");
 const checkAuth = require("../middleware/checkAuth");
 
-router.post(
-  "/send",
+router.post("/send", checkAuth(["TEACHER", "ADMIN"]), controller.send);
+router.get(
+  "/getNewMessages",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-  controller.send
+  controller.getNewMessages
 );
 router.get(
-  "/getUserMessages",
+  "/getAllMessages",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-  controller.getUserMessages
+  controller.getAllMessages
 );
 
 module.exports = router;

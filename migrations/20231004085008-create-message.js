@@ -17,7 +17,29 @@ module.exports = {
           key: "id",
         },
       },
-      title: {
+      title_en: {
+        type: Sequelize.STRING,
+      },
+      description_en: {
+        type: Sequelize.TEXT("long"),
+      },
+      title_ru: {
+        type: Sequelize.STRING,
+      },
+      description_ru: {
+        type: Sequelize.TEXT("long"),
+      },
+      title_am: {
+        type: Sequelize.STRING,
+      },
+      description_am: {
+        type: Sequelize.TEXT("long"),
+      },
+      isNew: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+      },
+      type: {
         type: Sequelize.STRING,
       },
       createdAt: {

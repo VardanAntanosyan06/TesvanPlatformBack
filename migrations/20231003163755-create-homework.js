@@ -10,12 +10,24 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       courseId: Sequelize.INTEGER,
-      title_en: { type: Sequelize.STRING },
-      description_en: { type: Sequelize.TEXT("long") },
-      title_ru: { type: Sequelize.STRING },
-      description_ru: { type: Sequelize.TEXT("long") },
-      title_am: { type: Sequelize.STRING },
-      description_am: { type: Sequelize.TEXT("long") },
+      title_en: {
+        type: Sequelize.STRING,
+      },
+      description_en: {
+        type: Sequelize.TEXT("long"),
+      },
+      title_ru: {
+        type: Sequelize.STRING,
+      },
+      description_ru: {
+        type: Sequelize.TEXT("long"),
+      },
+      title_am: {
+        type: Sequelize.STRING,
+      },
+      description_am: {
+        type: Sequelize.TEXT("long"),
+      },
       maxPoints: {
         type: Sequelize.INTEGER,
       },
