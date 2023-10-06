@@ -15,5 +15,15 @@ router.get(
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getAllMessages
 );
+router.patch(
+  "/markAllMessages",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.markAllMessages
+);
+router.patch(
+  "/markMessage/:id",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.markMessage
+);
 
 module.exports = router;

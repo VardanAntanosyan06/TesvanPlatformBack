@@ -66,9 +66,9 @@ const Users = [
     updatedAt: new Date(),
   },
   {
-    firstName: "Admin",
-    lastName: "Admin",
-    email: "Admin@gmail.com",
+    firstName: "Teacher",
+    lastName: "Teacher",
+    email: "Teacher@gmail.com",
     phoneNumber: "+37499887755",
     birthday: new Date(),
     gender: "Male",

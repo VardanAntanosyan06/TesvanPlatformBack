@@ -40,6 +40,12 @@ const getNewMessages = async (req, res) => {
     const messages = await Message.findAll({
       where: { UserId: id, isNew: true },
       order: [["id", "DESC"]],
+      attributes: [
+        "id",
+        "type",
+        [`title_${language}`, "title"],
+        [`description_${language}`, "description"],
+      ],
     });
 
     res.send(messages);
@@ -56,9 +62,56 @@ const getAllMessages = async (req, res) => {
     const messages = await Message.findAll({
       where: { UserId: id },
       order: [["id", "DESC"]],
+      attributes: [
+        "id",
+        "type",
+        [`title_${language}`, "title"],
+        [`description_${language}`, "description"],
+      ],
     });
 
     res.send(messages);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const markAllMessages = async (req, res) => {
+  try {
+    const { user_id: id } = req.user;
+
+    const messages = await Message.update(
+      {
+        isNew: false,
+      },
+      {
+        where: { UserId: id, isNew: true },
+      }
+    );
+
+    res.send(messages);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const markMessage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { user_id: userId } = req.user;
+
+    const message = await Message.update(
+      {
+        isNew: false,
+      },
+      {
+        where: { UserId: userId, id },
+      }
+    );
+
+    res.send(message);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -69,4 +122,6 @@ module.exports = {
   send,
   getNewMessages,
   getAllMessages,
+  markAllMessages,
+  markMessage,
 };
