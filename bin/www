@@ -100,13 +100,14 @@ console.log("====================================");
 console.log(userSockets);
 console.log("====================================");
 
+let userId;
 io.on("connection", (socket) => {
   try {
     const token = socket?.handshake?.query?.token;
     if (token) {
       const decoded = jwt.verify(token, process.env.SECRET);
       if (decoded) {
-        const userId = decoded.user_id;
+        userId = decoded.user_id;
 
         userSockets.set(userId, socket);
         console.log("====================================");
@@ -121,6 +122,6 @@ io.on("connection", (socket) => {
   }
 
   socket.on("disconnect", () => {
-    userSockets.delete(userId);
+    userId && userSockets.delete(userId);
   });
 });
