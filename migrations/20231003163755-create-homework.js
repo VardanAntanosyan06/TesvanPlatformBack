@@ -31,6 +31,10 @@ module.exports = {
       maxPoints: {
         type: Sequelize.INTEGER,
       },
+      isOpen: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

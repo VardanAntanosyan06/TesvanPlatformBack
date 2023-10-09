@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       title_am: DataTypes.STRING,
       description_am: DataTypes.TEXT("long"),
       maxPoints: DataTypes.INTEGER,
+      isOpen: DataTypes.BOOLEAN,
     },
     {
       sequelize,

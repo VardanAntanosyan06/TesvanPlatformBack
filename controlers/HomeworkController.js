@@ -1,4 +1,5 @@
-const { Homework, UserHomework, UserCourses } = require("../models");
+const { Homework, UserHomework, UserCourses, Message } = require("../models");
+const { userSockets } = require("../userSockets");
 
 const create = async (req, res) => {
   try {
@@ -24,19 +25,43 @@ const create = async (req, res) => {
       maxPoints,
     });
 
+    res.send(homework);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const open = async (req, res) => {
+  try {
+    const { courseId, homeworkId } = req.query;
+
     let userCourses = await UserCourses.findAll({
       where: { GroupCourseId: courseId },
     });
 
+    let userSocket;
     userCourses.forEach((user) => {
       UserHomework.create({
         UserId: user.UserId,
         GroupCourseId: courseId,
-        HomeworkId: homework.id,
+        HomeworkId: homeworkId,
       });
+      Message.create({
+        UserId: user.UserId,
+        title_en: "New Homework",
+        title_ru: "New Homework",
+        title_am: "New Homework",
+        description_en: "You have a new homework!",
+        description_ru: "You have a new homework!",
+        description_am: "You have a new homework!",
+        type: "info",
+      });
+      userSocket = userSockets.get(user.UserId);
+      if (userSocket) {
+        userSocket.emit("new-message", "New Message");
+      }
     });
-
-    req.io.emit("new-message", "Hello World!");
 
     res.send({ success: true });
   } catch (error) {
@@ -161,6 +186,7 @@ const submitHomework = async (req, res) => {
 
 module.exports = {
   create,
+  open,
   getHomeworks,
   getHomework,
   submitHomework,

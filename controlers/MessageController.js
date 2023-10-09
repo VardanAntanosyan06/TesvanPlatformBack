@@ -1,4 +1,4 @@
-const { Message, Users, UserHomework, UserCourses } = require("../models");
+const { Message } = require("../models");
 const { userSockets } = require("../userSockets");
 
 const send = async (req, res) => {
@@ -27,7 +27,7 @@ const send = async (req, res) => {
 
     const userSocket = userSockets.get(userId);
     if (userSocket) {
-      userSocket.emit(("new-message", "Hello World!"));
+      userSocket.emit("new-message", message);
     }
 
     res.send(message);
@@ -103,21 +103,37 @@ const markAllMessages = async (req, res) => {
   }
 };
 
-const markMessage = async (req, res) => {
+// const markMessage = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { user_id: userId } = req.user;
+
+//     const message = await Message.update(
+//       {
+//         isNew: false,
+//       },
+//       {
+//         where: { UserId: userId, id },
+//       }
+//     );
+
+//     res.send(message);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: "Something went wrong." });
+//   }
+// };
+
+const deleteMessage = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id: userId } = req.user;
 
-    const message = await Message.update(
-      {
-        isNew: false,
-      },
-      {
-        where: { UserId: userId, id },
-      }
-    );
+    const message = await Message.destroy({
+      where: { UserId: userId, id },
+    });
 
-    res.send(message);
+    res.send({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -129,5 +145,6 @@ module.exports = {
   getNewMessages,
   getAllMessages,
   markAllMessages,
-  markMessage,
+  // markMessage,
+  deleteMessage,
 };

@@ -5,6 +5,7 @@ const controller = require("../controlers/HomeworkController");
 const checkAuth = require("../middleware/checkAuth");
 
 router.post("/create", checkAuth(["TEACHER", "ADMIN"]), controller.create);
+router.post("/open", checkAuth(["TEACHER", "ADMIN"]), controller.open);
 router.get(
   "/getHomeworks/:courseId",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
