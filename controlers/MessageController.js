@@ -103,34 +103,49 @@ const markAllMessages = async (req, res) => {
   }
 };
 
-// const markMessage = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { user_id: userId } = req.user;
+const markMessage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { user_id: userId } = req.user;
 
-//     const message = await Message.update(
-//       {
-//         isNew: false,
-//       },
-//       {
-//         where: { UserId: userId, id },
-//       }
-//     );
+    const message = await Message.update(
+      {
+        isNew: false,
+      },
+      {
+        where: { UserId: userId, id },
+      }
+    );
 
-//     res.send(message);
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({ message: "Something went wrong." });
-//   }
-// };
+    res.send(message);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
 
 const deleteMessage = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id: userId } = req.user;
 
-    const message = await Message.destroy({
+     await Message.destroy({
       where: { UserId: userId, id },
+    });
+
+    res.send({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const deleteAllMessage = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+
+    await Message.destroy({
+      where: { UserId: userId },
     });
 
     res.send({ success: true });
@@ -145,6 +160,7 @@ module.exports = {
   getNewMessages,
   getAllMessages,
   markAllMessages,
-  // markMessage,
+  markMessage,
   deleteMessage,
+  deleteAllMessage
 };

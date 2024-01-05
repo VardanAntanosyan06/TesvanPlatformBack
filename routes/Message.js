@@ -20,15 +20,21 @@ router.patch(
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.markAllMessages
 );
-// router.patch(
-//   "/markMessage/:id",
-//   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-//   controller.markMessage
-// );
+router.patch(
+  "/markMessage/:id",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.markMessage
+);
 router.delete(
   "/deleteMessage/:id",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.deleteMessage
+);
+
+router.delete(
+  "/deleteMessages",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.deleteAllMessage
 );
 
 module.exports = router;
