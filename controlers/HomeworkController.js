@@ -70,29 +70,50 @@ const open = async (req, res) => {
   }
 };
 
+
 const getHomeworks = async (req, res) => {
   try {
     const { courseId } = req.params;
     const { language } = req.query;
-    const { user_id: userId } = req.user;
+    const { user_id: userId,role } = req.user;
+    let homeworks;
+    console.log(role);
+    if(role=="TEACHER"){
+      homeworks = await UserHomework.findAll({
+        where: { GroupCourseId: courseId },
+        include: [
+          {
+            model: Homework,
+            attributes: [
+              "id",
+              "courseId",
+              [`title_${language}`, "title"],
+              [`description_${language}`, "description"],
+              "maxPoints",
+            ],
+          },
+        ],
+        order: [["id", "DESC"]],
+      });
+    }else{
 
-    let homeworks = await UserHomework.findAll({
-      where: { GroupCourseId: courseId, UserId: userId },
-      include: [
-        {
-          model: Homework,
-          attributes: [
-            "id",
-            "courseId",
-            [`title_${language}`, "title"],
-            [`description_${language}`, "description"],
-            "maxPoints",
-          ],
-        },
-      ],
-      order: [["id", "DESC"]],
-    });
-
+      homeworks = await UserHomework.findAll({
+        where: { GroupCourseId: courseId, UserId: userId },
+        include: [
+          {
+            model: Homework,
+            attributes: [
+              "id",
+              "courseId",
+              [`title_${language}`, "title"],
+              [`description_${language}`, "description"],
+              "maxPoints",
+            ],
+          },
+        ],
+        order: [["id", "DESC"]],
+      }); 
+    }
     if (!homeworks.length) {
       return res.status(403).json({
         message: "Homeworks not found or User doesn't have the homeworks",
@@ -117,10 +138,28 @@ const getHomeworks = async (req, res) => {
 const getHomework = async (req, res) => {
   try {
     const { id } = req.params;
-    const { user_id: userId } = req.user;
+    const { user_id: userId,role } = req.user;
     const { language } = req.query;
-
-    let homework = await UserHomework.findOne({
+    let homework;
+    if(role==="TEACHER"){
+      homework = await UserHomework.findOne({
+        where: { HomeworkId: id },
+        attributes: ["points", "status", "answer"],
+        include: [
+          {
+            model: Homework,
+            attributes: [
+              "id",
+              "courseId",
+              [`title_${language}`, "title"],
+              [`description_${language}`, "description"],
+              "maxPoints",
+            ],
+          },
+        ],
+      });
+    }
+    homework = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
       attributes: ["points", "status", "answer"],
       include: [
