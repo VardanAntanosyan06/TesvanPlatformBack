@@ -158,9 +158,10 @@ const getHomework = async (req, res) => {
           },
         ],
       });
-    }
-    homework = await UserHomework.findOne({
-      where: { HomeworkId: id, UserId: userId },
+    }else{
+
+      homework = await UserHomework.findOne({
+        where: { HomeworkId: id, UserId: userId },
       attributes: ["points", "status", "answer"],
       include: [
         {
@@ -175,7 +176,8 @@ const getHomework = async (req, res) => {
         },
       ],
     });
-
+  }
+    
     if (!homework) {
       return res.status(403).json({
         message: "Homework not found or User doesn't have a homework",
