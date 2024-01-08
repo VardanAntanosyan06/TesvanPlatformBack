@@ -66,7 +66,7 @@ const getAllMessages = async (req, res) => {
     const { language } = req.query;
 
     const messages = await Message.findAll({
-      where: { UserId: id },
+      where: { UserId: id,isNew:false },
       order: [["id", "DESC"]],
       attributes: [
         "id",

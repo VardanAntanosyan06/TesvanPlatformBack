@@ -1,6 +1,6 @@
 const { Homework, UserHomework, UserCourses, Message,  GroupCourses, sequelize} = require("../models");
 const { userSockets } = require("../userSockets");
-const {Op, where} = require("sequelize");
+const {Op} = require("sequelize");
 
 const create = async (req, res) => {
   try {
