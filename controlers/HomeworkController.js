@@ -1,5 +1,6 @@
-const { Homework, UserHomework, UserCourses, Message } = require("../models");
+const { Homework, UserHomework, UserCourses, Message,  GroupCourses, sequelize} = require("../models");
 const { userSockets } = require("../userSockets");
+const {Op, where} = require("sequelize");
 
 const create = async (req, res) => {
   try {
@@ -12,8 +13,9 @@ const create = async (req, res) => {
       description_ru,
       description_am,
       maxPoints,
+      dueDate
     } = req.body;
-
+    console.log(dueDate,"++++++++++++++++++++++++++");
     let homework = await Homework.create({
       courseId,
       title_en,
@@ -23,11 +25,12 @@ const create = async (req, res) => {
       description_ru,
       description_am,
       maxPoints,
+      dueDate
     });
 
     res.send(homework);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
@@ -70,31 +73,36 @@ const open = async (req, res) => {
   }
 };
 
-
+// mi hat `
 const getHomeworks = async (req, res) => {
   try {
     const { courseId } = req.params;
     const { language } = req.query;
     const { user_id: userId,role } = req.user;
     let homeworks;
-    console.log(role);
+    console.log(userId);
     if(role=="TEACHER"){
-      homeworks = await UserHomework.findAll({
-        where: { GroupCourseId: courseId },
+      homeworks = await GroupCourses.findAll({
+        where:{trainers: {
+          [Op.contains]: [userId],
+        }},
+        attributes:[['id','GroupCourseId']],
         include: [
-          {
-            model: Homework,
-            attributes: [
-              "id",
-              "courseId",
-              [`title_${language}`, "title"],
-              [`description_${language}`, "description"],
-              "maxPoints",
+              {
+                model: Homework,
+                attributes: [
+                  "id",
+                  "courseId",
+                  [`title_${language}`, "title"],
+                  [`description_${language}`, "description"],
+                  "maxPoints",
+                  "isOpen",
+                  "dueDate",
+                ],
+                where:{courseId}
+              },  
             ],
-          },
-        ],
-        order: [["id", "DESC"]],
-      });
+      }) 
     }else{
 
       homeworks = await UserHomework.findAll({
@@ -114,19 +122,13 @@ const getHomeworks = async (req, res) => {
         order: [["id", "DESC"]],
       }); 
     }
+
     if (!homeworks.length) {
       return res.status(403).json({
         message: "Homeworks not found or User doesn't have the homeworks",
       });
     }
 
-    homeworks = homeworks.map((homework) => {
-      return {
-        points: homework.points,
-        status: homework.status,
-        ...homework.dataValues.Homework.dataValues,
-      };
-    });
 
     res.send(homeworks);
   } catch (error) {
@@ -134,6 +136,7 @@ const getHomeworks = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
+
 
 const getHomework = async (req, res) => {
   try {
