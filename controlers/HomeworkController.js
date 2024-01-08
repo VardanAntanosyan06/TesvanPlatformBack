@@ -144,23 +144,28 @@ const getHomework = async (req, res) => {
     const { user_id: userId,role } = req.user;
     const { language } = req.query;
     let homework;
-    if(role==="TEACHER"){
-      homework = await UserHomework.findOne({
-        where: { HomeworkId: id },
-        attributes: ["points", "status", "answer"],
+    if(role=="TEACHER"){
+      homework = await GroupCourses.findAll({
+        where:{trainers: {
+          [Op.contains]: [userId],
+        }},
+        attributes:[['id','GroupCourseId']],
         include: [
-          {
-            model: Homework,
-            attributes: [
-              "id",
-              "courseId",
-              [`title_${language}`, "title"],
-              [`description_${language}`, "description"],
-              "maxPoints",
+              {
+                model: Homework,
+                attributes: [
+                  "id",
+                  "courseId",
+                  [`title_${language}`, "title"],
+                  [`description_${language}`, "description"],
+                  "maxPoints",
+                  "isOpen",
+                  "dueDate",
+                ],
+                where:{courseId}
+              },  
             ],
-          },
-        ],
-      });
+      }) 
     }else{
 
       homework = await UserHomework.findOne({
