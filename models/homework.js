@@ -31,10 +31,12 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const GroupCourses = sequelize.define("GroupCourses");
+  const UserHomeworks = sequelize.define("UserHomework");
   Homework.belongsTo(GroupCourses, { foreignKey: "id" });
 
   const Users = sequelize.define("Users");
   Homework.belongsToMany(Users, { through: "UserHomework" });
 
+  Homework.hasMany(UserHomeworks,{foreignKey:'HomeworkId'})
   return Homework;
 };

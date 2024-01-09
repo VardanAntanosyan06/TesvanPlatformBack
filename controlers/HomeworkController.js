@@ -1,4 +1,4 @@
-const { Homework, UserHomework, UserCourses, Message,  GroupCourses, sequelize} = require("../models");
+const { Homework, UserHomework, UserCourses, Message,  GroupCourses, Users} = require("../models");
 const { userSockets } = require("../userSockets");
 const {Op} = require("sequelize");
 
@@ -73,7 +73,6 @@ const open = async (req, res) => {
   }
 };
 
-// mi hat `
 const getHomeworks = async (req, res) => {
   try {
     const { courseId } = req.params;
@@ -143,32 +142,7 @@ const getHomework = async (req, res) => {
     const { id } = req.params;
     const { user_id: userId,role } = req.user;
     const { language } = req.query;
-    let homework;
-    if(role=="TEACHER"){
-      homework = await GroupCourses.findAll({
-        where:{trainers: {
-          [Op.contains]: [userId],
-        }},
-        attributes:[['id','GroupCourseId']],
-        include: [
-              {
-                model: Homework,
-                attributes: [
-                  "id",
-                  "courseId",
-                  [`title_${language}`, "title"],
-                  [`description_${language}`, "description"],
-                  "maxPoints",
-                  "isOpen",
-                  "dueDate",
-                ],
-                where:{courseId}
-              },  
-            ],
-      }) 
-    }else{
-
-      homework = await UserHomework.findOne({
+    let homework = await UserHomework.findOne({
         where: { HomeworkId: id, UserId: userId },
       attributes: ["points", "status", "answer"],
       include: [
@@ -183,28 +157,27 @@ const getHomework = async (req, res) => {
           ],
         },
       ],
-    }); 
-  }
+    });
     
     if (!homework) {
       return res.status(403).json({
         message: "Homework not found or User doesn't have a homework",
       });
     }
-
+    
     homework = {
       points: homework.points,
       status: homework.status,
       answer: homework.answer,
       ...homework.dataValues.Homework.dataValues,
     };
-
+    
     res.send(homework);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
-};
+}
 
 const submitHomework = async (req, res) => {
   try {
@@ -233,10 +206,56 @@ const submitHomework = async (req, res) => {
   }
 };
 
+const getHomeWorkForTeacher = async(req,res)=>{
+  try {
+    const {id} = req.params;
+    const { user_id: userId } = req.user;
+    const { language,filterType } = req.query;
+    let homework = await GroupCourses.findOne({
+      where:{trainers: {
+        [Op.contains]: [userId],
+      }},
+      attributes:[['id','GroupCourseId']],
+      include: [
+            {
+              model: Homework,
+              attributes: [
+                "id",
+                "courseId",
+                [`title_${language}`, "title"],
+                [`description_${language}`, "description"],
+                "maxPoints",
+                "isOpen",
+                "dueDate",
+                "createdAt"
+              ],
+              where:{id},
+              include:[{
+              model:UserHomework,
+              include:[{model:Users,  attributes: { exclude: ['password', 'token'] }}],
+              where:{HomeworkId:id},
+              order:[['points',`${filterType}`]],
+              }]
+            },  
+          ],
+    })  
+    if (!homework) {
+      return res.status(403).json({
+        message: "Homeworks not found or Teacher doesn't have the homeworks",
+      });
+    }
+    res.json(homework);
+  }  catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+}
+
 module.exports = {
   create,
   open,
   getHomeworks,
   getHomework,
   submitHomework,
+  getHomeWorkForTeacher
 };
