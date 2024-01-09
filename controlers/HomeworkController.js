@@ -183,7 +183,7 @@ const getHomework = async (req, res) => {
           ],
         },
       ],
-    });
+    }); 
   }
     
     if (!homework) {
