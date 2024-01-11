@@ -49,11 +49,7 @@ module.exports = (sequelize, DataTypes) => {
 
   const Homework = sequelize.define("Homework");
   UserHomework.belongsTo(Homework);
-  
-  
-  //
 
-  //
   const Users = sequelize.define("Users");
   UserHomework.belongsTo(Users);
   return UserHomework;

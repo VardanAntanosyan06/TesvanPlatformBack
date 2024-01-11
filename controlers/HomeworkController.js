@@ -1,4 +1,4 @@
-const { Homework, UserHomework, UserCourses, Message,  GroupCourses, Users} = require("../models");
+const { Homework, UserHomework, UserCourses, Message,  GroupCourses, Users,HomeWorkFiles} = require("../models");
 const { userSockets } = require("../userSockets");
 const {Op} = require("sequelize");
 
@@ -42,6 +42,10 @@ const open = async (req, res) => {
     let userCourses = await UserCourses.findAll({
       where: { GroupCourseId: courseId },
     });
+    const homeWork  = await Homework.findOne({where:{id:homeworkId}})
+
+    homeWork.isOpen=!homeWork.isOpen;
+     await homeWork.save();
 
     let userSocket;
     userCourses.forEach((user) => {
@@ -50,6 +54,7 @@ const open = async (req, res) => {
         GroupCourseId: courseId,
         HomeworkId: homeworkId,
       });
+
       Message.create({
         UserId: user.UserId,
         title_en: "New Homework",
@@ -136,7 +141,6 @@ const getHomeworks = async (req, res) => {
   }
 };
 
-
 const getHomework = async (req, res) => {
   try {
     const { id } = req.params;
@@ -195,10 +199,20 @@ const submitHomework = async (req, res) => {
       });
     }
 
-    homework.answer = answer;
+    homework.answer = answer.value;
     homework.status = 1;
     await homework.save();
-
+    console.log(answer);
+    Promise.all(
+      answer.links.map(async(e)=>{
+        await HomeWorkFiles.create({
+          fileName: e.name,
+          fileLink: e.link,
+          homeWorkId: id,
+          userId
+        })
+      })
+      )
     res.send(homework);
   } catch (error) {
     console.log(error);
@@ -228,23 +242,33 @@ const getHomeWorkForTeacher = async(req,res)=>{
                 "isOpen",
                 "dueDate",
                 "createdAt"
-              ],
+              ],  
               where:{id},
               include:[{
               model:UserHomework,
               include:[{model:Users,  attributes: { exclude: ['password', 'token'] }}],
               where:{HomeworkId:id},
               order:[['points',`${filterType}`]],
-              }]
-            },  
-          ],
+              },
+          ]}],
     })  
+   const homeWorkFile = await HomeWorkFiles.findAll({
+    attributes:['fileName','fileLink','userId'],
+    where:{homeWorkId:id,userId:homework.Homework[0].UserHomeworks[0].UserId},  
+  })
+
     if (!homework) {
       return res.status(403).json({
         message: "Homeworks not found or Teacher doesn't have the homeworks",
       });
     }
-    res.json(homework);
+    // homework.Homework[0].tets = homeWorkFile;
+    // console.log(homework.dataValues);
+    const {Homework: homeworkOne, ...data} = homework.dataValues
+    res.send({...data, homework: {
+      ...homeworkOne[0].dataValues,
+      homeWorkFiles:homeWorkFile
+    }});
   }  catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
