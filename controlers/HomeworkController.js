@@ -161,6 +161,8 @@ const getHomework = async (req, res) => {
             [`title_${language}`, "title"],
             [`description_${language}`, "description"],
             "maxPoints",
+            "startDate",
+            "feedback",
           ],
         },
       ],
@@ -226,9 +228,8 @@ const submitHomework = async (req, res) => {
 const HomeworkInProgress = async (req, res) => {
   try {
     const { id } = req.params;
-    const { user_id: userId } = req.user;
     let homework = await UserHomework.findOne({
-      where: { HomeworkId: id, UserId: userId },
+      where: { HomeworkId: id },
     });
 
     if (!homework) {
@@ -237,11 +238,10 @@ const HomeworkInProgress = async (req, res) => {
       });
     }
 
-    homework.answer = answer.value;
     homework.status = 2;
     homework.startDate = new Date().toISOString();
     await homework.save();
-    res.send(homework);
+    res.json({success:true});
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -286,16 +286,6 @@ const getHomeWorkForTeacher = async (req, res) => {
       include: [
         {
           model: Homework,
-          attributes: [
-            "id",
-            "courseId",
-            [`title_${language}`, "title"],
-            [`description_${language}`, "description"],
-            "maxPoints",
-            "isOpen",
-            "dueDate",
-            "createdAt",
-          ],
           where: { id },
           include: [
             {
