@@ -25,6 +25,12 @@ module.exports = {
           key: "id",
         },
       },
+      startDate:{
+        type:Sequelize.DATE
+      },
+      feedback:{
+        type:Sequelize.TEXT('long')
+      },
       HomeworkId: {
         type: Sequelize.INTEGER,
         allowNull: false,

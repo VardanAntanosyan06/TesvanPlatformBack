@@ -6,6 +6,7 @@ const checkAuth = require("../middleware/checkAuth");
 
 router.post("/create", checkAuth(["TEACHER", "ADMIN"]), controller.create);
 router.post("/open", checkAuth(["TEACHER", "ADMIN"]), controller.open);
+
 router.get(
   "/getHomeworks/:courseId",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
@@ -25,6 +26,16 @@ router.post(
   "/submitHomework/:id",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.submitHomework
+);
+router.post(
+  "/HomeworkInProgress/:id",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.HomeworkInProgress
+);
+router.post(
+  "/HomeworkFeedback/:id",
+  checkAuth(["TEACHER", "ADMIN"]),
+  controller.HomeworkFeedback
 );
 
 module.exports = router;

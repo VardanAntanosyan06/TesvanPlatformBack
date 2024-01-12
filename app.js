@@ -15,6 +15,7 @@ var RegisterRouter = require("./routes/Register");
 var LoginRouter = require("./routes/Login");
 var ContactMessageRouter = require("./routes/ContactMessage");
 var LessonsRouter = require("./routes/Lesson");
+var CalendarRouter = require("./routes/Calendar");
 var HomeworkRouter = require("./routes/Homework");
 var MessageRouter = require("./routes/Message");
 var UploadFileRouter = require("./routes/UploadFile");
@@ -55,6 +56,8 @@ app.use("/api/v2/register", RegisterRouter);
 app.use("/api/v2/user", LoginRouter);
 app.use("/api/v2/contactMessage", ContactMessageRouter);
 app.use("/api/v2/upload", UploadFileRouter);
+app.use("/api/v2/Calendar", CalendarRouter);
+
 
 app.use(require("express-status-monitor")());
 // catch 404 and forward to error handler

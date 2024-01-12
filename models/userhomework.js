@@ -29,6 +29,8 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      startDate:DataTypes.DATE,
+      feedback:DataTypes.TEXT,
       HomeworkId: {
         type: DataTypes.INTEGER,
         allowNull: false,

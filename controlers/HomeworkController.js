@@ -1,6 +1,14 @@
-const { Homework, UserHomework, UserCourses, Message,  GroupCourses, Users,HomeWorkFiles} = require("../models");
+const {
+  Homework,
+  UserHomework,
+  UserCourses,
+  Message,
+  GroupCourses,
+  Users,
+  HomeWorkFiles,
+} = require("../models");
 const { userSockets } = require("../userSockets");
-const {Op} = require("sequelize");
+const { Op } = require("sequelize");
 
 const create = async (req, res) => {
   try {
@@ -13,9 +21,8 @@ const create = async (req, res) => {
       description_ru,
       description_am,
       maxPoints,
-      dueDate
+      dueDate,
     } = req.body;
-    console.log(dueDate,"++++++++++++++++++++++++++");
     let homework = await Homework.create({
       courseId,
       title_en,
@@ -25,7 +32,7 @@ const create = async (req, res) => {
       description_ru,
       description_am,
       maxPoints,
-      dueDate
+      dueDate,
     });
 
     res.send(homework);
@@ -42,36 +49,32 @@ const open = async (req, res) => {
     let userCourses = await UserCourses.findAll({
       where: { GroupCourseId: courseId },
     });
-    const homeWork  = await Homework.findOne({where:{id:homeworkId}})
 
-    homeWork.isOpen=!homeWork.isOpen;
-     await homeWork.save();
+    const homeWork = await Homework.findOne({ where: { id: homeworkId } });
+    if (!homeWork) {
+      return res.status(404).json("HomeWork not found");
+    }
+    homeWork.isOpen = !homeWork.isOpen;
+    await homeWork.save();
 
     let userSocket;
     userCourses.forEach((user) => {
-      UserHomework.create({
-        UserId: user.UserId,
-        GroupCourseId: courseId,
-        HomeworkId: homeworkId,
+      UserHomework.findOne({
+        where: {
+          UserId: user.UserId,
+          GroupCourseId: courseId,
+          HomeworkId: homeworkId,
+        },
+      }).then((e) => {
+        !e &&
+          UserHomework.create({
+            UserId: user.UserId,
+            GroupCourseId: courseId,
+            HomeworkId: homeworkId,
+          });
       });
-
-      Message.create({
-        UserId: user.UserId,
-        title_en: "New Homework",
-        title_ru: "New Homework",
-        title_am: "New Homework",
-        description_en: "You have a new homework!",
-        description_ru: "You have a new homework!",
-        description_am: "You have a new homework!",
-        type: "info",
-      });
-      userSocket = userSockets.get(user.UserId);
-      if (userSocket) {
-        userSocket.emit("new-message", "New Message");
-      }
+      res.send({ success: true });
     });
-
-    res.send({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -82,33 +85,34 @@ const getHomeworks = async (req, res) => {
   try {
     const { courseId } = req.params;
     const { language } = req.query;
-    const { user_id: userId,role } = req.user;
+    const { user_id: userId, role } = req.user;
     let homeworks;
     console.log(userId);
-    if(role=="TEACHER"){
+    if (role == "TEACHER") {
       homeworks = await GroupCourses.findAll({
-        where:{trainers: {
-          [Op.contains]: [userId],
-        }},
-        attributes:[['id','GroupCourseId']],
+        where: {
+          trainers: {
+            [Op.contains]: [userId],
+          },
+        },
+        attributes: [["id", "GroupCourseId"]],
         include: [
-              {
-                model: Homework,
-                attributes: [
-                  "id",
-                  "courseId",
-                  [`title_${language}`, "title"],
-                  [`description_${language}`, "description"],
-                  "maxPoints",
-                  "isOpen",
-                  "dueDate",
-                ],
-                where:{courseId}
-              },  
+          {
+            model: Homework,
+            attributes: [
+              "id",
+              "courseId",
+              [`title_${language}`, "title"],
+              [`description_${language}`, "description"],
+              "maxPoints",
+              "isOpen",
+              "dueDate",
             ],
-      }) 
-    }else{
-
+            where: { courseId },
+          },
+        ],
+      });
+    } else {
       homeworks = await UserHomework.findAll({
         where: { GroupCourseId: courseId, UserId: userId },
         include: [
@@ -124,7 +128,7 @@ const getHomeworks = async (req, res) => {
           },
         ],
         order: [["id", "DESC"]],
-      }); 
+      });
     }
 
     if (!homeworks.length) {
@@ -132,7 +136,6 @@ const getHomeworks = async (req, res) => {
         message: "Homeworks not found or User doesn't have the homeworks",
       });
     }
-
 
     res.send(homeworks);
   } catch (error) {
@@ -144,10 +147,10 @@ const getHomeworks = async (req, res) => {
 const getHomework = async (req, res) => {
   try {
     const { id } = req.params;
-    const { user_id: userId,role } = req.user;
+    const { user_id: userId, role } = req.user;
     const { language } = req.query;
     let homework = await UserHomework.findOne({
-        where: { HomeworkId: id, UserId: userId },
+      where: { HomeworkId: id, UserId: userId },
       attributes: ["points", "status", "answer"],
       include: [
         {
@@ -162,26 +165,26 @@ const getHomework = async (req, res) => {
         },
       ],
     });
-    
+
     if (!homework) {
       return res.status(403).json({
         message: "Homework not found or User doesn't have a homework",
       });
     }
-    
+
     homework = {
       points: homework.points,
       status: homework.status,
       answer: homework.answer,
       ...homework.dataValues.Homework.dataValues,
     };
-    
+
     res.send(homework);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
-}
+};
 
 const submitHomework = async (req, res) => {
   try {
@@ -200,19 +203,19 @@ const submitHomework = async (req, res) => {
     }
 
     homework.answer = answer.value;
-    homework.status = 1;
+    homework.status = 2;
     await homework.save();
     console.log(answer);
     Promise.all(
-      answer.links.map(async(e)=>{
+      answer.links.map(async (e) => {
         await HomeWorkFiles.create({
           fileName: e.name,
           fileLink: e.link,
           homeWorkId: id,
-          userId
-        })
+          userId,
+        });
       })
-      )
+    );
     res.send(homework);
   } catch (error) {
     console.log(error);
@@ -220,42 +223,103 @@ const submitHomework = async (req, res) => {
   }
 };
 
-const getHomeWorkForTeacher = async(req,res)=>{
+const HomeworkInProgress = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
     const { user_id: userId } = req.user;
-    const { language,filterType } = req.query;
+    let homework = await UserHomework.findOne({
+      where: { HomeworkId: id, UserId: userId },
+    });
+
+    if (!homework) {
+      return res.status(403).json({
+        message: "Homework not found or User doesn't have a homework",
+      });
+    }
+
+    homework.answer = answer.value;
+    homework.status = 2;
+    homework.startDate = new Date().toISOString();
+    await homework.save();
+    res.send(homework);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const HomeworkFeedback = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { feedback } = req.body;
+    let homework = await UserHomework.findOne({
+      where: { HomeworkId: id },
+    });
+
+    if (!homework) {
+      return res.status(403).json({
+        message: "Homework not found or User doesn't have a homework",
+      });
+    }
+
+    homework.feedback = feedback;
+    await homework.save();
+    res.send({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const getHomeWorkForTeacher = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { user_id: userId } = req.user;
+    const { language, filterType } = req.query;
     let homework = await GroupCourses.findOne({
-      where:{trainers: {
-        [Op.contains]: [userId],
-      }},
-      attributes:[['id','GroupCourseId']],
+      where: {
+        trainers: {
+          [Op.contains]: [userId],
+        },
+      },
+      attributes: [["id", "GroupCourseId"]],
       include: [
+        {
+          model: Homework,
+          attributes: [
+            "id",
+            "courseId",
+            [`title_${language}`, "title"],
+            [`description_${language}`, "description"],
+            "maxPoints",
+            "isOpen",
+            "dueDate",
+            "createdAt",
+          ],
+          where: { id },
+          include: [
             {
-              model: Homework,
-              attributes: [
-                "id",
-                "courseId",
-                [`title_${language}`, "title"],
-                [`description_${language}`, "description"],
-                "maxPoints",
-                "isOpen",
-                "dueDate",
-                "createdAt"
-              ],  
-              where:{id},
-              include:[{
-              model:UserHomework,
-              include:[{model:Users,  attributes: { exclude: ['password', 'token'] }}],
-              where:{HomeworkId:id},
-              order:[['points',`${filterType}`]],
-              },
-          ]}],
-    })  
-   const homeWorkFile = await HomeWorkFiles.findAll({
-    attributes:['fileName','fileLink','userId'],
-    where:{homeWorkId:id,userId:homework.Homework[0].UserHomeworks[0].UserId},  
-  })
+              model: UserHomework,
+              include: [
+                {
+                  model: Users,
+                  attributes: { exclude: ["password", "token"] },
+                },
+              ],
+              where: { HomeworkId: id },
+              order: [["points", `${filterType}`]],
+            },
+          ],
+        },
+      ],
+    });
+    const homeWorkFile = await HomeWorkFiles.findAll({
+      attributes: ["fileName", "fileLink", "userId"],
+      where: {
+        homeWorkId: id,
+        userId: homework.Homework[0].UserHomeworks[0].UserId,
+      },
+    });
 
     if (!homework) {
       return res.status(403).json({
@@ -264,16 +328,23 @@ const getHomeWorkForTeacher = async(req,res)=>{
     }
     // homework.Homework[0].tets = homeWorkFile;
     // console.log(homework.dataValues);
-    const {Homework: homeworkOne, ...data} = homework.dataValues
-    res.send({...data, homework: {
-      ...homeworkOne[0].dataValues,
-      homeWorkFiles:homeWorkFile
-    }});
-  }  catch (error) {
+    const { Homework: homeworkOne, ...data } = homework.dataValues;
+    res.send({
+      ...data,
+      homework: {
+        ...homeworkOne[0].dataValues,
+        homeWorkFiles: homeWorkFile,
+      },
+    });
+  } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
-}
+};
+
+//start date
+//feedback
+//is opend
 
 module.exports = {
   create,
@@ -281,5 +352,7 @@ module.exports = {
   getHomeworks,
   getHomework,
   submitHomework,
-  getHomeWorkForTeacher
+  getHomeWorkForTeacher,
+  HomeworkInProgress,
+  HomeworkFeedback,
 };
