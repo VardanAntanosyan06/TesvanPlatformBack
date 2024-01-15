@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken")
+require("dotenv").config();
+
 const Users = [
   {
     firstName: "John",
@@ -83,6 +86,27 @@ const Users = [
     role: "TEACHER",
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJlbWFpbCI6InVuYnp3bmtuZ3ljZ29AaGxkcml2ZS5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImlhdCI6MTY5NjU4ODQwM30.3TKWHk7Tt94s2To40ftW5t2geSgoXEGZKaDqfsWgE7Q",
+    tokenCreatedAt: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    firstName: "Admin",
+    lastName: "Smith",
+    email: "Admin@gmail.com",
+    phoneNumber: "+37499887766",
+    birthday: new Date(),
+    gender: "Male",
+    country: "USA",
+    city: "New York",
+    englishLevel: "C1",
+    education: "Harvard",
+    backgroundInQA: true,
+    password: "$2b$10$d3ZAK4YSEfUf4PQszTO7Bea9fVes5MRiQyP4EPhuRmx..EDeXWWri",
+    likedCourses: [1],
+    isVerified: true,
+    role: "ADMIN",
+    token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJlbWFpbCI6IkFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcwNTMwNTc0NH0.hITNb2a0e9yygTPe57bfkyyz3Etd6EzniF_MKJ6mbaA",
     tokenCreatedAt: new Date(),
     createdAt: new Date(),
     updatedAt: new Date(),

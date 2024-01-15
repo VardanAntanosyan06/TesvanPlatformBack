@@ -332,10 +332,26 @@ const getHomeWorkForTeacher = async (req, res) => {
   }
 };
 
-//start date
-//feedback
-//is opend
+const priceHomeWork = async (req,res)=>{
+try {
+    const { id } = req.params;
+    const { points } = req.body;
+    let [status] = await UserHomework.update(
+      { points },
+      { where: {id } }
+    );
 
+    if (status===0) {
+      return res.status(403).json({
+        message: "Homework not found",
+      });
+    }
+    res.send({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+}
 module.exports = {
   create,
   open,
@@ -345,4 +361,5 @@ module.exports = {
   getHomeWorkForTeacher,
   HomeworkInProgress,
   HomeworkFeedback,
+  priceHomeWork
 };

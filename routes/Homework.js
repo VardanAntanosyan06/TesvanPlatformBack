@@ -37,5 +37,11 @@ router.post(
   checkAuth(["TEACHER", "ADMIN"]),
   controller.HomeworkFeedback
 );
+router.patch(
+  "/priceHomeWork/:id",
+  checkAuth(["TEACHER", "ADMIN"]),
+  controller.priceHomeWork
+);
+
 
 module.exports = router;
