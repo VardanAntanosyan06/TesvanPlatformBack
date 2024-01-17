@@ -1,4 +1,4 @@
-const { Users } = require("../models");
+const { Users,UserCourses } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
@@ -193,12 +193,16 @@ const changeEmail = async (req, res) => {
     console.log(error);
   }
 };
-
 const authMe = async (req, res) => {
   try {
     const { user_id: id } = req.user;
     const User = await Users.findOne({
       where: { id },
+      include:[{
+        model:UserCourses,
+        attributes:['id'],
+      }
+      ]
     });
     if (!User) {
       return res.send({ succes: false });

@@ -130,6 +130,8 @@ module.exports = (sequelize, DataTypes) => {
 
   const Message = sequelize.define("Message");
   Users.hasMany(Message);
-
+  
+  const UserCourses = sequelize.define("UserCourses");
+  Users.hasMany(UserCourses);
   return Users;
 };

@@ -54,5 +54,9 @@ module.exports = (sequelize, DataTypes) => {
 
   const Users = sequelize.define("Users");
   UserHomework.belongsTo(Users);
+
+  const HomeWorkFiles = sequelize.define("HomeWorkFiles");
+  UserHomework.hasMany(HomeWorkFiles,{foreignKey:"id"});
+
   return UserHomework;
 };
