@@ -291,7 +291,7 @@ const getHomeWorkForTeacher = async (req, res) => {
     const { user_id: userId } = req.user;
     const { filterType } = req.query;
 
-    const homework = await GroupCourses.findOne({
+    let homework = await GroupCourses.findOne({
       where: {
         trainers: {
           [Op.contains]: [userId],
@@ -301,23 +301,51 @@ const getHomeWorkForTeacher = async (req, res) => {
       include: [
         {
           model: Homework,
+          where:{id},
+          // attributes:[['User.firstName','firstName']],
+
           include: [
             {
               model: UserHomework,
-              where: { GroupCourseId: id },
               order: [["points", "DESC"]],
-            },
+              // attributes:['firstName','lastName','id']
+              attributes: [ 
+                'GroupCourseId',
+                'UserId',
+                'startDate',
+                'feedback',
+                'HomeworkId',
+                  'answer',
+                  'points',
+                  'status',
+                  'createdAt',
+                  [ 
+                    Sequelize.literal(`( 
+                      SELECT "lastName" FROM "Users" WHERE "id" = ${userId} 
+                      )`), 
+                      'lastName', 
+                    ], 
+                    [ 
+                      Sequelize.literal(`( 
+                        SELECT "firstName" FROM "Users" WHERE "id" = ${userId} 
+                        )`), 
+                        'firstName', 
+                      ]
+                  ],
+                 
+            
+              },
           ],
         },
       ],
     });
+
     if (!homework) {
       return res.status(403).json({
         message: "Homework not found or Teacher doesn't have the homeworks",
       });
     }
 
-    // const { Homework: homeworkData } = homework.toJSON();
 
     res.json(homework);
 
