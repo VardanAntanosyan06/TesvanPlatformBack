@@ -9,6 +9,7 @@ const {
 } = require("../models");
 const { userSockets } = require("../userSockets");
 const { Op } = require("sequelize");
+const Sequelize = require("sequelize");
 
 const create = async (req, res) => {
   try {
@@ -163,6 +164,7 @@ const getHomework = async (req, res) => {
             [`description_${language}`, "description"],
             "maxPoints",
             "dueDate",
+            "startDate"
           ],
         }
       ],
@@ -249,7 +251,8 @@ const HomeworkInProgress = async (req, res) => {
       });
     }
 
-    homework.status = 2;
+    if(homework.startDate) return res.status(403).json({success:false})
+    homework.status = 1;
     homework.startDate = new Date().toISOString();
     await homework.save();
     res.json({success:true});
@@ -282,13 +285,13 @@ const HomeworkFeedback = async (req, res) => {
   }
 };
 
-//null 
 const getHomeWorkForTeacher = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id: userId } = req.user;
-    const {filterType } = req.query;
-    let homework = await GroupCourses.findOne({
+    const { filterType } = req.query;
+
+    const homework = await GroupCourses.findOne({
       where: {
         trainers: {
           [Op.contains]: [userId],
@@ -298,50 +301,32 @@ const getHomeWorkForTeacher = async (req, res) => {
       include: [
         {
           model: Homework,
-          where: { id },
           include: [
             {
               model: UserHomework,
-              include: [
-                {
-                  model: Users,
-                  attributes: { exclude: ["password", "token"] },
-                },
-              ],
-              where: { HomeworkId: id },
+              where: { GroupCourseId: id },
               order: [["points", "DESC"]],
             },
           ],
         },
       ],
     });
-
-    const homeWorkFile = await HomeWorkFiles.findAll({
-      attributes: ["fileName", "fileLink", "userId"],
-      where: {
-        homeWorkId: id,
-        userId: homework.Homework[0].UserHomeworks[0].UserId,
-      },
-    });
-
     if (!homework) {
       return res.status(403).json({
-        message: "Homeworks not found or Teacher doesn't have the homeworks",
+        message: "Homework not found or Teacher doesn't have the homeworks",
       });
     }
-    const { Homework: homeworkOne, ...data } = homework.dataValues;
-    res.send({
-      ...data,
-      homework: {
-        ...homeworkOne[0].dataValues,
-        homeWorkFiles: homeWorkFile,
-      },
-    });
+
+    // const { Homework: homeworkData } = homework.toJSON();
+
+    res.json(homework);
+
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
+
 
 const priceHomeWork = async (req,res)=>{
 try {

@@ -17,5 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'HomeWorkFiles',
   });
 
+  const Homework = sequelize.define('Homeworks');
+
+  HomeWorkFiles.belongsTo(Homework)
   return HomeWorkFiles;
 };

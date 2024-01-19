@@ -19,7 +19,7 @@ router.get(
 );
 router.get(
   "/getHomeworkForTeacher/:id",
-  checkAuth(["TEACHER"]),
+  checkAuth(["TEACHER","ADMIN"]),
   controller.getHomeWorkForTeacher
 );
 router.post(
