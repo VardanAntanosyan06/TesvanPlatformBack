@@ -293,8 +293,57 @@ const getHomeWorkForTeacher = async (req, res) => {
 
     const homework = await UserHomework.findAll({
       where: { HomeworkId: id },
-      include: [{model: Homework}, {model: Users, attributes: ["firstName", "lastName", "id"] }],
+      include: [
+        {
+          model: Homework,
+          attributes: [
+            "id",
+            "courseId",
+            "title_en",
+            "description_en",
+            "maxPoints",
+            "isOpen",
+            "dueDate",
+          ],
+        },
+        { model: Users, attributes: ["firstName", "lastName", "id"] },
+      ],
     });
+    if (!homework) {
+      return res.status(403).json({
+        message: "Homework not found or Teacher doesn't have the homeworks",
+      });
+    }
+
+    res.json(homework);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+const getHomeWorkForTeacherForSingleUser = async (req, res) => {
+  try {
+    const { id, userId } = req.query;
+
+    const homework = await UserHomework.findAll({
+      where: { HomeworkId: id, UserId: userId },
+      include: [
+        {
+          model: Homework,
+          attributes: [
+            "id",
+            "courseId",
+            "title_en",
+            "description_en",
+            "maxPoints",
+            "isOpen",
+            "dueDate",
+          ],
+        },
+        { model: Users, attributes: ["firstName", "lastName", "id"] },
+      ],
+    });
+
     if (!homework) {
       return res.status(403).json({
         message: "Homework not found or Teacher doesn't have the homeworks",
@@ -335,4 +384,5 @@ module.exports = {
   HomeworkInProgress,
   HomeworkFeedback,
   priceHomeWork,
+  getHomeWorkForTeacherForSingleUser,
 };
