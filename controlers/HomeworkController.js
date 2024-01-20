@@ -150,7 +150,7 @@ const getHomework = async (req, res) => {
     const { id } = req.params;
     const { user_id: userId, role } = req.user;
     const { language } = req.query;
-    
+
     let homework = await UserHomework.findOne({
       where: { id, UserId: userId },
       attributes: ["points", "status", "answer"],
@@ -164,9 +164,9 @@ const getHomework = async (req, res) => {
             [`description_${language}`, "description"],
             "maxPoints",
             "dueDate",
-            "startDate"
+            "startDate",
           ],
-        }
+        },
       ],
     });
 
@@ -174,16 +174,16 @@ const getHomework = async (req, res) => {
       return res.status(403).json({
         message: "Homework not found or User doesn't have a homework",
       });
-    } 
+    }
     const Files = await HomeWorkFiles.findAll({
-      where:{userId,homeWorkId:homework.Homework.id}
-    })
+      where: { userId, homeWorkId: homework.Homework.id },
+    });
     homework = {
       points: homework.points,
       status: homework.status,
       answer: homework.answer,
       ...homework.dataValues.Homework.dataValues,
-      Files
+      Files,
     };
 
     res.send(homework);
@@ -210,7 +210,7 @@ const submitHomework = async (req, res) => {
     }
 
     homework.answer = answer.value;
-    homework.status = 2;  
+    homework.status = 2;
     await homework.save();
 
     Promise.all(
@@ -225,10 +225,10 @@ const submitHomework = async (req, res) => {
     );
     homework = {
       ...homework,
-    }
+    };
     homework = {
       ...homework.dataValues,
-      answer
+      answer,
     };
     console.log(homework);
     res.send(homework);
@@ -251,11 +251,11 @@ const HomeworkInProgress = async (req, res) => {
       });
     }
 
-    if(homework.startDate) return res.status(403).json({success:false})
+    if (homework.startDate) return res.status(403).json({ success: false });
     homework.status = 1;
     homework.startDate = new Date().toISOString();
     await homework.save();
-    res.json({success:true});
+    res.json({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -291,81 +291,30 @@ const getHomeWorkForTeacher = async (req, res) => {
     const { user_id: userId } = req.user;
     const { filterType } = req.query;
 
-    let homework = await GroupCourses.findOne({
-      where: {
-        trainers: {
-          [Op.contains]: [userId],
-        },
-      },
-      attributes: [["id", "GroupCourseId"]],
-      include: [
-        {
-          model: Homework,
-          where:{id},
-          // attributes:[['User.firstName','firstName']],
-
-          include: [
-            {
-              model: UserHomework,
-              order: [["points", "DESC"]],
-              // attributes:['firstName','lastName','id']
-              attributes: [ 
-                'GroupCourseId',
-                'UserId',
-                'startDate',
-                'feedback',
-                'HomeworkId',
-                  'answer',
-                  'points',
-                  'status',
-                  'createdAt',
-                  [ 
-                    Sequelize.literal(`( 
-                      SELECT "lastName" FROM "Users" WHERE "id" = ${userId} 
-                      )`), 
-                      'lastName', 
-                    ], 
-                    [ 
-                      Sequelize.literal(`( 
-                        SELECT "firstName" FROM "Users" WHERE "id" = ${userId} 
-                        )`), 
-                        'firstName', 
-                      ]
-                  ],
-                 
-            
-              },
-          ],
-        },
-      ],
+    const homework = await UserHomework.findAll({
+      where: { HomeworkId: id },
+      include: [{model: Homework}, {model: Users, attributes: ["firstName", "lastName", "id"] }],
     });
-
     if (!homework) {
       return res.status(403).json({
         message: "Homework not found or Teacher doesn't have the homeworks",
       });
     }
 
-
     res.json(homework);
-
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
-
-const priceHomeWork = async (req,res)=>{
-try {
+const priceHomeWork = async (req, res) => {
+  try {
     const { id } = req.params;
     const { points } = req.body;
-    let [status] = await UserHomework.update(
-      { points },
-      { where: {id } }
-    );
+    let [status] = await UserHomework.update({ points }, { where: { id } });
 
-    if (status===0) {
+    if (status === 0) {
       return res.status(403).json({
         message: "Homework not found",
       });
@@ -375,7 +324,7 @@ try {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
-}
+};
 module.exports = {
   create,
   open,
@@ -385,7 +334,5 @@ module.exports = {
   getHomeWorkForTeacher,
   HomeworkInProgress,
   HomeworkFeedback,
-  priceHomeWork
+  priceHomeWork,
 };
-
-

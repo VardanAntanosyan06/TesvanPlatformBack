@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
   Homework.belongsToMany(Users, { through: "UserHomework" });  
   Homework.hasOne(UserHomework,{foreignKey:"HomeworkId"});
   Homework.hasMany(UserHomeworks,{foreignKey:'HomeworkId'})
-  Homework.hasMany(UserHomeworks,{foreignKey:'HomeworkId'})
+  // Homework.hasMany(UserHomeworks,{foreignKey:'HomeworkId'})
   Homework.hasMany(HomeWorkFiles,{foreignKey:'homeWorkId'})
 
   return Homework;
