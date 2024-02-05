@@ -387,6 +387,7 @@ const getUserCourse = async (req, res) => {
   }
 };
 
+
 module.exports = {
   getAllCourses,
   getCoursesByFilter,

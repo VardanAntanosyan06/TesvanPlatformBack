@@ -31,13 +31,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       totalPoints: DataTypes.INTEGER,
       takenQuizzes: DataTypes.INTEGER,
+      personalSkils: DataTypes.ARRAY(DataTypes.STRING),
+      professionalSkils: DataTypes.ARRAY(DataTypes.STRING),
+      certification: DataTypes.STRING,
     },
     {
       sequelize,
       modelName: "UserCourses",
     }
   );
-  //
+  
   const GroupCourses = sequelize.define("GroupCourses");
   UserCourses.belongsTo(GroupCourses);
   //

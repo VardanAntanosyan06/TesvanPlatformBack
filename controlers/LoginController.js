@@ -7,6 +7,7 @@ const {
   UserRegistartionSendEmail,
 } = require("../controlers/RegisterController");
 
+
 const LoginUsers = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -193,6 +194,7 @@ const changeEmail = async (req, res) => {
     console.log(error);
   }
 };
+
 const authMe = async (req, res) => {
   try {
     const { user_id: id } = req.user;

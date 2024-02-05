@@ -18,6 +18,8 @@ var LessonsRouter = require("./routes/Lesson");
 var CalendarRouter = require("./routes/Calendar");
 var HomeworkRouter = require("./routes/Homework");
 var MessageRouter = require("./routes/Message");
+var GroupRouter = require("./routes/Group");
+var CertifictaesRouter = require("./routes/Certifictaes");
 var UploadFileRouter = require("./routes/UploadFile");
 
 var app = express();
@@ -57,7 +59,8 @@ app.use("/api/v2/user", LoginRouter);
 app.use("/api/v2/contactMessage", ContactMessageRouter);
 app.use("/api/v2/upload", UploadFileRouter);
 app.use("/api/v2/Calendar", CalendarRouter);
-
+app.use("/api/v2/Group",GroupRouter)
+app.use("/api/v2/Certifictaes",CertifictaesRouter)
 
 app.use(require("express-status-monitor")());
 // catch 404 and forward to error handler
@@ -76,3 +79,4 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+  

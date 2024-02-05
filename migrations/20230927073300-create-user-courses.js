@@ -33,6 +33,18 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
+      personalSkils: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        defaultValue:[]
+      },
+      professionalSkils: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        defaultValue:[]
+
+      },
+      certification: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
