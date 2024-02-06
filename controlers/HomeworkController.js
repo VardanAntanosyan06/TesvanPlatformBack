@@ -111,10 +111,9 @@ const getHomeworks = async (req, res) => {
     const { courseId } = req.params;
     const { language } = req.query;
     const { user_id: userId, role } = req.user;
-    let homeworks;
     console.log(role);
     if (role == "TEACHER") {
-      homeworks = await GroupCourses.findAll({
+      let homeworks = await GroupCourses.findAll({
         where: {
           trainers: {
             [Op.contains]: [userId],
@@ -137,33 +136,32 @@ const getHomeworks = async (req, res) => {
           },
         ],
       });
+      if (homeworks.length === 0) {
+        return res.status(403).json({
+          message: "Homeworks not found or User doesn't have the homeworks",
+        });
+      }
+      res.json(homeworks);
     } else {
-      console.log(courseId);
-      homeworks = await UserHomework.findAll({
-        where: { GroupCourseId: courseId },
-        include: [
-          {
-            model: Homework,
-            attributes: [
-              "id",
-              "courseId",
-              [`title_${language}`, "title"],
-              [`description_${language}`, "description"],
-              "maxPoints",
-            ],
-          },
+      let homeworks = await Homework.findAll({
+        where: { courseId },
+        attributes: [
+          "id",
+          "courseId",
+          [`title_${language}`, "title"],
+          [`description_${language}`, "description"],
+          "maxPoints",
+          "dueDate",
         ],
         order: [["id", "DESC"]],
       });
+      if (homeworks.length === 0) {
+        return res.status(403).json({
+          message: "Homeworks not found or User doesn't have the homeworks",
+        });
+      }
+      res.json({ GroupCourseId: courseId, HomeWork: homeworks });
     }
-    console.log(homeworks);
-    if (homeworks.length === 0) {
-      return res.status(403).json({
-        message: "Homeworks not found or User doesn't have the homeworks",
-      });
-    }
-
-    res.send(homeworks);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -175,7 +173,7 @@ const getHomework = async (req, res) => {
     const { id } = req.params;
     const { user_id: userId, role } = req.user;
     const { language } = req.query;
-
+    console.log(userId);
     let homework = await UserHomework.findOne({
       where: { id, UserId: userId },
       attributes: ["points", "status", "answer"],
@@ -189,7 +187,6 @@ const getHomework = async (req, res) => {
             [`description_${language}`, "description"],
             "maxPoints",
             "dueDate",
-            "startDate",
           ],
         },
       ],
@@ -201,6 +198,7 @@ const getHomework = async (req, res) => {
       });
     }
     const Files = await HomeWorkFiles.findAll({
+      
       where: { userId, homeWorkId: homework.Homework.id },
     });
     homework = {
@@ -316,66 +314,83 @@ const getHomeWorkForTeacher = async (req, res) => {
     const { user_id: userId } = req.user;
     const { filterType } = req.query;
 
-    const homework = await UserHomework.findAll({
+    let users = await UserHomework.findAll({
       where: { HomeworkId: id },
-      include: [
-        {
-          model: Homework,
-          attributes: [
-            "id",
-            "courseId",
-            "title_en",
-            "description_en",
-            "maxPoints",
-            "isOpen",
-            "dueDate",
-          ],
-        },
-        { model: Users, attributes: ["firstName", "lastName", "id"] },
+      attributes: ["startDate", "points", "status"],
+      include: [{ model: Users, attributes: ["firstName", "lastName", "id"] }],
+    });
+    users = users.map((e) => {
+      e = e.toJSON();
+      delete e.dataValues;
+      e["firstName"] = e.User.firstName;
+      e["lastName"] = e.User.lastName;
+      e["userId"] = e.User.id;
+
+      delete e.User;
+      return e;
+    });
+    const homeWorkInfo = await Homework.findOne({
+      where: { id },
+      attributes: [
+        "id",
+        "courseId",
+        ["title_en", "title"],
+        ["description_en", "description"],
+        "maxPoints",
+        "isOpen",
+        "dueDate",
       ],
     });
-    if (!homework) {
+    if (!users) {
       return res.status(403).json({
         message: "Homework not found or Teacher doesn't have the homeworks",
       });
     }
 
-    res.json(homework);
+    res.json({ homeWorkInfo, users });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
+
 const getHomeWorkForTeacherForSingleUser = async (req, res) => {
   try {
     const { id, userId } = req.query;
 
-    const homework = await UserHomework.findAll({
+    let user = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
-      include: [
-        {
-          model: Homework,
-          attributes: [
-            "id",
-            "courseId",
-            "title_en",
-            "description_en",
-            "maxPoints",
-            "isOpen",
-            "dueDate",
-          ],
-        },
-        { model: Users, attributes: ["firstName", "lastName", "id"] },
-      ],
+      attributes: ["startDate", "points", "status","answer","feedback"],
+      include: [{ model: Users, attributes: ["firstName", "lastName", "id"] }],
     });
 
-    if (!homework) {
+      user = user.toJSON();
+      delete user.dataValues;
+      user["firstName"] = user.User.firstName;
+      user["lastName"] = user.User.lastName;
+      user["userId"] = user.User.id;
+      delete user.User;
+
+    const homeWorkInfo = await Homework.findOne({
+      where: { id },
+      attributes: [
+        "id",
+        "courseId",
+        ["title_en", "title"],
+        ["description_en", "description"],
+        "maxPoints",
+        "isOpen",
+        "dueDate",
+      ],
+    });
+    if (!user) {
       return res.status(403).json({
         message: "Homework not found or Teacher doesn't have the homeworks",
       });
     }
 
-    res.json(homework);
+    res.json({ homeWorkInfo, user });
+  
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Something went wrong." });

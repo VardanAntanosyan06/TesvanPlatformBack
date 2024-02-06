@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
   Homework.hasMany(UserHomeworks,{foreignKey:'HomeworkId'})
   // Homework.hasMany(UserHomeworks,{foreignKey:'HomeworkId'})
   Homework.hasMany(HomeWorkFiles,{foreignKey:'homeWorkId'})
+   
 
   return Homework;
 };
