@@ -74,7 +74,7 @@ const open = async (req, res) => {
             HomeworkId: homeworkId,
           });
       });
-      res.send({ success: true });
+      res.send({ success: true,isOpen:!homeWork.isOpen });
     });
   } catch (error) {
     console.log(error);
@@ -115,7 +115,7 @@ const getHomeworks = async (req, res) => {
       });
     } else {
       homeworks = await UserHomework.findAll({
-        where: { GroupCourseId: courseId, UserId: userId },
+        where: { GroupCourseId: courseId },
         include: [
           {
             model: Homework,
@@ -132,7 +132,7 @@ const getHomeworks = async (req, res) => {
       });
     }
 
-    if (!homeworks.length) {
+    if (homeworks.length===0) {
       return res.status(403).json({
         message: "Homeworks not found or User doesn't have the homeworks",
       });

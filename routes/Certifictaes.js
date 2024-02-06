@@ -11,4 +11,9 @@ router.get(
   controller.findAllStudents
 );
 
+router.patch(
+  "/changeStatus",
+  checkAuth(["ADMIN"]),
+  controller.changeStatus
+);
 module.exports = router;

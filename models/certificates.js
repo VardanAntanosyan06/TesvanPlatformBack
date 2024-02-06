@@ -15,7 +15,15 @@ module.exports = (sequelize, DataTypes) => {
   }
   Certificates.init({
     userId: DataTypes.INTEGER,
-    status: DataTypes.INTEGER,
+    status: {
+      type:DataTypes.INTEGER,
+      validate: {
+        isIn: {
+          args: [[1,2]],
+          msg: "status must be '1' or '2'",
+        },
+      },
+    },
     giveDate: DataTypes.DATE
   }, {
     sequelize,
