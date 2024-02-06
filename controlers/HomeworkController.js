@@ -55,27 +55,51 @@ const open = async (req, res) => {
     if (!homeWork) {
       return res.status(404).json("HomeWork not found");
     }
-    homeWork.isOpen = !homeWork.isOpen;
-    await homeWork.save();
 
     let userSocket;
-    userCourses.forEach((user) => {
-      UserHomework.findOne({
-        where: {
-          UserId: user.UserId,
-          GroupCourseId: courseId,
-          HomeworkId: homeworkId,
-        },
-      }).then((e) => {
-        !e &&
-          UserHomework.create({
-            UserId: user.UserId,
-            GroupCourseId: courseId,
-            HomeworkId: homeworkId,
-          });
-      });
-      res.send({ success: true,isOpen:!homeWork.isOpen });
-    });
+    if (!homeWork.isOpen) {
+      await Promise.all(
+        userCourses.map(async (user) => {
+          try {
+            // Using await to wait for the findOrCreate operation to complete
+            await UserHomework.findOrCreate({
+              where: {
+                UserId: user.UserId,
+                GroupCourseId: courseId,
+                HomeworkId: homeworkId,
+              },
+              defaults: {
+                UserId: user.UserId,
+                GroupCourseId: courseId,
+                HomeworkId: homeworkId,
+              },
+            });
+          } catch (error) {
+            console.error(error);
+          }
+        })
+      );
+    } else {
+      await Promise.all(
+        userCourses.map(async (user) => {
+          try {
+            // Using await to wait for the findOrCreate operation to complete
+            await UserHomework.destroy({
+              where: {
+                UserId: user.UserId,
+                GroupCourseId: courseId,
+                HomeworkId: homeworkId,
+              },
+            });
+          } catch (error) {
+            console.error(error);
+          }
+        })
+      );
+    }
+    homeWork.isOpen = !homeWork.isOpen;
+    await homeWork.save();
+    res.send({ success: true, isOpen: !homeWork.isOpen });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -88,7 +112,7 @@ const getHomeworks = async (req, res) => {
     const { language } = req.query;
     const { user_id: userId, role } = req.user;
     let homeworks;
-    console.log(userId);
+    console.log(role);
     if (role == "TEACHER") {
       homeworks = await GroupCourses.findAll({
         where: {
@@ -114,6 +138,7 @@ const getHomeworks = async (req, res) => {
         ],
       });
     } else {
+      console.log(courseId);
       homeworks = await UserHomework.findAll({
         where: { GroupCourseId: courseId },
         include: [
@@ -131,8 +156,8 @@ const getHomeworks = async (req, res) => {
         order: [["id", "DESC"]],
       });
     }
-
-    if (homeworks.length===0) {
+    console.log(homeworks);
+    if (homeworks.length === 0) {
       return res.status(403).json({
         message: "Homeworks not found or User doesn't have the homeworks",
       });

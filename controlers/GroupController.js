@@ -241,9 +241,9 @@ const getUserStaticChart = async (req, res) => {
       group: ["month"],
       order: [["month", "ASC"]],
     });
-    // const UserCount = await Users.count();
-    // statics = statics.map((e) => (+e.dataValues.count / UserCount) * 100);
-    return res.json({ statics });
+    const UserCount = await Users.count();
+    statics = statics.map((e) => (+e.dataValues.count / UserCount) * 100);
+    return res.json({ statics,UserCount });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
