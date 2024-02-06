@@ -160,7 +160,7 @@ const getHomeworks = async (req, res) => {
           message: "Homeworks not found or User doesn't have the homeworks",
         });
       }
-      res.json({ GroupCourseId: courseId, HomeWork: homeworks });
+      res.json([{ GroupCourseId: courseId, HomeWork: homeworks }]);
     }
   } catch (error) {
     console.log(error);
@@ -198,7 +198,7 @@ const getHomework = async (req, res) => {
       });
     }
     const Files = await HomeWorkFiles.findAll({
-      
+    
       where: { userId, homeWorkId: homework.Homework.id },
     });
     homework = {
