@@ -151,6 +151,7 @@ const getHomeworks = async (req, res) => {
           [`title_${language}`, "title"],
           [`description_${language}`, "description"],
           "maxPoints",
+          "isOpen",
           "dueDate",
         ],
         order: [["id", "DESC"]],
@@ -197,10 +198,11 @@ const getHomework = async (req, res) => {
         message: "Homework not found or User doesn't have a homework",
       });
     }
+    // return res.json(homework)
     const Files = await HomeWorkFiles.findAll({
-    
       where: { userId, homeWorkId: homework.Homework.id },
     });
+
     homework = {
       points: homework.points,
       status: homework.status,
