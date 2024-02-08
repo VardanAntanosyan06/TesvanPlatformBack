@@ -167,6 +167,7 @@ const getHomeworks = async (req, res) => {
         e = e.toJSON();
         delete e.dataValues;
         e["courseId"] = e.Homework.courseId;
+        e["id"] = e.Homework.id;
         e["title"] = e.Homework.title;
         e["description"] = e.Homework.description;
         e["maxPoints"] = e.Homework.maxPoints;
@@ -174,6 +175,7 @@ const getHomeworks = async (req, res) => {
         delete e.Homework;
         return e;
       });
+
       if (homeworks.length === 0) {
         return res.status(403).json({
           message: "Homeworks not found or User doesn't have the homeworks",
@@ -194,7 +196,7 @@ const getHomework = async (req, res) => {
     const { language } = req.query;
     console.log(userId);
     let homework = await UserHomework.findOne({
-      where: { id, UserId: userId },
+      where: { HomeworkId:id, UserId: userId },
       attributes: ["points", "status", "answer"],
       include: [
         {
@@ -243,7 +245,7 @@ const submitHomework = async (req, res) => {
     const { answer } = req.body;
 
     let homework = await UserHomework.findOne({
-      where: { HomeworkId: id, UserId: userId },
+      where: { HomeworkId:id, UserId: userId },
     });
 
     if (!homework) {
