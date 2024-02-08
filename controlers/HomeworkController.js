@@ -145,7 +145,8 @@ const getHomeworks = async (req, res) => {
     } else {
       let homeworks = await UserHomework.findAll({
         where: { GroupCourseId: courseId, UserId: userId },
-        attributes: ["id"],
+      // attributes: ["],
+      attributes: ["id","points", "status", "answer"],
         include: [
           {
             model: Homework,
@@ -422,7 +423,7 @@ const priceHomeWork = async (req, res) => {
   try {
     const { id } = req.params;
     const { points } = req.body;
-    let [status] = await UserHomework.update({ points }, { where: { id } });
+    let [status] = await UserHomework.update({ points }, { where: { HomeworkId:id } });
 
     if (status === 0) {
       return res.status(403).json({

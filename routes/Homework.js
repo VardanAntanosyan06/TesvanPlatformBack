@@ -12,6 +12,7 @@ router.get(
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getHomeworks
 );
+
 router.get(
   "/getHomework/:id",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
