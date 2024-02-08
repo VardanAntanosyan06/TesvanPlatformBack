@@ -112,7 +112,7 @@ const getHomeworks = async (req, res) => {
     const { language } = req.query;
     const { user_id: userId, role } = req.user;
     console.log(role);
-    if (role == "TEACHER") {
+    if (role == "TEACHER" || role == "ADMIN") {
       let homeworks = await GroupCourses.findAll({
         where: {
           trainers: {
@@ -143,18 +143,36 @@ const getHomeworks = async (req, res) => {
       }
       res.json(homeworks);
     } else {
-      let homeworks = await Homework.findAll({
-        where: { courseId },
-        attributes: [
-          "id",
-          "courseId",
-          [`title_${language}`, "title"],
-          [`description_${language}`, "description"],
-          "maxPoints",
-          "isOpen",
-          "dueDate",
+      let homeworks = await UserHomework.findAll({
+        where: { GroupCourseId: courseId, UserId: userId },
+        attributes: ["id"],
+        include: [
+          {
+            model: Homework,
+            attributes: [
+              "id",
+              "courseId",
+              [`title_${language}`, "title"],
+              [`description_${language}`, "description"],
+              "maxPoints",
+              "isOpen",
+              "dueDate",
+            ],
+            order: [["id", "DESC"]],
+          },
         ],
-        order: [["id", "DESC"]],
+      });
+
+      homeworks = homeworks.map((e) => {
+        e = e.toJSON();
+        delete e.dataValues;
+        e["courseId"] = e.Homework.courseId;
+        e["title"] = e.Homework.title;
+        e["description"] = e.Homework.description;
+        e["maxPoints"] = e.Homework.maxPoints;
+        e["dueDate"] = e.Homework.dueDate;
+        delete e.Homework;
+        return e;
       });
       if (homeworks.length === 0) {
         return res.status(403).json({
@@ -362,16 +380,16 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
 
     let user = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
-      attributes: ["startDate", "points", "status","answer","feedback"],
+      attributes: ["startDate", "points", "status", "answer", "feedback"],
       include: [{ model: Users, attributes: ["firstName", "lastName", "id"] }],
     });
 
-      user = user.toJSON();
-      delete user.dataValues;
-      user["firstName"] = user.User.firstName;
-      user["lastName"] = user.User.lastName;
-      user["userId"] = user.User.id;
-      delete user.User;
+    user = user.toJSON();
+    delete user.dataValues;
+    user["firstName"] = user.User.firstName;
+    user["lastName"] = user.User.lastName;
+    user["userId"] = user.User.id;
+    delete user.User;
 
     const homeWorkInfo = await Homework.findOne({
       where: { id },
@@ -392,7 +410,6 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
     }
 
     res.json({ homeWorkInfo, user });
-  
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Something went wrong." });
