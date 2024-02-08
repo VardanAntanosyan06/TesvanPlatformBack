@@ -10,6 +10,7 @@ router.post(
   async (req, res) => {
     try {
       const { file } = req.files;
+      console.log(file);
       const type = file.mimetype.split("/")[1];
       const fileName = uuid.v4() + "." + type;
       file.mv(path.resolve(__dirname, "..", "static", fileName));

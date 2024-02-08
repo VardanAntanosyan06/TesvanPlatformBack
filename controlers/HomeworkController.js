@@ -161,7 +161,7 @@ const getHomeworks = async (req, res) => {
           message: "Homeworks not found or User doesn't have the homeworks",
         });
       }
-      res.json([{ GroupCourseId: courseId, HomeWork: homeworks }]);
+      res.json([{ GroupCourseId: courseId, Homework: homeworks }]);
     }
   } catch (error) {
     console.log(error);
