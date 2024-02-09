@@ -113,13 +113,38 @@ const getHomeworks = async (req, res) => {
     const { language } = req.query;
     const { user_id: userId, role } = req.user;
     console.log(role);
-    if (role == "TEACHER" || role == "ADMIN") {
+    if (role == "TEACHER") {
       let homeworks = await GroupCourses.findAll({
         where: {
           trainers: {
             [Op.contains]: [userId],
           },
         },
+        attributes: [["id", "GroupCourseId"]],
+        include: [
+          {
+            model: Homework,
+            attributes: [
+              "id",
+              "courseId",
+              [`title_${language}`, "title"],
+              [`description_${language}`, "description"],
+              "maxPoints",
+              "isOpen",
+              "dueDate",
+            ],
+            where: { courseId },
+          },
+        ],
+      });
+      if (homeworks.length === 0) {
+        return res.status(403).json({
+          message: "Homeworks not found or User doesn't have the homeworks",
+        });
+      }
+      res.json(homeworks);
+    } else if (role == "ADMIN") {
+      let homeworks = await GroupCourses.findAll({
         attributes: [["id", "GroupCourseId"]],
         include: [
           {
@@ -433,10 +458,12 @@ const deleteFile = async (req, res) => {
   try {
     const { id } = req.params;
 
-    
     let deleted = await HomeWorkFiles.destroy({ where: { id } });
 
-    if(!deleted) return res.status(403).json({success:false,message:`In ID ${id} nothing is found.`})
+    if (!deleted)
+      return res
+        .status(403)
+        .json({ success: false, message: `In ID ${id} nothing is found.` });
 
     return res.status(200).json({ success: true });
   } catch (error) {
