@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   const UserCourses = sequelize.define("UserCourses")
-
   Groups.hasMany(UserCourses,{foreignKey:"GroupCourseId"})
+
   return Groups;
 };

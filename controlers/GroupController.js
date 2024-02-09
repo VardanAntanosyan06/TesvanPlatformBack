@@ -55,6 +55,45 @@ const findOne = async (req, res) => {
   }
 };
 
+const getGroupesForTeacher = async(req,res)=>{
+  try {
+    const { user_id: userId } = req.user;
+    
+    const groups = await UserCourses.findAll({where:{
+      UserId:userId
+    },
+    attributes:['GroupCourseId'],
+    include:[
+      {
+        model:Groups,
+        attributes:['name','finished','createdAt'],
+      }, 
+    ]
+
+  })
+  if(groups.length==0)return res.status(403).json({success:false,message:"The teacher doesn't have groups yet."})
+  Users.count()
+  .then(totalUsers => {
+    console.log('Total Users:', totalUsers);
+
+    // Fetch 3 random users
+    return Users.findAll({ order: [
+      [sequelize.literal('RAND()')]
+    ], limit: 1 })
+  })
+  .then(randomUsers => {
+    console.log('Random Users:', randomUsers.map(user => user.username));
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+
+    return res.status(200).json({success:true,groups})
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+}
 const findAll = async (req, res) => {
   try {
     const group = await Groups.findAll({
@@ -294,4 +333,5 @@ module.exports = {
   AddUserSkill,
   getUserStaticChart,
   finishGroup,
+  getGroupesForTeacher
 };

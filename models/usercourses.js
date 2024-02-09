@@ -41,13 +41,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   
-  const GroupCourses = sequelize.define("GroupCourses");
-  UserCourses.belongsTo(GroupCourses);
-  //
-
-  //
+  const GroupCourses = sequelize.define("GroupCourses");  
+  const Groups = sequelize.define("Groups");
   const Users = sequelize.define("Users");
+
+  UserCourses.belongsTo(Groups,{
+    foreignKey:"GroupCourseId"
+  });
+  UserCourses.belongsTo(GroupCourses);
   UserCourses.belongsTo(Users);
-  //
+  
   return UserCourses;
 };

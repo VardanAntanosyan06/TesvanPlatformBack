@@ -49,5 +49,10 @@ router.patch(
   controller.priceHomeWork
 );
 
+router.delete(
+  "/deleteFile/:id",
+  checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+  controller.deleteFile
+);
 
 module.exports = router;

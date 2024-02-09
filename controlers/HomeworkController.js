@@ -1,3 +1,4 @@
+const { invalid } = require("moment");
 const {
   Homework,
   UserHomework,
@@ -145,8 +146,8 @@ const getHomeworks = async (req, res) => {
     } else {
       let homeworks = await UserHomework.findAll({
         where: { GroupCourseId: courseId, UserId: userId },
-      // attributes: ["],
-      attributes: ["id","points", "status", "answer"],
+        // attributes: ["],
+        attributes: ["id", "points", "status"],
         include: [
           {
             model: Homework,
@@ -197,7 +198,7 @@ const getHomework = async (req, res) => {
     const { language } = req.query;
     console.log(userId);
     let homework = await UserHomework.findOne({
-      where: { HomeworkId:id, UserId: userId },
+      where: { HomeworkId: id, UserId: userId },
       attributes: ["points", "status", "answer"],
       include: [
         {
@@ -246,7 +247,7 @@ const submitHomework = async (req, res) => {
     const { answer } = req.body;
 
     let homework = await UserHomework.findOne({
-      where: { HomeworkId:id, UserId: userId },
+      where: { HomeworkId: id, UserId: userId },
     });
 
     if (!homework) {
@@ -377,6 +378,7 @@ const getHomeWorkForTeacher = async (req, res) => {
   }
 };
 
+// addd files
 const getHomeWorkForTeacherForSingleUser = async (req, res) => {
   try {
     const { id, userId } = req.query;
@@ -386,15 +388,22 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
       attributes: ["startDate", "points", "status", "answer", "feedback"],
       include: [{ model: Users, attributes: ["firstName", "lastName", "id"] }],
     });
-
+    if (!user)
+      return res
+        .status(403)
+        .json({ success: false, message: "Invalid userId" });
+    const Files = await HomeWorkFiles.findAll({
+      where: { userId, homeWorkId: id },
+    });
     user = user.toJSON();
     delete user.dataValues;
     user["firstName"] = user.User.firstName;
     user["lastName"] = user.User.lastName;
     user["userId"] = user.User.id;
+    user["files"] = Files;
     delete user.User;
 
-    const homeWorkInfo = await Homework.findOne({
+    let homeWorkInfo = await Homework.findOne({
       where: { id },
       attributes: [
         "id",
@@ -406,6 +415,7 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
         "dueDate",
       ],
     });
+
     if (!user) {
       return res.status(403).json({
         message: "Homework not found or Teacher doesn't have the homeworks",
@@ -419,11 +429,30 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
   }
 };
 
+const deleteFile = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    
+    let deleted = await HomeWorkFiles.destroy({ where: { id } });
+
+    if(!deleted) return res.status(403).json({success:false,message:`In ID ${id} nothing is found.`})
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 const priceHomeWork = async (req, res) => {
   try {
     const { id } = req.params;
     const { points } = req.body;
-    let [status] = await UserHomework.update({ points }, { where: { HomeworkId:id } });
+    let [status] = await UserHomework.update(
+      { points },
+      { where: { HomeworkId: id } }
+    );
 
     if (status === 0) {
       return res.status(403).json({
@@ -448,4 +477,5 @@ module.exports = {
   HomeworkFeedback,
   priceHomeWork,
   getHomeWorkForTeacherForSingleUser,
+  deleteFile,
 };
