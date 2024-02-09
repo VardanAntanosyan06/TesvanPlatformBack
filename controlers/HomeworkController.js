@@ -224,7 +224,7 @@ const getHomework = async (req, res) => {
     console.log(userId);
     let homework = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
-      attributes: ["points", "status", "answer"],
+      attributes: ["points", "status", "answer","feedback"],
       include: [
         {
           model: Homework,
@@ -254,6 +254,7 @@ const getHomework = async (req, res) => {
       points: homework.points,
       status: homework.status,
       answer: homework.answer,
+      feedback: homework.feedback,
       ...homework.dataValues.Homework.dataValues,
       Files,
     };
