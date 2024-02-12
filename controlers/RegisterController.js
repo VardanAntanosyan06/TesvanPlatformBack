@@ -233,7 +233,7 @@ const UserRegistartionSendEmail = async (req, res) => {
           color: #646464;
           text-align: center;
           margin-top:15px;
-          ">© 2023 Tesvan, All rights reserved</p></div>
+          ">© 2024 Tesvan, All rights reserved</p></div>
           </center>
           <style>
           *{

@@ -44,6 +44,8 @@ const create = async (req, res) => {
   }
 };
 
+// add notification
+
 const open = async (req, res) => {
   try {
     const { courseId, homeworkId } = req.query;
@@ -216,6 +218,7 @@ const getHomeworks = async (req, res) => {
   }
 };
 
+// add startDate for user homework and course and homeWorkInprogress add in this  
 const getHomework = async (req, res) => {
   try {
     const { id } = req.params;
@@ -404,7 +407,6 @@ const getHomeWorkForTeacher = async (req, res) => {
   }
 };
 
-// addd files
 const getHomeWorkForTeacherForSingleUser = async (req, res) => {
   try {
     const { id, userId } = req.query;
