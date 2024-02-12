@@ -288,7 +288,7 @@ const submitHomework = async (req, res) => {
     homework.answer = answer.value;
     homework.status = 2;
     await homework.save();
-
+    
     Promise.all(
       answer.links.map(async (e) => {
         await HomeWorkFiles.create({
@@ -297,16 +297,15 @@ const submitHomework = async (req, res) => {
           homeWorkId: id,
           userId,
         });
+        // e['name'] = e.name;
+        return e;
       })
     );
-    homework = {
-      ...homework,
-    };
+
     homework = {
       ...homework.dataValues,
       answer,
     };
-    console.log(homework);
     res.send(homework);
   } catch (error) {
     console.log(error);
