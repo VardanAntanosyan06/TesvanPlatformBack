@@ -35,6 +35,9 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      startDate:{
+        type:Sequelize.DATE
+      },
       dueDate: {
         allowNull: false,
         type: Sequelize.DATE,
