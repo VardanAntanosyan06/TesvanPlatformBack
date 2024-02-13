@@ -43,7 +43,6 @@ const create = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
-
 // add notification
 
 const open = async (req, res) => {
@@ -288,7 +287,7 @@ const submitHomework = async (req, res) => {
     homework.answer = answer.value;
     homework.status = 2;
     await homework.save();
-    
+
     Promise.all(
       answer.links.map(async (e) => {
         await HomeWorkFiles.create({

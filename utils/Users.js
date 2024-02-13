@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const Users = [
@@ -7,7 +7,7 @@ const Users = [
     lastName: "Smith",
     email: "JohnSmith@gmail.com",
     phoneNumber: "+37499887766",
-    birthday: new Date(),
+    birthday: "2000-10-04T19:00:00.000Z",
     gender: "Male",
     country: "USA",
     city: "New York",
@@ -18,6 +18,7 @@ const Users = [
     likedCourses: [1],
     isVerified: true,
     role: "STUDENT",
+    image: "defaultIcon.png",
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiU1RVREVOVCIsImVtYWlsIjoiYmRiZTU4MDE5ODVAY3JpbmdlbW9uc3Rlci5jb20iLCJpYXQiOjE2OTU4MDIwNzZ9.HypxfsZn6hU4tUkzS0iHF0Y1wEfxNmWXCWUFMQmUYMM",
     tokenCreatedAt: new Date(),
@@ -29,7 +30,7 @@ const Users = [
     lastName: "Wick",
     email: "JohnWick@gmail.com",
     phoneNumber: "+37499887755",
-    birthday: new Date(),
+    birthday: "2000-10-04T19:00:00.000Z",
     gender: "Male",
     country: "USA",
     city: "New York",
@@ -40,6 +41,7 @@ const Users = [
     likedCourses: [1],
     isVerified: true,
     role: "STUDENT",
+    image: "TestIcon.png",
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJyb2xlIjoiU1RVREVOVCIsImVtYWlsIjoiNzZjNDU4MDIyMDhAYmVhY29ubWVzc2VuZ2VyLmNvbSIsImlhdCI6MTY5NTgwMjI2OH0.X40oUGqe7Og-WtfJN6ALcgbiR7TxJWW17xulzvM0mUU",
     tokenCreatedAt: new Date(),
@@ -51,7 +53,7 @@ const Users = [
     lastName: "Smith",
     email: "Sarah@gmail.com",
     phoneNumber: "+37499887755",
-    birthday: new Date(),
+    birthday: "2000-10-04T19:00:00.000Z",
     gender: "Male",
     country: "USA",
     city: "New York",
@@ -62,6 +64,7 @@ const Users = [
     likedCourses: [1],
     isVerified: true,
     role: "STUDENT",
+    image: "defaultIcon.png",
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJlbWFpbCI6Inp1Y3dkaGtzdnFsdEBkaWdpbmV5LmNvbSIsInJvbGUiOiJTVFVERU5UIiwiaWF0IjoxNjk2NTI2OTAyfQ.7YwtxgZAc8ICNrn9eglGlPQGfefSCjSnXqAVcppuxrg",
     tokenCreatedAt: new Date(),
@@ -73,7 +76,7 @@ const Users = [
     lastName: "Teacher",
     email: "Teacher@gmail.com",
     phoneNumber: "+37499887755",
-    birthday: new Date(),
+    birthday: "2000-10-04T19:00:00.000Z",
     gender: "Male",
     country: "USA",
     city: "New York",
@@ -84,6 +87,7 @@ const Users = [
     likedCourses: [1],
     isVerified: true,
     role: "TEACHER",
+    image: "TestIcon.png",
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJlbWFpbCI6InVuYnp3bmtuZ3ljZ29AaGxkcml2ZS5jb20iLCJyb2xlIjoiVEVBQ0hFUiIsImlhdCI6MTY5NjU4ODQwM30.3TKWHk7Tt94s2To40ftW5t2geSgoXEGZKaDqfsWgE7Q",
     tokenCreatedAt: new Date(),
@@ -95,7 +99,7 @@ const Users = [
     lastName: "Smith",
     email: "Admin@gmail.com",
     phoneNumber: "+37499887766",
-    birthday: new Date(),
+    birthday: "2000-10-04T19:00:00.000Z",
     gender: "Male",
     country: "USA",
     city: "New York",
@@ -106,7 +110,10 @@ const Users = [
     likedCourses: [1],
     isVerified: true,
     role: "ADMIN",
-    token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJlbWFpbCI6IkFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcwNTMwNTc0NH0.hITNb2a0e9yygTPe57bfkyyz3Etd6EzniF_MKJ6mbaA",
+
+    image: "defaultIcon.png",
+    token:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJlbWFpbCI6IkFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcwNTMwNTc0NH0.hITNb2a0e9yygTPe57bfkyyz3Etd6EzniF_MKJ6mbaA",
     tokenCreatedAt: new Date(),
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -279,6 +279,21 @@ const UserRegistartionSendEmail = async (req, res) => {
   }
 };
 
+const EmailExist = async(req,res)=>{
+  try {
+      const {email} = req.params;
+
+      const user = await Users.findOne({where:{email}})
+
+      if(user)res.status(403).josn({success:false,message:"This email address is already used"})
+
+      return res.status(200).json({success:true})
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 const UserRegistartionVerification = async (req, res) => {
   try {
     const { token } = req.body;
@@ -310,4 +325,5 @@ module.exports = {
   UserRegistartion,
   UserRegistartionSendEmail,
   UserRegistartionVerification,
+  EmailExist
 };

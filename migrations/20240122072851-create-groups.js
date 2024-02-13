@@ -13,13 +13,14 @@ module.exports = {
         type: Sequelize.STRING,
       },
       assignCourseId: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
       groupeKey: {
         type: Sequelize.STRING,
       },
       finished:{
-        type:Sequelize.BOOLEAN
+        type:Sequelize.BOOLEAN,
+        defaultValue:false
       },
       createdAt: {
         allowNull: false,

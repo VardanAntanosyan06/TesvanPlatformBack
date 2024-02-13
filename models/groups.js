@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Groups.init({
     name: DataTypes.STRING,
-    assignCourseId:DataTypes.STRING,
+    assignCourseId:DataTypes.INTEGER,
     groupeKey:DataTypes.STRING,
     finished:DataTypes.BOOLEAN
   }, {
@@ -25,6 +25,9 @@ module.exports = (sequelize, DataTypes) => {
 
   const UserCourses = sequelize.define("UserCourses")
   Groups.hasMany(UserCourses,{foreignKey:"GroupCourseId"})
+
+  const GroupCourses = sequelize.define("GroupCourses")
+  Groups.belongsTo(GroupCourses,{foreignKey:"assignCourseId"})
 
   return Groups;
 };

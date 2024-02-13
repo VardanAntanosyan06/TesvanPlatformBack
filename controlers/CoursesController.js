@@ -276,6 +276,11 @@ const buy = async (req, res) => {
     if (!user) {
       return res.status(500).json({ message: "User not found" });
     }
+    const courseBought = await UserCourses.findOne({
+      where: { UserId: id, GroupCourseId: courseId },
+    });
+
+    if(courseBought) return res.status(403).json({success:false});
 
     await UserCourses.create({
       UserId: id,
@@ -386,7 +391,6 @@ const getUserCourse = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
-
 
 module.exports = {
   getAllCourses,

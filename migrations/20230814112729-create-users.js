@@ -59,6 +59,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      image:{
+        type: Sequelize.STRING,
+        defaultValue: "defaultIcon.png",
+      },
       token: {
         type: Sequelize.STRING,
         allowNull: true,

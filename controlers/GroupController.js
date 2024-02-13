@@ -1,8 +1,16 @@
-const { Groups, UserCourses, Users, JoinCart,Certificates } = require("../models");
+const {
+  Groups,
+  UserCourses,
+  Users,
+  JoinCart,
+  Certificates,
+  GroupCourses,
+  Lesson,
+} = require("../models");
 const { v4 } = require("uuid");
 const groups = require("../models/groups");
 const sequelize = require("sequelize");
-const {Op} = require("sequelize");
+const { Op } = require("sequelize");
 
 const CreateGroup = async (req, res) => {
   try {
@@ -13,6 +21,7 @@ const CreateGroup = async (req, res) => {
     const task = await Groups.create({
       name,
       groupeKey,
+      assignCourseId,
     });
     users.map((e) => {
       return UserCourses.create({
@@ -55,45 +64,54 @@ const findOne = async (req, res) => {
   }
 };
 
-const getGroupesForTeacher = async(req,res)=>{
+const getGroupesForTeacher = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    
-    const groups = await UserCourses.findAll({where:{
-      UserId:userId
-    },
-    attributes:['GroupCourseId'],
-    include:[
-      {
-        model:Groups,
-        attributes:['name','finished','createdAt'],
-      }, 
-    ]
 
-  })
-  if(groups.length==0)return res.status(403).json({success:false,message:"The teacher doesn't have groups yet."})
-  Users.count()
-  .then(totalUsers => {
-    console.log('Total Users:', totalUsers);
+    const groups = await UserCourses.findAll({
+      where: {
+        UserId: userId,
+      },
+      attributes: ["GroupCourseId"],
+      include: [
+        {
+          model: Groups,
+          attributes: ["name", "finished", "createdAt"],
+        },
+      ],
+    });
+    if (groups.length == 0)
+      return res.status(403).json({
+        success: false,
+        message: "The teacher doesn't have groups yet.",
+      });
+    Users.count()
+      .then((totalUsers) => {
+        console.log("Total Users:", totalUsers);
 
-    // Fetch 3 random users
-    return Users.findAll({ order: [
-      [sequelize.literal('RAND()')]
-    ], limit: 1 })
-  })
-  .then(randomUsers => {
-    console.log('Random Users:', randomUsers.map(user => user.username));
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+        // Fetch 3 random users
+        return Users.findAll({
+          order: [[sequelize.literal("RAND()")]],
+          limit: 1,
+        });
+      })
+      .then((randomUsers) => {
+        console.log(
+          "Random Users:",
+          randomUsers.map((user) => user.username)
+        );
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 
-    return res.status(200).json({success:true,groups})
+    return res.status(200).json({ success: true, groups });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
   }
-}
+};
+
 const findAll = async (req, res) => {
   try {
     const group = await Groups.findAll({
@@ -282,7 +300,7 @@ const getUserStaticChart = async (req, res) => {
     });
     const UserCount = await Users.count();
     statics = statics.map((e) => (+e.dataValues.count / UserCount) * 100);
-    return res.json({ statics,UserCount });
+    return res.json({ statics, UserCount });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
@@ -293,28 +311,72 @@ const finishGroup = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const Group = await Groups.findOne(
-      {
-        where: {
-          id,
-        },
-        include:{model:UserCourses}
-      }
-    );
+    const Group = await Groups.findOne({
+      where: {
+        id,
+      },
+      include: { model: UserCourses },
+    });
 
-    if(!Group) return res.json({success:false,message:`Group with ID ${id} not defined`})
+    if (!Group)
+      return res.json({
+        success: false,
+        message: `Group with ID ${id} not defined`,
+      });
 
-    Group.UserCourses.map((e)=>{
-      if(e.totalPoints>=10){
+    Group.UserCourses.map((e) => {
+      if (e.totalPoints >= 10) {
         Certificates.create({
-          userId: e.UserId
-        })
-        return
+          userId: e.UserId,
+        });
+        return;
       }
-    })
-    Group.finished = true
+    });
+    Group.finished = true;
     Group.save();
     return res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const findGroups = async (req, res) => {
+  try {
+    const group = await Groups.findAll({
+      include: [
+        {
+          model: GroupCourses,
+          include: {
+            model: Lesson,
+          },
+        },
+        {
+          model: UserCourses,
+        },
+      ],
+    });
+    const randomUsers = await Users.findAll({
+      limit: 3,
+      order: sequelize.literal('random()'),
+      attributes:['id','image'],
+      where:{role:"STUDENT"}
+    });
+
+    let data = group.map((e) => {
+      return {
+        id:e.id,
+        name: e.name,
+        finished: e.finished,
+        assignCourseId: e.assignCourseId,
+        createdAt: e.createdAt,
+        lessonsCount: e.GroupCourse.Lessons.length,
+        studentCount: e.UserCourses.length,
+        randomUsers
+      };  
+    });
+
+    return res.status(200).json({ success: true, data });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -333,5 +395,6 @@ module.exports = {
   AddUserSkill,
   getUserStaticChart,
   finishGroup,
-  getGroupesForTeacher
+  getGroupesForTeacher,
+  findGroups,
 };

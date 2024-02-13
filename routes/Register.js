@@ -4,6 +4,7 @@ var router = express.Router();
 const controller = require("../controlers/RegisterController");
 
 router.post("/", controller.UserRegistartion);
+router.get("/emailExist/:email", controller.EmailExist);
 router.get("/sendEmail", controller.UserRegistartionSendEmail);
 router.patch("/verification", controller.UserRegistartionVerification);
 
