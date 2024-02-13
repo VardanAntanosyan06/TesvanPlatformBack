@@ -280,7 +280,7 @@ const buy = async (req, res) => {
       where: { UserId: id, GroupCourseId: courseId },
     });
 
-    if(courseBought) return res.status(403).json({success:false});
+    if (courseBought) return res.status(403).json({ success: false });
 
     await UserCourses.create({
       UserId: id,
@@ -289,10 +289,10 @@ const buy = async (req, res) => {
 
     let course = await GroupCourses.findOne({
       where: { id: courseId },
-      include: [{ model: Lesson, as: "lessons" }],
+      include: [{ model: Lesson }],
     });
 
-    course.lessons.forEach((lesson) => {
+    course.Lessons.forEach((lesson) => {
       UserLesson.create({
         UserId: id,
         GroupCourseId: courseId,

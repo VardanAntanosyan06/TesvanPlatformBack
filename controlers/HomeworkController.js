@@ -57,8 +57,6 @@ const open = async (req, res) => {
     if (!homeWork) {
       return res.status(404).json("HomeWork not found");
     }
-
-    let userSocket;
     if (!homeWork.isOpen) {
       await Promise.all(
         userCourses.map(async (user) => {
@@ -75,6 +73,28 @@ const open = async (req, res) => {
                 HomeworkId: homeworkId,
               },
             });
+            let userSocket;
+    userCourses.forEach((user) => {
+      UserHomework.create({
+        UserId: user.UserId,
+        GroupCourseId: courseId,
+        HomeworkId: homeworkId,
+      });
+      Message.create({
+        UserId: user.UserId,
+        title_en: "New Homework",
+        title_ru: "New Homework",
+        title_am: "New Homework",
+        description_en: "You have a new homework!",
+        description_ru: "You have a new homework!",
+        description_am: "You have a new homework!",
+        type: "info",
+      });
+      userSocket = userSockets.get(user.UserId);
+      if (userSocket) {
+        userSocket.emit("new-message", "New Message");
+      }
+    });
           } catch (error) {
             console.error(error);
           }
@@ -102,7 +122,7 @@ const open = async (req, res) => {
     }
     homeWork.isOpen = !homeWork.isOpen;
     await homeWork.save();
-    res.send({ success: true, isOpen: !homeWork.isOpen });
+    res.send({ success: true, isOpen: homeWork.isOpen });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
