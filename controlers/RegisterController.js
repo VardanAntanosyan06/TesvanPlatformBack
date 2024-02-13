@@ -285,7 +285,7 @@ const EmailExist = async(req,res)=>{
 
       const user = await Users.findOne({where:{email}})
 
-      if(user)res.status(403).josn({success:false,message:"This email address is already used"})
+      if(user) return res.status(403).json({success:false,message:"This email address is already used"})
 
       return res.status(200).json({success:true})
   } catch (error) {

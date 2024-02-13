@@ -63,7 +63,6 @@ const open = async (req, res) => {
       await Promise.all(
         userCourses.map(async (user) => {
           try {
-            // Using await to wait for the findOrCreate operation to complete
             await UserHomework.findOrCreate({
               where: {
                 UserId: user.UserId,
@@ -81,6 +80,7 @@ const open = async (req, res) => {
           }
         })
       );
+      homeWork.startDate = new Date().toISOString();
     } else {
       await Promise.all(
         userCourses.map(async (user) => {
@@ -98,6 +98,7 @@ const open = async (req, res) => {
           }
         })
       );
+      homeWork.startDate = null;
     }
     homeWork.isOpen = !homeWork.isOpen;
     await homeWork.save();
@@ -133,6 +134,7 @@ const getHomeworks = async (req, res) => {
               "maxPoints",
               "isOpen",
               "dueDate",
+              "startDate",
             ],
             where: { courseId },
           },
@@ -158,6 +160,7 @@ const getHomeworks = async (req, res) => {
               "maxPoints",
               "isOpen",
               "dueDate",
+              "startDate",
             ],
             where: { courseId },
           },
@@ -185,6 +188,7 @@ const getHomeworks = async (req, res) => {
               "maxPoints",
               "isOpen",
               "dueDate",
+              "startDate",
             ],
             order: [["id", "DESC"]],
           },
@@ -200,6 +204,7 @@ const getHomeworks = async (req, res) => {
         e["description"] = e.Homework.description;
         e["maxPoints"] = e.Homework.maxPoints;
         e["dueDate"] = e.Homework.dueDate;
+        e["startDate"] = e.Homework.startDate;
         delete e.Homework;
         return e;
       });
@@ -217,16 +222,15 @@ const getHomeworks = async (req, res) => {
   }
 };
 
-// add startDate for user homework and course and homeWorkInprogress add in this  
+// add startDate for user homework and course and homeWorkInprogress add in this
 const getHomework = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id: userId, role } = req.user;
     const { language } = req.query;
-    console.log(userId);
     let homework = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
-      attributes: ["points", "status", "answer","feedback"],
+      // attributes: ["id","points", "status", "answer", "feedback","startDate"],
       include: [
         {
           model: Homework,
@@ -237,6 +241,7 @@ const getHomework = async (req, res) => {
             [`description_${language}`, "description"],
             "maxPoints",
             "dueDate",
+            "startDate",
           ],
         },
       ],
@@ -247,7 +252,14 @@ const getHomework = async (req, res) => {
         message: "Homework not found or User doesn't have a homework",
       });
     }
-    // return res.json(homework)
+    // return res.status(403).json({homework})
+    console.log(!homework.startDate,homework.status);
+    if (!homework.startDate) {
+      homework.startDate = new Date().toISOString();
+      homework.status = 1;
+      await homework.save();
+    }
+    
     const Files = await HomeWorkFiles.findAll({
       where: { userId, homeWorkId: homework.Homework.id },
     });
@@ -257,6 +269,8 @@ const getHomework = async (req, res) => {
       status: homework.status,
       answer: homework.answer,
       feedback: homework.feedback,
+      UserStartDate: homework.startDate,
+      startDate: homework.Homework.startDate,
       ...homework.dataValues.Homework.dataValues,
       Files,
     };
@@ -311,7 +325,7 @@ const submitHomework = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
-
+// ///////////////////////////////////////////////////
 const HomeworkInProgress = async (req, res) => {
   try {
     const { id } = req.params;
@@ -324,18 +338,13 @@ const HomeworkInProgress = async (req, res) => {
         message: "Homework not found or User doesn't have a homework",
       });
     }
-
-    if (homework.startDate) return res.status(403).json({ success: false });
-    homework.status = 1;
-    homework.startDate = new Date().toISOString();
-    await homework.save();
     res.json({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
-
+/////////////////////////////////////////////////
 const HomeworkFeedback = async (req, res) => {
   try {
     const { id } = req.params;
@@ -390,6 +399,7 @@ const getHomeWorkForTeacher = async (req, res) => {
         "maxPoints",
         "isOpen",
         "dueDate",
+        "startDate",
       ],
     });
     if (!users) {
@@ -507,3 +517,4 @@ module.exports = {
   getHomeWorkForTeacherForSingleUser,
   deleteFile,
 };
+
