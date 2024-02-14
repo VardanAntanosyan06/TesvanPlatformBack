@@ -41,33 +41,33 @@ const findOne = async (req, res) => {
   }
 };
 
-const findTodays = async (req, res) => {
+const findByDay = async (req, res) => {
   try {
     const day = new Date();
     const { user_id: userId } = req.user;
-
-    const startOfDay = new Date(
-      Date.UTC(
-        day.getUTCFullYear(),
-        day.getUTCMonth(),
-        day.getUTCDate(),
-        0,
-        0,
-        0,
-        0
-      )
-    );
-    const endOfDay = new Date(
-      Date.UTC(
-        day.getUTCFullYear(),
-        day.getUTCMonth(),
-        day.getUTCDate(),
-        23,
-        59,
-        59,
-        999
-      )
-    );
+    const {startOfDay,endOfDay} = req.body;
+    // const startOfDay = new Date(
+    //   Date.UTC(
+    //     day.getUTCFullYear(),
+    //     day.getUTCMonth(),
+    //     day.getUTCDate(),
+    //     0,
+    //     0,
+    //     0,
+    //     0
+    //   )
+    // );
+    // const endOfDay = new Date(
+    //   Date.UTC(
+    //     day.getUTCFullYear(),
+    //     day.getUTCMonth(),
+    //     day.getUTCDate(),
+    //     23,
+    //     59,
+    //     59,
+    //     999
+    //   )
+    // );
     const task = await Calendar.findAll({
       where: {
         createdAt: { [Op.between]: [startOfDay, endOfDay] },
@@ -86,17 +86,19 @@ const findTodays = async (req, res) => {
   }
 };
 
-const findThisYear = async (req, res) => {
+const findByYear = async (req, res) => {
   try {
     const day = new Date();
     const { user_id: userId } = req.user;
+    const {startOfYear,endOfYear} = req.body;
 
-    const startOfYear = new Date(
-      Date.UTC(day.getUTCFullYear(), 0, 1, 0, 0, 0, 0)
-    );
-    const endOfYear = new Date(
-      Date.UTC(day.getUTCFullYear(), 11, 31, 23, 59, 59, 999)
-    );
+    // const startOfYear = new Date(
+    //   Date.UTC(day.getUTCFullYear(), 0, 1, 0, 0, 0, 0)
+    // );
+    // const endOfYear = new Date(
+    //   Date.UTC(day.getUTCFullYear(), 11, 31, 23, 59, 59, 999)
+    // );
+
     const tasks = await Calendar.findAll({
       where: {
         createdAt: { [Op.between]: [startOfYear, endOfYear] },
@@ -115,17 +117,18 @@ const findThisYear = async (req, res) => {
   }
 };
 
-const findThisMonth = async (req, res) => {
+const findByMonth = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
+    const {startOfMonth,endOfMonth} = req.body;
 
-    const day = new Date();
-    const startOfMonth = new Date(
-      Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), 1, 0, 0, 0, 0)
-    );
-    const endOfMonth = new Date(
-      Date.UTC(day.getUTCFullYear(), day.getUTCMonth() + 1, 0, 23, 59, 59, 999)
-    );
+    // const day = new Date();
+    // const startOfMonth = new Date(
+    //   Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), 1, 0, 0, 0, 0)
+    // );
+    // const endOfMonth = new Date(
+    //   Date.UTC(day.getUTCFullYear(), day.getUTCMonth() + 1, 0, 23, 59, 59, 999)
+    // );
     const tasks = await Calendar.findAll({
       where: {
         createdAt: { [Op.between]: [startOfMonth, endOfMonth] },
@@ -222,9 +225,9 @@ const remove = async (req, res) => {
 module.exports = {
   create,
   findOne,
-  findTodays,
-  findThisMonth,
-  findThisYear,
+  findByDay,
+  findByMonth,
+  findByYear,
   findAll,
   remove,
   update,

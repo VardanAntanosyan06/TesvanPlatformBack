@@ -6,9 +6,9 @@ const checkAuth = require("../middleware/checkAuth");
 
 router.post("/create", checkAuth(["TEACHER", "ADMIN"]), controller.create);
 router.get("/findOne/:id", checkAuth(["TEACHER", "ADMIN"]), controller.findOne);
-router.get("/findTodays", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controller.findTodays);
-router.get("/findThisMonth", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controller.findThisMonth);
-router.get("/findThisYear", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controller.findThisYear);
+router.get("/findByDay", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controller.findByDay);
+router.get("/findByMonth", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controller.findByMonth);
+router.get("/findByYear", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controller.findByYear);
 router.get("/findAll", checkAuth(["TEACHER", "ADMIN"]), controller.findAll);
 router.patch("/update", checkAuth(["TEACHER", "ADMIN"]), controller.update);
 router.delete("/remove/:id", checkAuth(["TEACHER", "ADMIN"]), controller.remove);
