@@ -14,7 +14,7 @@ router.get("/findOne/:id", checkAuth(["TEACHER", "ADMIN","STUDENT"]), controller
 router.get("/getUserStaticChart/:groupId", checkAuth(["TEACHER", "ADMIN"]), controller.getUserStaticChart);
 router.get("/findAll", checkAuth(["TEACHER", "ADMIN","STUDENT"]), controller.findAll);
 router.get("/findGroups", checkAuth(["TEACHER", "ADMIN","STUDENT"]), controller.findGroups);
-router.get("/singleUserStstic", checkAuth(["TEACHER", "ADMIN"]), controller.SingleUserStstic);
+router.get("/singleUserStatic", checkAuth(["TEACHER", "ADMIN"]), controller.SingleUserStstic);
 router.get("/getGroupesForTeacher", checkAuth(["TEACHER"]), controller.getGroupesForTeacher);
 
 router.patch("/update/:id", checkAuth(["ADMIN"]), controller.update);
