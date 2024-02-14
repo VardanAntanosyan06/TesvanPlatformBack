@@ -334,7 +334,7 @@ const getUserCourse = async (req, res) => {
   try {
     const { user_id: id } = req.user;
     const { courseId } = req.params;
-    // const { language } = req.query;
+    const { language } = req.query;
 
     if (!id) {
       return res.status(500).json({ message: "User not found" });
@@ -346,6 +346,7 @@ const getUserCourse = async (req, res) => {
         {
           model: GroupCourses,
         },
+        
       ],
     });
 
@@ -353,36 +354,36 @@ const getUserCourse = async (req, res) => {
       return res.status(500).json({ message: "Course not found" });
     }
 
-    // let lessons = await UserLesson.findAll({
-    //   where: { UserId: id, GroupCourseId: courseId },
-    //   attributes: ["points"],
-    //   include: [
-    //     {
-    //       model: Lesson,
-    //       attributes: [
-    //         [`title_${language}`, "title"],
-    //         [`description_${language}`, "description"],
-    //         "maxPoints",
-    //         "courseId",
-    //         "id",
-    //         "number",
-    //       ],
-    //     },
-    //   ],
-    // });
+    let lessons = await UserLesson.findAll({
+      where: { UserId: id, GroupCourseId: courseId },
+      attributes: ["points"],
+      include: [
+        {
+          model: Lesson,
+          attributes: [
+            [`title_${language}`, "title"],
+            [`description_${language}`, "description"],
+            "maxPoints",
+            "courseId",
+            "id",
+            "number",
+          ],
+        },
+      ],
+    });
 
-    // lessons = lessons.map((lesson) => {
-    //   return {
-    //     points: lesson.points,
-    //     ...lesson.dataValues.Lesson.dataValues,
-    //   };
-    // });
+    lessons = lessons.map((lesson) => {
+      return {
+        points: lesson.points,
+        ...lesson.dataValues.Lesson.dataValues,
+      };
+    });
 
     course = {
       totalPoints: course.dataValues.totalPoints,
       takenQuizzes: course.dataValues.takenQuizzes,
       ...course.dataValues.GroupCourse.dataValues,
-      // lessons,
+      lessons,
     };
 
     res.send({ course });

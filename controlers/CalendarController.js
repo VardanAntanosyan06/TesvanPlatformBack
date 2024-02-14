@@ -49,7 +49,7 @@ const findByDay = async (req, res) => {
   try {
     const day = new Date();
     const { user_id: userId } = req.user;
-    const {startOfDay,endOfDay} = req.body;
+    const {startOfDay,endOfDay} = req.query;
     // const startOfDay = new Date(
     //   Date.UTC(
     //     day.getUTCFullYear(),
@@ -72,10 +72,9 @@ const findByDay = async (req, res) => {
     //     999
     //   )
     // );
-    // console.log(startOfDay,endOfDay);
     const task = await Calendar.findAll({
       where: {
-        createdAt: { [Op.between]: ["2024-02-14T00:00:00.000Z", "2024-02-14T23:59:59.999Z"] },
+        start: { [Op.between]: [startOfDay, endOfDay] },
         userId: { [Op.contains]: [userId] },
       },
     });
@@ -95,7 +94,7 @@ const findByYear = async (req, res) => {
   try {
     const day = new Date();
     const { user_id: userId } = req.user;
-    const {startOfYear,endOfYear} = req.body;
+    const {startOfYear,endOfYear} = req.query;
 
     // const startOfYear = new Date(
     //   Date.UTC(day.getUTCFullYear(), 0, 1, 0, 0, 0, 0)
@@ -106,7 +105,7 @@ const findByYear = async (req, res) => {
 
     const tasks = await Calendar.findAll({
       where: {
-        createdAt: { [Op.between]: [startOfYear, endOfYear] },
+        start: { [Op.between]: [startOfYear, endOfYear] },
         userId: { [Op.contains]: [userId] },
       },
     });
@@ -125,9 +124,9 @@ const findByYear = async (req, res) => {
 const findByMonth = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const {startOfMonth,endOfMonth} = req.body;
+    const {startOfMonth,endOfMonth} = req.query;
 
-    // const day = new Date();
+// const day = new Date();
     // const startOfMonth = new Date(
     //   Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), 1, 0, 0, 0, 0)
     // );
@@ -136,7 +135,7 @@ const findByMonth = async (req, res) => {
     // );
     const tasks = await Calendar.findAll({
       where: {
-        createdAt: { [Op.between]: [startOfMonth, endOfMonth] },
+        start: { [Op.between]: [startOfMonth, endOfMonth] },
         userId: { [Op.contains]: [userId] },
       },
     });
@@ -156,7 +155,7 @@ const findByWeek = async (req, res) => {
   try {
     const day = new Date();
     const { user_id: userId } = req.user;
-    const {startOfWeek,endOfWeek} = req.body;
+    const {startOfWeek,endOfWeek} = req.query;
 
     // const startOfYear = new Date(
     //   Date.UTC(day.getUTCFullYear(), 0, 1, 0, 0, 0, 0)
@@ -167,7 +166,7 @@ const findByWeek = async (req, res) => {
 
     const tasks = await Calendar.findAll({
       where: {
-        createdAt: { [Op.between]: [startOfWeek, endOfWeek] },
+        start: { [Op.between]: [startOfWeek, endOfWeek] },
         userId: { [Op.contains]: [userId] },
       },
     });
