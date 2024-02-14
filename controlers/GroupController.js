@@ -223,15 +223,14 @@ const SingleUserStstic = async (req, res) => {
     const { id, userId } = req.query;
 
     const UserInfo = await UserCourses.findOne({
-      where: { groupId: id, userId },
-      attributes: [
-        "personalSkils",
-        "professionalSkils",
-        "certification",
-        "lessons",
-        "homeWork",
-        "quizzes",
-      ],
+      where: { GroupCourseId: id, UserId:userId },
+      // attributes: [
+      //   "personalSkils",
+      //   "professionalSkils",
+      //   "certification",
+      //   "homeWork",
+      //   "quizzes",
+      // ],
     });
 
     if (!UserInfo)
