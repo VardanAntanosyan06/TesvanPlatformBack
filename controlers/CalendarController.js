@@ -3,8 +3,12 @@ const { Op, where } = require("sequelize");
 
 const create = async (req, res) => {
   try {
-    const { title, start, end, description, format, link, type, userId } =
+    let { title, start, end, description, format, link, type, userId } =
       req.body;
+      const { user_id } = req.user;
+
+    userId.push(user_id)  
+    userId.push(5)  
     await Calendar.create({
       title,
       start,
