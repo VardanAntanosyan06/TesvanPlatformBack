@@ -76,7 +76,7 @@ const findOne = async (req, res) => {
       }
     });
 
-    return res.status(200).json({ success: true, groupedUsers });
+    return res.status(200).json({ success: true, group:groupedUsers });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
