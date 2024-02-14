@@ -49,7 +49,7 @@ const findByDay = async (req, res) => {
   try {
     const day = new Date();
     const { user_id: userId } = req.user;
-    const {startOfDay,endOfDay} = req.body;
+    // const {startOfDay,endOfDay} = req.body;
     // const startOfDay = new Date(
     //   Date.UTC(
     //     day.getUTCFullYear(),
@@ -72,9 +72,10 @@ const findByDay = async (req, res) => {
     //     999
     //   )
     // );
+    // console.log(startOfDay,endOfDay);
     const task = await Calendar.findAll({
       where: {
-        createdAt: { [Op.between]: [startOfDay, endOfDay] },
+        createdAt: { [Op.between]: ["2024-02-14T00:00:00.000Z", "2024-02-14T23:59:59.999Z"] },
         userId: { [Op.contains]: [userId] },
       },
     });

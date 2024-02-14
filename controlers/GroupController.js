@@ -225,13 +225,7 @@ const SingleUserStstic = async (req, res) => {
 
     const UserInfo = await UserCourses.findOne({
       where: { GroupCourseId: id, UserId:userId },
-      // attributes: [
-      //   "personalSkils",
-      //   "professionalSkils",
-      //   "certification",
-      //   "homeWork",
-      //   "quizzes",
-      // ],
+     include:{model:Users,attributes:["firstName","lastName","image"]}
     });
 
     if (!UserInfo)
