@@ -9,6 +9,7 @@ require("dotenv").config();
 const swaggerUi = require("swagger-ui-express");
 
 var indexRouter = require("./routes/index");
+const swaggerDocument = require('./swagger.json');
 var groupCoursesRouter = require("./routes/GroupCourses");
 var CommentsRouter = require("./routes/Comments");
 var RegisterRouter = require("./routes/Register");
@@ -23,7 +24,6 @@ var CertifictaesRouter = require("./routes/Certifictaes");
 var UploadFileRouter = require("./routes/UploadFile");
 
 var app = express();
-// const options = './swagger_output.json';
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -44,11 +44,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload({}));
 
 app.use("/", indexRouter);
-app.use(
-  "/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(require("./controlers/swaggeracontroller").swaggerSpec)
-);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
 app.use("/api/v2/courses", groupCoursesRouter);
 app.use("/api/v2/lessons", LessonsRouter);
 app.use("/api/v2/homework", HomeworkRouter);

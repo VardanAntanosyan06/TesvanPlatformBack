@@ -57,7 +57,26 @@ const findOne = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Group not found" });
 
-    return res.status(200).json({ success: true, group });
+    const groupedUsers = {
+      id:group.id,
+      name:group.name,
+      finished:group.finished
+    };
+    group.UserCourses.forEach((userCourse) => {
+      const user = userCourse.User;
+      if (user) {
+        if (!groupedUsers[user.role]) {
+          groupedUsers[user.role] = [];
+        }
+        groupedUsers[user.role].push({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+        });
+      }
+    });
+
+    return res.status(200).json({ success: true, groupedUsers });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
@@ -355,25 +374,26 @@ const findGroups = async (req, res) => {
           model: UserCourses,
         },
       ],
+      order: [["id", "ASC"]],
     });
     const randomUsers = await Users.findAll({
       limit: 3,
-      order: sequelize.literal('random()'),
-      attributes:['id','image'],
-      where:{role:"STUDENT"}
+      order: sequelize.literal("random()"),
+      attributes: ["id", "image"],
+      where: { role: "STUDENT" },
     });
 
     let data = group.map((e) => {
       return {
-        id:e.id,
+        id: e.id,
         name: e.name,
         finished: e.finished,
         assignCourseId: e.assignCourseId,
         createdAt: e.createdAt,
         lessonsCount: e.GroupCourse.Lessons.length,
         studentCount: e.UserCourses.length,
-        randomUsers
-      };  
+        randomUsers,
+      };
     });
 
     return res.status(200).json({ success: true, data });
