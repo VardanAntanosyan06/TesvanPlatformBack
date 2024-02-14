@@ -258,10 +258,10 @@ const AddUserSkill = async (req, res) => {
         .json({ success: false, message: "Skill must be an array" });
 
     if (type === "professional") {
-      User.personalSkils = [...User.personalSkils, ...skill];
+      User.professionalSkils = [...User.professionalSkils, ...skill];
       User.save();
     } else if (type === "personal") {
-      User.professionalSkils = [...User.professionalSkils, ...skill];
+      User.personal = [...User.personal, ...skill];
 
       User.save();
     } else {
