@@ -11,6 +11,10 @@ router.post("/recordUserStatics", checkAuth(["TEACHER","ADMIN","STUDENT"]), cont
 
 
 router.get("/findOne/:id", checkAuth(["TEACHER", "ADMIN","STUDENT"]), controller.findOne);
+router.get("/getStudents", checkAuth(["ADMIN"]),controller.getStudents);
+router.get("/getTeachers", checkAuth(["ADMIN"]), controller.getTeachers);
+
+
 router.get("/getUserStaticChart/:groupId", checkAuth(["TEACHER", "ADMIN"]), controller.getUserStaticChart);
 router.get("/findAll", checkAuth(["TEACHER", "ADMIN","STUDENT"]), controller.findAll);
 router.get("/findGroups", checkAuth(["TEACHER", "ADMIN","STUDENT"]), controller.findGroups);

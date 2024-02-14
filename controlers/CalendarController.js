@@ -49,7 +49,7 @@ const findByDay = async (req, res) => {
   try {
     const day = new Date();
     const { user_id: userId } = req.user;
-    // const {startOfDay,endOfDay} = req.body;
+    const {startOfDay,endOfDay} = req.body;
     // const startOfDay = new Date(
     //   Date.UTC(
     //     day.getUTCFullYear(),

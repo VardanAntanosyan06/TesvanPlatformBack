@@ -47,7 +47,7 @@ const findOne = async (req, res) => {
         attributes: ["id", "UserId"],
         include: {
           model: Users,
-          attributes: ["id","firstName", "lastName", "role","image"],
+          attributes: ["id", "firstName", "lastName", "role", "image"],
         },
       },
     });
@@ -58,9 +58,9 @@ const findOne = async (req, res) => {
         .json({ success: false, message: "Group not found" });
 
     const groupedUsers = {
-      id:group.id,
-      name:group.name,
-      finished:group.finished
+      id: group.id,
+      name: group.name,
+      finished: group.finished,
     };
     group.UserCourses.forEach((userCourse) => {
       const user = userCourse.User;
@@ -69,8 +69,8 @@ const findOne = async (req, res) => {
           groupedUsers[user.role] = [];
         }
         groupedUsers[user.role].push({
-          id:user.id,
-          image:user.image,
+          id: user.id,
+          image: user.image,
           firstName: user.firstName,
           lastName: user.lastName,
           role: user.role,
@@ -78,7 +78,7 @@ const findOne = async (req, res) => {
       }
     });
 
-    return res.status(200).json({ success: true, group:groupedUsers });
+    return res.status(200).json({ success: true, group: groupedUsers });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
@@ -224,8 +224,8 @@ const SingleUserStstic = async (req, res) => {
     const { id, userId } = req.query;
 
     const UserInfo = await UserCourses.findOne({
-      where: { GroupCourseId: id, UserId:userId },
-     include:{model:Users,attributes:["firstName","lastName","image"]}
+      where: { GroupCourseId: id, UserId: userId },
+      include: { model: Users, attributes: ["firstName", "lastName", "image"] },
     });
 
     if (!UserInfo)
@@ -245,7 +245,7 @@ const AddUserSkill = async (req, res) => {
     const { groupId, userId, skill, type } = req.body;
 
     const User = await UserCourses.findOne({
-      where: { GroupCourseId:groupId, UserId:userId },
+      where: { GroupCourseId: groupId, UserId: userId },
     });
     if (!User)
       return res
@@ -398,6 +398,33 @@ const findGroups = async (req, res) => {
   }
 };
 
+const getStudents = async (req, res) => {
+  try {
+    const users = await Users.findAll({
+      where: { role:"STUDENT" },
+      attributes: ["id", "firstName", "lastName", "image"],
+    });
+
+    return res.status(200).json({ success: true, users });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const getTeachers = async (req, res) => {
+  try {
+    const users = await Users.findAll({
+      where: { role:"TEACHER" },
+      attributes: ["id", "firstName", "lastName", "image"],
+    });
+
+    return res.status(200).json({ success: true, users });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
 module.exports = {
   CreateGroup,
   findOne,
@@ -412,4 +439,5 @@ module.exports = {
   finishGroup,
   getGroupesForTeacher,
   findGroups,
+  getStudents,  getTeachers,
 };
