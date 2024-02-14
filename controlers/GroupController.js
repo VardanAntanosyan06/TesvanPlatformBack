@@ -47,7 +47,7 @@ const findOne = async (req, res) => {
         attributes: ["id", "UserId"],
         include: {
           model: Users,
-          attributes: ["firstName", "lastName", "role","image"],
+          attributes: ["id","firstName", "lastName", "role","image"],
         },
       },
     });
@@ -69,6 +69,7 @@ const findOne = async (req, res) => {
           groupedUsers[user.role] = [];
         }
         groupedUsers[user.role].push({
+          id:user.id,
           image:user.image,
           firstName: user.firstName,
           lastName: user.lastName,
