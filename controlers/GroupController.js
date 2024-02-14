@@ -261,7 +261,7 @@ const AddUserSkill = async (req, res) => {
       User.professionalSkils = [...User.professionalSkils, ...skill];
       User.save();
     } else if (type === "personal") {
-      User.personalSkils = [...User.personal, ...skill];
+      User.personalSkils = [...User.personalSkils, ...skill];
 
       User.save();
     } else {
