@@ -251,7 +251,7 @@ const AddUserSkill = async (req, res) => {
     const { groupId, userId, skill, type } = req.body;
 
     const User = await UserCourses.findOne({
-      where: { groupId, userId },
+      where: { GroupCourseId:groupId, UserId:userId },
     });
     if (!User)
       return res
