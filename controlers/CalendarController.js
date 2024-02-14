@@ -147,6 +147,37 @@ const findByMonth = async (req, res) => {
   }
 };
 
+const findByWeek = async (req, res) => {
+  try {
+    const day = new Date();
+    const { user_id: userId } = req.user;
+    const {startOfWeek,endOfWeek} = req.body;
+
+    // const startOfYear = new Date(
+    //   Date.UTC(day.getUTCFullYear(), 0, 1, 0, 0, 0, 0)
+    // );
+    // const endOfYear = new Date(
+    //   Date.UTC(day.getUTCFullYear(), 11, 31, 23, 59, 59, 999)
+    // );
+
+    const tasks = await Calendar.findAll({
+      where: {
+        createdAt: { [Op.between]: [startOfWeek, endOfWeek] },
+        userId: { [Op.contains]: [userId] },
+      },
+    });
+    if (tasks.length < 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "You don't have any tasks" });
+    }
+    return res.status(200).json({ success: true, tasks });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 const findAll = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
@@ -227,6 +258,7 @@ module.exports = {
   findOne,
   findByDay,
   findByMonth,
+  findByWeek,
   findByYear,
   findAll,
   remove,
