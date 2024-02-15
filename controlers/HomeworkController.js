@@ -43,7 +43,6 @@ const create = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
-// add notification
 
 const open = async (req, res) => {
   try {
@@ -58,76 +57,60 @@ const open = async (req, res) => {
       return res.status(404).json("HomeWork not found");
     }
     if (!homeWork.isOpen) {
-      await Promise.all(
-        userCourses.map(async (user) => {
-          try {
-            await UserHomework.findOrCreate({
-              where: {
-                UserId: user.UserId,
-                GroupCourseId: courseId,
-                HomeworkId: homeworkId,
-              },
-              defaults: {
-                UserId: user.UserId,
-                GroupCourseId: courseId,
-                HomeworkId: homeworkId,
-              },
-            });
-            let userSocket;
-    userCourses.forEach((user) => {
-      UserHomework.create({
-        UserId: user.UserId,
-        GroupCourseId: courseId,
-        HomeworkId: homeworkId,
-      });
-      Message.create({
-        UserId: user.UserId,
-        title_en: "New Homework",
-        title_ru: "New Homework",
-        title_am: "New Homework",
-        description_en: "You have a new homework!",
-        description_ru: "You have a new homework!",
-        description_am: "You have a new homework!",
-        type: "info",
-      });
-      userSocket = userSockets.get(user.UserId);
-      if (userSocket) {
-        userSocket.emit("new-message", "New Message");
-      }
-    });
-          } catch (error) {
-            console.error(error);
-          }
-        })
-      );
+      await Promise.all(userCourses.map(async (user) => {
+        await UserHomework.findOrCreate({
+          where: {
+            UserId: user.UserId,
+            GroupCourseId: courseId,
+            HomeworkId: homeworkId,
+          },
+          defaults: {
+            UserId: user.UserId,
+            GroupCourseId: courseId,
+            HomeworkId: homeworkId,
+          },
+        });
+        Message.create({
+          UserId: user.UserId,
+          title_en: "New Homework",
+          title_ru: "New Homework",
+          title_am: "New Homework",
+          description_en: "You have a new homework!",
+          description_ru: "You have a new homework!",
+          description_am: "You have a new homework!",
+          type: "info",
+        });
+        const userSocket = userSockets.get(user.UserId);
+        if (userSocket) {
+          userSocket.emit("new-message", "New Message");
+        }
+      }));
       homeWork.startDate = new Date().toISOString();
     } else {
-      await Promise.all(
-        userCourses.map(async (user) => {
-          try {
-            // Using await to wait for the findOrCreate operation to complete
-            await UserHomework.destroy({
-              where: {
-                UserId: user.UserId,
-                GroupCourseId: courseId,
-                HomeworkId: homeworkId,
-              },
-            });
-          } catch (error) {
-            console.error(error);
-          }
-        })
-      );
+      await Promise.all(userCourses.map(async (user) => {
+        try {
+          await UserHomework.destroy({
+            where: {
+              UserId: user.UserId,
+              GroupCourseId: courseId,
+              HomeworkId: homeworkId,
+            },
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      }));
       homeWork.startDate = null;
     }
     homeWork.isOpen = !homeWork.isOpen;
     await homeWork.save();
     res.send({ success: true, isOpen: homeWork.isOpen });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
+
 
 const getHomeworks = async (req, res) => {
   try {
@@ -242,7 +225,6 @@ const getHomeworks = async (req, res) => {
   }
 };
 
-// add startDate for user homework and course and homeWorkInprogress add in this
 const getHomework = async (req, res) => {
   try {
     const { id } = req.params;

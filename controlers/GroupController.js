@@ -377,7 +377,7 @@ const findGroups = async (req, res) => {
       attributes: ["id", "image"],
       where: { role: "STUDENT" },
     });
-
+    console.log(group,"+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     let data = group.map((e) => {
       return {
         id: e.id,
