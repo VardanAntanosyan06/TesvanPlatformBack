@@ -110,7 +110,8 @@ const getLesson = async (req, res) => {
     }
     // console.log(lesson.points,);
     lesson = {  
-      points: Math.round(lesson.points*100/lesson.Lesson.maxPoints),
+      points:lesson.points,
+      pointsOfPercent: Math.round(lesson.points*100/lesson.Lesson.maxPoints),
       attempt: lesson.attempt,
       ...lesson.dataValues.Lesson.dataValues,
     };
