@@ -344,7 +344,7 @@ const getUserCourses = async (req, res) => {
       });
 
       e["groupCourseId"] = e.GroupCourse.id;
-      e["startDate"] = formattedDate.replace('/','.');
+      e["startDate"] = formattedDate.replace("/", ".");
       e["title"] = e.GroupCourse.CoursesContents[0].title;
       e["description"] = e.GroupCourse.CoursesContents[0].description;
       e["percent"] = 0;
@@ -380,14 +380,18 @@ const getUserCourse = async (req, res) => {
     if (!course) {
       return res.status(500).json({ message: "Course not found" });
     }
-    const allLessons = await Lesson.findAll({ where: { courseId },      attributes: [
-      [`title_${language}`, "title"],
-      [`description_${language}`, "description"],
-      "maxPoints",
-      "courseId",
-      "id",
-      "number",
-    ], });
+    const allLessons = await Lesson.findAll({
+      where: { courseId },
+      attributes: [
+        [`title_${language}`, "title"],
+        [`description_${language}`, "description"],
+        "maxPoints",
+        "courseId",
+        "id",
+        "number",
+      ],
+      order: [["id", "ASC"]],
+    });
     let lessons = await UserLesson.findAll({
       where: { UserId: id, GroupCourseId: courseId },
       attributes: ["points"],
@@ -404,22 +408,22 @@ const getUserCourse = async (req, res) => {
           ],
         },
       ],
+      order: [["id", "ASC"]],
     });
-    
+
     // Map lesson ids from lessons
-    const lessonIds = lessons.map(lesson => lesson.Lesson.id);
-    
+    const lessonIds = lessons.map((lesson) => lesson.Lesson.id);
+
     // Check if each lesson in allLessons is open or not
-    const lessonsWithStatus = allLessons.map(lesson => {
+    const lessonsWithStatus = allLessons.map((lesson) => {
       const isOpen = lessonIds.includes(lesson.id);
       return {
         ...lesson.get(),
         isOpen,
       };
     });
-    
+
     return res.json(lessonsWithStatus);
-    
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });

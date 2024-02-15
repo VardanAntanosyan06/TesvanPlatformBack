@@ -488,10 +488,11 @@ const deleteFile = async (req, res) => {
 const priceHomeWork = async (req, res) => {
   try {
     const { id } = req.params;
+    const {user_id:UserId} = req.user;
     const { points } = req.body;
     let [status] = await UserHomework.update(
       { points },
-      { where: { HomeworkId: id } }
+      { where: { HomeworkId: id,UserId } }
     );
 
     if (status === 0) {
