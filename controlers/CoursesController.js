@@ -380,7 +380,14 @@ const getUserCourse = async (req, res) => {
     if (!course) {
       return res.status(500).json({ message: "Course not found" });
     }
-
+    const allLessons = await Lesson.findAll({ where: { courseId },      attributes: [
+      [`title_${language}`, "title"],
+      [`description_${language}`, "description"],
+      "maxPoints",
+      "courseId",
+      "id",
+      "number",
+    ], });
     let lessons = await UserLesson.findAll({
       where: { UserId: id, GroupCourseId: courseId },
       attributes: ["points"],
@@ -398,22 +405,21 @@ const getUserCourse = async (req, res) => {
         },
       ],
     });
-
-    lessons = lessons.map((lesson) => {
+    
+    // Map lesson ids from lessons
+    const lessonIds = lessons.map(lesson => lesson.Lesson.id);
+    
+    // Check if each lesson in allLessons is open or not
+    const lessonsWithStatus = allLessons.map(lesson => {
+      const isOpen = lessonIds.includes(lesson.id);
       return {
-        points: lesson.points,
-        ...lesson.dataValues.Lesson.dataValues,
+        ...lesson.get(),
+        isOpen,
       };
     });
-
-    course = {
-      totalPoints: course.dataValues.totalPoints,
-      takenQuizzes: course.dataValues.takenQuizzes,
-      ...course.dataValues.GroupCourse.dataValues,
-      lessons,
-    };
-
-    res.send({ course });
+    
+    return res.json(lessonsWithStatus);
+    
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
