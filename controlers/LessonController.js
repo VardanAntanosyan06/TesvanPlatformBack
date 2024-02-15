@@ -73,21 +73,21 @@ const getLesson = async (req, res) => {
             "maxPoints",
           ],
           include: [
-            {
-              model: Quizz,
-              attributes: [
-                [`title_${language}`, "title"],
-                [`description_${language}`, "description"],
-              ],
-              as: "quizz",
-              include: [
-                {
-                  model: Question,
-                  as: "questions",
-                  include: [{ model: Option, as: "options" }],
-                },
-              ],
-            },
+            // {
+            //   model: Quizz,
+            //   attributes: [
+            //     [`title_${language}`, "title"],
+            //     [`description_${language}`, "description"],
+            //   ],
+            //   as: "quizz",
+            //   include: [
+            //     {
+            //       model: Question,
+            //       as: "questions",
+            //       include: [{ model: Option, as: "options" }],
+            //     },
+            //   ],
+            // },
             {
               model: Video,
               as: "video",
@@ -108,9 +108,9 @@ const getLesson = async (req, res) => {
         .status(403)
         .json({ message: "Lesson not found or User doesn't have a lesson" });
     }
-
-    lesson = {
-      points: lesson.points,
+    // console.log(lesson.points,);
+    lesson = {  
+      points: Math.round(lesson.points*100/lesson.Lesson.maxPoints),
       attempt: lesson.attempt,
       ...lesson.dataValues.Lesson.dataValues,
     };
