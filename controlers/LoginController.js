@@ -346,6 +346,30 @@ const changeEmail = async (req, res) => {
   }
 };
 
+const changeUserData = async (req, res) => {
+  try {
+    const data = req.body;
+    const { user_id } = req.user;
+    console.log(user_id);
+
+    if (!data) {
+      return res.status(400).json({ message: "Data is required." });
+    }
+
+    if (typeof data !== 'object' || Object.keys(data).length === 0) {
+      return res.status(400).json({ message: "Invalid data format." });
+    }
+    await Users.update(data, {
+      where: { id: user_id },
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 const authMe = async (req, res) => {
   try {
     const { user_id: id } = req.user;
@@ -374,4 +398,5 @@ module.exports = {
   forgotPassword,
   changeEmail,
   authMe,
+  changeUserData
 };

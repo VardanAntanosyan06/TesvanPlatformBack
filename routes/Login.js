@@ -13,7 +13,7 @@ router.get(
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.authMe
 );
-// router.get("/sendEmail", controller.UserRegistartionSendEmail);
+  router.put("/changeUserData",checkAuth(["STUDENT", "TEACHER"]), controller.changeUserData);
 // router.patch("/verification", controller.UserRegistartionVerification);
 
 module.exports = router;

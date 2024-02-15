@@ -421,7 +421,7 @@ const getUserCourse = async (req, res) => {
         ...lesson.get(),
         isOpen,
       };
-    });
+    }); 
 
     return res.json(lessonsWithStatus);
   } catch (error) {
