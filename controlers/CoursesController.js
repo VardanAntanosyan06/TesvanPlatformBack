@@ -310,20 +310,48 @@ const buy = async (req, res) => {
 const getUserCourses = async (req, res) => {
   try {
     const { user_id: id } = req.user;
+    const { language } = req.query;
     if (!id) {
       return res.status(500).json({ message: "User not found" });
     }
 
-    const courses = await UserCourses.findAll({
+    let courses = await UserCourses.findAll({
       where: { UserId: id },
+      attributes: ["id", ["UserId", "userId"]],
       include: [
         {
           model: GroupCourses,
+          attributes: ["id", "startDate"],
+          include: [
+            {
+              model: CoursesContents,
+              where: { language },
+              attributes: ["title", "description"],
+            },
+          ],
         },
       ],
     });
+    courses = courses.map((e) => {
+      e = e.toJSON();
+      delete e.dataValues;
 
-    res.send({ courses });
+      const formattedDate = new Date(
+        e.GroupCourse.startDate
+      ).toLocaleDateString("am-AM", {
+        month: "2-digit",
+        day: "2-digit",
+      });
+
+      e["groupCourseId"] = e.GroupCourse.id;
+      e["startDate"] = formattedDate.replace('/','.');
+      e["title"] = e.GroupCourse.CoursesContents[0].title;
+      e["description"] = e.GroupCourse.CoursesContents[0].description;
+      e["percent"] = 0;
+      delete e.GroupCourse;
+      return e;
+    });
+    return res.send({ courses });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -346,7 +374,6 @@ const getUserCourse = async (req, res) => {
         {
           model: GroupCourses,
         },
-        
       ],
     });
 
