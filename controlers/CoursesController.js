@@ -380,24 +380,25 @@ const getUserCourse = async (req, res) => {
     if (!course) {
       return res.status(500).json({ message: "Course not found" });
     }
-    const allLessons = await Lesson.findAll({
+    // const allLessons = await Lesson.findAll({
+    //   where: { courseId },
+    //   attributes: [
+    //     [`title_${language}`, "title"],
+    //     [`description_${language}`, "description"],
+    //     "maxPoints",
+    //     "courseId",
+    //     "id",
+    //     "number",
+    //     "isOpen"
+    //   ],
+    //   order: [["id", "ASC"]],
+    // });
+
+    let lessons = await Lesson.findAll({
       where: { courseId },
-      attributes: [
-        [`title_${language}`, "title"],
-        [`description_${language}`, "description"],
-        "maxPoints",
-        "courseId",
-        "id",
-        "number",
-      ],
-      order: [["id", "ASC"]],
-    });
-    let lessons = await UserLesson.findAll({
-      where: { UserId: id, GroupCourseId: courseId },
-      attributes: ["points"],
-      include: [
-        {
-          model: Lesson,
+      // include: [
+        // {
+          // model: ,
           attributes: [
             [`title_${language}`, "title"],
             [`description_${language}`, "description"],
@@ -405,25 +406,26 @@ const getUserCourse = async (req, res) => {
             "courseId",
             "id",
             "number",
+            "isOpen",
           ],
-        },
-      ],
+        // },
+      // ],
       order: [["id", "ASC"]],
     });
 
     // Map lesson ids from lessons
-    const lessonIds = lessons.map((lesson) => lesson.Lesson.id);
+    // const lessonIds = lessons.map((lesson) => lesson.Lesson.id);
 
-    // Check if each lesson in allLessons is open or not
-    const lessonsWithStatus = allLessons.map((lesson) => {
-      const isOpen = lessonIds.includes(lesson.id);
-      return {
-        ...lesson.get(),
-        isOpen,
-      };
-    }); 
+    // // Check if each lesson in allLessons is open or not
+    // const lessonsWithStatus = allLessons.map((lesson) => {
+    //   const isOpen = lessonIds.includes(lesson.id);
+    //   return {
+    //     ...lesson.get(),
+    //     isOpen,
+    //   };
+    // });
 
-    return res.json(lessonsWithStatus);
+    return res.json(lessons);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });

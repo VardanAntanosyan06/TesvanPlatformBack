@@ -349,10 +349,9 @@ const HomeworkInProgress = async (req, res) => {
 /////////////////////////////////////////////////
 const HomeworkFeedback = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { feedback } = req.body;
+    const { id,userId,feedback } = req.body;
     let homework = await UserHomework.findOne({
-      where: { HomeworkId: id },
+      where: { HomeworkId: id,UserId:userId },
     });
 
     if (!homework) {
@@ -487,12 +486,10 @@ const deleteFile = async (req, res) => {
 
 const priceHomeWork = async (req, res) => {
   try {
-    const { id } = req.params;
-    const {user_id:UserId} = req.user;
-    const { points } = req.body;
+    const { points,id,userId } = req.body;
     let [status] = await UserHomework.update(
       { points },
-      { where: { HomeworkId: id,UserId } }
+      { where: { HomeworkId : id,UserId:userId } }
     );
 
     if (status === 0) {

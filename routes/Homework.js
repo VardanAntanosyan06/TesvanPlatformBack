@@ -44,7 +44,7 @@ router.post(
   controller.HomeworkFeedback
 );
 router.patch(
-  "/priceHomeWork/:id",
+  "/priceHomeWork/",
   checkAuth(["TEACHER", "ADMIN"]),
   controller.priceHomeWork
 );

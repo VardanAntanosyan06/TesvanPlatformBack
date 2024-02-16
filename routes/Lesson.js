@@ -19,5 +19,9 @@ router.post(
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.submitQuizz
 );
-
+router.patch(
+  "/openLesson/",
+  checkAuth(["TEACHER", "ADMIN"]),
+  controller.openLesson
+);
 module.exports = router;

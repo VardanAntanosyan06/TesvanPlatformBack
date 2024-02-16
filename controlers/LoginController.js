@@ -1,13 +1,13 @@
-const { Users,UserCourses } = require("../models");
+const { Users, UserCourses } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
 const nodemailer = require("nodemailer");
-const path = require("path")
+const path = require("path");
+const { v4 } = require("uuid");
 const {
   UserRegistartionSendEmail,
 } = require("../controlers/RegisterController");
-
 
 const LoginUsers = async (req, res) => {
   try {
@@ -52,7 +52,7 @@ const sendEmailForForgotPassword = async (req, res) => {
     await User.save();
 
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
+      host: "smtp.gmail.com",
       port: 465,
       secure: true,
       service: "gmail",
@@ -62,7 +62,7 @@ const sendEmailForForgotPassword = async (req, res) => {
       },
     });
     const mailOptions = {
-      from: 't37378844@gmail.com',
+      from: "t37378844@gmail.com",
       to: email,
       subject: "test",
       html: `<!DOCTYPE html>
@@ -235,12 +235,18 @@ const sendEmailForForgotPassword = async (req, res) => {
       attachments: [
         {
           filename: "messageIcon.png",
-          path: path.resolve(__dirname, '..', 'public',"images", 'messageIcon.png'),
+          path: path.resolve(
+            __dirname,
+            "..",
+            "public",
+            "images",
+            "messageIcon.png"
+          ),
           cid: "messageIcon",
         },
         {
           filename: "Frame.png",
-          path: path.resolve(__dirname, '..', 'public',"images", 'Frame.png'),
+          path: path.resolve(__dirname, "..", "public", "images", "Frame.png"),
           cid: "Frame",
         },
       ],
@@ -356,7 +362,7 @@ const changeUserData = async (req, res) => {
       return res.status(400).json({ message: "Data is required." });
     }
 
-    if (typeof data !== 'object' || Object.keys(data).length === 0) {
+    if (typeof data !== "object" || Object.keys(data).length === 0) {
       return res.status(400).json({ message: "Invalid data format." });
     }
     await Users.update(data, {
@@ -370,16 +376,33 @@ const changeUserData = async (req, res) => {
   }
 };
 
+const changeUserImage = async (req, res) => {
+  try {
+    const { file } = req.files;
+    const { user_id } = req.user;
+    const type = file.mimetype.split("/")[1];
+    const fileName = v4() + "." + type;
+    file.mv(path.resolve(__dirname, "..", "static", fileName));
+
+    await Users.update({ image: fileName }, { where: { id: user_id } });
+    return res.json({ url: fileName });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 const authMe = async (req, res) => {
   try {
     const { user_id: id } = req.user;
     const User = await Users.findOne({
       where: { id },
-      include:[{
-        model:UserCourses,
-        attributes:['id'],
-      }
-      ]
+      include: [
+        {
+          model: UserCourses,
+          attributes: ["id"],
+        },
+      ],
     });
     if (!User) {
       return res.send({ succes: false });
@@ -398,5 +421,6 @@ module.exports = {
   forgotPassword,
   changeEmail,
   authMe,
-  changeUserData
+  changeUserData,
+  changeUserImage,
 };

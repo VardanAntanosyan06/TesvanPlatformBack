@@ -13,7 +13,15 @@ router.get(
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.authMe
 );
-  router.put("/changeUserData",checkAuth(["STUDENT", "TEACHER"]), controller.changeUserData);
-// router.patch("/verification", controller.UserRegistartionVerification);
+router.put(
+  "/changeUserData",
+  checkAuth(["STUDENT", "TEACHER"]),
+  controller.changeUserData
+);
+router.patch(
+  "/changeUserImage",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.changeUserImage
+);
 
 module.exports = router;

@@ -5,7 +5,11 @@ const {
   Question,
   Option,
   Video,
+  UserCourses,
+  Message
 } = require("../models");
+const { userSockets } = require("../userSockets");
+
 
 const getLessons = async (req, res) => {
   try {
@@ -169,8 +173,76 @@ const submitQuizz = async (req, res) => {
   }
 };
 
+const openLesson = async (req,res)=>{
+  try {
+       const {id,courseId} = req.body;
+      
+          let userCourses = await UserCourses.findAll({
+            where: { GroupCourseId: courseId },
+          }); 
+          const lesson = await Lesson.findOne({ where: { id } });
+          console.log(userCourses.length,lesson);
+          if (!lesson) {
+            return res.status(404).json("lesson not found");
+          }
+          if (!lesson.isOpen) {
+            await Promise.all(userCourses.map(async (user) => {
+              await UserLesson.findOrCreate({
+                where: {
+                  UserId: user.UserId,
+                  GroupCourseId: courseId,
+                  LessonId: lesson.id,
+                },
+                defaults: {
+                  UserId: user.UserId,
+                  GroupCourseId: courseId,
+                  LessonId: lesson.id,
+                },
+              });
+              Message.create({
+                UserId: user.UserId,
+                title_en: "New Lesson",
+                title_ru: "New Lesson",
+                title_am: "New Lesson",
+                description_en: "You have a new Lesson!",
+                description_ru: "You have a new Lesson!",
+                description_am: "You have a new Lesson!",
+                type: "info",
+              });
+              const userSocket = userSockets.get(user.UserId);
+              if (userSocket) {
+                userSocket.emit("new-message", "New Message");
+              }
+            }));
+          } else {
+            await Promise.all(userCourses.map(async (user) => {
+              try {
+                await UserLesson.destroy({
+                  where: {
+                    UserId: user.UserId,
+                    GroupCourseId: courseId,
+                    LessonId: lesson.id,
+                  },
+                });
+              } catch (error) {
+                console.error(error);
+              }
+            }));
+          }
+
+          lesson.isOpen = !lesson.isOpen
+          lesson.save()
+          return res.send({ success: true });
+          
+      
+  }catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+}
 module.exports = {
   getLessons,
   getLesson,
   submitQuizz,
+  openLesson
 };
