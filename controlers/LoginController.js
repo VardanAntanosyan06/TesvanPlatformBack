@@ -391,7 +391,7 @@ const changeUserImage = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
-
+ 
 const authMe = async (req, res) => {
   try {
     const { user_id: id } = req.user;

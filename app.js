@@ -22,6 +22,7 @@ var MessageRouter = require("./routes/Message");
 var GroupRouter = require("./routes/Group");
 var CertifictaesRouter = require("./routes/Certifictaes");
 var UploadFileRouter = require("./routes/UploadFile");
+var TestQuizz = require("./routes/TestQuizz");
 
 var app = express();
 
@@ -59,6 +60,8 @@ app.use("/api/v2/upload", UploadFileRouter);
 app.use("/api/v2/Calendar", CalendarRouter);
 app.use("/api/v2/Group",GroupRouter)
 app.use("/api/v2/Certifictaes",CertifictaesRouter)
+app.use("/api/v2/TestQuizz",TestQuizz)
+
 
 app.use(require("express-status-monitor")());
 // catch 404 and forward to error handler

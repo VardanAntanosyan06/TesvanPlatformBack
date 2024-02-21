@@ -112,7 +112,7 @@ const getLesson = async (req, res) => {
         .status(403)
         .json({ message: "Lesson not found or User doesn't have a lesson" });
     }
-    // console.log(lesson.points,);
+
     lesson = {  
       points:lesson.points,
       pointsOfPercent: Math.round(lesson.points*100/lesson.Lesson.maxPoints),

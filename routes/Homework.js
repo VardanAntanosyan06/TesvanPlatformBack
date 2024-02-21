@@ -38,8 +38,8 @@ router.post(
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.HomeworkInProgress
 );
-router.post(
-  "/HomeworkFeedback/:id",
+router.patch(
+  "/HomeworkFeedback/",
   checkAuth(["TEACHER", "ADMIN"]),
   controller.HomeworkFeedback
 );
