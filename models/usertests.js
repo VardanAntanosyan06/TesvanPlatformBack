@@ -25,7 +25,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   const Tests = sequelize.define("Tests")
+  const Users = sequelize.define("Users")
 
   UserTests.belongsTo(Tests,{foreignKey:'testId'})
+  UserTests.belongsTo(Users,{foreignKey:'userId'})
+
   return UserTests;
 };

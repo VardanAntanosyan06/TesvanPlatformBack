@@ -29,11 +29,11 @@ router.get(
   checkAuth(["STUDENT","TEACHER","ADMIN"]),
   controller.getUserTests
 );
-// router.post(
-//   "/submitHomework/:id",
-//   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-//   controller.submitHomework
-// );
+router.get(
+  "/getUsers",
+  checkAuth(["TEACHER", "ADMIN"]),
+  controller.getUsers
+);
 // router.post(
 //   "/HomeworkInProgress/:id",
 //   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),

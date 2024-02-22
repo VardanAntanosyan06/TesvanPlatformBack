@@ -3,7 +3,7 @@ const {
   TestsQuizz,
   TestsQuizzOptions,
   UserAnswersTests,
-  UserTests,
+  UserTests,Users
 } = require("../models");
 
 const createTest = async (req, res) => {
@@ -39,8 +39,8 @@ const createQuizz = async (req, res) => {
   try {
     const {
       title,
-      motivation,
-      assign,
+      description,
+      courseId,
       language,
       type,
       time,
@@ -50,8 +50,8 @@ const createQuizz = async (req, res) => {
 
     let { id: testId } = await Tests.create({
       title,
-      description: motivation,
-      courseId: assign,
+      description,
+      courseId,
       language,
       type,
       time,
@@ -59,15 +59,15 @@ const createQuizz = async (req, res) => {
     });
     questions.map((e) => {
       TestsQuizz.create({
-        question: e.title,
+        question: e.question,
         testId,
         language,
       }).then((data) => {
-        e.answers.map((i) => {
+        e.options.map((i) => {
           TestsQuizzOptions.create({
             questionId: data.id,
             option: i.option,
-            isCorrect: i.isTrue,
+            isCorrect: i.isCorrect,
           });
         });
       });
@@ -199,6 +199,32 @@ const getUserTests = async (req, res) => {
   }
 };
 
+const getUsers = async (req, res) => {
+  try {
+    // const { user_id: userId } = req.user;
+
+    const tests = await UserTests.findAll({ 
+      // where: { userId },
+      attributes:['testId','status','passDate','point'],
+      include:[{
+        model:Tests,
+        attributes:['title','type','description','language']
+      }],
+      include:[{
+        model:Users,
+        attributes:['firstName','lastName','image']
+      }]
+    });
+
+
+    return res.status(200).json({ success: true, tests });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+
 const findCourses = async (req, res) => {
   try {
     // const courses = await
@@ -237,5 +263,6 @@ module.exports = {
   findTest,
   submitQuizz,
   finishCourse,
-  getUserTests
+  getUserTests,
+  getUsers
 };
