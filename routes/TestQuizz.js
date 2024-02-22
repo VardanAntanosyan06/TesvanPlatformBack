@@ -13,21 +13,22 @@ router.get(
   controller.findTest
 );
 
-// router.get(
-//   "/getHomework/:id",
-//   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-//   controller.getHomework
-// );
-// router.get(
-//   "/getHomeworkForTeacher/:id",
-//   checkAuth(["TEACHER","ADMIN"]),
-//   controller.getHomeWorkForTeacher
-// );
-// router.get(
-//   "/getHomeWorkForTeacherForSingleUser",
-//   checkAuth(["TEACHER","ADMIN"]),
-//   controller.getHomeWorkForTeacherForSingleUser
-// );
+router.post(
+  "/submit/",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.submitQuizz
+);
+
+router.post(
+  "/finishCourse/:testId",
+  checkAuth(["STUDENT","TEACHER","ADMIN"]),
+  controller.finishCourse
+);
+router.get(
+  "/getUserTests",
+  checkAuth(["STUDENT","TEACHER","ADMIN"]),
+  controller.getUserTests
+);
 // router.post(
 //   "/submitHomework/:id",
 //   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
