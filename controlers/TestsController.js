@@ -78,6 +78,13 @@ const findTest = async (req, res) => {
   }
 };
 
+const findCourses = async(req,res)=>{
+  try {
+    // const courses = await 
+  } catch (error) {
+    
+  }
+}
 const findAll = async (req, res) => {
   try {
     const task = await Model.findAll({ where: {} });

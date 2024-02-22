@@ -259,7 +259,7 @@ const UserRegistartionSendEmail = async (req, res) => {
       attachments: [
         {
           filename: "messageIcon.png",
-          path: path.resolve(__dirname, '..', 'public',"images", 'messageIcon.png'),
+          path: path.resolve(__dirname, '..', 'pu blic',"images", 'messageIcon.png'),
           cid: "messageIcon",
         },
         {

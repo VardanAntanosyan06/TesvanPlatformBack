@@ -15,7 +15,7 @@ const CircularJSON = require("circular-json");
 
 const moment = require("moment");
 
-const getAllCourses = async (req, res) => {
+const  getAllCourses = async (req, res) => {
   try {
     const { language } = req.query;
     let months = "months";
@@ -69,6 +69,43 @@ const getAllCourses = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
+
+const getCourseTitles = async(req,res)=>{
+  try {
+    const { language } = req.query;
+    let months = "months";
+    let days = "days";
+
+    if (!["en", "ru", "am"].includes(language)) {
+      return res
+        .status(403)
+        .json({ message: "The language must be am, ru, or en." });
+    }
+
+    let Courses = await GroupCourses.findAll({
+      include: [
+        {
+          model: CoursesContents,
+          where: { language },
+          attributes: ["title"]
+        },
+      ],
+      order: [["bought", "DESC"]],
+      attributes:["id"]
+    });
+
+    Courses = Courses.map(item => {
+      return {
+          id: item.id,
+          title: item.CoursesContents[0].title
+      };
+  });
+    return res.status(200).json(Courses)
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+} 
 
 const getCoursesByFilter = async (req, res) => {
   try {
@@ -440,4 +477,5 @@ module.exports = {
   buy,
   getUserCourses,
   getUserCourse,
+  getCourseTitles
 };
