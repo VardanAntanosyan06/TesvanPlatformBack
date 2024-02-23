@@ -1,4 +1,4 @@
-const { GroupCourses } = require("../models");
+const { GroupCourses,Tests,UserTests } = require("../models");
 const { CoursesContents } = require("../models");
 const { UserCourses } = require("../models");
 const { Levels } = require("../models");
@@ -15,7 +15,7 @@ const CircularJSON = require("circular-json");
 
 const moment = require("moment");
 
-const  getAllCourses = async (req, res) => {
+const getAllCourses = async (req, res) => {
   try {
     const { language } = req.query;
     let months = "months";
@@ -70,7 +70,7 @@ const  getAllCourses = async (req, res) => {
   }
 };
 
-const getCourseTitles = async(req,res)=>{
+const getCourseTitles = async (req, res) => {
   try {
     const { language } = req.query;
     let months = "months";
@@ -87,25 +87,25 @@ const getCourseTitles = async(req,res)=>{
         {
           model: CoursesContents,
           where: { language },
-          attributes: ["title"]
+          attributes: ["title"],
         },
       ],
       order: [["bought", "DESC"]],
-      attributes:["id"]
+      attributes: ["id"],
     });
 
-    Courses = Courses.map(item => {
+    Courses = Courses.map((item) => {
       return {
-          id: item.id,
-          title: item.CoursesContents[0].title
+        id: item.id,
+        title: item.CoursesContents[0].title,
       };
-  });
-    return res.status(200).json(Courses)
+    });
+    return res.status(200).json(Courses);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
-} 
+};
 
 const getCoursesByFilter = async (req, res) => {
   try {
@@ -344,6 +344,31 @@ const buy = async (req, res) => {
   }
 };
 
+const createTest = async (req, res) => {
+  try {
+    const { user_id:userId } = req.user;
+    const { courseId } = req.body;
+    
+    const tests = await Tests.findAll({where:{courseId}})
+
+    tests.map((e)=>{
+      UserTests.findOrCreate({
+        where:{userId,testId:e.id},
+        defaults:{
+          userId,                                                                                 
+          testId:e.id,
+          status:"not passed",
+          point:0          
+        }})
+      })
+
+      return res.status(200).json({success:true})
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 const getUserCourses = async (req, res) => {
   try {
     const { user_id: id } = req.user;
@@ -434,18 +459,18 @@ const getUserCourse = async (req, res) => {
     let lessons = await Lesson.findAll({
       where: { courseId },
       // include: [
-        // {
-          // model: ,
-          attributes: [
-            [`title_${language}`, "title"],
-            [`description_${language}`, "description"],
-            "maxPoints",
-            "courseId",
-            "id",
-            "number",
-            "isOpen",
-          ],
-        // },
+      // {
+      // model: ,
+      attributes: [
+        [`title_${language}`, "title"],
+        [`description_${language}`, "description"],
+        "maxPoints",
+        "courseId",
+        "id",
+        "number",
+        "isOpen",
+      ],
+      // },
       // ],
       order: [["id", "ASC"]],
     });
@@ -477,5 +502,6 @@ module.exports = {
   buy,
   getUserCourses,
   getUserCourse,
-  getCourseTitles
+  getCourseTitles,
+  createTest
 };

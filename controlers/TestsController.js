@@ -165,11 +165,11 @@ const finishCourse = async (req, res) => {
     const [status,data] = await UserTests.findOrCreate({
       where:{userId,testId},
       defaults:{
-      userId,                                                                                 
-      testId,
-      status:point>30?"passed":"not passed",
-      passDate: new Date().toISOString(),
-      point               
+        userId,                                                                                 
+        testId,
+        status:point>30?"passed":"not passed",
+        passDate: new Date().toISOString(),
+        point               
     }})
     return res.json({point:status.point+"%",correctAnswers:correctAnswers.length-new Set(correctAnswers).size});
   } catch (error) {
@@ -191,7 +191,6 @@ const getUserTests = async (req, res) => {
       }]
     });
 
-
     return res.status(200).json({ success: true, tests });
   } catch (error) {
     console.log(error.message);
@@ -210,6 +209,7 @@ const getUsers = async (req, res) => {
         model:Tests,
         attributes:['title','type','description','language']
       }],
+
       include:[{
         model:Users,
         attributes:['firstName','lastName','image']
@@ -223,7 +223,6 @@ const getUsers = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
-
 
 const findCourses = async (req, res) => {
   try {

@@ -22,4 +22,9 @@ router.get(
   controller.getUserCourse
 );
 
+router.post(
+  "/createTest/",
+  checkAuth(["STUDENT"]),
+  controller.createTest
+);
 module.exports = router;
