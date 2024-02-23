@@ -90,7 +90,7 @@ const getCourseTitles = async (req, res) => {
           attributes: ["title"],
         },
       ],
-      order: [["bought", "DESC"]],
+      order: [["id", "ASC"]],
       attributes: ["id"],
     });
 
