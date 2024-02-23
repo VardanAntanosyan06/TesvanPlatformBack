@@ -3,7 +3,8 @@ const {
   TestsQuizz,
   TestsQuizzOptions,
   UserAnswersTests,
-  UserTests,Users
+  UserTests,
+  Users,
 } = require("../models");
 
 const createTest = async (req, res) => {
@@ -83,18 +84,20 @@ const createQuizz = async (req, res) => {
 const findTest = async (req, res) => {
   try {
     const { id } = req.params;
-    const {testLanguage} = req.query;
-
+    const { testLanguage } = req.query;
 
     const test = await Tests.findOne({
-      where: { id,language:testLanguage },
+      where: { id, language: testLanguage },
       include: [{ model: TestsQuizz, include: [TestsQuizzOptions] }],
     });
 
     if (!test)
       return res
         .status(403)
-        .json({ success: false, message: `with ID ${id} or language ${testLangua} Test not found` });
+        .json({
+          success: false,
+          message: `with ID ${id} or language ${testLangua} Test not found`,
+        });
 
     return res.status(200).json({ success: true, test });
   } catch (error) {
@@ -109,6 +112,10 @@ const submitQuizz = async (req, res) => {
 
     const { testId, questionId, optionId } = req.body;
 
+    await UserAnswersTests.destroy({
+      where: { userId, testId, questionId },
+    });
+    
     await UserAnswersTests.create({
       userId,
       testId,
@@ -156,22 +163,31 @@ const finishCourse = async (req, res) => {
       },
       attributes: ["optionId"],
       order: [["id", "ASC"]],
-    })
-    userAnswers.map((e)=>{correctAnswers.push(e.optionId)})
-    
-    const point = Math.round((correctAnswers.length-new Set(correctAnswers).size)/Math.ceil(correctAnswers.length/2)*100);
+    });
+    userAnswers.map((e) => {
+      correctAnswers.push(e.optionId);
+    });
 
+    const point = Math.round(
+      ((correctAnswers.length - new Set(correctAnswers).size) /
+        Math.ceil(correctAnswers.length / 2)) *
+        100
+    );
 
-    const [status,data] = await UserTests.findOrCreate({
-      where:{userId,testId},
-      defaults:{
-        userId,                                                                                 
-        testId,
-        status:point>30?"passed":"not passed",
-        passDate: new Date().toISOString(),
-        point               
-    }})
-    return res.json({point:status.point+"%",correctAnswers:correctAnswers.length-new Set(correctAnswers).size});
+    const data = await UserTests.findOne({
+      where: { userId, testId },
+    });
+
+    data.status = point > 30 ? "passed" : "not passed",
+    data.passDate =  new Date().toISOString(),
+    data.point = point,
+    await data.save();
+
+    return res.json({
+      point,
+      correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
+    });
+
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
@@ -182,13 +198,16 @@ const getUserTests = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
-    const tests = await UserTests.findAll({ 
+    const tests = await UserTests.findAll({
       where: { userId },
-      attributes:['testId','status','passDate','point'],
-      include:[{
-        model:Tests,
-        attributes:['title','type','description','language']
-      }]
+      attributes: ["testId", "status", "passDate", "point"],
+
+      include: [
+        {
+          model: Tests,
+          attributes: ["title", "type", "description", "language"],
+        },
+      ],
     });
 
     return res.status(200).json({ success: true, tests });
@@ -202,20 +221,23 @@ const getUsers = async (req, res) => {
   try {
     // const { user_id: userId } = req.user;
 
-    const tests = await UserTests.findAll({ 
+    const tests = await UserTests.findAll({
       // where: { userId },
-      attributes:['testId','status','passDate','point'],
-      include:[{
-        model:Tests,
-        attributes:['title','type','description','language']
-      }],
+      attributes: ["testId", "status", "passDate", "point"],
+      include: [
+        {
+          model: Tests,
+          attributes: ["title", "type", "description", "language"],
+        },
+      ],
 
-      include:[{
-        model:Users,
-        attributes:['firstName','lastName','image']
-      }]
+      include: [
+        {
+          model: Users,
+          attributes: ["firstName", "lastName", "image"],
+        },
+      ],
     });
-
 
     return res.status(200).json({ success: true, tests });
   } catch (error) {
@@ -263,5 +285,5 @@ module.exports = {
   submitQuizz,
   finishCourse,
   getUserTests,
-  getUsers
+  getUsers,
 };
