@@ -8,6 +8,8 @@ router.get("/getAll", controller.getAllCourses);
 router.get("/getCourseTitles", controller.getCourseTitles);
 
 router.get("/getByFilter", controller.getCoursesByFilter);
+router.post("/createCourse",checkAuth(["TEACHER", "ADMIN"]),controller.createCourse);
+
 router.get("/getOne/:id", controller.getOne);
 router.get("/like/:courseId", checkAuth(["STUDENT"]), controller.like);
 router.get("/buy/:courseId", checkAuth(["STUDENT"]), controller.buy);

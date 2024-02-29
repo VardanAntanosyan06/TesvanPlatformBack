@@ -1,4 +1,4 @@
-const { GroupCourses,Tests,UserTests } = require("../models");
+const { GroupCourses, Tests, UserTests,CoursesPerLessons } = require("../models");
 const { CoursesContents } = require("../models");
 const { UserCourses } = require("../models");
 const { Levels } = require("../models");
@@ -346,23 +346,24 @@ const buy = async (req, res) => {
 
 const createTest = async (req, res) => {
   try {
-    const { user_id:userId } = req.user;
+    const { user_id: userId } = req.user;
     const { courseId } = req.body;
-    
-    const tests = await Tests.findAll({where:{courseId}})
 
-    tests.map((e)=>{
+    const tests = await Tests.findAll({ where: { courseId } });
+
+    tests.map((e) => {
       UserTests.findOrCreate({
-        where:{userId,testId:e.id},
-        defaults:{
-          userId,                                                                                 
-          testId:e.id,
-          status:"not passed",
-          point:0          
-        }})
-      })
+        where: { userId, testId: e.id },
+        defaults: {
+          userId,
+          testId: e.id,
+          status: "not passed",
+          point: 0,
+        },
+      });
+    });
 
-      return res.status(200).json({success:true})
+    return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -494,6 +495,49 @@ const getUserCourse = async (req, res) => {
   }
 };
 
+const createCourse = async (req, res) => {
+  try {
+    const { img,language,
+      type,
+      title,
+      description,
+      courseType,
+      lessonType,
+      whyThisCourse,
+      level,
+      levelDescriptions,
+      lessons
+     } = req.body;
+
+    const {
+      id: courseId} = await GroupCourses.create({ img });
+
+    await CourseProgram.create({
+      courseId,
+      language,
+      type,
+      title,
+      description,
+      courseType,
+      lessonType,
+      whyThisCourse,
+      level,
+      levelDescriptions,
+    });
+
+    lessons.map((e)=>{
+      CoursesPerLessons.create({
+      courseId,
+      lessonId: e
+    })
+  })
+  res.status(200).json({success:true})
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 module.exports = {
   getAllCourses,
   getCoursesByFilter,
@@ -503,5 +547,6 @@ module.exports = {
   getUserCourses,
   getUserCourse,
   getCourseTitles,
-  createTest
+  createTest,
+  createCourse
 };

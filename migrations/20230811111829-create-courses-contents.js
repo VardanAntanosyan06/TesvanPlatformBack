@@ -27,9 +27,6 @@ module.exports = {
       lessonType: {
         type: Sequelize.STRING,
       },
-      lessonsCount: {
-        type: Sequelize.INTEGER,
-      },
       whyThisCourse: {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },
@@ -41,10 +38,7 @@ module.exports = {
       },
       levelDescriptions: {
         type: Sequelize.ARRAY(Sequelize.STRING),
-      },
-      price: {
-        type: Sequelize.INTEGER,
-      },
+      }
     });
   },
 

@@ -1,6 +1,6 @@
 const Quizzes = [
   {
-    lessonId: 1,
+    
     title_en: "Lorem ipsum",
     description_en: "Lorem ipsum",
     title_ru: "Lorem ipsum",

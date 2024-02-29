@@ -15,6 +15,12 @@ router.get(
   controller.getLesson
 );
 router.post(
+  "/createLesson",
+  checkAuth(["TEACHER", "ADMIN"]),
+  controller.createLesson
+);
+
+router.post(
   "/submitQuizz/:id",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.submitQuizz

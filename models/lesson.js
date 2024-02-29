@@ -13,15 +13,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Lesson.init(
     {
-      courseId: DataTypes.INTEGER,
       title_en: DataTypes.STRING,
       description_en: DataTypes.TEXT("long"),
       title_ru: DataTypes.STRING,
       description_ru: DataTypes.TEXT("long"),
       title_am: DataTypes.STRING,
       description_am: DataTypes.TEXT("long"),
-      number: DataTypes.INTEGER,
-      isOpen:DataTypes.BOOLEAN,
       maxPoints: DataTypes.INTEGER,
     },
     {

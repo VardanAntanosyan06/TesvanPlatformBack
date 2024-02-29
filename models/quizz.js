@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Quizz.init(
     {
-      lessonId: DataTypes.INTEGER,
       title_en: DataTypes.STRING,
       description_en: DataTypes.TEXT("long"),
       title_ru: DataTypes.STRING,

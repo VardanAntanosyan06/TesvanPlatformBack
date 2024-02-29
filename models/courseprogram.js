@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Language must be en,ru  or am",
         },
       },
-      day: DataTypes.INTEGER,
       title: DataTypes.STRING,
       description: DataTypes.TEXT("long"),
     },

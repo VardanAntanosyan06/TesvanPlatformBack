@@ -15,9 +15,6 @@ module.exports = {
       language: {
         type: Sequelize.STRING,
       },
-      day: {
-        type: Sequelize.INTEGER,
-      },
       title: {
         type: Sequelize.STRING,
       },

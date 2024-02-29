@@ -1,29 +1,31 @@
-"use strict";
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("GroupCourses", {
+    await queryInterface.createTable('CoursesPerLessons', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
-      img: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      courseId: {
+        type: Sequelize.INTEGER
+      },
+      lessonId: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("GroupCourses");
-  },
+    await queryInterface.dropTable('CoursesPerLessons');
+  }
 };

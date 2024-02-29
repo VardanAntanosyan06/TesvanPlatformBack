@@ -9,22 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      courseId: Sequelize.INTEGER,
       title_en: { type: Sequelize.STRING },
       description_en: { type: Sequelize.TEXT("long") },
       title_ru: { type: Sequelize.STRING },
       description_ru: { type: Sequelize.TEXT("long") },
       title_am: { type: Sequelize.STRING },
       description_am: { type: Sequelize.TEXT("long") },
-      number: {
-        type: Sequelize.INTEGER,
-      },
       maxPoints: {
         type: Sequelize.INTEGER,
-      },
-      isOpen:{
-        type:Sequelize.BOOLEAN,
-        defaultValue:false
       },
       createdAt: {
         allowNull: false,

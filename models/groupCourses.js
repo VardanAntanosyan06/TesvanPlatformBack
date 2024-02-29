@@ -6,15 +6,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   GroupCourses.init(
     {
-      bought: DataTypes.INTEGER,
-      startDate: DataTypes.DATE,
       img: DataTypes.STRING,
-      sale: DataTypes.INTEGER,
-      trainers: DataTypes.ARRAY(DataTypes.INTEGER),
-      maxPoints: DataTypes.INTEGER,
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
+
       },
       updatedAt: {
         allowNull: false,
