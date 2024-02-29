@@ -55,6 +55,27 @@ const getLessons = async (req, res) => {
   }
 };
 
+const getLessonTitles = async (req, res) => {
+  try {
+    const {language} = req.query;
+
+    let lessons = await Lesson.findAll({
+      attributes: ["id", ["title_en","title"]],
+    });
+
+    if (!lessons.length) {
+      return res.status(403).json({
+        message: "Lessons not found",
+      });
+    }
+
+    return res.send(lessons);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 const getLesson = async (req, res) => {
   try {
     const { id } = req.params;
@@ -246,26 +267,22 @@ const openLesson = async (req, res) => {
 
 const createLesson = async (req, res) => {
   try {
-    const {
-      title_en,
-      description_en,
-      maxPoints,
-    } = req.body;
+    const { title_en, description_en, maxPoints } = req.body;
 
     await Lesson.create({ title_en, description_en, maxPoints });
 
-    return res.status(200).json({success:true})
+    return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
-
 module.exports = {
   getLessons,
   getLesson,
+  getLessonTitles,
   submitQuizz,
   openLesson,
-  createLesson
+  createLesson,
 };

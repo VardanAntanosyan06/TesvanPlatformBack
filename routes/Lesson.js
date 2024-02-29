@@ -10,6 +10,10 @@ router.get(
   controller.getLessons
 );
 router.get(
+  "/getLessonTitles",
+  controller.getLessonTitles
+);
+router.get(
   "/getLesson/:id",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getLesson
