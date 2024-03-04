@@ -531,9 +531,9 @@ const getCoursesByFilter = async (req, res) => {
         },
       ],
       // order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
-      attributes: ["id", ["name", "title"]],
+      attributes: ["id", ["name", "title"],"startDate","endDate","price","sale"],
     });
-
+    
     Courses = Courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
@@ -552,9 +552,9 @@ const getCoursesByFilter = async (req, res) => {
           : moment().diff(new Date().toISOString(), "days") +
             " " +
             days[language]),
-        (e.price = 75);
+        (e.price = e.GroupCourse.CoursesContents[0].price);
       (e.saledValue =
-        e.price > 0 ? e.price - Math.round(e.price * 10) / 100 : e.price),
+        e.price > 0 ? e.price - Math.round(e.price * e.GroupCourse.CoursesContents[0].sale) / 100 : e.price),
         (e.bought = 100);
 
       delete e.GroupCourse;
@@ -563,7 +563,7 @@ const getCoursesByFilter = async (req, res) => {
 
     return res.status(200).json({ Courses });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };

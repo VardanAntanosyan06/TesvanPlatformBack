@@ -62,7 +62,7 @@ app.use("/api/v2/Calendar", CalendarRouter);
 app.use("/api/v2/Group",GroupRouter)
 app.use("/api/v2/Certifictaes",CertifictaesRouter)
 app.use("/api/v2/TestQuizz",TestQuizz)
-app.use("/api/v2/QuizzRouter",QuizzRouter)
+app.use("/api/v2/Quizz",QuizzRouter)
 
 app.use(require("express-status-monitor")());
 // catch 404 and forward to error handler
