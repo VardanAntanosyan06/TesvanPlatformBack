@@ -19,8 +19,9 @@ const { Lesson } = require("../models");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 const CircularJSON = require("circular-json");
-
+const {v4} = require("uuid")
 const moment = require("moment");
+const path = require("path")
 
 const getAllCourses = async (req, res) => {
   try {
@@ -92,7 +93,7 @@ const getCourseTitles = async (req, res) => {
     let Courses = await GroupCourses.findAll({
       include: [
         {
-          model: CoursesContents,
+          model: CourseProgram,
           where: { language },
           attributes: ["title"],
         },
@@ -100,11 +101,10 @@ const getCourseTitles = async (req, res) => {
       order: [["id", "ASC"]],
       attributes: ["id"],
     });
-
     Courses = Courses.map((item) => {
       return {
         id: item.id,
-        title: item.CoursesContents[0].title,
+        title: item.CoursePrograms[0].title,
       };
     });
     return res.status(200).json(Courses);
@@ -134,10 +134,13 @@ const getOne = async (req, res) => {
     const lessonsCount = await CoursesPerLessons.count({
       where: { courseId: id },
     });
-    const duration = moment(groups.endDate).diff(moment(groups.startDate), 'days')
+    const duration = moment(groups.endDate).diff(
+      moment(groups.startDate),
+      "days"
+    );
 
     const trainers = await Trainer.findAll({
-      where: {courseId:id},
+      where: { courseId: id },
       attributes: ["fullName", "img", "profession"],
     });
 
@@ -146,8 +149,9 @@ const getOne = async (req, res) => {
       startDate: groups.startDate,
       duration,
       lessonsCount,
-      trainers:trainers.dataValues
+      trainers: trainers,
     };
+    console.log(trainers.length);
     res.send(course);
   } catch (error) {
     console.log(error);
@@ -377,8 +381,7 @@ const getUserCourse = async (req, res) => {
 
 const createCourse = async (req, res) => {
   try {
-    const {
-      img,
+    let {
       language,
       title,
       description,
@@ -388,11 +391,19 @@ const createCourse = async (req, res) => {
       level,
       levelDescriptions,
       lessons,
-      trainers,
+      trainers
     } = req.body;
+    
+    let {img,trainersImages} = req.files;
 
-    const { id: courseId } = await GroupCourses.create({ img });
-
+    const imgType = img.mimetype.split("/")[1];
+    const imgFileName = v4() + "." + imgType;
+    img.mv(path.resolve(__dirname, "..", "static", imgFileName));
+    const { id: courseId } = await GroupCourses.create({ img:imgFileName });
+    
+    trainers = JSON.parse(trainers)
+    if (!Array.isArray(lessons)) lessons = [lessons];
+    if(!Array.isArray(trainersImages))trainersImages = [trainersImages] 
     await CourseProgram.create({
       courseId,
       language,
@@ -411,13 +422,17 @@ const createCourse = async (req, res) => {
         lessonId: e,
       });
     });
-    trainers.map((e) => {
+    trainers.map((e,i)=>{
+      const type = trainersImages[i].mimetype.split("/")[1];
+      const fileName = v4() + "." + type;
+      trainersImages[i].mv(path.resolve(__dirname, "..", "static", fileName));
+
       Trainer.create({
         fullName: e.fullName,
-        img: e.img,
+        img: fileName,
         profession: e.profession,
-        courseId
-      });
+        courseId,
+      })
     });
     res.status(200).json({ success: true });
   } catch (error) {
