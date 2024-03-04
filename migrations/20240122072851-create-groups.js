@@ -18,9 +18,21 @@ module.exports = {
       groupeKey: {
         type: Sequelize.STRING,
       },
-      finished:{
-        type:Sequelize.BOOLEAN,
-        defaultValue:false
+      finished: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      startDate: {
+        type: Sequelize.DATE,
+      },
+      endDate: {
+        type: Sequelize.DATE,
+      },
+      price: {
+        type: Sequelize.INTEGER,
+      },
+      sale: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,

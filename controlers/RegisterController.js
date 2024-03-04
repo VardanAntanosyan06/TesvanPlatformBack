@@ -151,7 +151,7 @@ const UserRegistartionSendEmail = async (req, res) => {
                 You've entered ${email} as the email address for your account. Please
                 verify this email address by clicking button below.
               </p>
-              <a href="http://localhost:3000/verify?token=${User.token}" style="text-decoration:none">
+              <a href="https://platform.tesvan.com/verify?token=${User.token}" style="text-decoration:none">
                 <div
                   style="
                     width: 130px;
@@ -180,9 +180,9 @@ const UserRegistartionSendEmail = async (req, res) => {
               <p style="font-size: 20px; line-height: 30px;text-align:left;"
                 >If the button is not working please use the link below:
                 <a
-                href="http://localhost:3000/verify?token=${User.token}"
+                href="https://platform.tesvan.com/verify?token=${User.token}"
                   style="color: #425dac;text-align:left;font-size:18px;"
-                  >http://localhost:3000/verify?token=${User.token}</a
+                  >https://platform.tesvan.com/verify?token=${User.token}</a
                 >
               </p>
             </div>

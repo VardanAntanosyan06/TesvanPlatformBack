@@ -17,7 +17,11 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     assignCourseId:DataTypes.INTEGER,
     groupeKey:DataTypes.STRING,
-    finished:DataTypes.BOOLEAN
+    finished:DataTypes.BOOLEAN,
+    startDate:DataTypes.DATE,
+    endDate:DataTypes.DATE,
+    price:DataTypes.INTEGER,
+    sale:DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Groups',

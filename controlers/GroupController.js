@@ -14,7 +14,15 @@ const { Op } = require("sequelize");
 
 const CreateGroup = async (req, res) => {
   try {
-    const { name, assignCourseId, users } = req.body;
+    const {
+      name,
+      assignCourseId,
+      users,
+      startDate,
+      endDate,
+      price,
+      sale,
+    } = req.body;
 
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
@@ -22,7 +30,12 @@ const CreateGroup = async (req, res) => {
       name,
       groupeKey,
       assignCourseId,
+      startDate,
+      endDate,
+      price,
+      sale
     });
+
     users.map((e) => {
       return UserCourses.create({
         GroupCourseId: task.id,
@@ -377,7 +390,10 @@ const findGroups = async (req, res) => {
       attributes: ["id", "image"],
       where: { role: "STUDENT" },
     });
-    console.log(group,"+++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+    console.log(
+      group,
+      "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+    );
     let data = group.map((e) => {
       return {
         id: e.id,
@@ -401,7 +417,7 @@ const findGroups = async (req, res) => {
 const getStudents = async (req, res) => {
   try {
     const users = await Users.findAll({
-      where: { role:"STUDENT" },
+      where: { role: "STUDENT" },
       attributes: ["id", "firstName", "lastName", "image"],
     });
 
@@ -415,7 +431,7 @@ const getStudents = async (req, res) => {
 const getTeachers = async (req, res) => {
   try {
     const users = await Users.findAll({
-      where: { role:"TEACHER" },
+      where: { role: "TEACHER" },
       attributes: ["id", "firstName", "lastName", "image"],
     });
 
@@ -439,5 +455,6 @@ module.exports = {
   finishGroup,
   getGroupesForTeacher,
   findGroups,
-  getStudents,  getTeachers,
+  getStudents,
+  getTeachers,
 };

@@ -8,7 +8,7 @@ const create = async (req, res) => {
       const { user_id } = req.user;
 
     userId.push(user_id)  
-    userId.push(5)  
+    userId.push(5)
     await Calendar.create({
       title,
       start,
