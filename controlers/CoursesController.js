@@ -93,7 +93,7 @@ const getCourseTitles = async (req, res) => {
     let Courses = await GroupCourses.findAll({
       include: [
         {
-          model: CourseProgram,
+          model: CoursesContents,
           where: { language },
           attributes: ["title"],
         },
@@ -104,7 +104,7 @@ const getCourseTitles = async (req, res) => {
     Courses = Courses.map((item) => {
       return {
         id: item.id,
-        title: item.CoursePrograms[0].title,
+        title: item.CoursesContents[0].title,
       };
     });
     return res.status(200).json(Courses);
@@ -119,16 +119,16 @@ const getOne = async (req, res) => {
     const { id } = req.params;
     const { language } = req.query;
 
-    const groups = await Groups.findOne({ where: { id } });
+    const groups = await Groups.findOne({ where: { id:1 } });
 
-    console.log(groups);
-
+    
     let course = await GroupCourses.findOne({
-      where: { id },
+      where: { id:groups.assignCourseId },
       include: [{ model: CoursesContents, where: { language } }],
     });
     if (!course) {
       return res.status(500).json({ message: "Course not found." });
+      // return res.json(groups)
     }
 
     const lessonsCount = await CoursesPerLessons.count({
@@ -140,7 +140,7 @@ const getOne = async (req, res) => {
     );
 
     const trainers = await Trainer.findAll({
-      where: { courseId: id },
+      where: { courseId: groups.assignCourseId },
       attributes: ["fullName", "img", "profession"],
     });
 
@@ -404,16 +404,16 @@ const createCourse = async (req, res) => {
     trainers = JSON.parse(trainers)
     if (!Array.isArray(lessons)) lessons = [lessons];
     if(!Array.isArray(trainersImages))trainersImages = [trainersImages] 
-    await CourseProgram.create({
+    await CoursesContents.create({
       courseId,
       language,
       title,
       description,
       courseType,
       lessonType,
-      whyThisCourse,
+      whyThisCourse:whyThisCourse.split(','),
       level,
-      levelDescriptions,
+      // levelDescriptions,
     });
 
     lessons.map((e) => {
@@ -538,7 +538,7 @@ const getCoursesByFilter = async (req, res) => {
       e = e.toJSON();
       delete e.dataValues;
 
-      e.img = e.GroupCourse.img;
+      e.img = `http://localhost:4000/${e.GroupCourse.img}`;
       e.description = e.GroupCourse.CoursesContents[0].description;
       e.courseType = e.GroupCourse.CoursesContents[0].courseType;
       e.lessonType = e.GroupCourse.CoursesContents[0].lessonType;
@@ -552,9 +552,9 @@ const getCoursesByFilter = async (req, res) => {
           : moment().diff(new Date().toISOString(), "days") +
             " " +
             days[language]),
-        (e.price = e.GroupCourse.CoursesContents[0].price);
+        (e.price = e.price);
       (e.saledValue =
-        e.price > 0 ? e.price - Math.round(e.price * e.GroupCourse.CoursesContents[0].sale) / 100 : e.price),
+        e.price > 0 ? e.price - Math.round(e.price * e.sale) / 100 : e.price),
         (e.bought = 100);
 
       delete e.GroupCourse;

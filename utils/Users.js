@@ -110,7 +110,6 @@ const Users = [
     likedCourses: [1],
     isVerified: true,
     role: "ADMIN",
-
     image: "defaultIcon.png",
     token:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJlbWFpbCI6IkFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTcwNTMwNTc0NH0.hITNb2a0e9yygTPe57bfkyyz3Etd6EzniF_MKJ6mbaA",
