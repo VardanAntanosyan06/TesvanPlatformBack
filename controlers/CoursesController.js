@@ -120,9 +120,8 @@ const getOne = async (req, res) => {
     const { id } = req.params;
     const { language } = req.query;
 
-    const groups = await Groups.findOne({ where: { id:1 } });
+    const groups = await Groups.findOne({ where: { id } });
 
-    
     let course = await GroupCourses.findOne({
       where: { id:groups.assignCourseId },
       include: [{ model: CoursesContents, where: { language } }],
@@ -455,6 +454,7 @@ const getCoursesByFilter = async (req, res) => {
       limit = null,
       order = "popularity",
     } = req.query;
+
     format = format.split("_");
     level = level.split("_");
     if (!["en", "ru", "am"].includes(language)) {
@@ -533,9 +533,10 @@ const getCoursesByFilter = async (req, res) => {
         },
       ],
       // order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
+      limit,
       attributes: ["id", ["name", "title"],"startDate","endDate","price","sale"],
     });
-    
+      
     Courses = Courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
@@ -562,7 +563,13 @@ const getCoursesByFilter = async (req, res) => {
       delete e.GroupCourse;
       return e;
     });
-
+    if (order === "highToLow")
+    Courses = Courses.sort((a, b) => b.saledValue - a.saledValue);
+  if (order === "lowToHigh")
+    Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
+    Courses = Courses.filter(
+    (e) => e.saledValue >= minPrice && e.saledValue <= maxPrice
+  );
     return res.status(200).json({ Courses });
   } catch (error) {
     console.log(error);
