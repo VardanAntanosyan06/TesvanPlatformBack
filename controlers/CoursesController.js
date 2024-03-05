@@ -538,7 +538,7 @@ const getCoursesByFilter = async (req, res) => {
       e = e.toJSON();
       delete e.dataValues;
 
-      e.img = `https://platform.tesvan.com/sever/${e.GroupCourse.img}`;
+      e.img = `https://platform.tesvan.com/server/${e.GroupCourse.img}`;
       e.description = e.GroupCourse.CoursesContents[0].description;
       e.courseType = e.GroupCourse.CoursesContents[0].courseType;
       e.lessonType = e.GroupCourse.CoursesContents[0].lessonType;

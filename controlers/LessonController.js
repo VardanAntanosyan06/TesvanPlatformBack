@@ -278,6 +278,7 @@ const createLesson = async (req, res) => {
   }
 };
 
+const getAllLessons = 
 module.exports = {
   getLessons,
   getLesson,

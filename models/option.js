@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const Question = sequelize.define("Question");
-  Option.belongsTo(Question, { foreignKey: "id", as: "options" });
+  Option.belongsTo(Question, { foreignKey: "id"});
 
   return Option;
 };

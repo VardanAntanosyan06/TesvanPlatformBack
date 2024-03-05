@@ -24,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const Quizz = sequelize.define("Quizz");
-  Question.belongsTo(Quizz, { foreignKey: "id", as: "questions" });
+  Question.belongsTo(Quizz, { foreignKey: "id",});
 
   const Option = sequelize.define("Option");
-  Question.hasMany(Option, { foreignKey: "questionId", as: "options" });
+  Question.hasMany(Option, { foreignKey: "questionId",  });
 
   return Question;
 };

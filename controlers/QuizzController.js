@@ -1,39 +1,12 @@
+const { Op } = require("sequelize");
 const {
   Quizz,
   Option,
   Question,
   CoursesPerQuizz,
+  UserAnswersQuizz,
   CoursesPerLessons,
 } = require("../models");
-
-// const createTest = async (req, res) => {
-//   try {
-//     const {
-//       title_en,
-//       title_ru,
-//       title_am,
-//       description_en,
-//       description_ru,
-//       description_am,
-//       courseId,
-//     } = req.body;
-
-//     const task = await Tests.create({
-//       title_en,
-//       title_ru,
-//       title_am,
-//       description_en,
-//       description_ru,
-//       description_am,
-//       courseId,
-//     });
-
-//     return res.status(200).json({ success: true });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: "Something went wrong." });
-//   }
-// };
 
 const createQuizz = async (req, res) => {
   try {
@@ -60,16 +33,16 @@ const createQuizz = async (req, res) => {
         });
       });
     });
-    if(lessonId){
-        await CoursesPerLessons.create({
-            quizzId,
-            lessonId
-        })
-    }else{
-        await CoursesPerQuizz.create({
-            quizzId,
-            courseId
-        })
+    if (lessonId) {
+      await CoursesPerLessons.create({
+        quizzId,
+        lessonId,
+      });
+    } else {
+      await CoursesPerQuizz.create({
+        quizzId,
+        courseId,
+      });
     }
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -78,201 +51,117 @@ const createQuizz = async (req, res) => {
   }
 };
 
-// const findTest = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { testLanguage } = req.query;
+const getQuizzes = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-//     const test = await Tests.findOne({
-//       where: { id, language: testLanguage },
-//       include: [{ model: TestsQuizz, include: [TestsQuizzOptions] }],
-//     });
+    const quizz = await Quizz.findOne({
+      where: { id },
+      include: [
+        {
+          model: Question,
+          include: {
+            model: Option,
+            required: true
+          }
+        }
+      ],
+    });
 
-//     if (!test)
-//       return res.status(403).json({
-//         success: false,
-//         message: `with ID ${id} or language ${testLangua} Test not found`,
-//       });
+    if (!quizz)
+      return res.status(403).json({
+        success: false,
+        message: `with ID ${id} Quizz not found`,
+      });
 
-//     return res.status(200).json({ success: true, test });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: "Something went wrong." });
-//   }
-// };
+    return res.status(200).json({ success: true, quizz });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
 
-// const submitQuizz = async (req, res) => {
-//   try {
-//     const { user_id: userId } = req.user;
+const submitQuizz = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
 
-//     const { testId, questionId, optionId } = req.body;
+    const { quizzId, questionId, optionId } = req.body;
 
-//     await UserAnswersTests.destroy({
-//       where: { userId, testId, questionId },
-//     });
+    await UserAnswersQuizz.destroy({
+      where: { userId, testId:quizzId, questionId },
+    });
+    
+    await UserAnswersQuizz.create({
+      userId,
+      testId:quizzId,
+      questionId,
+      optionId,
+    });
 
-//     await UserAnswersTests.create({
-//       userId,
-//       testId,
-//       questionId,
-//       optionId,
-//     });
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
 
-//     return res.status(200).json({ success: true });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: "Something went wrong." });
-//   }
-// };
+const finishQuizz = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { quizzId } = req.params;
 
-// const finishCourse = async (req, res) => {
-//   try {
-//     const { user_id: userId } = req.user;
-//     const { testId } = req.params;
+    let correctAnswers = await Quizz.findByPk(quizzId, {
+      attributes: ["id"],
+      include: [
+        {
+          model: Question,
+          attributes: ["id"],
+          include: [
+            {
+              model: Option,
+              where: { isCorrect: true },
+              attributes: ["id"],
+            },
+          ],
+        },
+      ],
+    });
+    correctAnswers = correctAnswers.Questions.map(
+      (e) => e.Options[0].id
+    ).sort((a, b) => a.id - b.id);
 
-//     let correctAnswers = await Tests.findByPk(testId, {
-//       attributes: ["id"],
-//       include: [
-//         {
-//           model: TestsQuizz,
-//           attributes: ["id"],
-//           include: [
-//             {
-//               model: TestsQuizzOptions,
-//               where: { isCorrect: true },
-//               attributes: ["id"],
-//             },
-//           ],
-//         },
-//       ],
-//     });
+    const userAnswers = await UserAnswersQuizz.findAll({
+      where: {
+        testId:quizzId,
+        userId,
+      },
+      attributes: ["optionId"],
+      order: [["id", "ASC"]],
+    });
+    userAnswers.map((e) => {
+      correctAnswers.push(e.optionId);
+    });
 
-//     correctAnswers = correctAnswers.TestsQuizzs.map(
-//       (e) => e.TestsQuizzOptions[0].id
-//     ).sort((a, b) => a.questionId - b.questionId);
+    const point = Math.round(
+      ((correctAnswers.length - new Set(correctAnswers).size) /
+        Math.ceil(correctAnswers.length / 2)) *
+        100
+    );
+    
+    return res.json({
+      point,
+      correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
+    });
 
-//     const userAnswers = await UserAnswersTests.findAll({
-//       where: {
-//         testId,
-//         userId,
-//       },
-//       attributes: ["optionId"],
-//       order: [["id", "ASC"]],
-//     });
-//     userAnswers.map((e) => {
-//       correctAnswers.push(e.optionId);
-//     });
-
-//     const point = Math.round(
-//       ((correctAnswers.length - new Set(correctAnswers).size) /
-//         Math.ceil(correctAnswers.length / 2)) *
-//         100
-//     );
-
-//     const data = await UserTests.findOne({
-//       where: { userId, testId },
-//     });
-
-//     (data.status = point > 30 ? "passed" : "not passed"),
-//       (data.passDate = new Date().toISOString()),
-//       (data.point = point),
-//       await data.save();
-
-//     return res.json({
-//       point,
-//       correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
-//     });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: "Something went wrong." });
-//   }
-// };
-
-// const getUserTests = async (req, res) => {
-//   try {
-//     const { user_id: userId } = req.user;
-
-//     const tests = await UserTests.findAll({
-//       where: { userId },
-//       attributes: ["testId", "status", "passDate", "point"],
-
-//       include: [
-//         {
-//           model: Tests,
-//           attributes: ["title", "type", "description", "language"],
-//         },
-//       ],
-//     });
-
-//     return res.status(200).json({ success: true, tests });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: "Something went wrong." });
-//   }
-// };
-
-// const getUsers = async (req, res) => {
-//   try {
-//     // const { user_id: userId } = req.user;
-
-//     const tests = await UserTests.findAll({
-//       // where: { userId },
-//       attributes: ["testId", "status", "passDate", "point"],
-//       include: [
-//         {
-//           model: Tests,
-//           attributes: ["title", "type", "description", "language"],
-//         },
-//       ],
-
-//       include: [
-//         {
-//           model: Users,
-//           attributes: ["firstName", "lastName", "image"],
-//         },
-//       ],
-//     });
-
-//     return res.status(200).json({ success: true, tests });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: "Something went wrong." });
-//   }
-// };
-
-// const findCourses = async (req, res) => {
-//   try {
-//     // const courses = await
-//   } catch (error) {}
-// };
-
-// const findAll = async (req, res) => {
-//   try {
-//     const task = await Model.findAll({ where: {} });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: "Something went wrong." });
-//   }
-// };
-
-// const update = async (req, res) => {
-//   try {
-//     const task = await Model.update({ where: {} });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: "Something went wrong." });
-//   }
-// };
-
-// const remove = async (req, res) => {
-//   try {
-//     const task = await Model.destroy({ where: {} });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: "Something went wrong." });
-//   }
-// };
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
 
 module.exports = {
   createQuizz,
-}
+  getQuizzes,
+  submitQuizz,
+  finishQuizz
+};

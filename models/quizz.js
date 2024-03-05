@@ -28,10 +28,10 @@ module.exports = (sequelize, DataTypes) => {
 
   const Lesson = sequelize.define("Lesson");
   // HasMany
-  Quizz.belongsTo(Lesson, { foreignKey: "id", as: "quizz" });
+  Quizz.belongsTo(Lesson, { foreignKey: "id" });
 
   const Question = sequelize.define("Question");
-  Quizz.hasMany(Question, { foreignKey: "quizzId", as: "questions" });
+  Quizz.hasMany(Question, { foreignKey: "quizzId" });
 
   return Quizz;
 };

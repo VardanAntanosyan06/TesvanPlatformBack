@@ -96,7 +96,7 @@ const findTest = async (req, res) => {
         .status(403)
         .json({
           success: false,
-          message: `with ID ${id} or language ${testLangua} Test not found`,
+          message: `with ID ${id} or language ${testLanguage} Test not found`,
         });
 
     return res.status(200).json({ success: true, test });
