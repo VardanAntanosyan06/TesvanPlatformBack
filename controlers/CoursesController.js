@@ -4,6 +4,7 @@ const {
   UserTests,
   CoursesPerLessons,
   Groups,
+  GroupsPerUsers
 } = require("../models");
 
 const { CoursesContents } = require("../models");
@@ -189,15 +190,37 @@ const like = async (req, res) => {
 
 const buy = async (req, res) => {
   try {
-    const { courseId } = req.params;
+    const {groupId} = req.params;
     const { user_id: userId } = req.user;
-
-    const user = await Users.findOne({ where: { id } });
+    
+    const user = await Users.findOne({ where: { id:userId } });
+    const group = await Groups.findByPk(groupId)
+    console.log(group);
+    if(!group){
+        return res.json({success:false,message:"Group not found"})
+    }
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    await GroupsPerUsers.create({
+      groupId: groupId,
+      userId
+    })
+    await UserCourses.create({
+      GroupCourseId:group.assignCourseId,
+      UserId:userId,
+    })
+    const lessons = await CoursesPerLessons.findAll({where:{courseId:group.assignCourseId}})
+
+    lessons.map((e)=>{
+      UserLesson.create({
+        GroupCourseId:group.assignCourseId,
+        UserId:userId,
+        LessonId:e.id
+      })
+    })
     res.send({ success: true });
   } catch (error) {
     console.log(error);
@@ -319,21 +342,22 @@ const getUserCourse = async (req, res) => {
     // });
 
     let lessons = await Lesson.findAll({
-      where: { courseId },
-      // include: [
-      // {
-      // model: ,
-      attributes: [
-        [`title_${language}`, "title"],
-        [`description_${language}`, "description"],
-        "maxPoints",
-        "courseId",
-        "id",
-        "number",
-        "isOpen",
-      ],
-      // },
+      include: [
+        {
+          model:CoursesPerLessons ,
+          where:{courseId},
+      // where:{courseId},
+      // attributes: [
+      //   [`title_${language}`, "title"],
+      //   [`description_${language}`, "description"],
+      //   "maxPoints",
+      //   "courseId",
+      //   "id",
+      //   "number",
+      //   "isOpen",
       // ],
+      },
+      ],
       order: [["id", "ASC"]],
     });
 

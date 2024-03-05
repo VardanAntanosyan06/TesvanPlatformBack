@@ -12,7 +12,7 @@ router.post("/createCourse",checkAuth(["TEACHER", "ADMIN"]),controller.createCou
 
 router.get("/getOne/:id", controller.getOne);
 router.get("/like/:courseId", checkAuth(["STUDENT"]), controller.like);
-router.get("/buy/:courseId", checkAuth(["STUDENT"]), controller.buy);
+router.get("/buy/:groupId", checkAuth(["STUDENT"]), controller.buy);
 router.get(
   "/getUserCourses",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),

@@ -39,5 +39,8 @@ module.exports = (sequelize, DataTypes) => {
   const Video = sequelize.define("Video");
   Lesson.hasOne(Video, { foreignKey: "lessonId", as: "video" });
 
+  const CoursesPerLessons = sequelize.define("CoursesPerLessons")
+  Lesson.hasMany(CoursesPerLessons)
+
   return Lesson;
 };

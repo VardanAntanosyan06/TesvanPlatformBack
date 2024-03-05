@@ -20,5 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'CoursesPerLessons',
   });
+  
+  const Lesson = sequelize.define("Lesson",)
+  
+  CoursesPerLessons.hasMany(Lesson)
   return CoursesPerLessons;
 };
