@@ -190,36 +190,13 @@ const like = async (req, res) => {
 const buy = async (req, res) => {
   try {
     const { courseId } = req.params;
-    const { user_id: id } = req.user;
+    const { user_id: userId } = req.user;
 
     const user = await Users.findOne({ where: { id } });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const courseBought = await UserCourses.findOne({
-      where: { UserId: id, GroupCourseId: courseId },
-    });
-
-    if (courseBought) return res.status(403).json({ success: false });
-
-    await UserCourses.create({
-      UserId: id,
-      GroupCourseId: courseId,
-    });
-
-    let course = await GroupCourses.findOne({
-      where: { id: courseId },
-      include: [{ model: Lesson }],
-    });
-
-    course.Lessons.forEach((lesson) => {
-      UserLesson.create({
-        UserId: id,
-        GroupCourseId: courseId,
-        LessonId: lesson.dataValues.id,
-      });
-    });
 
     res.send({ success: true });
   } catch (error) {
@@ -259,7 +236,7 @@ const getUserCourses = async (req, res) => {
     const { user_id: id } = req.user;
     const { language } = req.query;
     if (!id) {
-      return res.status(500).json({ message: "User not found" });
+      return res. status(500).json({ message: "User not found" });
     }
 
     let courses = await UserCourses.findAll({
@@ -268,7 +245,7 @@ const getUserCourses = async (req, res) => {
       include: [
         {
           model: GroupCourses,
-          attributes: ["id", "startDate"],
+          
           include: [
             {
               model: CoursesContents,
@@ -404,6 +381,7 @@ const createCourse = async (req, res) => {
     trainers = JSON.parse(trainers)
     if (!Array.isArray(lessons)) lessons = [lessons];
     if(!Array.isArray(trainersImages))trainersImages = [trainersImages] 
+
     await CoursesContents.create({
       courseId,
       language,
