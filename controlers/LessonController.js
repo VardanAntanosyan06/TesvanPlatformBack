@@ -5,9 +5,11 @@ const {
   Question,
   Option,
   Video,
+  LessonsPerQuizz,
   UserCourses,
   Message,
 } = require("../models");
+const lessonsperquizz = require("../models/lessonsperquizz");
 const { userSockets } = require("../userSockets");
 
 const getLessons = async (req, res) => {
@@ -93,6 +95,10 @@ const getLesson = async (req, res) => {
       ],
     });
 
+    const quizzes = await LessonsPerQuizz.findOne({where:{
+        lessonId:id
+    },
+    })
     if (!lesson) {
       return res.status(403).json({
         message: "Lessons not found or User doesn't have the lessons",
@@ -106,6 +112,7 @@ const getLesson = async (req, res) => {
       ),
       attempt: lesson.attempt,
       ...lesson.dataValues.Lesson.dataValues,
+      quizzes:quizzes.dataValues
     };
 
     res.send(lesson);
@@ -244,7 +251,6 @@ const createLesson = async (req, res) => {
   }
 };
 
-const getAllLessons = 
 module.exports = {
   getLessons,
   getLesson,

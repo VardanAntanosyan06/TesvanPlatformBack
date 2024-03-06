@@ -218,7 +218,7 @@ const buy = async (req, res) => {
       UserLesson.create({
         GroupCourseId:group.assignCourseId,
         UserId:userId,
-        LessonId:e.id
+        LessonId:e.lessonId
       })
     })
     res.send({ success: true });
@@ -282,7 +282,7 @@ const getUserCourses = async (req, res) => {
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-
+      console.log(e);
       const formattedDate = new Date(
         e.GroupCourse.startDate
       ).toLocaleDateString("am-AM", {

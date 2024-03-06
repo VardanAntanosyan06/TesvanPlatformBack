@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      courseId: {
+      quizzId: {
         type: Sequelize.INTEGER
       },
       lessonId: {

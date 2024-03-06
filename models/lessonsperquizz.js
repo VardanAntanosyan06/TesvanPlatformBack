@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   LessonsPerQuizz.init({
-    courseId: DataTypes.INTEGER,
+    quizzId: DataTypes.INTEGER,
     lessonId: DataTypes.INTEGER
   }, {
     sequelize,
