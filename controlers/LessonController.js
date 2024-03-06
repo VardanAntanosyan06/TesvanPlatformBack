@@ -88,50 +88,16 @@ const getLesson = async (req, res) => {
       include: [
         {
           model: Lesson,
-          attributes: [
-            "id",
-            "courseId",
-            "number",
-            [`title_${language}`, "title"],
-            [`description_${language}`, "description"],
-            "maxPoints",
-          ],
-          include: [
-            // {
-            //   model: Quizz,
-            //   attributes: [
-            //     [`title_${language}`, "title"],
-            //     [`description_${language}`, "description"],
-            //   ],
-            //   as: "quizz",
-            //   include: [
-            //     {
-            //       model: Question,
-            //       as: "questions",
-            //       include: [{ model: Option, as: "options" }],
-            //     },
-            //   ],
-            // },
-            {
-              model: Video,
-              as: "video",
-              attributes: [
-                "id",
-                "url",
-                [`title_${language}`, "title"],
-                [`description_${language}`, "description"],
-              ],
-            },
-          ],
+          attributes:[['title_en','title'],['description_en','description'],'maxPoints']          
         },
       ],
     });
 
     if (!lesson) {
-      return res
-        .status(403)
-        .json({ message: "Lesson not found or User doesn't have a lesson" });
-    }
+      return res.status(403).json({
+        message: "Lessons not found or User doesn't have the lessons",
+      });
+    } 
 
     lesson = {
       points: lesson.points,

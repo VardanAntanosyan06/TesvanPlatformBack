@@ -122,6 +122,7 @@ const getOne = async (req, res) => {
 
     const groups = await Groups.findOne({ where: { id } });
 
+    if(!groups) return res.status(403).json({message:"Group not found"});
     let course = await GroupCourses.findOne({
       where: { id:groups.assignCourseId },
       include: [{ model: CoursesContents, where: { language } }],
@@ -314,18 +315,18 @@ const getUserCourse = async (req, res) => {
       return res.status(500).json({ message: "User not found" });
     }
 
-    let course = await UserCourses.findOne({
-      where: { UserId: id, GroupCourseId: courseId },
-      include: [
-        {
-          model: GroupCourses,
-        },
-      ],
-    });
+    // let course = await UserCourses.findOne({
+    //   where: { UserId: id, GroupCourseId: courseId },
+    //   include: [
+    //     {
+    //       model: GroupCourses,
+    //     },
+    //   ],
+    // });
 
-    if (!course) {
-      return res.status(500).json({ message: "Course not found" });
-    }
+    // if (!course) {
+    //   return res.status(500).json({ message: "Course not found" });
+    // }
     // const allLessons = await Lesson.findAll({
     //   where: { courseId },
     //   attributes: [
@@ -340,38 +341,44 @@ const getUserCourse = async (req, res) => {
     //   order: [["id", "ASC"]],
     // });
 
-    let lessons = await Lesson.findAll({
-      include: [
-        {
-          model:CoursesPerLessons ,
-          where:{courseId},
-      // where:{courseId},
-      // attributes: [
-      //   [`title_${language}`, "title"],
-      //   [`description_${language}`, "description"],
-      //   "maxPoints",
-      //   "courseId",
-      //   "id",
-      //   "number",
-      //   "isOpen",
-      // ],
-      },
-      ],
-      order: [["id", "ASC"]],
-    });
-
-    // Map lesson ids from lessons
-    // const lessonIds = lessons.map((lesson) => lesson.Lesson.id);
-
-    // // Check if each lesson in allLessons is open or not
-    // const lessonsWithStatus = allLessons.map((lesson) => {
-    //   const isOpen = lessonIds.includes(lesson.id);
-    //   return {
-    //     ...lesson.get(),
-    //     isOpen,
-    //   };
+    // let lessons = await Lesson.findAll({
+    //   // include: [
+    //   //   {
+    //   //     model:CoursesPerLessons,
+    //   //     where:{courseId},
+    //   // where:{courseId},
+    //   // attributes: [
+    //   //   [`title_${language}`, "title"],
+    //   //   [`description_${language}`, "description"],
+    //   //   "maxPoints",
+    //   //   "courseId",
+    //   //   "id",
+    //   //   "number",
+    //   //   "isOpen",
+    //   // ],
+    //   },
+    //   // ],
+    //   order: [["id", "ASC"]],
     // });
+    let lessons = await CoursesPerLessons.findAll({
+      where:{courseId},
+      include: [{
+        model: Lesson,
+        attributes: [['title_en','title'], ['description_en','description']]
+      }]
+    })
 
+    lessons = lessons.map((e,i) => {
+      e = e.toJSON();
+      delete e.dataValues;
+
+      e["title"] = e.Lesson.title;
+      e["description"] = e.Lesson.description;
+      e["number"] = i+1;
+      e["isOpen"] = true
+      delete e.Lessons;
+      return e;
+    });
     return res.json(lessons);
   } catch (error) {
     console.log(error);
@@ -577,6 +584,53 @@ const getCoursesByFilter = async (req, res) => {
   }
 };
 
+const getOneGroup = async (req, res) => {
+  try {
+    let { id } = req.params;
+
+    let Courses = await Groups.findByPk(id, {
+      include: [
+        {
+          model: GroupCourses,
+          require: true,
+          include: [
+            {
+              model: CoursesContents,
+              attributes: { exclude: ["id", "language", "courseId"] },
+              include: [Levels],
+            },
+          ],
+        },
+      ],
+    });
+    Courses = Courses.toJSON();
+    delete Courses.dataValues;
+    // return res.json({Courses})
+    Courses = {
+      title:Courses.name,
+      courseType: Courses.GroupCourse.CoursesContents[0].courseType,
+      lessonType: Courses.GroupCourse.CoursesContents[0].lessonType,
+      level: Courses.GroupCourse.CoursesContents[0].level,
+      courseStartDate: moment().format("ll"),
+      // courseDate:
+      //   moment().diff(new Date().toISOString(), "months") > 0
+      //     ? moment().diff(new Date().toISOString(), "months") +
+      //       " " +
+      //       months[language]
+      //     : moment().diff(new Date().toISOString(), "days") +
+      //       " " +
+      //       days[language],
+      price: Courses.price,
+      sale: Courses.sale,
+      saledValue: Courses.price > 0 ? Courses.price - Math.round(Courses.price * Courses.sale) / 100 : Courses.price,
+    };
+    return res.status(200).json(Courses);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 module.exports = {
   getAllCourses,
   getCoursesByFilter,
@@ -588,4 +642,5 @@ module.exports = {
   getCourseTitles,
   createTest,
   createCourse,
+  getOneGroup
 };

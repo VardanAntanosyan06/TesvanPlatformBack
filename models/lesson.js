@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
   Lesson.hasOne(Video, { foreignKey: "lessonId", as: "video" });
 
   const CoursesPerLessons = sequelize.define("CoursesPerLessons")
-  Lesson.hasMany(CoursesPerLessons)
+  // Lesson.belongsToMany(CoursesPerLessons, { through: 'CoursesPerLesson' });
 
   return Lesson;
 };
