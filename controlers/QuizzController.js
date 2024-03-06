@@ -12,7 +12,7 @@ const createQuizz = async (req, res) => {
   try {
     const { title, description, lessonId, courseId, time, percent, questions } =
       req.body;
-
+    
     let { id: quizzId } = await Quizz.create({
       title_en: title,
       description_en: description,

@@ -112,7 +112,7 @@ const getLesson = async (req, res) => {
       ),
       attempt: lesson.attempt,
       ...lesson.dataValues.Lesson.dataValues,
-      quizzes:quizzes.dataValues
+      quizzId:quizzes.quizzId
     };
 
     res.send(lesson);
