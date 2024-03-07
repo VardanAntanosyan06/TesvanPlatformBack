@@ -12,7 +12,7 @@ const createQuizz = async (req, res) => {
   try {
     const { title, description, lessonId, courseId, time, percent, questions } =
       req.body;
-    
+
     let { id: quizzId } = await Quizz.create({
       title_en: title,
       description_en: description,
@@ -51,20 +51,21 @@ const createQuizz = async (req, res) => {
   }
 };
 
+// add time in models
 const getQuizzes = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const quizz = await Quizz.findOne({
+    let quizz = await Quizz.findOne({
       where: { id },
       include: [
         {
           model: Question,
           include: {
             model: Option,
-            required: true
-          }
-        }
+            required: true,
+          },
+        },
       ],
     });
 
@@ -74,6 +75,10 @@ const getQuizzes = async (req, res) => {
         message: `with ID ${id} Quizz not found`,
       });
 
+    quizz = {
+      ...quizz.dataValues,
+      time: 22,
+    };
     return res.status(200).json({ success: true, quizz });
   } catch (error) {
     console.log(error.message);
@@ -88,12 +93,12 @@ const submitQuizz = async (req, res) => {
     const { quizzId, questionId, optionId } = req.body;
 
     await UserAnswersQuizz.destroy({
-      where: { userId, testId:quizzId, questionId },
+      where: { userId, testId: quizzId, questionId },
     });
-    
+
     await UserAnswersQuizz.create({
       userId,
-      testId:quizzId,
+      testId: quizzId,
       questionId,
       optionId,
     });
@@ -126,13 +131,13 @@ const finishQuizz = async (req, res) => {
         },
       ],
     });
-    correctAnswers = correctAnswers.Questions.map(
-      (e) => e.Options[0].id
-    ).sort((a, b) => a.id - b.id);
+    correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
+      (a, b) => a.id - b.id
+    );
 
     const userAnswers = await UserAnswersQuizz.findAll({
       where: {
-        testId:quizzId,
+        testId: quizzId,
         userId,
       },
       attributes: ["optionId"],
@@ -147,12 +152,11 @@ const finishQuizz = async (req, res) => {
         Math.ceil(correctAnswers.length / 2)) *
         100
     );
-    
+
     return res.json({
       point,
       correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
     });
-
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
@@ -163,5 +167,5 @@ module.exports = {
   createQuizz,
   getQuizzes,
   submitQuizz,
-  finishQuizz
+  finishQuizz,
 };

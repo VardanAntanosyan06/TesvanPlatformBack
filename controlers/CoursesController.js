@@ -96,7 +96,7 @@ const getCourseTitles = async (req, res) => {
         {
           model: CoursesContents,
           where: { language },
-          attributes: ["title"],
+          attributes: ["title","description"],
         },
       ],
       order: [["id", "ASC"]],
@@ -106,6 +106,7 @@ const getCourseTitles = async (req, res) => {
       return {
         id: item.id,
         title: item.CoursesContents[0].title,
+        description:item.CoursesContents[0].description
       };
     });
     return res.status(200).json(Courses);

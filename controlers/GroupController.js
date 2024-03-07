@@ -3,8 +3,10 @@ const {
   UserCourses,
   Users,
   JoinCart,
+  GroupsPerUsers,
   Certificates,
   GroupCourses,
+  CoursesContents,
   Lesson,
 } = require("../models");
 const { v4 } = require("uuid");
@@ -371,43 +373,23 @@ const finishGroup = async (req, res) => {
 const findGroups = async (req, res) => {
   try {
     const group = await Groups.findAll({
+      attributes: ['id', 'name'],
+      order: [["id", "ASC"]],
       include: [
         {
-          model: GroupCourses,
+          model: GroupsPerUsers,
           include: {
-            model: Lesson,
+            model: Users,
+            attributes: ['firstName', 'lastName', 'image','role'],
+            where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
+            group:['role']
           },
-        },
-        {
-          model: UserCourses,
-        },
+        }
       ],
-      order: [["id", "ASC"]],
-    });
-    const randomUsers = await Users.findAll({
-      limit: 3,
-      order: sequelize.literal("random()"),
-      attributes: ["id", "image"],
-      where: { role: "STUDENT" },
-    });
-    console.log(
-      group,
-      "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    );
-    let data = group.map((e) => {
-      return {
-        id: e.id,
-        name: e.name,
-        finished: e.finished,
-        assignCourseId: e.assignCourseId,
-        createdAt: e.createdAt,
-        lessonsCount: e.GroupCourse.Lessons.length,
-        studentCount: e.UserCourses.length,
-        randomUsers,
-      };
+      limit: 6
     });
 
-    return res.status(200).json({ success: true, data });
+    return res.status(200).json({ success: true, group });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });

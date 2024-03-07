@@ -251,6 +251,18 @@ const createLesson = async (req, res) => {
   }
 };
 
+const getAllLessons = async(req,res)=>{
+  try {
+    const lessons = await Lesson.findAll({
+      attributes:['id','name']
+    })
+
+    return res.json(lessons)
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+}
 module.exports = {
   getLessons,
   getLesson,
@@ -258,4 +270,6 @@ module.exports = {
   submitQuizz,
   openLesson,
   createLesson,
+  getAllLessons
+      
 };

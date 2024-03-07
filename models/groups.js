@@ -33,5 +33,10 @@ module.exports = (sequelize, DataTypes) => {
   const GroupCourses = sequelize.define("GroupCourses")
   Groups.belongsTo(GroupCourses,{foreignKey:"assignCourseId"})
 
+  const CoursesContents = sequelize.define("CoursesContents")
+  Groups.belongsTo(CoursesContents,{foreignKey:"assignCourseId"})
+  const GroupsPerUsers = sequelize.define("GroupsPerUsers")
+  Groups.hasMany(GroupsPerUsers,{foreignKey:"groupId"})
+
   return Groups;
 };

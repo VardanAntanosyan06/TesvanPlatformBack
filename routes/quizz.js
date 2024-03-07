@@ -5,7 +5,7 @@ const controller = require("../controlers/QuizzController");
 const checkAuth = require("../middleware/checkAuth");
 
 router.post("/createQuizz", checkAuth(["TEACHER", "ADMIN"]), controller.createQuizz);
-router.get("/getQuizzes/:id", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.getQuizzes);
+router.get("/getQuizzes/:id", controller.getQuizzes);
 router.post("/submitQuizz", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.submitQuizz);
 router.post("/finishQuizz/:quizzId", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.finishQuizz);
 
