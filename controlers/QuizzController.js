@@ -163,9 +163,22 @@ const finishQuizz = async (req, res) => {
   }
 };
 
+const getAll = async (req,res)=>{
+  try {
+      const quizzes = await Quizz.findAll({
+        attributes:['id',['title_en','title']]
+      })
+
+      return res.json(quizzes)
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+}
 module.exports = {
   createQuizz,
   getQuizzes,
   submitQuizz,
   finishQuizz,
+  getAll
 };
