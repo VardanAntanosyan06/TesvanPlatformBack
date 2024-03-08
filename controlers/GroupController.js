@@ -372,24 +372,53 @@ const finishGroup = async (req, res) => {
 
 const findGroups = async (req, res) => {
   try {
-    const group = await Groups.findAll({
+    let group = await Groups.findAll({
       attributes: ['id', 'name'],
       order: [["id", "ASC"]],
       include: [
         {
           model: GroupsPerUsers,
+          required:false,
           include: {
             model: Users,
+          required:false,
             attributes: ['firstName', 'lastName', 'image','role'],
             where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
-            group:['role']
           },
+          attributes:['userId']
         }
       ],
-      limit: 6
+      limit: 3
     });
 
-    return res.status(200).json({ success: true, group });
+    group = await Promise.all(group.map(async (grp) => {
+      const a = await Promise.all(grp.GroupsPerUsers.map(async (e) => {
+          let user = e.toJSON();
+          delete user.dataValues;
+          user.firstName = user.User.firstName;
+          user.lastName = user.User.lastName;
+          user.image = user.User.image;
+          user.role = user.User.role;
+          delete user.User;
+          return user;
+      }));
+  
+      const usersCount = await GroupsPerUsers.count({
+          where: { groupId: grp.id },
+          include: {
+              model: Users,
+              where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
+          },
+          required: true
+      });
+  
+      return {
+          ...grp.dataValues,
+          usersCount,
+          GroupsPerUsers: a,
+      };
+  }));
+    return res.status(200).json({ success: true,group });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
