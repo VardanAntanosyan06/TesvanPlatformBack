@@ -39,13 +39,18 @@ const CreateGroup = async (req, res) => {
     });
 
     users.map((e) => {
-      return UserCourses.create({
+      UserCourses.create({
         GroupCourseId: task.id,
         UserId: e,
       });
+
+      GroupsPerUsers.create({
+        groupId: task.id,
+        userId: e,
+      })
     });
 
-    return res.status(200).json({ success: true, task });
+    res.status(200).json({ success: true, task });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
