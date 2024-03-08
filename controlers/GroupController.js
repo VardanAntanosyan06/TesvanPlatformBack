@@ -386,7 +386,6 @@ const findGroups = async (req, res) => {
           required:false,
           include: {
             model: Users,
-          required:false,
             attributes: ['firstName', 'lastName', 'image','role'],
             where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
           },
