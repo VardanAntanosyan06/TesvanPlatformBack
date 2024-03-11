@@ -30,4 +30,8 @@ router.post(
   checkAuth(["STUDENT"]),
   controller.createTest
 );
+
+router.delete("/delete/:id", checkAuth(["ADMIN"]), controller.deleteCourse);
+router.put("/update", checkAuth(["ADMIN"]), controller.updateCourse);
+
 module.exports = router;

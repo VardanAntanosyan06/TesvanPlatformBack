@@ -34,4 +34,9 @@ router.patch(
   checkAuth(["TEACHER", "ADMIN"]),
   controller.openLesson
 );
+
+router.put("/update", checkAuth(["ADMIN"]), controller.updateLesson);
+
+router.delete("/delete/:id", checkAuth(["ADMIN"]), controller.deleteLesson);
+
 module.exports = router;

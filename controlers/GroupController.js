@@ -16,15 +16,8 @@ const { Op } = require("sequelize");
 
 const CreateGroup = async (req, res) => {
   try {
-    const {
-      name,
-      assignCourseId,
-      users,
-      startDate,
-      endDate,
-      price,
-      sale,
-    } = req.body;
+    const { name, assignCourseId, users, startDate, endDate, price, sale } =
+      req.body;
 
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
@@ -35,7 +28,7 @@ const CreateGroup = async (req, res) => {
       startDate,
       endDate,
       price,
-      sale
+      sale,
     });
 
     users.map((e) => {
@@ -47,7 +40,7 @@ const CreateGroup = async (req, res) => {
       GroupsPerUsers.create({
         groupId: task.id,
         userId: e,
-      })
+      });
     });
 
     res.status(200).json({ success: true, task });
@@ -179,44 +172,30 @@ const findAll = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, assignCourseId } = req.body;
-    const Group = await Groups.findOne({
-      where: {
-        id,
-      },
-    });
-    if (!Group)
-      return res
-        .status(404)
-        .json({ success: false, message: "Group not found" });
+    const { name, startDate, endDate, price, sale,id } = req.body;
 
-    if (name) Group.name = name;
-    if (assignCourseId) Group.assignCourseId = assignCourseId;
-
-    Group.save();
-    return res
-      .status(200)
-      .json({ success: true, message: "Updated successful" });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
-  }
-};
-
-const remove = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const task = await Groups.destroy({ where: { id } });
-
-    console.log(task);
-    return res
-      .status(200)
-      .json({ success: true, message: "deleted successful" });
-  } catch (error) {
-    console.log(error.message);
+    try {
+      const group = await Groups.findOne({
+          where: {
+              id,
+          },
+      });
+  
+      if (!group) {
+          return res.status(404).json({ error: 'Group not found' });
+      }
+  
+      group.name = name;
+      group.startDate = startDate;
+      group.endDate = endDate;
+      group.price = price;
+      group.sale = sale;
+  
+      await group.save();
+  
+      return res.status(200).json({ message: 'Group updated successfully', group });
+  }catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
@@ -378,51 +357,55 @@ const finishGroup = async (req, res) => {
 const findGroups = async (req, res) => {
   try {
     let group = await Groups.findAll({
-      attributes: ['id', 'name'],
+      attributes: ["id", "name"],
       order: [["id", "ASC"]],
       include: [
         {
           model: GroupsPerUsers,
-          required:false,
+          required: false,
           include: {
             model: Users,
-            attributes: ['firstName', 'lastName', 'image','role'],
-            where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
+            attributes: ["firstName", "lastName", "image", "role"],
+            where: { role: { [Op.in]: ["TEACHER", "STUDENT"] } },
           },
-          attributes:['userId']
-        }
+          attributes: ["userId"],
+        },
       ],
-      limit: 3
+      // limit: 3
     });
 
-    group = await Promise.all(group.map(async (grp) => {
-      const a = await Promise.all(grp.GroupsPerUsers.map(async (e) => {
-          let user = e.toJSON();
-          delete user.dataValues;
-          user.firstName = user.User.firstName;
-          user.lastName = user.User.lastName;
-          user.image = user.User.image;
-          user.role = user.User.role;
-          delete user.User;
-          return user;
-      }));
-  
-      const usersCount = await GroupsPerUsers.count({
+    group = await Promise.all(
+      group.map(async (grp) => {
+        const a = await Promise.all(
+          grp.GroupsPerUsers.map(async (e) => {
+            let user = e.toJSON();
+            delete user.dataValues;
+            user.firstName = user.User.firstName;
+            user.lastName = user.User.lastName;
+            user.image = user.User.image;
+            user.role = user.User.role;
+            delete user.User;
+            return user;
+          })
+        );
+
+        const usersCount = await GroupsPerUsers.count({
           where: { groupId: grp.id },
           include: {
-              model: Users,
-              where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
+            model: Users,
+            where: { role: { [Op.in]: ["TEACHER", "STUDENT"] } },
           },
-          required: true
-      });
-  
-      return {
+          required: true,
+        });
+
+        return {
           ...grp.dataValues,
           usersCount,
           GroupsPerUsers: a,
-      };
-  }));
-    return res.status(200).json({ success: true,group });
+        };
+      })
+    );
+    return res.status(200).json({ success: true, group });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -456,12 +439,31 @@ const getTeachers = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
+
+const deleteGroup = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await Groups.destroy({ where: { id } });
+
+    await UserCourses.destroy({ where: { GroupCourseId: id } });
+
+    GroupsPerUsers.destroy({
+      where: { groupId: id },
+    });
+
+    return res.json({ success: true });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 module.exports = {
   CreateGroup,
   findOne,
   findAll,
   update,
-  remove,
   addMember,
   SingleUserStstic,
   recordUserStatics,
@@ -472,4 +474,5 @@ module.exports = {
   findGroups,
   getStudents,
   getTeachers,
+  deleteGroup,
 };

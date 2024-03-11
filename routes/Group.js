@@ -21,10 +21,11 @@ router.get("/findGroups", checkAuth(["TEACHER", "ADMIN","STUDENT"]), controller.
 router.get("/singleUserStatic", checkAuth(["TEACHER", "ADMIN"]), controller.SingleUserStstic);
 router.get("/getGroupesForTeacher", checkAuth(["TEACHER"]), controller.getGroupesForTeacher);
 
-router.patch("/update/:id", checkAuth(["ADMIN"]), controller.update);
+router.put("/update", checkAuth(["ADMIN"]), controller.update);
 router.patch("/finishGroup/:id", checkAuth(["TEACHER","ADMIN"]), controller.finishGroup);
 
-router.delete("/delete/:id", checkAuth(["ADMIN"]), controller.remove);
+router.delete("/delete/:id", checkAuth(["ADMIN"]), controller.deleteGroup);
+
 
 
 

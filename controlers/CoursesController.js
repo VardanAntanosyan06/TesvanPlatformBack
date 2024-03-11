@@ -4,7 +4,7 @@ const {
   UserTests,
   CoursesPerLessons,
   Groups,
-  GroupsPerUsers
+  GroupsPerUsers,
 } = require("../models");
 
 const { CoursesContents } = require("../models");
@@ -20,9 +20,9 @@ const { Lesson } = require("../models");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 const CircularJSON = require("circular-json");
-const {v4} = require("uuid")
+const { v4 } = require("uuid");
 const moment = require("moment");
-const path = require("path")
+const path = require("path");
 
 const getAllCourses = async (req, res) => {
   try {
@@ -96,7 +96,7 @@ const getCourseTitles = async (req, res) => {
         {
           model: CoursesContents,
           where: { language },
-          attributes: ["title","description"],
+          attributes: ["title", "description"],
         },
       ],
       order: [["id", "ASC"]],
@@ -106,7 +106,8 @@ const getCourseTitles = async (req, res) => {
       return {
         id: item.id,
         title: item.CoursesContents[0].title,
-        description:item.CoursesContents[0].description.match(/\b(\w+\b\s*){1,16}/)[0]
+        description:
+          item.CoursesContents[0].description.match(/\b(\w+\b\s*){1,16}/)[0],
       };
     });
     return res.status(200).json(Courses);
@@ -123,9 +124,9 @@ const getOne = async (req, res) => {
 
     const groups = await Groups.findOne({ where: { id } });
 
-    if(!groups) return res.status(403).json({message:"Group not found"});
+    if (!groups) return res.status(403).json({ message: "Group not found" });
     let course = await GroupCourses.findOne({
-      where: { id:groups.assignCourseId },
+      where: { id: groups.assignCourseId },
       include: [{ model: CoursesContents, where: { language } }],
     });
     if (!course) {
@@ -191,14 +192,14 @@ const like = async (req, res) => {
 
 const buy = async (req, res) => {
   try {
-    const {groupId} = req.params;
+    const { groupId } = req.params;
     const { user_id: userId } = req.user;
-    
-    const user = await Users.findOne({ where: { id:userId } });
-    const group = await Groups.findByPk(groupId)
+
+    const user = await Users.findOne({ where: { id: userId } });
+    const group = await Groups.findByPk(groupId);
     console.log(group);
-    if(!group){
-        return res.json({success:false,message:"Group not found"})
+    if (!group) {
+      return res.json({ success: false, message: "Group not found" });
     }
 
     if (!user) {
@@ -207,21 +208,23 @@ const buy = async (req, res) => {
 
     await GroupsPerUsers.create({
       groupId: groupId,
-      userId
-    })
+      userId,
+    });
     await UserCourses.create({
-      GroupCourseId:group.assignCourseId,
-      UserId:userId,
-    })
-    const lessons = await CoursesPerLessons.findAll({where:{courseId:group.assignCourseId}})
+      GroupCourseId: group.assignCourseId,
+      UserId: userId,
+    });
+    const lessons = await CoursesPerLessons.findAll({
+      where: { courseId: group.assignCourseId },
+    });
 
-    lessons.map((e)=>{
+    lessons.map((e) => {
       UserLesson.create({
-        GroupCourseId:group.assignCourseId,
-        UserId:userId,
-        LessonId:e.lessonId
-      })
-    })
+        GroupCourseId: group.assignCourseId,
+        UserId: userId,
+        LessonId: e.lessonId,
+      });
+    });
     res.send({ success: true });
   } catch (error) {
     console.log(error);
@@ -260,7 +263,7 @@ const getUserCourses = async (req, res) => {
     const { user_id: id } = req.user;
     const { language } = req.query;
     if (!id) {
-      return res. status(500).json({ message: "User not found" });
+      return res.status(500).json({ message: "User not found" });
     }
 
     let courses = await UserCourses.findAll({
@@ -269,7 +272,7 @@ const getUserCourses = async (req, res) => {
       include: [
         {
           model: GroupCourses,
-          
+
           include: [
             {
               model: CoursesContents,
@@ -362,21 +365,26 @@ const getUserCourse = async (req, res) => {
     //   order: [["id", "ASC"]],
     // });
     let lessons = await CoursesPerLessons.findAll({
-      where:{courseId},
-      include: [{
-        model: Lesson,
-        attributes: [['title_en','title'], ['description_en','description']]
-      }]
-    })
+      where: { courseId },
+      include: [
+        {
+          model: Lesson,
+          attributes: [
+            ["title_en", "title"],
+            ["description_en", "description"],
+          ],
+        },
+      ],
+    });
 
-    lessons = lessons.map((e,i) => {
+    lessons = lessons.map((e, i) => {
       e = e.toJSON();
       delete e.dataValues;
 
       e["title"] = e.Lesson.title;
       e["description"] = e.Lesson.description;
-      e["number"] = i+1;
-      e["isOpen"] = true
+      e["number"] = i + 1;
+      e["isOpen"] = true;
       delete e.Lessons;
       return e;
     });
@@ -399,19 +407,19 @@ const createCourse = async (req, res) => {
       level,
       levelDescriptions,
       lessons,
-      trainers
+      trainers,
     } = req.body;
-    
-    let {img,trainersImages} = req.files;
+
+    let { img, trainersImages } = req.files;
 
     const imgType = img.mimetype.split("/")[1];
     const imgFileName = v4() + "." + imgType;
     img.mv(path.resolve(__dirname, "..", "static", imgFileName));
-    const { id: courseId } = await GroupCourses.create({ img:imgFileName });
-    
-    trainers = JSON.parse(trainers)
+    const { id: courseId } = await GroupCourses.create({ img: imgFileName });
+
+    trainers = JSON.parse(trainers);
     if (!Array.isArray(lessons)) lessons = [lessons];
-    if(!Array.isArray(trainersImages))trainersImages = [trainersImages] 
+    if (!Array.isArray(trainersImages)) trainersImages = [trainersImages];
 
     await CoursesContents.create({
       courseId,
@@ -420,7 +428,7 @@ const createCourse = async (req, res) => {
       description,
       courseType,
       lessonType,
-      whyThisCourse:whyThisCourse.split(','),
+      whyThisCourse: whyThisCourse.split(","),
       level,
       // levelDescriptions,
     });
@@ -431,7 +439,7 @@ const createCourse = async (req, res) => {
         lessonId: e,
       });
     });
-    trainers.map((e,i)=>{
+    trainers.map((e, i) => {
       const type = trainersImages[i].mimetype.split("/")[1];
       const fileName = v4() + "." + type;
       trainersImages[i].mv(path.resolve(__dirname, "..", "static", fileName));
@@ -441,7 +449,7 @@ const createCourse = async (req, res) => {
         img: fileName,
         profession: e.profession,
         courseId,
-      })
+      });
     });
     res.status(200).json({ success: true });
   } catch (error) {
@@ -542,9 +550,16 @@ const getCoursesByFilter = async (req, res) => {
       ],
       // order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
       limit,
-      attributes: ["id", ["name", "title"],"startDate","endDate","price","sale"],
+      attributes: [
+        "id",
+        ["name", "title"],
+        "startDate",
+        "endDate",
+        "price",
+        "sale",
+      ],
     });
-      
+
     Courses = Courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
@@ -572,12 +587,12 @@ const getCoursesByFilter = async (req, res) => {
       return e;
     });
     if (order === "highToLow")
-    Courses = Courses.sort((a, b) => b.saledValue - a.saledValue);
-  if (order === "lowToHigh")
-    Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
+      Courses = Courses.sort((a, b) => b.saledValue - a.saledValue);
+    if (order === "lowToHigh")
+      Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
     Courses = Courses.filter(
-    (e) => e.saledValue >= minPrice && e.saledValue <= maxPrice
-  );
+      (e) => e.saledValue >= minPrice && e.saledValue <= maxPrice
+    );
     return res.status(200).json({ Courses });
   } catch (error) {
     console.log(error);
@@ -608,7 +623,7 @@ const getOneGroup = async (req, res) => {
     delete Courses.dataValues;
     // return res.json({Courses})
     Courses = {
-      title:Courses.name,
+      title: Courses.name,
       courseType: Courses.GroupCourse.CoursesContents[0].courseType,
       lessonType: Courses.GroupCourse.CoursesContents[0].lessonType,
       level: Courses.GroupCourse.CoursesContents[0].level,
@@ -623,7 +638,10 @@ const getOneGroup = async (req, res) => {
       //       days[language],
       price: Courses.price,
       sale: Courses.sale,
-      saledValue: Courses.price > 0 ? Courses.price - Math.round(Courses.price * Courses.sale) / 100 : Courses.price,
+      saledValue:
+        Courses.price > 0
+          ? Courses.price - Math.round(Courses.price * Courses.sale) / 100
+          : Courses.price,
     };
     return res.status(200).json(Courses);
   } catch (error) {
@@ -632,6 +650,112 @@ const getOneGroup = async (req, res) => {
   }
 };
 
+const updateCourse = async (req, res) => {
+  try {
+    let {
+      courseId=7,
+      language,
+      title,
+      description,
+      courseType,
+      lessonType,
+      whyThisCourse,
+      level,
+      levelDescriptions,
+      lessons,
+      trainers,
+    } = req.body;
+
+    
+    let { img, trainersImages } = req.files;
+
+    // Handle image upload if provided
+    if (img) {
+      const imgType = img.mimetype.split("/")[1];
+      const imgFileName = v4() + "." + imgType;
+      img.mv(path.resolve(__dirname, "..", "static", imgFileName));
+
+      // Update the course's image file name
+      await GroupCourses.update(
+        { img: imgFileName },
+        { where: { id: courseId } }
+      );
+    }
+
+    trainers = JSON.parse(trainers);
+    if (!Array.isArray(lessons)) lessons = [lessons];
+    if (!Array.isArray(trainersImages)) trainersImages = [trainersImages];
+
+    // Update course details
+    await CoursesContents.update(
+      {
+        language,
+        title,
+        description,
+        courseType,
+        lessonType,
+        whyThisCourse: whyThisCourse.split(","),
+        level,
+        // levelDescriptions,
+      },
+      { where: { courseId,language } }
+    );
+
+    // Update lessons for the course
+    await CoursesPerLessons.destroy({ where: { courseId } });
+    lessons.forEach(async (e) => {
+      await CoursesPerLessons.create({
+        courseId,
+        lessonId: e,
+      });
+    });
+
+    // Update trainers for the course
+    await Trainer.destroy({ where: { courseId } });
+    trainers.forEach(async (e, i) => {
+      const type = trainersImages[i].mimetype.split("/")[1];
+      const fileName = v4() + "." + type;
+      trainersImages[i].mv(path.resolve(__dirname, "..", "static", fileName));
+
+      await Trainer.create({
+        fullName: e.fullName,
+        img: fileName,
+        profession: e.profession,
+        courseId,
+      });
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+
+
+const deleteCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    GroupCourses.destroy({ where: { id } });
+    CoursesContents.destroy({
+      where: { courseId: id },
+    });
+
+    CoursesPerLessons.destroy({
+      where: { courseId: id },
+    });
+
+    Trainer.destroy({
+      where: { courseId: id },
+    });
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
 module.exports = {
   getAllCourses,
   getCoursesByFilter,
@@ -643,5 +767,7 @@ module.exports = {
   getCourseTitles,
   createTest,
   createCourse,
-  getOneGroup
+  updateCourse,
+  getOneGroup,
+  deleteCourse
 };

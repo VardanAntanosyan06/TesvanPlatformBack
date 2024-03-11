@@ -263,6 +263,34 @@ const getAllLessons = async(req,res)=>{
     return res.status(500).json({ message: "Something went wrong." });
   }
 }
+
+const deleteLesson = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await Lesson.destroy({ where:{id} });
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const updateLesson = async (req, res) => {
+  try {
+    const { title_en, description_en,id } = req.body;
+
+    await Lesson.update(
+      { title_en, description_en },
+      { where: { id } }
+    );
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
 module.exports = {
   getLessons,
   getLesson,
@@ -270,6 +298,7 @@ module.exports = {
   submitQuizz,
   openLesson,
   createLesson,
-  getAllLessons
-      
+  getAllLessons,
+  deleteLesson,
+  updateLesson
 };
