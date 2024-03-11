@@ -10,6 +10,19 @@
   "schemes": [
     "https"
   ],
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter your Bearer token in the format 'Bearer <token>'"
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
   "paths": {
     "/": {
       "get": {
