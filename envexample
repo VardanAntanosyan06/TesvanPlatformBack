@@ -1,0 +1,6 @@
+NODE_ENV = development 
+EMAIL=test@gmail.com 
+EMAIL_PASSWORD=test
+SECRET=Your Key
+PASSWORD=test 
+HOST=http://localhost:4000/
