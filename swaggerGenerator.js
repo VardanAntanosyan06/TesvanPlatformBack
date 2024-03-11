@@ -1,7 +1,7 @@
 const swaggerAutogen = require('swagger-autogen')();
 
 const outputFile = './swagger.json';
-const endpointsFiles = ['./routes/*.js'];
+const endpointsFiles = ['./app.js'];
 
 const config = {
   info: {
@@ -9,7 +9,7 @@ const config = {
     description: '',
   },
   tags: [],
-  host: 'localhost:4000/api/v2',
+  host: 'https://platform.tesvan.com/server/',
   schemes: ['http'],
 };
 
