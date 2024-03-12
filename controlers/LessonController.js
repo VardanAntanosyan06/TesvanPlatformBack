@@ -264,9 +264,9 @@ const openLesson = async (req, res) => {
 
 const createLesson = async (req, res) => {
   try {
-    const { title_en, description_en, maxPoints } = req.body;
+    const { title_en, description_en, maxPoints,htmlContent  } = req.body;
 
-    await Lesson.create({ title_en, description_en, maxPoints });
+    await Lesson.create({ title_en, description_en, maxPoints,htmlContent });
 
     return res.status(200).json({ success: true });
   } catch (error) {
