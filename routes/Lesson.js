@@ -9,6 +9,12 @@ router.get(
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getLessons
 );
+
+router.get(
+  "/getLessonTitles",
+  controller.getLessonTitles
+);
+
 router.get(
   "/getLessonTitles",
   controller.getLessonTitles
@@ -18,6 +24,18 @@ router.get(
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getLesson
 );
+router.get(
+  "/getLessonForAdmin/:id",
+  checkAuth(["ADMIN"]),
+  controller.getLessonForAdmin
+);
+
+router.get(
+  "/getLesson/:id",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.getLesson
+);
+
 router.post(
   "/createLesson",
   checkAuth(["TEACHER", "ADMIN"]),

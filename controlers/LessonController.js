@@ -122,6 +122,30 @@ const getLesson = async (req, res) => {
   }
 };
 
+const getLessonForAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { language } = req.query;
+
+    let lesson = await Lesson.findOne({
+      where: {id },
+      attributes:[['title_en','title'],['description_en','description'],'maxPoints']
+    });
+
+    if (!lesson) {
+      return res.status(403).json({
+        message: "Lessons not found or User doesn't have the lessons",
+      });
+    } 
+
+    res.send(lesson);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+
 const submitQuizz = async (req, res) => {
   try {
     const { id } = req.params;
@@ -300,5 +324,6 @@ module.exports = {
   createLesson,
   getAllLessons,
   deleteLesson,
-  updateLesson
+  updateLesson,
+  getLessonForAdmin
 };
