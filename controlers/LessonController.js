@@ -129,7 +129,7 @@ const getLessonForAdmin = async (req, res) => {
 
     let lesson = await Lesson.findOne({
       where: {id },
-      attributes:[['title_en','title'],['description_en','description'],'maxPoints']
+      attributes:[['title_en','title'],['description_en','description'],'maxPoints','htmlContent']
     });
 
     if (!lesson) {
