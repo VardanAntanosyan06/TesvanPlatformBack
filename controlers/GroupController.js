@@ -371,7 +371,6 @@ const findGroups = async (req, res) => {
           attributes: ["userId"],
         },
       ],
-      // limit: 3
     });
 
     group = await Promise.all(
@@ -407,7 +406,7 @@ const findGroups = async (req, res) => {
     );
     return res.status(200).json({ success: true, group });
   } catch (error) {
-    console.log(error);
+    console.error(error); // Log the error for debugging
     return res.status(500).json({ message: "Something went wrong." });
   }
 };

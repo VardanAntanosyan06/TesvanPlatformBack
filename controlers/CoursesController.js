@@ -533,6 +533,8 @@ const getCoursesByFilter = async (req, res) => {
           include: [
             {
               model: CoursesContents,
+              require: true,
+
               where: {
                 language,
                 level: {
@@ -558,12 +560,14 @@ const getCoursesByFilter = async (req, res) => {
         "price",
         "sale",
       ],
-    });
+      require: true,
 
+    });
+    // return res.json(Courses);
     Courses = Courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-
+      console.log(e.GroupCourse);
       e.img = `https://platform.tesvan.com/server/${e.GroupCourse.img}`;
       e.description = e.GroupCourse.CoursesContents[0].description;
       e.courseType = e.GroupCourse.CoursesContents[0].courseType;
@@ -653,7 +657,7 @@ const getOneGroup = async (req, res) => {
 const updateCourse = async (req, res) => {
   try {
     let {
-      courseId=7,
+      courseId = 7,
       language,
       title,
       description,
@@ -666,7 +670,6 @@ const updateCourse = async (req, res) => {
       trainers,
     } = req.body;
 
-    
     let { img, trainersImages } = req.files;
 
     // Handle image upload if provided
@@ -698,7 +701,7 @@ const updateCourse = async (req, res) => {
         level,
         // levelDescriptions,
       },
-      { where: { courseId,language } }
+      { where: { courseId, language } }
     );
 
     // Update lessons for the course
@@ -731,8 +734,6 @@ const updateCourse = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
-
-
 
 const deleteCourse = async (req, res) => {
   try {
@@ -769,5 +770,5 @@ module.exports = {
   createCourse,
   updateCourse,
   getOneGroup,
-  deleteCourse
+  deleteCourse,
 };
