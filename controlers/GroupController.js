@@ -30,20 +30,19 @@ const CreateGroup = async (req, res) => {
       price,
       sale,
     });
-
-    users.map((e) => {
-      UserCourses.create({
-        GroupCourseId: task.id,
-        UserId: e,
+    await Promise.all(users.map(async (e) => {
+      await UserCourses.create({
+          GroupCourseId: task.id,
+          UserId: e,
       });
-
-      GroupsPerUsers.create({
-        groupId: task.id,
-        userId: e,
+  
+      await GroupsPerUsers.create({
+          groupId: task.id,
+          userId: e,
       });
-    });
+  }));  
 
-    res.status(200).json({ success: true, task });
+    return res.status(200).json({ success: true, task });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
