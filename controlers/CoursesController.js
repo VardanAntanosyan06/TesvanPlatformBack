@@ -562,6 +562,7 @@ const getCoursesByFilter = async (req, res) => {
       ],
       require: true,
     });
+    
     Courses = Courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;

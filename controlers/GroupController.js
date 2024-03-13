@@ -172,31 +172,32 @@ const findAll = async (req, res) => {
 };
 
 const update = async (req, res) => {
-    const { name, startDate, endDate, price, sale,id } = req.body;
+  const { name, startDate, endDate, price, sale, id } = req.body;
 
-    try {
-      const group = await Groups.findOne({
-          where: {
-              id,
-          },
-      });
-  
+  try {
+      const group = await Groups.findOne({ where: { id } });
+
       if (!group) {
           return res.status(404).json({ error: 'Group not found' });
       }
-  
+
       group.name = name;
       group.startDate = startDate;
       group.endDate = endDate;
       group.price = price;
       group.sale = sale;
-  
+
       await group.save();
-  
-      return res.status(200).json({ message: 'Group updated successfully', group });
-  }catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+
+      await GroupsPerUsers.update(
+          { groupId: group.id },
+          { where: { groupId: id } }
+      );
+
+      return res.status(200).json({ message: 'Group updated successfully' });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
