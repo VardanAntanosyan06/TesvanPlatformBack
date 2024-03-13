@@ -772,10 +772,8 @@ const getCourseForAdmin = async (req, res) => {
         {
           model: Lesson,
           attributes: [
+            "id",
             ["title_en", "title"],
-            ["description_en", "description"],
-            "maxPoints",
-            "htmlContent",
           ],
         },
       ],
@@ -785,8 +783,11 @@ const getCourseForAdmin = async (req, res) => {
     if (!course)
       return res.json({ success: false, message: "Course not found" });
 
-      
-     console.log(course.Lessons); 
+      const trainers = await Trainer.findAll({
+        where: { courseId: id },
+        attributes: ["fullName", "img", "profession"],
+      });
+
     course.Lesson = course.Lessons.map((e) => {
       delete e.dataValues.CoursesPerLessons;
       return e;
@@ -804,6 +805,7 @@ const getCourseForAdmin = async (req, res) => {
       level: course.CoursesContents[0].level,
       levelDescriptions: course.CoursesContents[0].levelDescriptions,
       lessons: course.Lessons,
+      trainers
     };
     delete course.CoursesContents;
     return res.json(course);
