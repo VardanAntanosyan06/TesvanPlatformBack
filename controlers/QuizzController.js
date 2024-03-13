@@ -19,6 +19,7 @@ const createQuizz = async (req, res) => {
       time,
       percent,
     });
+    console.log(questions);
     questions.map((e) => {
       Question.create({
         question: e.question,
@@ -175,10 +176,74 @@ const getAll = async (req,res)=>{
     return res.status(500).json({ message: "Something went wrong." });
   }
 }
+
+const deleteQuizz = async (req, res) => {
+  try {
+    const {id} = req.params;
+    
+    const questions = await Question.findAll({ where: { quizzId:id } });
+    
+    for (const question of questions) {
+      await Option.destroy({ where: { questionId: question.id } });
+    }
+
+    Question.destroy({ where: { quizzId:id } });
+
+    // Delete the quiz itself
+    Quizz.destroy({ where: { id } });
+    
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+const updateQuizz = async (req, res) => {
+  try {
+    const { title, description, time, percent, questions,id } = req.body;
+    
+    await Quizz.update(
+      {
+        title_en: title,
+        description_en: description,
+        time,
+        percent,
+      },
+      { where: { id } }
+    );
+
+    await Question.destroy({ where: { quizzId:id } });
+
+    for (const e of questions) {
+      const question = await Question.create({
+        question: e.question,
+        quizzId:id,
+      });
+
+      for (const i of e.options) {
+        await Option.create({
+          questionId: question.id,
+          title: i.option,
+          isCorrect: i.isCorrect,
+        });
+      }
+    }
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+
 module.exports = {
   createQuizz,
   getQuizzes,
   submitQuizz,
   finishQuizz,
-  getAll
+  getAll,
+  deleteQuizz,
+  updateQuizz
 };

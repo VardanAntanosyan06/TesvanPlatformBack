@@ -19,7 +19,7 @@ router.get("/getUserStaticChart/:groupId", checkAuth(["TEACHER", "ADMIN"]), cont
 router.get("/findAll", checkAuth(["TEACHER", "ADMIN","STUDENT"]), controller.findAll);
 router.get("/findGroups", checkAuth(["TEACHER", "ADMIN","STUDENT"]), controller.findGroups);
 router.get("/singleUserStatic", checkAuth(["TEACHER", "ADMIN"]), controller.SingleUserStstic);
-router.get("/getGroupesForTeacher", checkAuth(["TEACHER"]), controller.getGroupesForTeacher);
+router.get("/getGroupesForTeacher", checkAuth(["TEACHER", "ADMIN"]), controller.getGroupesForTeacher);
 
 router.put("/update", checkAuth(["ADMIN"]), controller.update);
 router.patch("/finishGroup/:id", checkAuth(["TEACHER","ADMIN"]), controller.finishGroup);

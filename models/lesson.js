@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const GroupCourses = sequelize.define("GroupCourses");
-  Lesson.belongsTo(GroupCourses, { foreignKey: "id" });
+  // Lesson.belongsTo(GroupCourses, { foreignKey: "id" });
 
   const Users = sequelize.define("Users");
   Lesson.belongsToMany(Users, { through: "UserLesson" });
@@ -41,7 +41,12 @@ module.exports = (sequelize, DataTypes) => {
   Lesson.hasOne(Video, { foreignKey: "lessonId", as: "video" });
 
   const CoursesPerLessons = sequelize.define("CoursesPerLessons")
-  // Lesson.belongsToMany(CoursesPerLessons, { through: 'CoursesPerLesson' });
 
+  Lesson.belongsToMany(GroupCourses, {
+    through: 'CoursesPerLessons',
+    foreignKey: 'lessonId', // Specify lowercase column name
+    otherKey: 'groupCourseId' // Assuming the column name in GroupCourse is 'id'
+  });
+  
   return Lesson;
 };

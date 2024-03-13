@@ -303,10 +303,10 @@ const deleteLesson = async (req, res) => {
 
 const updateLesson = async (req, res) => {
   try {
-    const { title_en, description_en,id } = req.body;
+    const { title_en, description_en,id,htmlContent} = req.body;
 
     await Lesson.update(
-      { title_en, description_en },
+      { title_en, description_en,htmlContent },
       { where: { id } }
     );
     return res.status(200).json({ success: true });

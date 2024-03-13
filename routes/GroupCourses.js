@@ -10,6 +10,7 @@ router.get("/getOneGroup/:id", controller.getOneGroup);
 
 router.get("/getByFilter", controller.getCoursesByFilter);
 router.post("/createCourse",checkAuth(["TEACHER", "ADMIN"]),controller.createCourse);
+router.get("/getCourseForAdmin/:id",checkAuth(["ADMIN"]),controller.getCourseForAdmin);
 
 router.get("/getOne/:id", controller.getOne);
 router.get("/like/:courseId", checkAuth(["STUDENT"]), controller.like);

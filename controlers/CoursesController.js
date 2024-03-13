@@ -561,7 +561,6 @@ const getCoursesByFilter = async (req, res) => {
         "sale",
       ],
       require: true,
-
     });
     // return res.json(Courses);
     Courses = Courses.map((e) => {
@@ -757,6 +756,60 @@ const deleteCourse = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
+
+const getCourseForAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    let course = await GroupCourses.findOne({
+      where: { id },
+      include: [
+        {
+          model: CoursesContents,
+          attributes: { exclude: ["id", "courseId", "language"] },
+          where: { language: "en" },
+        },
+        {
+          model: Lesson,
+          attributes: [
+            ["title_en", "title"],
+            ["description_en", "description"],
+            "maxPoints",
+            "htmlContent",
+          ],
+        },
+      ],
+      attributes: ["id", "img"],
+    });
+
+    if (!course)
+      return res.json({ success: false, message: "Course not found" });
+
+    course.Lesson = course.Lessons.map((e) => {
+      delete e.dataValues.CoursesPerLessons;
+      return e;
+    });
+
+    course = {  
+      id: course.id,
+      img: course.img,
+      title: course.CoursesContents[0].title,
+      description: course.CoursesContents[0].description,
+      courseType: course.CoursesContents[0].courseType,
+      lessonType: course.CoursesContents[0].lessonType,
+      whyThisCourse: course.CoursesContents[0].whyThisCourse,
+      level: course.CoursesContents[0].level,
+      level: course.CoursesContents[0].level,
+      levelDescriptions: course.CoursesContents[0].levelDescriptions,
+      lessons: course.Lessons,
+    };
+    delete course.CoursesContents;
+    return res.json(course);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
 module.exports = {
   getAllCourses,
   getCoursesByFilter,
@@ -771,4 +824,5 @@ module.exports = {
   updateCourse,
   getOneGroup,
   deleteCourse,
+  getCourseForAdmin,
 };

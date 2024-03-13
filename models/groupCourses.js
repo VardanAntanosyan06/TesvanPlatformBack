@@ -37,8 +37,13 @@ module.exports = (sequelize, DataTypes) => {
   GroupCourses.belongsToMany(Users, { through: "UserCourses", as: "courses" });
 
   const Lesson = sequelize.define("Lesson");
-  GroupCourses.hasMany(Lesson, {foreignKey: "courseId" });
-
+  const CoursesPerLessons = sequelize.define("CoursesPerLessons")
+  // Lesson.belongsToMany(GroupCourses, { through: CoursesPerLessons,foreignKey:"lessonId" });
+  GroupCourses.belongsToMany(Lesson, {
+    through: 'CoursesPerLessons',
+    foreignKey: 'lessonId',
+    otherKey: 'lessonId' 
+  });
   const Homework = sequelize.define("Homework");
   GroupCourses.hasMany(Homework, { foreignKey: "courseId" });
 

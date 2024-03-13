@@ -21,8 +21,6 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'CoursesPerLessons',
   });
   
-  const Lesson = sequelize.define("Lesson")
   
-  CoursesPerLessons.belongsTo(Lesson, { foreignKey: 'lessonId' });
   return CoursesPerLessons;
 };
