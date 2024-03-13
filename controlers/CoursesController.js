@@ -529,11 +529,11 @@ const getCoursesByFilter = async (req, res) => {
       include: [
         {
           model: GroupCourses,
-          require: true,
+          required: true,
           include: [
             {
               model: CoursesContents,
-              require: true,
+              required: true,
 
               where: {
                 language,
@@ -550,7 +550,7 @@ const getCoursesByFilter = async (req, res) => {
           ],
         },
       ],
-      // order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
+      order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
       limit,
       attributes: [
         "id",
@@ -562,7 +562,6 @@ const getCoursesByFilter = async (req, res) => {
       ],
       require: true,
     });
-    // return res.json(Courses);
     Courses = Courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
