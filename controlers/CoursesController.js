@@ -550,7 +550,7 @@ const getCoursesByFilter = async (req, res) => {
           ],
         },
       ],
-      order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
+      // order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
       limit,
       attributes: [
         "id",
