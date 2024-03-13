@@ -785,11 +785,13 @@ const getCourseForAdmin = async (req, res) => {
     if (!course)
       return res.json({ success: false, message: "Course not found" });
 
+      
+     console.log(course.Lessons); 
     course.Lesson = course.Lessons.map((e) => {
       delete e.dataValues.CoursesPerLessons;
       return e;
     });
-
+    
     course = {  
       id: course.id,
       img: course.img,
