@@ -87,7 +87,7 @@ const getQuizzes = async (req, res) => {
         }}) 
 
     quizz = {
-      lesson:lesson.Lesson,
+      lesson:lesson?lesson.Lesson:null,
       time: 22,
       ...quizz.dataValues,
     };
