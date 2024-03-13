@@ -91,6 +91,7 @@ const getQuizzes = async (req, res) => {
       time: 22,
       ...quizz.dataValues,
     };
+      
     return res.status(200).json({ success: true, quizz });
   } catch (error) {
     console.log(error.message);
@@ -212,7 +213,7 @@ const deleteQuizz = async (req, res) => {
 
 const updateQuizz = async (req, res) => {
   try {
-    const { title, description, time, percent, questions,id } = req.body;
+    const { title, description, time, percent, questions,id,lessonId } = req.body;
     
     await Quizz.update(
       {
@@ -240,7 +241,13 @@ const updateQuizz = async (req, res) => {
         });
       }
     }
-
+    await LessonsPerQuizz.destroy({
+      quizzId:id
+    });
+    await LessonsPerQuizz.create({
+      quizzId:id,
+      lessonId
+    })
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
