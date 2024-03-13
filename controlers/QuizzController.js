@@ -242,7 +242,7 @@ const updateQuizz = async (req, res) => {
       }
     }
     await LessonsPerQuizz.destroy({
-      quizzId:id
+      where:{quizzId:id}
     });
     await LessonsPerQuizz.create({
       quizzId:id,
