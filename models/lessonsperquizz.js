@@ -20,5 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'LessonsPerQuizz',
   });
+
+  const Lesson = sequelize.define("Lesson");
+
+  LessonsPerQuizz.belongsTo(Lesson,{foreignKey:"lessonId"})
   return LessonsPerQuizz;
 };

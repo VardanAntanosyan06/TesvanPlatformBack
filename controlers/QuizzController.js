@@ -6,7 +6,10 @@ const {
   CoursesPerQuizz,
   UserAnswersQuizz,
   CoursesPerLessons,
+  Lesson,
+  LessonsPerQuizz
 } = require("../models");
+const lessonsperquizz = require("../models/lessonsperquizz");
 
 const createQuizz = async (req, res) => {
   try {
@@ -22,7 +25,7 @@ const createQuizz = async (req, res) => {
     console.log(questions);
     questions.map((e) => {
       Question.create({
-        question: e.question,
+        title: e.question,
         quizzId,
       }).then((data) => {
         e.options.map((i) => {
@@ -35,7 +38,7 @@ const createQuizz = async (req, res) => {
       });
     });
     if (lessonId) {
-      await CoursesPerLessons.create({
+      await LessonsPerQuizz.create({
         quizzId,
         lessonId,
       });
@@ -69,16 +72,24 @@ const getQuizzes = async (req, res) => {
         },
       ],
     });
-
+    
     if (!quizz)
       return res.status(403).json({
         success: false,
         message: `with ID ${id} Quizz not found`,
       });
 
+      const lesson = await LessonsPerQuizz.findOne({
+        where:{quizzId:id},
+        include:{
+          model:Lesson,
+          attributes:['id',['title_en','title']]
+        }}) 
+
     quizz = {
-      ...quizz.dataValues,
+      lesson:lesson.Lesson,
       time: 22,
+      ...quizz.dataValues,
     };
     return res.status(200).json({ success: true, quizz });
   } catch (error) {
@@ -217,7 +228,7 @@ const updateQuizz = async (req, res) => {
 
     for (const e of questions) {
       const question = await Question.create({
-        question: e.question,
+        title: e.question,
         quizzId:id,
       });
 
