@@ -31,17 +31,19 @@ const CreateGroup = async (req, res) => {
       sale,
     });
 
-    await Promise.all(users.map(async (e) => {
-      await UserCourses.create({
+    await Promise.all(
+      users.map(async (e) => {
+        await UserCourses.create({
           GroupCourseId: task.id,
           UserId: e,
-      });
-  
-      await GroupsPerUsers.create({
+        });
+
+        await GroupsPerUsers.create({
           groupId: task.id,
           userId: e,
-      });
-  }));  
+        });
+      })
+    );
 
     return res.status(200).json({ success: true, task });
   } catch (error) {
@@ -65,23 +67,29 @@ const findOne = async (req, res) => {
       },
     });
 
-  
-    const course = await CoursesContents.findOne({where:{courseId:group.assignCourseId},attributes:['id','title']})
     if (!group)
       return res
         .status(404)
         .json({ success: false, message: "Group not found" });
+
+    const course = await CoursesContents.findOne({
+      where: { courseId: group.assignCourseId },
+      attributes: ["id", "title"],
+    });
 
     const groupedUsers = {
       id: group.id,
       name: group.name,
       finished: group.finished,
       startDate: group.startDate,
-    endDate: group.endDate,
-    price: group.endDate,
-    sale: group.sale,
-    course:course
+      endDate: group.endDate,
+      price: group.price,
+      sale: group.sale,
+      course: course,
+      TEACHER:[],
+      STUDENT:[]
     };
+    // return res.json()
     group.UserCourses.forEach((userCourse) => {
       const user = userCourse.User;
       if (user) {
@@ -97,6 +105,7 @@ const findOne = async (req, res) => {
         });
       }
     });
+
 
     return res.status(200).json({ success: true, group: groupedUsers });
   } catch (error) {
@@ -182,29 +191,29 @@ const update = async (req, res) => {
   const { name, startDate, endDate, price, sale, id } = req.body;
 
   try {
-      const group = await Groups.findOne({ where: { id } });
+    const group = await Groups.findOne({ where: { id } });
 
-      if (!group) {
-          return res.status(404).json({ error: 'Group not found' });
-      }
+    if (!group) {
+      return res.status(404).json({ error: "Group not found" });
+    }
 
-      group.name = name;
-      group.startDate = startDate;
-      group.endDate = endDate;
-      group.price = price;
-      group.sale = sale;
+    group.name = name;
+    group.startDate = startDate;
+    group.endDate = endDate;
+    group.price = price;
+    group.sale = sale;
 
-      await group.save();
+    await group.save();
 
-      await GroupsPerUsers.update(
-          { groupId: group.id },
-          { where: { groupId: id } }
-      );
+    await GroupsPerUsers.update(
+      { groupId: group.id },
+      { where: { groupId: id } }
+    );
 
-      return res.status(200).json({ message: 'Group updated successfully' });
+    return res.status(200).json({ message: "Group updated successfully" });
   } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: 'Something went wrong.' });
+    console.error(error);
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -345,7 +354,7 @@ const finishGroup = async (req, res) => {
         message: `Group with ID ${id} not defined`,
       });
 
-    Group.UserCourses.map((e) => {  
+    Group.UserCourses.map((e) => {
       if (e.totalPoints >= 10) {
         Certificates.create({
           userId: e.UserId,
@@ -353,7 +362,6 @@ const finishGroup = async (req, res) => {
         return;
       }
     });
-
 
     Group.finished = true;
     Group.save();
