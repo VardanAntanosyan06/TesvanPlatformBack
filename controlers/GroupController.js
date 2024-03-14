@@ -30,6 +30,7 @@ const CreateGroup = async (req, res) => {
       price,
       sale,
     });
+
     await Promise.all(users.map(async (e) => {
       await UserCourses.create({
           GroupCourseId: task.id,
@@ -64,6 +65,8 @@ const findOne = async (req, res) => {
       },
     });
 
+  
+    const course = await CoursesContents.findOne({where:{courseId:group.assignCourseId},attributes:['id','title']})
     if (!group)
       return res
         .status(404)
@@ -73,6 +76,11 @@ const findOne = async (req, res) => {
       id: group.id,
       name: group.name,
       finished: group.finished,
+      startDate: group.startDate,
+    endDate: group.endDate,
+    price: group.endDate,
+    sale: group.sale,
+    course:course
     };
     group.UserCourses.forEach((userCourse) => {
       const user = userCourse.User;
@@ -337,7 +345,7 @@ const finishGroup = async (req, res) => {
         message: `Group with ID ${id} not defined`,
       });
 
-    Group.UserCourses.map((e) => {
+    Group.UserCourses.map((e) => {  
       if (e.totalPoints >= 10) {
         Certificates.create({
           userId: e.UserId,
@@ -345,6 +353,8 @@ const finishGroup = async (req, res) => {
         return;
       }
     });
+
+
     Group.finished = true;
     Group.save();
     return res.status(200).json({ success: true });
