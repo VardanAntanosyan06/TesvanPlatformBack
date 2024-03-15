@@ -4,6 +4,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const path = require("path");
+const fs = require("fs");
+const mailgun = require("mailgun-js")({
+  apiKey: process.env.MAILGUN_API_KEY,
+  domain: process.env.MAILGUN_DOMAIN,
+});
 
 require("dotenv").config();
 
@@ -75,202 +80,186 @@ const UserRegistartionSendEmail = async (req, res) => {
     );
     User.tokenCreatedAt = moment();
     await User.save();
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-    const mailOptions = {
-      from: 't37378844@gmail.com',
-      to: email,
-      subject: "test",
-      html: `<!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>Document</title>
-          <link
-            href="https://fonts.googleapis.com/css?family=Poppins"
-            rel="stylesheet"
-          />
-        </head>
-        <body>
-          <center style="height:1000px;">
-            <h1
-              style="
-                
-                font-style: normal;
-                font-weight: 600;
-                font-size: 32px;
-                line-height: 48px;
-              "
-            >
-            Welcome to Tesvan Platform
-            
-            </h1>
-            
-            <img src="cid:messageIcon" alt="" style="width:185px;"/>
-            <div style="width: 70%">
+
+    (function () {
+      const data = {
+        from: "verification@tesvan.com",
+        to: email,
+        subject: "Verify your email address",
+        html: `<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Document</title>
+            <link
+              href="https://fonts.googleapis.com/css?family=Poppins"
+              rel="stylesheet"
+            />
+          </head>
+          <body>
+            <center style="height:1000px;">
               <h1
                 style="
-                  
+  
                   font-style: normal;
                   font-weight: 600;
                   font-size: 32px;
                   line-height: 48px;
                 "
               >
-                Please verify your email address.
+              Welcome to Tesvan Platform
+  
               </h1>
-              <p
-                        style="
-                          
-                          font-style: normal;
-                          font-size: 20px;
-                          text-align: left;
-                        "
-                      >
-                        In order to complete your registration and start preparing for
-                        college admissions, you'll need to verify your email address.
-                      </p> 
-              <p
-                style="
-                  
-                  font-style: normal;
-                  font-size: 20px;
-                  text-align: left;
-                  "
-              >
-                You've entered ${email} as the email address for your account. Please
-                verify this email address by clicking button below.
-              </p>
-              <a href="https://platform.tesvan.com/verify?token=${User.token}" style="text-decoration:none">
-                <div
+  
+              <img src='https://platform.tesvan.com/server/messageIcon.png' alt="" style="width:185px;"/>
+              <div style="width: 70%">
+                <h1
                   style="
-                    width: 130px;
-                    height: 40px;
-                    background: #FFC038;
-                    border-radius: 5px;
-                    border:none;  
+  
                     font-style: normal;
-                    font-weight: 500;
-                    font-size: 18px;
-                    line-height: 27px;
-                    color: #143E59;
-                    cursor:pointer;
-                    padding:7px;
-                    box-sizing:border-box;
+                    font-weight: 600;
+                    font-size: 32px;
+                    line-height: 48px;
                   "
                 >
-                  Verify
-                </div>
-              </a>
-            </div>
-            <div
-              style="width: 70%;margin-top: 30px"
-              style="border-top: 1px solid #d4d4d4;border-bottom: 1px solid #d4d4d4;"
-            >
-              <p style="font-size: 20px; line-height: 30px;text-align:left;"
-                >If the button is not working please use the link below:
-                <a
-                href="https://platform.tesvan.com/verify?token=${User.token}"
-                  style="color: #425dac;text-align:left;font-size:18px;"
-                  >https://platform.tesvan.com/verify?token=${User.token}</a
+                  Please verify your email address.
+                </h1>
+                <p
+                          style="
+  
+                            font-style: normal;
+                            font-size: 20px;
+                            text-align: left;
+                          "
+                        >
+                          In order to complete your registration and start preparing for
+                          college admissions, you'll need to verify your email address.
+                        </p>
+                <p
+                  style="
+  
+                    font-style: normal;
+                    font-size: 20px;
+                    text-align: left;
+                    "
                 >
-              </p>
-            </div>
-            <div
-            style="
-              width: 70%;
-              margin-top: 25px;
-              margin-bottom: 25px;
-              border-top: 1px solid #d4d4d4;
-              border-bottom: 1px solid #d4d4d4;
-              ">
-            <p
-            style="
-            display:flex;
-            
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 27px;
-            color: #646464;
-            text-align: left;
-           "
-            >
-              Regards,
-            </p>
-            <div style="display:flex;">
-            <img src="cid:Frame" alt="" width="50px"/>
-            </div>
-            <p
-            style="
-            display:flex;
-            
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 27px;
-            color: #646464;
-            text-align: left;
-           "
-            >
-             
-          </div>
-          <div style="width:70%">
-          <p style="
-          
-          font-style: normal;
-          font-weight: 500;
-          font-size: 18px;
-          line-height: 27px;
-          color: #646464;
-          text-align: center;
-          margin-top:15px;
-          ">© 2024 Tesvan, All rights reserved</p></div>
-          </center>
-          <style>
-          *{
-            color:black;
-          }
-            div {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-            }
-            p {
+                  You've entered ${email} as the email address for your account. Please
+                  verify this email address by clicking button below.
+                </p>
+                <a href="https://platform.tesvan.com/verify?token=${User.token}" style="text-decoration:none">
+                  <div
+                    style="
+                      width: 130px;
+                      height: 40px;
+                      background: #FFC038;
+                      border-radius: 5px;
+                      border:none;
+                      font-style: normal;
+                      font-weight: 500;
+                      font-size: 18px;
+                      line-height: 27px;
+                      color: #143E59;
+                      cursor:pointer;
+                      padding:7px;
+                      box-sizing:border-box;
+                    "
+                  >
+                    Verify
+                  </div>
+                </a>
+              </div>
+              <div
+                style="width: 70%;margin-top: 30px"
+                style="border-top: 1px solid #d4d4d4;border-bottom: 1px solid #d4d4d4;"
+              >
+                <p style="font-size: 20px; line-height: 30px;text-align:left;"
+                  >If the button is not working please use the link below:
+                  <a
+                  href="https://platform.tesvan.com/verify?token=${User.token}"
+                    style="color: #425dac;text-align:left;font-size:18px;"
+                    >https://platform.tesvan.com/verify?token=${User.token}</a
+                  >
+                </p>
+              </div>
+              <div
+              style="
+                width: 70%;
+                margin-top: 25px;
+                margin-bottom: 25px;
+                border-top: 1px solid #d4d4d4;
+                border-bottom: 1px solid #d4d4d4;
+                ">
+              <p
+              style="
+              display:flex;
+  
+              font-weight: 500;
+              font-size: 18px;
+              line-height: 27px;
+              color: #646464;
               text-align: left;
-
+             "
+              >
+                Regards,
+              </p>
+              <div style="display:flex;">
+              <img src="https://platform.tesvan.com/server/Frame.png" alt="" width="50px"/>
+              </div>
+              <p
+              style="
+              display:flex;
+  
+              font-weight: 500;
+              font-size: 18px;
+              line-height: 27px;
+              color: #646464;
+              text-align: left;
+             "
+              >
+  
+            </div>
+            <div style="width:70%">
+            <p style="
+  
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 27px;
+            color: #646464;
+            text-align: center;
+            margin-top:15px;
+            ">© 2024 Tesvan, All rights reserved</p></div>
+            </center>
+            <style>
+            *{
+              color:black;
             }
-            a{
-              color:unset
-            }
-          </style>
-        </body>
-      </html>
-      `,
-      attachments: [
-        {
-          filename: "messageIcon.png",
-          path: path.resolve(__dirname, '..', 'public',"images", 'messageIcon.png'),
-          cid: "messageIcon",
-        },
-        {
-          filename: "Frame.png",
-          path: path.resolve(__dirname, '..', 'public',"images", 'Frame.png'),
-          cid: "Frame",
-        },
-      ],
-    };
+              div {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+              }
+              p {
+                text-align: left;
+  
+              }
+              a{
+                color:unset
+              }
+            </style>
+          </body>
+        </html>
+        `,
+      };
 
-    transporter.sendMail(mailOptions).catch(console.log);
+      mailgun.messages().send(data, (error, body) => {
+        if (error) console.log(error);
+        else console.log(body);
+      });
+    })();
 
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -279,15 +268,19 @@ const UserRegistartionSendEmail = async (req, res) => {
   }
 };
 
-const EmailExist = async(req,res)=>{
+const EmailExist = async (req, res) => {
   try {
-      const {email} = req.params;
+    const { email } = req.params;
 
-      const user = await Users.findOne({where:{email}})
+    const user = await Users.findOne({ where: { email } });
 
-      if(user) return res.status(403).json({success:false,message:"This email address is already used"})
+    if (user)
+      return res.status(403).json({
+        success: false,
+        message: "This email address is already used",
+      });
 
-      return res.status(200).json({success:true})
+    return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
@@ -325,5 +318,5 @@ module.exports = {
   UserRegistartion,
   UserRegistartionSendEmail,
   UserRegistartionVerification,
-  EmailExist
+  EmailExist,
 };
