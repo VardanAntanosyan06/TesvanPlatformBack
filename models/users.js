@@ -90,7 +90,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         allowNull: false,
       },
-      image:{
+      image: {
         type: DataTypes.STRING,
       },
       token: {
@@ -106,6 +106,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: [],
       },
     },
+
     {
       sequelize,
       modelName: "Users",
@@ -133,7 +134,7 @@ module.exports = (sequelize, DataTypes) => {
 
   const Message = sequelize.define("Message");
   Users.hasMany(Message);
-  
+
   const UserCourses = sequelize.define("UserCourses");
   Users.hasMany(UserCourses);
   return Users;

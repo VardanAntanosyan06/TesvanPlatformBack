@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       description_ru: DataTypes.TEXT("long"),
       title_am: DataTypes.STRING,
       description_am: DataTypes.TEXT("long"),
+      time:DataTypes.INTEGER
     },
     {
       sequelize,

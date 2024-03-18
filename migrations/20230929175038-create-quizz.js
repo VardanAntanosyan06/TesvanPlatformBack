@@ -15,6 +15,10 @@ module.exports = {
       description_en: {
         type: Sequelize.TEXT("long"),
       },
+      time:
+      {
+        type:DataTypes.INTEGER
+      },
       title_ru: {
         type: Sequelize.STRING,
       },

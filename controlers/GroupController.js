@@ -188,7 +188,7 @@ const findAll = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { name, startDate, endDate, price, sale, id } = req.body;
+  const { name, startDate, endDate, price, sale, assignCourseId,id } = req.body;
 
   try {
     const group = await Groups.findOne({ where: { id } });
@@ -197,11 +197,12 @@ const update = async (req, res) => {
       return res.status(404).json({ error: "Group not found" });
     }
 
-    group.name = name;
+    group.name = name;  
     group.startDate = startDate;
     group.endDate = endDate;
     group.price = price;
     group.sale = sale;
+    group.assignCourseId = assignCourseId;
 
     await group.save();
 
@@ -445,11 +446,21 @@ const getStudents = async (req, res) => {
 
 const getTeachers = async (req, res) => {
   try {
-    const users = await Users.findAll({
+    let users = await Users.findAll({
       where: { role: "TEACHER" },
-      attributes: ["id", "firstName", "lastName", "image"],
+      attributes: ["id", "firstName", "lastName"],
     });
 
+    users = users.map((e)=>{
+      e = e.toJSON();
+      delete e.dataValues
+
+      e['title'] = e.firstName+" "+e.lastName
+      delete e.firstName
+      delete e.lastName
+
+      return e
+    })
     return res.status(200).json({ success: true, users });
   } catch (error) {
     console.log(error.message);
