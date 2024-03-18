@@ -100,9 +100,7 @@ const findOne = async (req, res) => {
         groupedUsers[user.role].push({
           id: user.id,
           image: user.image,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          role: user.role,
+          title: user.firstName+" "+user.lastName
         });
       }
     });
