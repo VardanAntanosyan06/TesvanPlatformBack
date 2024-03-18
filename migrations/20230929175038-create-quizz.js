@@ -17,7 +17,7 @@ module.exports = {
       },
       time:
       {
-        type:DataTypes.INTEGER
+        type:Sequelize.INTEGER
       },
       title_ru: {
         type: Sequelize.STRING,
