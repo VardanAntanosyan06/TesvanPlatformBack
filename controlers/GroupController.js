@@ -58,8 +58,8 @@ const findOne = async (req, res) => {
     const group = await Groups.findOne({
       where: { id },
       include: {
-        model: UserCourses,
-        attributes: ["id", "UserId"],
+        model: GroupsPerUsers,
+        attributes: ["id", "userId"],
         include: {
           model: Users,
           attributes: ["id", "firstName", "lastName", "role", "image"],
@@ -90,12 +90,13 @@ const findOne = async (req, res) => {
       STUDENT:[]
     };
     // return res.json()
-    group.UserCourses.forEach((userCourse) => {
+    console.log(group.GroupsPerUsers.length);
+    group.GroupsPerUsers.forEach((userCourse) => {
       const user = userCourse.User;
       if (user) {
         if (!groupedUsers[user.role]) {
           groupedUsers[user.role] = [];
-        }
+        } 
         groupedUsers[user.role].push({
           id: user.id,
           image: user.image,
