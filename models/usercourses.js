@@ -16,18 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       GroupCourseId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: "GroupCourses",
-          key: "id",
-        },
+
       },
       UserId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
+
       },
       totalPoints: DataTypes.INTEGER,
       takenQuizzes: DataTypes.INTEGER,

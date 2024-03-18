@@ -33,12 +33,12 @@ const CreateGroup = async (req, res) => {
 
     await Promise.all(
       users.map(async (e) => {
-        await UserCourses.create({
-          GroupCourseId: task.id,
-          UserId: e,
-        });
+        // await UserCourses.create({
+        //   GroupCourseId: task.id,
+        //   UserId: e,
+        // });
 
-        await GroupsPerUsers.create({
+       await GroupsPerUsers.create({
           groupId: task.id,
           userId: e,
         });
