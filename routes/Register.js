@@ -1,15 +1,20 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-const controller = require('../controlers/RegisterController');
+const controller = require("../controlers/RegisterController");
+const checkAuth = require("../middleware/checkAuth");
 
-router.post('/', controller.UserRegistartion);
-router.get('/emailExist/:email', controller.EmailExist);
-router.get('/sendEmail', controller.UserRegistartionSendEmail);
-router.patch('/verification', controller.UserRegistartionVerification);
-router.post('/addUser', controller.AddMember);
-router.get('/getMembers', controller.getMembers);
-router.patch('/editMembers/:id', controller.editMember);
-router.delete('/deleteMembers/:id', controller.deleteMembers);
+router.post("/", controller.UserRegistartion);
+router.get("/emailExist/:email", controller.EmailExist);
+router.get("/sendEmail", controller.UserRegistartionSendEmail);
+router.patch("/verification", controller.UserRegistartionVerification);
+router.post("/addUser", checkAuth(["ADMIN"]), controller.AddMember);
+router.get("/getMembers", checkAuth(["ADMIN"]), controller.getMembers);
+router.patch("/editMembers/:id", checkAuth(["ADMIN"]), controller.editMember);
+router.delete(
+  "/deleteMembers/:id",
+  checkAuth(["ADMIN"]),
+  controller.deleteMembers
+);
 
 module.exports = router;
