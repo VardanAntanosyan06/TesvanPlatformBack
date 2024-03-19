@@ -1,16 +1,37 @@
-const { Users } = require("../models");
-const moment = require("moment");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
-const path = require("path");
-const fs = require("fs");
-const mailgun = require("mailgun-js")({
+const { Users } = require('../models');
+const moment = require('moment');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const path = require('path');
+const fs = require('fs');
+const mailgun = require('mailgun-js')({
   apiKey: process.env.MAILGUN_API_KEY,
   domain: process.env.MAILGUN_DOMAIN,
 });
 
-require("dotenv").config();
+const {
+  Users,
+  GroupsPerUsers,
+  Certificates,
+  Calendar,
+  UserTests,
+  UserAnswersTests,
+  UserAnswersQuizz,
+  Message,
+  UserCourses,
+  UserHomework,
+  UserLesson,
+} = require('../models');
+const moment = require('moment');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const path = require('path');
+
+require('dotenv').config();
+
+const BCRYPT_HASH_SALT = 10;
 
 const UserRegistartion = async (req, res) => {
   try {
@@ -30,9 +51,8 @@ const UserRegistartion = async (req, res) => {
       role,
     } = req.body;
     const isUser = await Users.findOne({ where: { email } });
-    if (isUser)
-      return res.status(403).json({ message: "Email must be unique." });
-    const hashedPassword = await bcrypt.hash(password, 10);
+    if (isUser) return res.status(403).json({ message: 'Email must be unique.' });
+    const hashedPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT);
     const User = await Users.create({
       firstName,
       lastName,
@@ -49,18 +69,15 @@ const UserRegistartion = async (req, res) => {
       tokenCreatedAt: moment(),
       role,
     });
-    User.token = jwt.sign(
-      { user_id: User.id, email, role },
-      process.env.SECRET
-    );
+    User.token = jwt.sign({ user_id: User.id, email, role }, process.env.SECRET);
     await User.save();
     return res.status(200).json({ succes: true });
   } catch (error) {
     console.log(error.message);
-    if (error.name == "SequelizeValidationError") {
+    if (error.name == 'SequelizeValidationError') {
       return res.status(403).json({ message: error.message });
     } else {
-      return res.status(500).json({ message: "Something went wrong." });
+      return res.status(500).json({ message: 'Something went wrong.' });
     }
   }
 };
@@ -73,19 +90,16 @@ const UserRegistartionSendEmail = async (req, res) => {
       where: { email },
     });
     if (!User || User.isVerified)
-      return res.status(404).json({ message: "There is not unverified user!" });
-    User.token = jwt.sign(
-      { user_id: User.id, email, role: User.role },
-      process.env.SECRET
-    );
+      return res.status(404).json({ message: 'There is not unverified user!' });
+    User.token = jwt.sign({ user_id: User.id, email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
     (function () {
       const data = {
-        from: "verification@tesvan.com",
+        from: 'verification@tesvan.com',
         to: email,
-        subject: "Verify your email address",
+        subject: 'Verify your email address',
         html: `<!DOCTYPE html>
         <html lang="en">
           <head>
@@ -117,22 +131,7 @@ const UserRegistartionSendEmail = async (req, res) => {
               <div style="width: 70%; margin-top: 25px; margin-bottom: 25px; border-top: 1px solid #d4d4d4; border-bottom: 1px solid #d4d4d4;">
                 <p style="display:flex; font-weight: 500; font-size: 18px; line-height: 27px; color: #646464; text-align: left;">Regards,</p>
                 <div style="display:flex;">
-                  <img src="https://platform.tesvan.com/server/Frame.png" alt="" width="50px" />
-                </div>
-                <p style="display:flex; font-weight: 500; font-size: 18px; line-height: 27px; color: #646464; text-align: left;"></p>
-              </div>
-              <div style="width:70%">
-                <p style="font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #646464; text-align: center; margin-top:15px;">© 2024 Tesvan, All rights reserved</p>
-              </div>
-            </center>
-            <style>
-              * { color:black; }
-              div { display: flex; flex-direction: column; justify-content: center; align-items: center; }
-              p { text-align: left; }
-              a { color: unset; }
-            </style>
-          </body>
-        </html>`,
+                  <img src="https://platform.tesvan.com/server/Frame.png" alt="" width="50px" />`,
       };
 
       mailgun.messages().send(data, (error, body) => {
@@ -144,7 +143,7 @@ const UserRegistartionSendEmail = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -155,15 +154,14 @@ const EmailExist = async (req, res) => {
     const user = await Users.findOne({ where: { email } });
 
     if (user)
-      return res.status(403).json({
-        success: false,
-        message: "This email address is already used",
-      });
+      return res
+        .status(403)
+        .json({ success: false, message: 'This email address is already used' });
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -175,22 +173,193 @@ const UserRegistartionVerification = async (req, res) => {
     const User = await Users.findOne({
       where: { token },
     });
-    if (!User) return res.status(404).json({ message: "User not found!" });
-    if (moment().diff(User.tokenCreatedAt, "hours") <= 24) {
+    if (!User) return res.status(404).json({ message: 'User not found!' });
+    if (moment().diff(User.tokenCreatedAt, 'hours') <= 24) {
       User.isVerified = true;
       User.token = jwt.sign(
         { user_id: User.id, email: User.email, role: User.role },
-        process.env.SECRET
+        process.env.SECRET,
       );
       User.tokenCreatedAt = moment();
       await User.save();
 
       return res.status(200).json({ success: true });
     }
-    return res.status(403).json({ message: "token timeout!" });
+    return res.status(403).json({ message: 'token timeout!' });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+const AddMember = async (req, res) => {
+  try {
+    const { role, firstName, lastName, email, phoneNumber, birthday, gender, password } = req.body;
+
+    const hashPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT);
+    const isoDate = new Date(birthday).toISOString();
+    const isoDateToken = new Date().toISOString();
+    const user = await Users.create({
+      role,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      birthday: isoDate,
+      gender,
+      password: hashPassword,
+      isVerified: true,
+      country: 'USA',
+      city: 'Yerevan',
+      education: 'Harvard',
+      backgroundInQA: true,
+      tokenCreatedAt: isoDateToken,
+    });
+
+    return res.send(user);
+  } catch (error) {
+    console.log(error.name);
+    if (
+      error.name === 'SequelizeValidationError' ||
+      error.name === 'RangeError' ||
+      error.name == 'SequelizeUniqueConstraintError'
+    ) {
+      return res.status(403).json({ message: error.message });
+    } else {
+      return res.status(500).json({ message: 'Something went wrong.' });
+    }
+  }
+};
+const getMembers = async (req, res) => {
+  try {
+    const teachers = await Users.findAll({
+      where: {
+        role: 'TEACHER',
+      },
+    });
+    const students = await Users.findAll({
+      where: {
+        role: 'STUDENT',
+      },
+    });
+    const members = {
+      teachers,
+      students,
+    };
+    res.send(members);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+const editMember = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const member = await Users.findByPk(id);
+    if (!member) {
+      res.status(404).json({ success: false, message: 'No User Whith this Id' });
+    }
+    const {
+      role,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      birthday,
+      gender,
+      password,
+      city,
+      education,
+      country,
+    } = req.body;
+    const hashPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT);
+    const isoDate = new Date(birthday).toISOString();
+
+    member.role = role;
+    member.firstName = firstName;
+    member.lastName = lastName;
+    member.email = email;
+    member.phoneNumber = phoneNumber;
+    member.birthday = isoDate;
+    member.gender = gender;
+    member.password = hashPassword;
+    member.country = country;
+    member.city = city;
+    member.education = education;
+    await member.save();
+    res.send(member);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
+const deleteMembers = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await Users.destroy({
+      where: {
+        id,
+      },
+    });
+
+    // await Calendar.destroy({
+    //   where: {
+    //     userId: id,
+    //   },
+    // });
+
+    // await Certificates.destroy({
+    //   where: {
+    //     userId: id,
+    //   },
+    // });
+
+    await GroupsPerUsers.destroy({
+      where: {
+        userId: id,
+      },
+    });
+
+    await UserCourses.destroy({
+      where: {
+        UserId: id,
+      },
+    });
+
+    await UserHomework.destroy({
+      where: {
+        UserId: id,
+      },
+    });
+    await UserLesson.destroy({
+      where: {
+        UserId: id,
+      },
+    });
+
+    await UserAnswersQuizz.destroy({
+      where: {
+        userId: id,
+      },
+    });
+
+    await UserAnswersTests.destroy({
+      where: {
+        userId: id,
+      },
+    });
+
+    await UserTests.destroy({
+      where: {
+        userId: id,
+      },
+    });
+
+    res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -199,4 +368,8 @@ module.exports = {
   UserRegistartionSendEmail,
   UserRegistartionVerification,
   EmailExist,
+  AddMember,
+  getMembers,
+  editMember,
+  deleteMembers,
 };
