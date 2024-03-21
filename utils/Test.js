@@ -1,0 +1,152 @@
+const Tests = [
+  {
+    title: 'Lorem ipsum',
+    description: 'Lorem ipsum',
+    courseId: 1,
+    language: 'am',
+    type: 'QA',
+    time: '20',
+    percent: 75,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    title: 'Lorem ipsum',
+    description: 'Lorem ipsum',
+    courseId: 1,
+    language: 'ENG',
+    type: 'ENGLISH',
+    time: '10',
+    percent: 100,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    title: 'Lorem ipsum',
+    description: 'Lorem ipsum',
+    courseId: 1,
+    language: 'am',
+    type: 'QA',
+    time: '10',
+    percent: 100,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
+
+const TestsQuizz = [
+  {
+    question: 'Lorem Ipsum',
+    testId: 1,
+    language: 'am',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    question: 'Lorem Ipsum',
+    testId: 2,
+    language: 'am',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    question: 'Lorem Ipsum',
+    testId: 3,
+    language: 'am',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
+
+const TestsQuizzOption = [
+  {
+    questionId: 1,
+    option: '1 Option incorrect',
+    isCorrect: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 1,
+    option: '2 Option incorrect',
+    isCorrect: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 1,
+    option: '3 Option correct',
+    isCorrect: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 1,
+    option: '4 Option incorrect',
+    isCorrect: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 2,
+    option: '1 Option incorrect',
+    isCorrect: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 2,
+    option: '2 Option incorrect',
+    isCorrect: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 2,
+    option: '3 Option correct',
+    isCorrect: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 2,
+    option: '4 Option incorrect',
+    isCorrect: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 3,
+    option: '1 Option incorrect',
+    isCorrect: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 3,
+    option: '2 Option incorrect',
+    isCorrect: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 3,
+    option: '3 Option correct',
+    isCorrect: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    questionId: 3,
+    option: '4 Option incorrect',
+    isCorrect: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
+
+module.exports = {
+  Tests,
+  TestsQuizz,
+  TestsQuizzOption,
+};

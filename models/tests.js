@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       courseId: DataTypes.INTEGER,
       language: DataTypes.STRING,
+      
       type: DataTypes.STRING,
       time: DataTypes.INTEGER,
       percent: {
@@ -30,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Tests",
     }
+
   );
 
   const TestsQuizz = sequelize.define("TestsQuizz");

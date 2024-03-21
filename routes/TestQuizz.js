@@ -5,7 +5,11 @@ const controller = require('../controlers/TestsController');
 const checkAuth = require('../middleware/checkAuth');
 
 router.post('/create', checkAuth(['TEACHER', 'ADMIN']), controller.createQuizz);
+router.get('/getAll', checkAuth(['ADMIN']), controller.findAll);
+
 // router.post("/open", checkAuth(["TEACHER", "ADMIN"]), controller.open);
+router.put('/edit/:id', checkAuth(['ADMIN']), controller.updateTest);
+router.delete('/delete/:id', checkAuth(['ADMIN']), controller.deleteTest);
 
 router.get('/findTest/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.findTest);
 

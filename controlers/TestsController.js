@@ -242,57 +242,72 @@ const findCourses = async (req, res) => {
 
 const findAll = async (req, res) => {
   try {
-    const test = await Model.findAll();
+    const test = await Tests.findAll();
     return res.send(test);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
-
 const updateTest = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      title_en,
-      title_ru,
-      title_am,
-      description_en,
-      description_ru,
-      description_am,
-      courseId,
-    } = req.body;
+    const { title, description, time, percent, questions, lessonId } = req.body;
 
-    const test = await Tests.findByPk(id);
+    // Update the test details
+    console.log(time);
+    await Tests.update(
+      {
+        title: title,
+        description: description,
+        time,
+        percent,
+      },
+      { where: { id } },
+    );
 
-    if (!test) {
-      return res.status(404).json({ message: 'Test not found' });
+    await TestsQuizz.destroy({ where: { testId: id } });
+
+    for (const e of questions) {
+      const question = await TestsQuizz.create({
+        question: e.question,
+        testId: id,
+      });
+
+      // Create options for the current question
+      for (const i of e.options) {
+        await TestsQuizzOptions.create({
+          questionId: question.id,
+          option: i.option,
+          isCorrect: i.isCorrect,
+        });
+      }
     }
 
-    await test.update({
-      title_en,
-      title_ru,
-      title_am,
-      description_en,
-      description_ru,
-      description_am,
-      courseId,
-    });
-
-    res.json(test);
+    return res.status(200).json({ success: true });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
-const remove = async (req, res) => {
+const deleteTest = async (req, res) => {
   try {
     const { id } = req.params;
-    const test = await Tests.destroy({ where: { id } });
-    return res.json({ success: true });
+
+    const test = await Tests.findByPk(id);
+    if (!test) {
+      return res.status(404).json({ message: 'Test not found.' });
+    }
+
+    await Tests.destroy({ where: { id } });
+
+    await TestsQuizz.destroy({ where: { testId: id } });
+    await TestsQuizzOptions.destroy({ where: { questionId: id } });
+
+    return res.status(200).json({ success: true, message: 'Test deleted successfully.' });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
@@ -305,4 +320,7 @@ module.exports = {
   getUserTests,
   getUsers,
   createTest,
+  updateTest,
+  deleteTest,
+  findAll,
 };
