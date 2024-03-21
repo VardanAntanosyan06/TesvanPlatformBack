@@ -90,7 +90,7 @@ const getLesson = async (req, res) => {
       include: [
         {
           model: Lesson,
-          attributes:[['title_en','title'],['description_en','description'],'maxPoints']          
+          attributes:[['title_en','title'],['description_en','description'],'maxPoints','htmlContent']          
         },
       ],
     });

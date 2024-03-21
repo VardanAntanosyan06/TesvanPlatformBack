@@ -1,10 +1,4 @@
-const { Users } = require('../models');
-const moment = require('moment');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const path = require('path');
-const fs = require('fs');
+
 const mailgun = require('mailgun-js')({
   apiKey: process.env.MAILGUN_API_KEY,
   domain: process.env.MAILGUN_DOMAIN,

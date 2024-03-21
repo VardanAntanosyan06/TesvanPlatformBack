@@ -51,7 +51,7 @@ const createQuizz = async (req, res) => {
     });
     questions.map((e) => {
       TestsQuizz.create({
-        title: e.question,
+        question: e.question,
         testId,
         language,
       }).then((data) => {

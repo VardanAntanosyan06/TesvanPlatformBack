@@ -111,7 +111,7 @@ const open = async (req, res) => {
   }
 };
 
-
+//  bug + chnage groupId
 const getHomeworks = async (req, res) => {
   try {
     const { courseId } = req.params;
@@ -143,6 +143,7 @@ const getHomeworks = async (req, res) => {
           },
         ],
       });
+      
       if (homeworks.length === 0) {
         return res.status(403).json({
           message: "Homeworks not found or User doesn't have the homeworks",
