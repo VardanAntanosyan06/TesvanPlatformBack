@@ -181,29 +181,38 @@ const finishCourse = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
-
 const getUserTests = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
     const tests = await UserTests.findAll({
       where: { userId },
-      attributes: ['testId', 'status', 'passDate', 'point'],
-
       include: [
         {
           model: Tests,
-          attributes: ['title', 'type', 'description', 'language'],
+          // attributes:[""m"title","description","language","time","percent"]
         },
       ],
     });
 
-    return res.status(200).json({ success: true, tests });
+    // Filter tests where language is "en" and add amId and ruId based on UUID
+    const filteredTests = tests.filter(test => test.language === 'en').map(test => {
+      const amTest = tests.find(t => t.language === 'am' && t.Test.uuid === test.Test.uuid);
+      const ruTest = tests.find(t => t.language === 'ru' && t.Test.uuid === test.Test.uuid);
+      return {
+        test:test.Test,
+        am: amTest ? amTest.id : null,
+        ru: ruTest ? ruTest.id : null,
+      };
+    });
+
+    return res.status(200).json({ success: true, tests: filteredTests });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
 
 const getUsers = async (req, res) => {
   try {

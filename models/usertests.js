@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       testId: DataTypes.INTEGER,
       courseId: DataTypes.INTEGER,
       language: DataTypes.STRING,
-      uuid: DataTypes.STRING,
       status: DataTypes.STRING,
       passDate: DataTypes.DATE,
       point: DataTypes.INTEGER,

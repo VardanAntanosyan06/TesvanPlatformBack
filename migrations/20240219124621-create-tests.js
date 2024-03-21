@@ -15,11 +15,15 @@ module.exports = {
       description:{
         type:Sequelize.STRING
       },
+            
       courseId: {
         type:Sequelize.INTEGER
       },
       language:{
         type:Sequelize.STRING
+      },
+      uuid: {
+        type: Sequelize.STRING,
       },
       type:{
         type:Sequelize.STRING
