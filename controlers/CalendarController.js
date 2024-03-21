@@ -281,8 +281,29 @@ const getUsers = async (req, res) => {
       ],
       attributes: ["name"],
     });
+    Group = await Promise.all(
+      Group.map(async (grp) => {
+        const a = await Promise.all(
+          grp.GroupsPerUsers.map(async (e) => {
+            let user = e.toJSON();
+            delete user.dataValues;
+            user.firstName = user.User.firstName;
+            user.lastName = user.User.lastName;
+            user.image = user.User.image;
+            user.role = user.User.role;
+            delete user.User;
+            return user;
+          })
+        );
 
-    return res.json(Group);
+        return {
+          ...grp.dataValues,
+          GroupsPerUsers: a,
+        };
+        
+      })
+    );
+      return res.json(Group)
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
