@@ -267,9 +267,6 @@ const getUsers = async (req, res) => {
     let Group = await Groups.findAll({
       include: [
         {
-          
-          // model: Users,
-          // as: 'users',
            attributes: ["id"], 
           model:GroupsPerUsers,
           include:{
@@ -288,7 +285,7 @@ const getUsers = async (req, res) => {
           grp.GroupsPerUsers.map(async (e) => {
             let user = e.toJSON();
             delete user.dataValues;
-            user.id = user.User?.firstName;
+            user.id = user.User?.id;
             user.firstName = user.User?.firstName;
             user.lastName = user.User?.lastName;
             user.image = user.User?.image;

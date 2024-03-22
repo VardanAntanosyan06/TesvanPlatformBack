@@ -291,6 +291,7 @@ const findAll = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
 const updateTest = async (req, res) => {
   try {
     const { id } = req.params;
