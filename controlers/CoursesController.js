@@ -101,8 +101,8 @@ const getCourseTitles = async (req, res) => {
     Courses = Courses.map((item) => {
       return {
         id: item.id,
-        title: item.CoursesContents[0].title,
-        description: item.CoursesContents[0].description.match(/\b(\w+\b\s*){1,16}/)[0],
+        title: item?.CoursesContents[0].title,
+        description: item?.CoursesContents[0].description.match(/\b(\w+\b\s*){1,16}/)[0],
       };
     });
     return res.status(200).json(Courses);

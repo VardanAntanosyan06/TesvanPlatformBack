@@ -279,19 +279,20 @@ const getUsers = async (req, res) => {
           required:true
         },
       ],
-      attributes: ["name"],
+      attributes: ["id","name"],
     });
     Group = await Promise.all(
       Group.map(async (grp) => {
+        console.log(grp);
         const a = await Promise.all(
           grp.GroupsPerUsers.map(async (e) => {
             let user = e.toJSON();
             delete user.dataValues;
-            user.id = user.User.id;
-            user.firstName = user.User.firstName;
-            user.lastName = user.User.lastName;
-            user.image = user.User.image;
-            user.role = user.User.role;
+            user.id = user.User?.firstName;
+            user.firstName = user.User?.firstName;
+            user.lastName = user.User?.lastName;
+            user.image = user.User?.image;
+            user.role = user.User?.role;
             delete user.User;
             return user;
           })
