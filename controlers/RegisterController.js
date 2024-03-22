@@ -244,6 +244,23 @@ const getMembers = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
+const getMember = async (req, res) => {
+  try {
+    const {id} = req.params; 
+
+    const users = await Users.findAll({
+      where: {
+        role: id,
+      },
+    });
+
+    res.send(users);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
 const editMember = async (req, res) => {
   try {
     const { id } = req.params;
@@ -321,6 +338,7 @@ module.exports = {
   EmailExist,
   AddMember,
   getMembers,
+  getMember,
   editMember,
   deleteMembers,
 };
