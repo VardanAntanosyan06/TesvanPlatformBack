@@ -47,6 +47,8 @@ module.exports = (sequelize, DataTypes) => {
   const Homework = sequelize.define("Homework");
   GroupCourses.hasMany(Homework, { foreignKey: "courseId" });
 
+  const Groups = sequelize.define("Groups");
+  GroupCourses.hasMany(Groups, { foreignKey: "assignCourseId" });
   // const UserCourses = sequelize.define("UserCourses");
   // GroupCourses.hasMany(UserCourses);
   // //

@@ -286,12 +286,16 @@ const getUserCourses = async (req, res) => {
       include: [
         {
           model: GroupCourses,
-
           include: [
             {
               model: CoursesContents,
               where: { language },
               attributes: ['title', 'description'],
+            },
+            {
+              model: Groups,
+              // where: { language },
+              // attributes: ['title', 'description'],
             },
           ],
         },
@@ -300,11 +304,7 @@ const getUserCourses = async (req, res) => {
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-      console.log(e);
-      const formattedDate = new Date(e.GroupCourse.startDate).toLocaleDateString('am-AM', {
-        month: '2-digit',
-        day: '2-digit',
-      });
+      const formattedDate = new Date(e.GroupCourse.Groups[0].startDate).toISOString().split('T')[0].slice(5).replace("-",".")
 
       e['groupCourseId'] = e.GroupCourse.id;
       e['startDate'] = formattedDate.replace('/', '.');

@@ -201,6 +201,9 @@ const getUserTests = async (req, res) => {
       const ruTest = tests.find(t => t.language === 'ru' && t.Test.uuid === test.Test.uuid);
       return {
         test:test.Test,
+        status:test.status,
+        point:test.point,
+        passDate:test.passDate,
         am: amTest ? amTest.id : null,
         ru: ruTest ? ruTest.id : null,
       };
