@@ -253,6 +253,7 @@ const getMember = async (req, res) => {
       where: {
          id,
       },
+      attributes:{exclude:["token","tokenCreatedAt","likedCourses","createdAt","updatedAt","password"]}
     });
 
     if(!user) return res.json({succes:false,message:`with id ${id} user not found`})
