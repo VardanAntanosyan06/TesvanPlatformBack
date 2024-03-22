@@ -290,65 +290,75 @@ const deleteMembers = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await Users.destroy({
+    Calendar.destroy({
+      where: {
+        userId: id,
+      },
+    });
+    
+    Certificates.destroy({
+      where: {
+        userId: id,
+      },
+    });
+
+    Certificates.destroy({
+      where: {
+        userId: id,
+      },
+    });
+
+    GroupsPerUsers.destroy({
+      where: {
+        userId: id,
+      },
+    });
+
+    UserCourses.destroy({
+      where: {
+        UserId: id,
+      },
+    });
+
+    UserHomework.destroy({
+      where: {
+        UserId: id,
+      },
+    });
+    UserLesson.destroy({
+      where: {
+        UserId: id,
+      },
+    });
+
+    UserAnswersQuizz.destroy({
+      where: {
+        userId: id,
+      },
+    });
+
+    UserAnswersTests.destroy({
+      where: {
+        userId: id,
+      },
+    });
+
+    UserTests.destroy({
+      where: {
+        userId: id,
+      },
+    });
+    Message.destroy({
+      where: {
+        UserId:id,
+      },
+    });
+    
+    Users.destroy({
       where: {
         id,
       },
     });
-
-    // await Calendar.destroy({
-    //   where: {
-    //     userId: id,
-    //   },
-    // });
-
-    // await Certificates.destroy({
-    //   where: {
-    //     userId: id,
-    //   },
-    // });
-
-    await GroupsPerUsers.destroy({
-      where: {
-        userId: id,
-      },
-    });
-
-    await UserCourses.destroy({
-      where: {
-        UserId: id,
-      },
-    });
-
-    await UserHomework.destroy({
-      where: {
-        UserId: id,
-      },
-    });
-    await UserLesson.destroy({
-      where: {
-        UserId: id,
-      },
-    });
-
-    await UserAnswersQuizz.destroy({
-      where: {
-        userId: id,
-      },
-    });
-
-    await UserAnswersTests.destroy({
-      where: {
-        userId: id,
-      },
-    });
-
-    await UserTests.destroy({
-      where: {
-        userId: id,
-      },
-    });
-
     res.json({ success: true });
   } catch (error) {
     console.log(error);
