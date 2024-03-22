@@ -290,75 +290,23 @@ const deleteMembers = async (req, res) => {
   try {
     const { id } = req.params;
 
-    Calendar.destroy({
+    await UserCourses.destroy({
       where: {
-        userId: id,
+        UserId: id,
       },
     });
-    
-    Certificates.destroy({
-      where: {
-        userId: id,
-      },
-    });
-
-    Certificates.destroy({
-      where: {
-        userId: id,
-      },
-    });
-
-    GroupsPerUsers.destroy({
-      where: {
-        userId: id,
-      },
-    });
-
-    UserCourses.destroy({
+    await UserLesson.destroy({
       where: {
         UserId: id,
       },
     });
 
-    UserHomework.destroy({
-      where: {
-        UserId: id,
-      },
-    });
-    UserLesson.destroy({
-      where: {
-        UserId: id,
-      },
-    });
-
-    UserAnswersQuizz.destroy({
-      where: {
-        userId: id,
-      },
-    });
-
-    UserAnswersTests.destroy({
-      where: {
-        userId: id,
-      },
-    });
-
-    UserTests.destroy({
-      where: {
-        userId: id,
-      },
-    });
-    Message.destroy({
-      where: {
-        UserId:id,
-      },
-    });
-    
-    Users.destroy({
+    await Users.destroy({
       where: {
         id,
       },
     });
+
     res.json({ success: true });
   } catch (error) {
     console.log(error);

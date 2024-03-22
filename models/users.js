@@ -117,10 +117,11 @@ module.exports = (sequelize, DataTypes) => {
   const userLikes = sequelize.define("UserLikes");
   Users.hasMany(userLikes, {
     foreignKey: "id",
+     onDelete: 'CASCADE' 
   });
 
   const GroupCourses = sequelize.define("GroupCourses");
-  Users.belongsToMany(GroupCourses, { through: "UserCourses", as: "courses" });
+  Users.belongsToMany(GroupCourses, { through: "UserCourses", as: "courses", onDelete: 'CASCADE'  });
 
   //
   // const UserCourses = sequelize.define("UserCourses");
@@ -128,23 +129,24 @@ module.exports = (sequelize, DataTypes) => {
   //
 
   const Lessons = sequelize.define("Lessons");
-  Users.belongsToMany(Lessons, { through: "UserLesson" });
+  Users.belongsToMany(Lessons, { through: "UserLesson",onDelete: 'CASCADE'  });
 
   const Homework = sequelize.define("Homework");
-  Users.belongsToMany(Homework, { through: "UserHomework" });
+  Users.belongsToMany(Homework, { through: "UserHomework", onDelete: 'CASCADE'  });
 
   const Message = sequelize.define("Message");
-  Users.hasMany(Message);
+  Users.hasMany(Message,{ onDelete: 'CASCADE' });
 
   const UserCourses = sequelize.define("UserCourses");
   const Groups= sequelize.define("Groups");
-  Users.hasMany(UserCourses);
+  Users.hasMany(UserCourses,{ onDelete: 'CASCADE' });
 
     Users.belongsToMany(Groups, {
     through: 'GroupsPerUsers',
     foreignKey: 'userId',
     otherKey: 'groupId' ,
-    as: 'groups'
+    as: 'groups',
+    onDelete: 'CASCADE' 
   });
   return Users;
 };

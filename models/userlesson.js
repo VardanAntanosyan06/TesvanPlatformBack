@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
 
   //
   const Users = sequelize.define("Users");
-  UserLesson.belongsTo(Users);
+  UserLesson.belongsTo(Users,{ onDelete: 'CASCADE' });
 
   return UserLesson;
 };
