@@ -220,7 +220,7 @@ const buy = async (req, res) => {
     });
     const boughtTests = await Tests.findAll({
       where: {
-        [sequelize.Op.or]: [{ courseId: groupId }, { courseId: null }],
+        [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
         // language: 'ENG',
       },
     });

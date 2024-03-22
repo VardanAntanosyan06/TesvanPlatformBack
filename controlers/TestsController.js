@@ -217,8 +217,6 @@ const getUserTests = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
-
-
 const getUsers = async (req, res) => {
   try {
     // const { user_id: userId } = req.user;
