@@ -287,6 +287,7 @@ const getUsers = async (req, res) => {
           grp.GroupsPerUsers.map(async (e) => {
             let user = e.toJSON();
             delete user.dataValues;
+            user.id = user.User.id;
             user.firstName = user.User.firstName;
             user.lastName = user.User.lastName;
             user.image = user.User.image;
