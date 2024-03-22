@@ -249,13 +249,14 @@ const getMember = async (req, res) => {
   try {
     const {id} = req.params; 
 
-    const users = await Users.findAll({
+    const user = await Users.findOne({
       where: {
-        role: id,
+         id,
       },
     });
 
-    res.send(users);
+    if(!user) return res.json({succes:false,message:`with id ${id} user not found`})
+    return res.json(user);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
