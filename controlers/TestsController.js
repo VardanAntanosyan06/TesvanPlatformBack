@@ -7,6 +7,8 @@ const {
   Users,
 } = require('../models');
 
+const Sequelize = require("sequelize")
+
 const createTest = async (req, res) => {
   try {
     const {
@@ -254,8 +256,36 @@ const findCourses = async (req, res) => {
 
 const findAll = async (req, res) => {
   try {
-    const test = await Tests.findAll();
-    return res.send(test);
+    let test = await Tests.findAll({
+      attributes: {
+        // include: [[Sequelize.fn('COUNT', Sequelize.col('TestsQuizzes.id')), 'quizzCount']]
+      },
+      // include: [TestsQuizz],
+    }
+    );
+
+    const testsWithCounts = await Promise.all(
+      test.map(async (test) => {
+        // Fetch quizzes count for the test
+        const quizzesCount = await TestsQuizz.count({
+          where: { testId: test.id }
+        });
+
+        // Fetch users count for the test
+        const usersCount = await UserTests.count({
+          where: { testId: test.id }
+        });
+
+        // Return an object with test data and counts
+        return {
+          ...test.dataValues,
+          quizzesCount: quizzesCount,
+          usersCount: usersCount
+        };
+      })
+    );
+
+    return res.send(testsWithCounts);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Something went wrong.' });
