@@ -537,38 +537,52 @@ const deleteGroup = async (req, res) => {
   }
 };
 
-const getUsers = async(req,res)=>{
+const getUsers = async (req, res) => {
   try {
-    const {id} = req.params;
-    let users = await Users.findAll({
-      include: [{
-        model: GroupsPerUsers,
-        where: {
-           groupId:id
-        },
-        required:false,
-      }],
-      where:{role:{
-        [sequelize.Op.or]:["STUDENT", "TEACHER"]
-      }},
-      attributes:['id','firstName','lastName']
-    })
+    const { id } = req.params;
 
-    users = users.filter((e)=>e.GroupsPerUsers.length==0).map((user)=>{
-      user = user.toJSON()
-      delete user.dataValues
-      user.title = user.firstName + " " + user.lastName 
-      delete user.firstName 
-      delete user.lastName 
-      delete user.GroupsPerUsers 
-      return user
-    })
-    return res.status(200).json(users)
-  }catch (error) {
+    const users = await Users.findAll({
+      include: [
+        {
+          model: GroupsPerUsers,
+          where: { groupId: id },
+          required: false,
+        },
+      ],
+      where: {
+        role: {
+          [sequelize.Op.or]: ["STUDENT", "TEACHER"],
+        },
+      },
+      attributes: ['id', 'firstName', 'lastName', 'role'],
+    });
+
+    const teacherUsers = [];
+    const studentUsers = [];
+
+    users.forEach(user => {
+      if (user.role === 'TEACHER') {
+        teacherUsers.push({
+          id: user.id,
+          title: `${user.firstName} ${user.lastName}`,
+        });
+      } else if (user.role === 'STUDENT' && user.GroupsPerUsers.length === 0) {
+        studentUsers.push({
+          id: user.id,
+          title: `${user.firstName} ${user.lastName}`,
+        });
+      }
+    });
+
+
+    return res.status(200).json({teacher: teacherUsers, student: studentUsers});
+  } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
   }
-} 
+};
+;
+
 module.exports = {
   CreateGroup,
   findOne,
