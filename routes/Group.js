@@ -25,6 +25,7 @@ router.get("/getGroupesForTeacher", checkAuth(["TEACHER", "ADMIN"]), controller.
 router.put("/update", checkAuth(["ADMIN"]), controller.update);
 router.patch("/finishGroup/:id", checkAuth(["TEACHER","ADMIN"]), controller.finishGroup);
 
+router.delete("/deleteMember", checkAuth(["ADMIN"]), controller.deleteMember);
 router.delete("/delete/:id", checkAuth(["ADMIN"]), controller.deleteGroup);
 
 

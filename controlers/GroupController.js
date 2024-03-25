@@ -285,7 +285,6 @@ const addMember = async (req, res) => {
   }
 };
 
-
 const SingleUserStstic = async (req, res) => {
   try {
     const { id, userId } = req.query;
@@ -561,7 +560,7 @@ const getUsers = async (req, res) => {
     const studentUsers = [];
 
     users.forEach(user => {
-      if (user.role === 'TEACHER') {
+      if (user.role === 'TEACHER' && user.GroupsPerUsers.length === 0) {
         teacherUsers.push({
           id: user.id,
           title: `${user.firstName} ${user.lastName}`,
@@ -581,7 +580,49 @@ const getUsers = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
-;
+
+const deleteMember = async (req, res) => {
+  try {
+    const { groupId, userId } = req.query;
+
+    await GroupsPerUsers.destroy({
+      where: {
+        groupId,
+        userId,
+      },
+    });
+
+    await UserCourses.destroy({
+      where: {
+        GroupCourseId: groupId,
+        UserId: userId,
+      },
+    });
+
+    // Delete entries from UserLesson based on GroupCourseId and UserId
+    await UserLesson.destroy({
+      where: {
+        GroupCourseId: groupId,
+        UserId: userId,
+      },
+    });
+
+
+    await UserTests.destroy({
+      where: {
+        userId: userId,
+        courseId: {
+          [sequelize.Op.or]: [groupId, null],
+        },
+      },
+    });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
 
 module.exports = {
   CreateGroup,
@@ -600,4 +641,5 @@ module.exports = {
   getStudents,
   getTeachers,
   deleteGroup,
+  deleteMember
 };
