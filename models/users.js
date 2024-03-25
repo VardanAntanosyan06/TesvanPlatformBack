@@ -148,5 +148,8 @@ module.exports = (sequelize, DataTypes) => {
     as: 'groups',
     onDelete: 'CASCADE' 
   });
+
+  const GroupsPerUsers= sequelize.define("GroupsPerUsers");
+  Users.hasMany(GroupsPerUsers,{ onDelete: 'CASCADE',foreignKey:"userId" });
   return Users;
 };

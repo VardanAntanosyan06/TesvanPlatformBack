@@ -9,6 +9,7 @@ router.get('/getCourseTitles', controller.getCourseTitles);
 router.get('/getOneGroup/:id', controller.getOneGroup);
 
 router.get('/getByFilter', controller.getCoursesByFilter);
+
 router.post('/createCourse', checkAuth(['TEACHER', 'ADMIN']), controller.createCourse);
 router.get('/getCourseForAdmin/:id', checkAuth(['ADMIN']), controller.getCourseForAdmin);
 

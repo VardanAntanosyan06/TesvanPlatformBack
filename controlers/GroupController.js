@@ -6,8 +6,12 @@ const {
   GroupsPerUsers,
   Certificates,
   GroupCourses,
+  CoursesPerLessons,
   CoursesContents,
   Lesson,
+  UserLesson,
+  UserTests,
+  Tests
 } = require("../models");
 const { v4 } = require("uuid");
 const groups = require("../models/groups");
@@ -220,20 +224,67 @@ const update = async (req, res) => {
 const addMember = async (req, res) => {
   try {
     const { groupId, users } = req.body;
-    users.map((e) => {
-      console.log(e);
-      UserCourses.findOne({
-        where: { id: 1 },
-      }).then((result) => {
-        // console.log(result);
-      });
-    });
-    return res.status(200).json({ success: true });
+
+    const group = await Groups.findByPk(groupId); // Added await here
+
+    await Promise.all(
+      users.map(async (userId) => {
+        await GroupsPerUsers.create({
+          groupId: groupId,
+          userId,
+        });
+
+        await UserCourses.create({
+          GroupCourseId: group.assignCourseId,
+          UserId: userId,
+        });
+
+        const lessons = await CoursesPerLessons.findAll({
+          where: { courseId: group.assignCourseId },
+        });
+
+        await Promise.all(
+          lessons.map(async (e) => {
+            await UserLesson.create({
+              GroupCourseId: group.assignCourseId,
+              UserId: userId,
+              LessonId: e.lessonId,
+            });
+          })
+        );
+
+        const boughtTests = await Tests.findAll({
+          where: {
+            [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
+          },
+        });
+
+        await Promise.all(
+          boughtTests.map(async (test) => {
+            await UserTests.findOrCreate({
+              where: {
+                testId: test.id,
+                userId,
+                courseId: test.courseId,
+                language: test.language,
+              },
+              defaults: {
+                testId: test.id,
+                userId,
+              },
+            });
+          })
+        );
+      })
+    );
+
+    res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
+
 
 const SingleUserStstic = async (req, res) => {
   try {
@@ -486,6 +537,38 @@ const deleteGroup = async (req, res) => {
   }
 };
 
+const getUsers = async(req,res)=>{
+  try {
+    const {id} = req.params;
+    let users = await Users.findAll({
+      include: [{
+        model: GroupsPerUsers,
+        where: {
+           groupId:id
+        },
+        required:false,
+      }],
+      where:{role:{
+        [sequelize.Op.or]:["STUDENT", "TEACHER"]
+      }},
+      attributes:['id','firstName','lastName']
+    })
+
+    users = users.filter((e)=>e.GroupsPerUsers.length==0).map((user)=>{
+      user = user.toJSON()
+      delete user.dataValues
+      user.title = user.firstName + " " + user.lastName 
+      delete user.firstName 
+      delete user.lastName 
+      delete user.GroupsPerUsers 
+      return user
+    })
+    return res.status(200).json(users)
+  }catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+} 
 module.exports = {
   CreateGroup,
   findOne,
@@ -497,6 +580,7 @@ module.exports = {
   AddUserSkill,
   getUserStaticChart,
   finishGroup,
+  getUsers,
   getGroupesForTeacher,
   findGroups,
   getStudents,
