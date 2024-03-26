@@ -23,6 +23,6 @@ module.exports = (sequelize, DataTypes) => {
 
   const Lesson = sequelize.define("Lesson");
 
-  LessonsPerQuizz.belongsTo(Lesson,{foreignKey:"lessonId"})
+  // LessonsPerQuizz.belongsTo(Lesson,{foreignKey:"lessonId"})
   return LessonsPerQuizz;
 };

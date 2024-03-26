@@ -8,7 +8,8 @@ const {
   LessonsPerQuizz,
   UserCourses,
   Message,
-  HomeworkPerLesson
+  HomeworkPerLesson,
+  Homework
 } = require('../models');
 const lessonsperquizz = require('../models/lessonsperquizz');
 const { userSockets } = require('../userSockets');
@@ -97,15 +98,28 @@ const getLesson = async (req, res) => {
             'maxPoints',
             'htmlContent',
           ],
+          include:
+          [{
+            model:Quizz,
+            as:"quizz",
+            attributes:['id',['title_en','title'],['description_en','description']],
+            through:{
+              attributes:[]
+            }
+          },
+          {
+            model:Homework,
+            as:"homework",
+            attributes:['id',['title_en','title'],['description_en','description']],
+            through:{
+              attributes:[]
+            }
+          }
+        ]
         },
       ],
     });
 
-    const quizzes = await LessonsPerQuizz.findOne({
-      where: {
-        lessonId: id,
-      },
-    });
     if (!lesson) {
       return res.status(403).json({
         message: "Lessons not found or User doesn't have the lessons",
@@ -117,7 +131,6 @@ const getLesson = async (req, res) => {
       pointsOfPercent: Math.round((lesson.points * 100) / lesson.Lesson.maxPoints),
       attempt: lesson.attempt,
       ...lesson.dataValues.Lesson.dataValues,
-      quizzId: quizzes?.quizzId ? quizzes.quizzId : null,
     };
 
     res.send(lesson);
@@ -277,13 +290,15 @@ const createLesson = async (req, res) => {
 
     await HomeworkPerLesson.create({
       homeworkId,
-      lessonId
+      lessonId,
+      maxPoints:maxPoints/2
     });
     await LessonsPerQuizz.create({
       quizzId,
+      // maxPoints:maxPoints/2,
       lessonId,
     });
-    
+
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);

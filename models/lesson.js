@@ -35,7 +35,11 @@ module.exports = (sequelize, DataTypes) => {
   Lesson.belongsToMany(Users, { through: "UserLesson" });
 
   const Quizz = sequelize.define("Quizz");
-  Lesson.hasOne(Quizz, { foreignKey: "lessonId", as: "quizz" });
+  const LessonsPerQuizz = sequelize.define("LessonsPerQuizz")
+  const HomeworkPerLesson = sequelize.define("HomeworkPerLesson")
+  const Homework = sequelize.define("Homework")
+  // Lesson.hasOne(Quizz, { foreignKey: "lessonId", as: "quizz" });
+
 
   const Video = sequelize.define("Video");
   Lesson.hasOne(Video, { foreignKey: "lessonId", as: "video" });
@@ -48,5 +52,18 @@ module.exports = (sequelize, DataTypes) => {
     otherKey: 'lessonId' // Assuming the column name in GroupCourse is 'id'
   });
   
+  Lesson.belongsToMany(Quizz,{
+    through:LessonsPerQuizz,
+    foreignKey:"quizzId",
+    otherKey:"lessonId",
+    as:"quizz"
+  })
+    
+  Lesson.belongsToMany(Homework,{
+    through:HomeworkPerLesson,
+    foreignKey:"homeworkId",
+    otherKey:"lessonId",
+    as:"homework"
+  })
   return Lesson;
 };
