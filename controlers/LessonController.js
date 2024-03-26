@@ -8,6 +8,7 @@ const {
   LessonsPerQuizz,
   UserCourses,
   Message,
+  HomeworkPerLesson
 } = require('../models');
 const lessonsperquizz = require('../models/lessonsperquizz');
 const { userSockets } = require('../userSockets');
@@ -268,10 +269,21 @@ const openLesson = async (req, res) => {
 
 const createLesson = async (req, res) => {
   try {
-    const { title_en, description_en, maxPoints, htmlContent } = req.body;
+    const { title_en, description_en, maxPoints, htmlContent,quizzId,homeworkId } = req.body;
 
-    await Lesson.create({ title_en, description_en, maxPoints, htmlContent });
+    
+    const {id:lessonId} = await Lesson.create({ title_en, description_en, maxPoints, htmlContent });
+    
 
+    await HomeworkPerLesson.create({
+      homeworkId,
+      lessonId
+    });
+    await LessonsPerQuizz.create({
+      quizzId,
+      lessonId,
+    });
+    
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);

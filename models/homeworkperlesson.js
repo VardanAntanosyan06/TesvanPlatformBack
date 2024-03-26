@@ -1,5 +1,7 @@
 'use strict';
-const { Model } = require('sequelize');
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class HomeworkPerLesson extends Model {
     /**
@@ -11,18 +13,15 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  HomeworkPerLesson.init(
-    {
-      homeworkId: DataTypes.INTEGER,
-      lessonId: DataTypes.INTEGER,
-      maxPoints: DataTypes.INTEGER,
-      startDate: DataTypes.DATE,
-      isOpen: DataTypes.BOOLEAN,
-    },
-    {
-      sequelize,
-      modelName: 'HomeworkPerLesson',
-    },
-  );
+  HomeworkPerLesson.init({
+    lessonId: DataTypes.INTEGER,
+    homeworkId: DataTypes.INTEGER,
+    maxPoints: DataTypes.INTEGER,
+    dueDate: DataTypes.DATE,
+    startDate: DataTypes.DATE
+  }, {
+    sequelize,
+    modelName: 'HomeworkPerLesson',
+  });
   return HomeworkPerLesson;
 };
