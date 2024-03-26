@@ -304,7 +304,11 @@ const getUserCourses = async (req, res) => {
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-      const formattedDate = new Date(e.GroupCourse.Groups[0].startDate).toISOString().split('T')[0].slice(5).replace("-",".")
+      const formattedDate = new Date(e.GroupCourse.Groups[0].startDate)
+        .toISOString()
+        .split('T')[0]
+        .slice(5)
+        .replace('-', '.');
 
       e['groupCourseId'] = e.GroupCourse.id;
       e['startDate'] = formattedDate.replace('/', '.');
@@ -328,55 +332,22 @@ const getUserCourse = async (req, res) => {
     const { language } = req.query;
 
     if (!id) {
-      return res.status(500).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    // let course = await UserCourses.findOne({
-    //   where: { UserId: id, GroupCourseId: courseId },
-    //   include: [
-    //     {
-    //       model: GroupCourses,
-    //     },
-    //   ],
-    // });
+    let course = await UserCourses.findOne({
+      where: { UserId: id, GroupCourseId: courseId },
+      include: [
+        {
+          model: GroupCourses,
+        },
+      ],
+    });
 
-    // if (!course) {
-    //   return res.status(500).json({ message: "Course not found" });
-    // }
-    // const allLessons = await Lesson.findAll({
-    //   where: { courseId },
-    //   attributes: [
-    //     [`title_${language}`, "title"],
-    //     [`description_${language}`, "description"],
-    //     "maxPoints",
-    //     "courseId",
-    //     "id",
-    //     "number",
-    //     "isOpen"
-    //   ],
-    //   order: [["id", "ASC"]],
-    // });
-
-    // let lessons = await Lesson.findAll({
-    //   // include: [
-    //   //   {
-    //   //     model:CoursesPerLessons,
-    //   //     where:{courseId},
-    //   // where:{courseId},
-    //   // attributes: [
-    //   //   [`title_${language}`, "title"],
-    //   //   [`description_${language}`, "description"],
-    //   //   "maxPoints",
-    //   //   "courseId",
-    //   //   "id",
-    //   //   "number",
-    //   //   "isOpen",
-    //   // ],
-    //   },
-    //   // ],
-    //   order: [["id", "ASC"]],
-    // });
-    let lessons = await CoursesPerLessons.findAll({
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    let lessons = await GroupsPerUsers.findAll({
       where: { courseId },
       include: [
         {
@@ -389,20 +360,19 @@ const getUserCourse = async (req, res) => {
       ],
     });
 
-    lessons = lessons.map((e, i) => {
-      e = e.toJSON();
-      delete e.dataValues;
-
-      e['title'] = e.Lesson.title;
-      e['description'] = e.Lesson.description;
-      e['number'] = i + 1;
-      e['isOpen'] = true;
-      delete e.Lessons;
-      return e;
+    lessons = lessons.map((lesson, index) => {
+      const formattedLesson = {
+        title: lesson.Lesson.title,
+        description: lesson.Lesson.description,
+        number: index + 1,
+        isOpen: true,
+      };
+      return formattedLesson;
     });
+
     return res.json(lessons);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };

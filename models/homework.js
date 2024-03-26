@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Homework extends Model {
     /**
@@ -13,37 +13,39 @@ module.exports = (sequelize, DataTypes) => {
   }
   Homework.init(
     {
-      courseId: DataTypes.INTEGER,
       title_en: DataTypes.STRING,
-      description_en: DataTypes.TEXT("long"),
+      description_en: DataTypes.TEXT('long'),
       title_ru: DataTypes.STRING,
-      description_ru: DataTypes.TEXT("long"),
+      description_ru: DataTypes.TEXT('long'),
       title_am: DataTypes.STRING,
-      description_am: DataTypes.TEXT("long"),
-      maxPoints: DataTypes.INTEGER,
-      isOpen: DataTypes.BOOLEAN,
-      startDate:DataTypes.DATE,
-      dueDate:DataTypes.DATE,
+      description_am: DataTypes.TEXT('long'),
     },
     {
       sequelize,
-      modelName: "Homework",
-    }
+      modelName: 'Homework',
+    },
   );
 
-  const GroupCourses = sequelize.define("GroupCourses");
-  const UserHomeworks = sequelize.define("UserHomework");
-  const Users = sequelize.define("Users");
-  const UserHomework = sequelize.define("UserHomework");
-  const HomeWorkFiles = sequelize.define("HomeWorkFiles");
-  
-  Homework.belongsTo(GroupCourses, { foreignKey: "id" });
-  Homework.belongsToMany(Users, { through: "UserHomework" });  
-  Homework.hasOne(UserHomework,{foreignKey:"HomeworkId"});
-  Homework.hasMany(UserHomeworks,{foreignKey:'HomeworkId'})
+  const GroupCourses = sequelize.define('GroupCourses');
+  const UserHomeworks = sequelize.define('UserHomework');
+  const Users = sequelize.define('Users');
+  const UserHomework = sequelize.define('UserHomework');
+  const HomeWorkFiles = sequelize.define('HomeWorkFiles');
+  const HomeworkPerLesson = sequelize.define('HomeworkPerLesson');
+  const Lesson = sequelize.define('Lesson');
+
+  Homework.belongsTo(GroupCourses, { foreignKey: 'id' });
+  Homework.belongsToMany(Users, { through: 'UserHomework' });
+  Homework.hasOne(UserHomework, { foreignKey: 'HomeworkId' });
+  Homework.hasMany(UserHomeworks, { foreignKey: 'HomeworkId' });
   // Homework.hasMany(UserHomeworks,{foreignKey:'HomeworkId'})
-  Homework.hasMany(HomeWorkFiles,{foreignKey:'homeWorkId'})
-   
+  Homework.hasMany(HomeWorkFiles, { foreignKey: 'homeWorkId' });
+
+  Homework.belongsToMany(Lesson, {
+    through: 'HomeworkPerLesson',
+    foreignKey: 'lessonId',
+    otherKey: 'homeworkId',
+  });
 
   return Homework;
 };

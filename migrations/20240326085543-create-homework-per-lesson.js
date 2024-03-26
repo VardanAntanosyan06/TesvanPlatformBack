@@ -2,30 +2,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Homework', {
+    await queryInterface.createTable('HomeworkPerLesson', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      title_en: {
-        type: Sequelize.STRING,
+      homeworkId: {
+        type: Sequelize.INTEGER,
       },
-      description_en: {
-        type: Sequelize.TEXT('long'),
+      lessonId: {
+        type: Sequelize.INTEGER,
       },
-      title_ru: {
-        type: Sequelize.STRING,
+      maxPoints: {
+        type: Sequelize.INTEGER,
       },
-      description_ru: {
-        type: Sequelize.TEXT('long'),
-      },
-      title_am: {
-        type: Sequelize.STRING,
-      },
-      description_am: {
-        type: Sequelize.TEXT('long'),
+      startDate: {
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Homework');
+    await queryInterface.dropTable('HomeworkPerLesson');
   },
 };

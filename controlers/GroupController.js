@@ -11,17 +11,16 @@ const {
   Lesson,
   UserLesson,
   UserTests,
-  Tests
-} = require("../models");
-const { v4 } = require("uuid");
-const groups = require("../models/groups");
-const sequelize = require("sequelize");
-const { Op } = require("sequelize");
+  Tests,
+} = require('../models');
+const { v4 } = require('uuid');
+const groups = require('../models/groups');
+const sequelize = require('sequelize');
+const { Op } = require('sequelize');
 
 const CreateGroup = async (req, res) => {
   try {
-    const { name, assignCourseId, users, startDate, endDate, price, sale } =
-      req.body;
+    const { name, assignCourseId, users, startDate, endDate, price, sale } = req.body;
 
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
@@ -48,25 +47,25 @@ const CreateGroup = async (req, res) => {
 
         await Promise.all(
           lessons.map(async (e) => {
-            console.log(e,"++++++++++++++++++++++++++++++++++++++++++++++++");
+            console.log(e, '++++++++++++++++++++++++++++++++++++++++++++++++');
             await UserLesson.create({
               GroupCourseId: task.assignCourseId,
               UserId: userId,
               LessonId: e.lessonId,
             });
-          })
+          }),
         );
-       await GroupsPerUsers.create({
+        await GroupsPerUsers.create({
           groupId: task.id,
           userId,
         });
-      })
+      }),
     );
 
     return res.status(200).json({ success: true, task });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -77,22 +76,19 @@ const findOne = async (req, res) => {
       where: { id },
       include: {
         model: GroupsPerUsers,
-        attributes: ["id", "userId"],
+        attributes: ['id', 'userId'],
         include: {
           model: Users,
-          attributes: ["id", "firstName", "lastName", "role", "image"],
+          attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
         },
       },
     });
 
-    if (!group)
-      return res
-        .status(404)
-        .json({ success: false, message: "Group not found" });
+    if (!group) return res.status(404).json({ success: false, message: 'Group not found' });
 
     const course = await CoursesContents.findOne({
       where: { courseId: group.assignCourseId },
-      attributes: ["id", "title"],
+      attributes: ['id', 'title'],
     });
 
     const groupedUsers = {
@@ -104,8 +100,8 @@ const findOne = async (req, res) => {
       price: group.price,
       sale: group.sale,
       course: course,
-      TEACHER:[],
-      STUDENT:[]
+      TEACHER: [],
+      STUDENT: [],
     };
     // return res.json()
     console.log(group.GroupsPerUsers.length);
@@ -114,20 +110,19 @@ const findOne = async (req, res) => {
       if (user) {
         if (!groupedUsers[user.role]) {
           groupedUsers[user.role] = [];
-        } 
+        }
         groupedUsers[user.role].push({
           id: user.id,
           image: user.image,
-          title: user.firstName+" "+user.lastName
+          title: user.firstName + ' ' + user.lastName,
         });
       }
     });
 
-
     return res.status(200).json({ success: true, group: groupedUsers });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -139,11 +134,11 @@ const getGroupesForTeacher = async (req, res) => {
       where: {
         UserId: userId,
       },
-      attributes: ["GroupCourseId"],
+      attributes: ['GroupCourseId'],
       include: [
         {
           model: Groups,
-          attributes: ["name", "finished", "createdAt"],
+          attributes: ['name', 'finished', 'createdAt'],
         },
       ],
     });
@@ -154,28 +149,28 @@ const getGroupesForTeacher = async (req, res) => {
       });
     Users.count()
       .then((totalUsers) => {
-        console.log("Total Users:", totalUsers);
+        console.log('Total Users:', totalUsers);
 
         // Fetch 3 random users
         return Users.findAll({
-          order: [[sequelize.literal("RAND()")]],
+          order: [[sequelize.literal('RAND()')]],
           limit: 1,
         });
       })
       .then((randomUsers) => {
         console.log(
-          "Random Users:",
-          randomUsers.map((user) => user.username)
+          'Random Users:',
+          randomUsers.map((user) => user.username),
         );
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error('Error:', error);
       });
 
     return res.status(200).json({ success: true, groups });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -184,37 +179,35 @@ const findAll = async (req, res) => {
     const group = await Groups.findAll({
       include: {
         model: UserCourses,
-        attributes: ["id", "UserId"],
+        attributes: ['id', 'UserId'],
         include: {
           model: Users,
-          attributes: ["firstName", "lastName", "role"],
+          attributes: ['firstName', 'lastName', 'role'],
         },
       },
     });
 
     if (group.length === 0)
-      return res
-        .status(404)
-        .json({ success: false, message: "Group not found" });
+      return res.status(404).json({ success: false, message: 'Group not found' });
 
     return res.status(200).json({ success: true, group });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const update = async (req, res) => {
-  const { name, startDate, endDate, price, sale, assignCourseId,id,users } = req.body;
+  const { name, startDate, endDate, price, sale, assignCourseId, id, users } = req.body;
 
   try {
     const group = await Groups.findOne({ where: { id } });
 
     if (!group) {
-      return res.status(404).json({ error: "Group not found" });
+      return res.status(404).json({ error: 'Group not found' });
     }
 
-    group.name = name;  
+    group.name = name;
     group.startDate = startDate;
     group.endDate = endDate;
     group.price = price;
@@ -223,17 +216,18 @@ const update = async (req, res) => {
 
     await group.save();
 
-    await GroupsPerUsers.destroy(
-      { where: { groupId: id } }
-    );
-     users.forEach((e)=>{
+    await GroupsPerUsers.destroy({ where: { groupId: id } });
+    users.forEach((e) => {
       console.log(e);
-      GroupsPerUsers.create({ groupId: id,userId:e })
-     }) 
-    res.status(200).json({ message: "Group updated successfully" });
+      GroupsPerUsers.create({ groupId: id, userId: e });
+    });
+    res.status(200).json({ message: 'Group updated successfully' });
+    await GroupsPerUsers.update({ groupId: group.id }, { where: { groupId: id } });
+
+    return res.status(200).json({ message: 'Group updated successfully' });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -266,7 +260,7 @@ const addMember = async (req, res) => {
               UserId: userId,
               LessonId: e.lessonId,
             });
-          })
+          }),
         );
 
         const boughtTests = await Tests.findAll({
@@ -289,15 +283,15 @@ const addMember = async (req, res) => {
                 userId,
               },
             });
-          })
+          }),
         );
-      })
+      }),
     );
 
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -307,18 +301,15 @@ const SingleUserStstic = async (req, res) => {
 
     const UserInfo = await UserCourses.findOne({
       where: { GroupCourseId: id, UserId: userId },
-      include: { model: Users, attributes: ["firstName", "lastName", "image"] },
+      include: { model: Users, attributes: ['firstName', 'lastName', 'image'] },
     });
 
-    if (!UserInfo)
-      return res
-        .status(404)
-        .json({ success: false, message: "Invalid id or userId" });
+    if (!UserInfo) return res.status(404).json({ success: false, message: 'Invalid id or userId' });
 
     return res.status(200).json({ success: true, UserInfo });
   } catch (error) {
     console.log(error.message, error.name);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -329,34 +320,29 @@ const AddUserSkill = async (req, res) => {
     const User = await UserCourses.findOne({
       where: { GroupCourseId: groupId, UserId: userId },
     });
-    if (!User)
-      return res
-        .status(404)
-        .json({ success: false, message: "Invalid id or userId" });
+    if (!User) return res.status(404).json({ success: false, message: 'Invalid id or userId' });
 
     if (!Array.isArray(skill))
-      return res
-        .status(403)
-        .json({ success: false, message: "Skill must be an array" });
+      return res.status(403).json({ success: false, message: 'Skill must be an array' });
 
-    if (type === "professional") {
+    if (type === 'professional') {
       User.professionalSkils = [...User.professionalSkils, ...skill];
       User.save();
-    } else if (type === "personal") {
+    } else if (type === 'personal') {
       User.personalSkils = [...User.personalSkils, ...skill];
 
       User.save();
     } else {
       return res.status(403).json({
         success: false,
-        message: "Type must be professional or personal",
+        message: 'Type must be professional or personal',
       });
     }
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -365,20 +351,17 @@ const recordUserStatics = async (req, res) => {
     const { groupId } = req.body;
 
     if (!groupId)
-      return res
-        .status(403)
-        .json({ success: false, message: "groupId cannot be null" });
+      return res.status(403).json({ success: false, message: 'groupId cannot be null' });
 
     const group = await Groups.findByPk(groupId);
-    if (!group)
-      return res.status(403).json({ success: false, message: "Wrong groupId" });
+    if (!group) return res.status(403).json({ success: false, message: 'Wrong groupId' });
     const month = new Date().getMonth() + 1;
     await JoinCart.create({ groupId, month });
 
     return res.json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -389,17 +372,17 @@ const getUserStaticChart = async (req, res) => {
     // const statics = await JoinCart.findAll({ where: { groupId } });
 
     let statics = await JoinCart.findAll({
-      attributes: [[sequelize.fn("COUNT", sequelize.col("id")), "count"]],
+      attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'count']],
       where: { groupId },
-      group: ["month"],
-      order: [["month", "ASC"]],
+      group: ['month'],
+      order: [['month', 'ASC']],
     });
     const UserCount = await Users.count();
     statics = statics.map((e) => (+e.dataValues.count / UserCount) * 100);
     return res.json({ statics, UserCount });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -434,25 +417,25 @@ const finishGroup = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const findGroups = async (req, res) => {
   try {
     let group = await Groups.findAll({
-      attributes: ["id", "name"],
-      order: [["id", "ASC"]],
+      attributes: ['id', 'name'],
+      order: [['id', 'ASC']],
       include: [
         {
           model: GroupsPerUsers,
           required: false,
           include: {
             model: Users,
-            attributes: ["firstName", "lastName", "image", "role"],
-            where: { role: { [Op.in]: ["TEACHER", "STUDENT"] } },
+            attributes: ['firstName', 'lastName', 'image', 'role'],
+            where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
           },
-          attributes: ["userId"],
+          attributes: ['userId'],
         },
       ],
     });
@@ -469,14 +452,14 @@ const findGroups = async (req, res) => {
             user.role = user.User.role;
             delete user.User;
             return user;
-          })
+          }),
         );
 
         const usersCount = await GroupsPerUsers.count({
           where: { groupId: grp.id },
           include: {
             model: Users,
-            where: { role: { [Op.in]: ["TEACHER", "STUDENT"] } },
+            where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
           },
           required: true,
         });
@@ -486,50 +469,50 @@ const findGroups = async (req, res) => {
           usersCount,
           GroupsPerUsers: a,
         };
-      })
+      }),
     );
     return res.status(200).json({ success: true, group });
   } catch (error) {
     console.error(error); // Log the error for debugging
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const getStudents = async (req, res) => {
   try {
     const users = await Users.findAll({
-      where: { role: "STUDENT" },
-      attributes: ["id", "firstName", "lastName", "image"],
+      where: { role: 'STUDENT' },
+      attributes: ['id', 'firstName', 'lastName', 'image'],
     });
 
     return res.status(200).json({ success: true, users });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const getTeachers = async (req, res) => {
   try {
     let users = await Users.findAll({
-      where: { role: "TEACHER" },
-      attributes: ["id", "firstName", "lastName"],
+      where: { role: 'TEACHER' },
+      attributes: ['id', 'firstName', 'lastName'],
     });
 
-    users = users.map((e)=>{
+    users = users.map((e) => {
       e = e.toJSON();
-      delete e.dataValues
+      delete e.dataValues;
 
-      e['title'] = e.firstName+" "+e.lastName
-      delete e.firstName
-      delete e.lastName
+      e['title'] = e.firstName + ' ' + e.lastName;
+      delete e.firstName;
+      delete e.lastName;
 
-      return e
-    })
+      return e;
+    });
     return res.status(200).json({ success: true, users });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -548,7 +531,7 @@ const deleteGroup = async (req, res) => {
     return res.json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -566,7 +549,7 @@ const getUsers = async (req, res) => {
       ],
       where: {
         role: {
-          [sequelize.Op.or]: ["STUDENT", "TEACHER"],
+          [sequelize.Op.or]: ['STUDENT', 'TEACHER'],
         },
       },
       attributes: ['id', 'firstName', 'lastName', 'role'],
@@ -575,7 +558,7 @@ const getUsers = async (req, res) => {
     const teacherUsers = [];
     const studentUsers = [];
 
-    users.forEach(user => {
+    users.forEach((user) => {
       if (user.role === 'TEACHER' && user.GroupsPerUsers.length === 0) {
         teacherUsers.push({
           id: user.id,
@@ -589,11 +572,10 @@ const getUsers = async (req, res) => {
       }
     });
 
-
-    return res.status(200).json({teacher: teacherUsers, student: studentUsers});
+    return res.status(200).json({ teacher: teacherUsers, student: studentUsers });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -623,7 +605,6 @@ const deleteMember = async (req, res) => {
       },
     });
 
-
     await UserTests.destroy({
       where: {
         userId: userId,
@@ -636,7 +617,7 @@ const deleteMember = async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -657,5 +638,5 @@ module.exports = {
   getStudents,
   getTeachers,
   deleteGroup,
-  deleteMember
+  deleteMember,
 };

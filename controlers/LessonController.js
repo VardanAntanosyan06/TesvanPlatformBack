@@ -8,9 +8,9 @@ const {
   LessonsPerQuizz,
   UserCourses,
   Message,
-} = require("../models");
-const lessonsperquizz = require("../models/lessonsperquizz");
-const { userSockets } = require("../userSockets");
+} = require('../models');
+const lessonsperquizz = require('../models/lessonsperquizz');
+const { userSockets } = require('../userSockets');
 
 const getLessons = async (req, res) => {
   try {
@@ -20,17 +20,17 @@ const getLessons = async (req, res) => {
 
     let lessons = await UserLesson.findAll({
       where: { GroupCourseId: courseId, UserId: userId },
-      attributes: ["points", "attempt"],
+      attributes: ['points', 'attempt'],
       include: [
         {
           model: Lesson,
           attributes: [
-            "id",
-            "courseId",
-            "number",
-            [`title_${language}`, "title"],
-            [`description_${language}`, "description"],
-            "maxPoints",
+            'id',
+            'courseId',
+            'number',
+            [`title_${language}`, 'title'],
+            [`description_${language}`, 'description'],
+            'maxPoints',
           ],
         },
       ],
@@ -53,28 +53,28 @@ const getLessons = async (req, res) => {
     res.send(lessons);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const getLessonTitles = async (req, res) => {
   try {
-    const {language} = req.query;
+    const { language } = req.query;
 
     let lessons = await Lesson.findAll({
-      attributes: ["id", ["title_en","title"]],
+      attributes: ['id', ['title_en', 'title']],
     });
 
     if (!lessons.length) {
       return res.status(403).json({
-        message: "Lessons not found",
+        message: 'Lessons not found',
       });
     }
 
     return res.send(lessons);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -86,39 +86,43 @@ const getLesson = async (req, res) => {
 
     let lesson = await UserLesson.findOne({
       where: { LessonId: id, UserId: userId },
-      attributes: ["points", "attempt"],
+      attributes: ['points', 'attempt'],
       include: [
         {
           model: Lesson,
-          attributes:[['title_en','title'],['description_en','description'],'maxPoints','htmlContent']          
+          attributes: [
+            ['title_en', 'title'],
+            ['description_en', 'description'],
+            'maxPoints',
+            'htmlContent',
+          ],
         },
       ],
     });
 
-    const quizzes = await LessonsPerQuizz.findOne({where:{
-        lessonId:id
-    },
-    })
+    const quizzes = await LessonsPerQuizz.findOne({
+      where: {
+        lessonId: id,
+      },
+    });
     if (!lesson) {
       return res.status(403).json({
         message: "Lessons not found or User doesn't have the lessons",
       });
-    } 
+    }
 
     lesson = {
       points: lesson.points,
-      pointsOfPercent: Math.round(
-        (lesson.points * 100) / lesson.Lesson.maxPoints
-      ),
+      pointsOfPercent: Math.round((lesson.points * 100) / lesson.Lesson.maxPoints),
       attempt: lesson.attempt,
       ...lesson.dataValues.Lesson.dataValues,
-      quizzId:quizzes?.quizzId ? quizzes.quizzId :null
+      quizzId: quizzes?.quizzId ? quizzes.quizzId : null,
     };
 
     res.send(lesson);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -128,23 +132,27 @@ const getLessonForAdmin = async (req, res) => {
     const { language } = req.query;
 
     let lesson = await Lesson.findOne({
-      where: {id },
-      attributes:[['title_en','title'],['description_en','description'],'maxPoints','htmlContent']
+      where: { id },
+      attributes: [
+        ['title_en', 'title'],
+        ['description_en', 'description'],
+        'maxPoints',
+        'htmlContent',
+      ],
     });
 
     if (!lesson) {
       return res.status(403).json({
         message: "Lessons not found or User doesn't have the lessons",
       });
-    } 
+    }
 
     res.send(lesson);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
-
 
 const submitQuizz = async (req, res) => {
   try {
@@ -157,9 +165,7 @@ const submitQuizz = async (req, res) => {
     });
 
     if (!lesson) {
-      return res
-        .status(403)
-        .json({ message: "Lesson not found or User doesn't have a lesson" });
+      return res.status(403).json({ message: "Lesson not found or User doesn't have a lesson" });
     }
 
     let currentPoints = lesson.points;
@@ -171,16 +177,14 @@ const submitQuizz = async (req, res) => {
       lesson.attempt = lesson.attempt + 1;
     } else if (lesson.attempt === 2) {
       collectedPoints = points - 10;
-      lesson.points =
-        collectedPoints > currentPoints ? collectedPoints : currentPoints;
+      lesson.points = collectedPoints > currentPoints ? collectedPoints : currentPoints;
       lesson.attempt = lesson.attempt + 1;
     } else if (lesson.attempt === 3) {
       collectedPoints = points - 20;
-      lesson.points =
-        collectedPoints > currentPoints ? collectedPoints : currentPoints;
+      lesson.points = collectedPoints > currentPoints ? collectedPoints : currentPoints;
       lesson.attempt = lesson.attempt + 1;
     } else {
-      return res.status(403).json({ message: "No more attempts" });
+      return res.status(403).json({ message: 'No more attempts' });
     }
 
     await lesson.save();
@@ -188,7 +192,7 @@ const submitQuizz = async (req, res) => {
     res.send({ points: collectedPoints });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -202,7 +206,7 @@ const openLesson = async (req, res) => {
     const lesson = await Lesson.findOne({ where: { id } });
     console.log(userCourses.length, lesson);
     if (!lesson) {
-      return res.status(404).json("lesson not found");
+      return res.status(404).json('lesson not found');
     }
     if (!lesson.isOpen) {
       await Promise.all(
@@ -221,19 +225,19 @@ const openLesson = async (req, res) => {
           });
           Message.create({
             UserId: user.UserId,
-            title_en: "New Lesson",
-            title_ru: "New Lesson",
-            title_am: "New Lesson",
-            description_en: "You have a new Lesson!",
-            description_ru: "You have a new Lesson!",
-            description_am: "You have a new Lesson!",
-            type: "info",
+            title_en: 'New Lesson',
+            title_ru: 'New Lesson',
+            title_am: 'New Lesson',
+            description_en: 'You have a new Lesson!',
+            description_ru: 'You have a new Lesson!',
+            description_am: 'You have a new Lesson!',
+            type: 'info',
           });
           const userSocket = userSockets.get(user.UserId);
           if (userSocket) {
-            userSocket.emit("new-message", "New Message");
+            userSocket.emit('new-message', 'New Message');
           }
-        })
+        }),
       );
     } else {
       await Promise.all(
@@ -249,7 +253,7 @@ const openLesson = async (req, res) => {
           } catch (error) {
             console.error(error);
           }
-        })
+        }),
       );
     }
 
@@ -258,61 +262,58 @@ const openLesson = async (req, res) => {
     return res.send({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const createLesson = async (req, res) => {
   try {
-    const { title_en, description_en, maxPoints,htmlContent  } = req.body;
+    const { title_en, description_en, maxPoints, htmlContent } = req.body;
 
-    await Lesson.create({ title_en, description_en, maxPoints,htmlContent });
+    await Lesson.create({ title_en, description_en, maxPoints, htmlContent });
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
-const getAllLessons = async(req,res)=>{
+const getAllLessons = async (req, res) => {
   try {
     const lessons = await Lesson.findAll({
-      attributes:['id','name']
-    })
+      attributes: ['id', 'name'],
+    });
 
-    return res.json(lessons)
+    return res.json(lessons);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
-}
+};
 
 const deleteLesson = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await Lesson.destroy({ where:{id} });
+    await Lesson.destroy({ where: { id } });
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const updateLesson = async (req, res) => {
   try {
-    const { title_en, description_en,id,htmlContent} = req.body;
+    const { title_en, description_en, id, htmlContent } = req.body;
 
-    await Lesson.update(
-      { title_en, description_en,htmlContent },
-      { where: { id } }
-    );
+    await Lesson.update({ title_en, description_en, htmlContent }, { where: { id } });
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 module.exports = {
@@ -325,5 +326,5 @@ module.exports = {
   getAllLessons,
   deleteLesson,
   updateLesson,
-  getLessonForAdmin
+  getLessonForAdmin,
 };
