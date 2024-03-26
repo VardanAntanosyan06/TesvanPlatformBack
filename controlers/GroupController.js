@@ -36,15 +36,29 @@ const CreateGroup = async (req, res) => {
     });
 
     await Promise.all(
-      users.map(async (e) => {
-        // await UserCourses.create({
-        //   GroupCourseId: task.id,
-        //   UserId: e,
-        // });
+      users.map(async (userId) => {
+        console.log(userId);
+        await UserCourses.create({
+          GroupCourseId: task.assignCourseId,
+          UserId: userId,
+        });
+        const lessons = await CoursesPerLessons.findAll({
+          where: { courseId: task.assignCourseId },
+        });
 
+        await Promise.all(
+          lessons.map(async (e) => {
+            console.log(e,"++++++++++++++++++++++++++++++++++++++++++++++++");
+            await UserLesson.create({
+              GroupCourseId: task.assignCourseId,
+              UserId: userId,
+              LessonId: e.lessonId,
+            });
+          })
+        );
        await GroupsPerUsers.create({
           groupId: task.id,
-          userId: e,
+          userId,
         });
       })
     );
@@ -191,7 +205,7 @@ const findAll = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { name, startDate, endDate, price, sale, assignCourseId,id } = req.body;
+  const { name, startDate, endDate, price, sale, assignCourseId,id,users } = req.body;
 
   try {
     const group = await Groups.findOne({ where: { id } });
@@ -209,12 +223,14 @@ const update = async (req, res) => {
 
     await group.save();
 
-    await GroupsPerUsers.update(
-      { groupId: group.id },
+    await GroupsPerUsers.destroy(
       { where: { groupId: id } }
     );
-
-    return res.status(200).json({ message: "Group updated successfully" });
+     users.forEach((e)=>{
+      console.log(e);
+      GroupsPerUsers.create({ groupId: id,userId:e })
+     }) 
+    res.status(200).json({ message: "Group updated successfully" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Something went wrong." });
