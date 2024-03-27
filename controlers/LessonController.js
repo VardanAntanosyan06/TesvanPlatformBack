@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const {
   UserLesson,
   Lesson,
@@ -153,6 +154,24 @@ const getLessonForAdmin = async (req, res) => {
         'maxPoints',
         'htmlContent',
       ],
+      include:
+          [{
+            model:Quizz,
+            as:"quizz",
+            attributes:['id',['title_en','title'],['description_en','description']],
+            through:{
+              attributes:[]
+            }
+          },
+          {
+            model:Homework,
+            as:"homework",
+            attributes:['id',['title_en','title'],['description_en','description']],
+            through:{
+              attributes:[]
+            }
+          }
+        ]
     });
 
     if (!lesson) {
@@ -334,9 +353,20 @@ const deleteLesson = async (req, res) => {
 
 const updateLesson = async (req, res) => {
   try {
-    const { title_en, description_en, id, htmlContent } = req.body;
+    const { title_en, description_en, id, htmlContent,quizzId,homeworkId } = req.body;
 
     await Lesson.update({ title_en, description_en, htmlContent }, { where: { id } });
+
+    await HomeworkPerLesson.update(
+      { lessonId: id },
+      { where: { homeworkId, lessonId: id } }
+    );
+    
+    await LessonsPerQuizz.update(
+      { quizzId, lessonId: id },
+      { where: { homeworkId, lessonId: id } }
+    );
+
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
