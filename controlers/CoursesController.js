@@ -330,52 +330,37 @@ const getUserCourse = async (req, res) => {
     const { user_id: id } = req.user;
     const { courseId } = req.params;
     const { language } = req.query;
-
     if (!id) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(500).json({ message: 'User not found' });
     }
-
-    let course = await UserCourses.findOne({
-      where: { UserId: id, GroupCourseId: courseId },
-      include: [
-        {
-          model: GroupCourses,
-        },
-      ],
-    });
-
-    if (!course) {
-      return res.status(404).json({ message: 'Course not found' });
-    }
-    let lessons = await GroupsPerUsers.findAll({
+    let lessons = await CoursesPerLessons.findAll({
       where: { courseId },
       include: [
         {
           model: Lesson,
           attributes: [
-            ['title_en', 'title'],
-            ['description_en', 'description'],
+            [`title_${language}`, 'title'],
+            [`description_${language}`, 'description'],
           ],
         },
       ],
     });
-
-    lessons = lessons.map((lesson, index) => {
-      const formattedLesson = {
-        title: lesson.Lesson.title,
-        description: lesson.Lesson.description,
-        number: index + 1,
-        isOpen: true,
-      };
-      return formattedLesson;
+    lessons = lessons.map((e, i) => {
+      e = e.toJSON();
+      delete e.dataValues;
+      e['title'] = e.Lesson.title;
+      e['description'] = e.Lesson.description;
+      e['number'] = i + 1;
+      e['isOpen'] = true;
+      delete e.Lessons;
+      return e;
     });
-
     return res.json(lessons);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
-};
+};;
 
 const createCourse = async (req, res) => {
   try {
