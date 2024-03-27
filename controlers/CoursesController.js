@@ -731,7 +731,7 @@ const getCourseForAdmin = async (req, res) => {
         },
         {
           model: Lesson,
-          attributes: ['id', ['title_en', 'title']],
+          attributes: ['id', ['title_en', 'title'],['description_en','description']],
         },
       ],
       attributes: ['id', 'img'],
@@ -760,11 +760,21 @@ const getCourseForAdmin = async (req, res) => {
       level: course.CoursesContents[0].level,
       level: course.CoursesContents[0].level,
       levelDescriptions: course.CoursesContents[0].levelDescriptions,
-      lessons: course.Lessons,
+      lessons:course.Lessons.map((lesson, index) => {
+        const formattedLesson = {
+          title: lesson.dataValues.title,
+          description: lesson.dataValues.description,
+          number: index + 1,
+          isOpen: true,
+        };
+        return formattedLesson;
+      }),
+      // lessons: course.Lessons,
       trainers,
     };
     delete course.CoursesContents;
     return res.json(course);
+    
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Something went wrong.' });

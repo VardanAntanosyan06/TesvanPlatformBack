@@ -99,6 +99,7 @@ const jwt = require("jsonwebtoken");
 io.on("connection", (socket) => {
   try {
     const token = socket?.handshake?.query?.token;
+    console.log(5);
     if (token) {
       jwt.verify(token, process.env.SECRET, (err, decoded) => {
         if (err) {
