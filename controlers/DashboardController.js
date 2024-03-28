@@ -44,8 +44,7 @@ const getUserStatictis = async (req, res) => {
       course: {
         students: 21,
         lessons: 30,
-        course: 1,
-        
+        course: 1
       },
       daily: {
         quizz: [

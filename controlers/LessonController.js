@@ -357,16 +357,19 @@ const updateLesson = async (req, res) => {
 
     await Lesson.update({ title_en, description_en, htmlContent }, { where: { id } });
 
-    await HomeworkPerLesson.update(
-      { lessonId: id },
-      { where: { homeworkId, lessonId: id } }
+    await HomeworkPerLesson.destroy(
+      { where: { lessonId: id } }
     );
-    
-    await LessonsPerQuizz.update(
+    await HomeworkPerLesson.create({
+      homeworkId, 
+      lessonId: id
+    })
+    await LessonsPerQuizz.destroy(
+      { where: { lessonId: id } }
+    );
+    await LessonsPerQuizz.create(
       { quizzId, lessonId: id },
-      { where: { homeworkId, lessonId: id } }
     );
-
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);

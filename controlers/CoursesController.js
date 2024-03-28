@@ -305,7 +305,7 @@ const getUserCourses = async (req, res) => {
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-      const formattedDate = new Date(e.GroupCourse.Groups[0].startDate)
+      const formattedDate = new Date(e?.GroupCourse.Groups[0].startDate)
         .toISOString()
         .split('T')[0]
         .slice(5)
@@ -604,8 +604,8 @@ const getOneGroup = async (req, res) => {
 
 const updateCourse = async (req, res) => {
   try {
+    const {courseId} = req.params;
     let {
-      courseId = 7,
       language,
       title,
       description,
@@ -615,26 +615,16 @@ const updateCourse = async (req, res) => {
       level,
       levelDescriptions,
       lessons,
+      image,
       trainers,
+      trainersImages
     } = req.body;
-
-    let { img, trainersImages } = req.files;
-
-    // Handle image upload if provided
-    if (img) {
-      const imgType = img.mimetype.split('/')[1];
-      const imgFileName = v4() + '.' + imgType;
-      img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
-
-      // Update the course's image file name
-      await GroupCourses.update({ img: imgFileName }, { where: { id: courseId } });
-    }
-
+    
     trainers = JSON.parse(trainers);
     if (!Array.isArray(lessons)) lessons = [lessons];
     if (!Array.isArray(trainersImages)) trainersImages = [trainersImages];
-
-    // Update course details
+    
+    await GroupCourses.update({ img: image[0].url }, { where: { id: courseId } });
     await CoursesContents.update(
       {
         language,
@@ -642,14 +632,12 @@ const updateCourse = async (req, res) => {
         description,
         courseType,
         lessonType,
-        whyThisCourse: whyThisCourse.split(','),
+        whyThisCourse,
         level,
-        // levelDescriptions,
       },
       { where: { courseId, language } },
     );
 
-    // Update lessons for the course
     await CoursesPerLessons.destroy({ where: { courseId } });
     lessons.forEach(async (e) => {
       await CoursesPerLessons.create({
@@ -658,16 +646,12 @@ const updateCourse = async (req, res) => {
       });
     });
 
-    // Update trainers for the course
+
     await Trainer.destroy({ where: { courseId } });
     trainers.forEach(async (e, i) => {
-      const type = trainersImages[i].mimetype.split('/')[1];
-      const fileName = v4() + '.' + type;
-      trainersImages[i].mv(path.resolve(__dirname, '..', 'static', fileName));
-
       await Trainer.create({
         fullName: e.fullName,
-        img: fileName,
+        img: trainersImages[i],
         profession: e.profession,
         courseId,
       });
@@ -748,6 +732,7 @@ const getCourseForAdmin = async (req, res) => {
       levelDescriptions: course.CoursesContents[0].levelDescriptions,
       lessons:course.Lessons.map((lesson, index) => {
         const formattedLesson = {
+          id:lesson.dataValues.id,
           title: lesson.dataValues.title,
           description: lesson.dataValues.description,
           number: index + 1,
