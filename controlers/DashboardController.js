@@ -5,18 +5,20 @@ const getUserStatictis = async (req, res) => {
     const { id } = req.params;
     const { user_id: userId } = req.user;
 
-    const { lessons, homeWork, quizzes } = await GroupsPerUsers.findOne({
+    const group = await GroupsPerUsers.findOne({
       where: {
         userId,
         groupId: id,
       },
     });
 
+    if(!group) return res.json({success:false,message:"Group not found or user doesn't in group"})
+
     const response = {
-      lessons,
-      homeWork,
-      quizzes,
-      totalPoints: (lessons + homeWork + quizzes) / 3,
+      lesson:group.lessons,
+      homeWork:group.homeWork,
+      quizzes:group.quizzes,
+      totalPoints: (group.lessons + group.homeWork + group.quizzes) / 3,
       mySkils: [
         {
           name: "Communication",
