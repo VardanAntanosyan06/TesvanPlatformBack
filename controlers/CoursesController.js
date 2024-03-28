@@ -301,6 +301,7 @@ const getUserCourses = async (req, res) => {
         },
       ],
     });
+    // return res.json(courses)
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
@@ -309,8 +310,8 @@ const getUserCourses = async (req, res) => {
         .split('T')[0]
         .slice(5)
         .replace('-', '.');
-
-      e['groupCourseId'] = e.GroupCourse.id;
+      e['id'] = e.GroupCourse.Groups[0].id;
+      e['groupCourseId'] = e.GroupCourse.Groups[0].assignCourseId;
       e['startDate'] = formattedDate.replace('/', '.');
       e['title'] = e.GroupCourse.CoursesContents[0].title;
       e['description'] = e.GroupCourse.CoursesContents[0].description;
