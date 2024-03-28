@@ -10,8 +10,8 @@ const getUserStatictis = async (req, res) => {
         userId,
         groupId: id,
       },
+      
     });
-
     if(!group) return res.json({success:false,message:"Group not found or user doesn't in group"})
 
     const response = {
@@ -42,9 +42,10 @@ const getUserStatictis = async (req, res) => {
         },
       ],
       course: {
-        students: "21 stuundet",
-        lessons: "30 lessons",
-        course: "1 course",
+        students: 21,
+        lessons: 30,
+        course: 1,
+        
       },
       daily: {
         quizz: [
