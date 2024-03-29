@@ -79,15 +79,16 @@ const getQuizzes = async (req, res) => {
         message: `with ID ${id} Quizz not found`,
       });
 
-      const lesson = await LessonsPerQuizz.findOne({
-        where:{quizzId:id},
-        include:{
-          model:Lesson,
-          attributes:['id',['title_en','title']]
-        }}) 
+      // const lesson = await Lesson.findOne({
+      //   include:{
+      //     where:{quizzId:id},
+      //     model:LessonsPerQuizz,
+      //   },
+      //   attributes:['id',['title_en','title']]
+      // }) 
 
     quizz = {
-      lesson:lesson?lesson.Lesson:null,
+      // lesson:lesson?lesson:null,
       time: 22,
       ...quizz.dataValues,
     };

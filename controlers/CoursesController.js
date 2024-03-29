@@ -605,6 +605,7 @@ const getOneGroup = async (req, res) => {
 const updateCourse = async (req, res) => {
   try {
     const {courseId} = req.params;
+    
     let {
       language,
       title,
