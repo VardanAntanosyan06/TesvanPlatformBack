@@ -317,31 +317,34 @@ const AddUserSkill = async (req, res) => {
   try {
     const { groupId, userId, skill, type } = req.body;
 
-    const User = await UserCourses.findOne({
+    const user = await UserCourses.findOne({
       where: { GroupCourseId: groupId, UserId: userId },
     });
-    if (!User) return res.status(404).json({ success: false, message: 'Invalid id or userId' });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Invalid groupId or userId' });
+    }
 
-    if (!Array.isArray(skill))
+    if (!Array.isArray(skill)) {
       return res.status(403).json({ success: false, message: 'Skill must be an array' });
+    }
+
+    if (type !== 'professional' && type !== 'personal') {
+      return res
+        .status(403)
+        .json({ success: false, message: 'Type must be professional or personal' });
+    }
 
     if (type === 'professional') {
-      User.professionalSkils = [...User.professionalSkils, ...skill];
-      User.save();
+      user.professionalSkills.push(...skill);
     } else if (type === 'personal') {
-      User.personalSkils = [...User.personalSkils, ...skill];
-
-      User.save();
-    } else {
-      return res.status(403).json({
-        success: false,
-        message: 'Type must be professional or personal',
-      });
+      user.personalSkills.push(...skill);
     }
+
+    await user.save();
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.log(error.message);
+    console.error(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
