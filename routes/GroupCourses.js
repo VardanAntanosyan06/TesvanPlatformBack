@@ -9,12 +9,9 @@ router.get('/getCourseTitles', controller.getCourseTitles);
 router.get('/getOneGroup/:id', controller.getOneGroup);
 
 router.get('/getByFilter', controller.getCoursesByFilter);
-<<<<<<< Updated upstream
 
 router.post('/createCourse', checkAuth(['TEACHER', 'ADMIN']), controller.createCourse);
-=======
 router.post('/createCourse', controller.createCourse);
->>>>>>> Stashed changes
 router.get('/getCourseForAdmin/:id', checkAuth(['ADMIN']), controller.getCourseForAdmin);
 
 router.get('/getOne/:id', controller.getOne);
