@@ -338,26 +338,13 @@ const deleteMembers = async (req, res) => {
 const editImage = async (req, res) => {
   try {
     const { user_id: id } = req.user;
-    const { avatarImage } = req.files; // Получаем изображение из запроса
-
+    const { image } = req.files;
     const user = await Users.findByPk(id);
-    if (!user) {
-      return res.status(404).json({ success: false });
-    }
-
-    // Предполагая, что avatarImage - это путь к временному файлу, загруженному через multer
-    const imgType = avatarImage.mimetype.split('/')[1];
-    const avatarFileName = v4() + '.' + imgType;
-
-    // Сохраняем изображение в папке static
-    await avatarImage.mv(path.resolve(__dirname, '..', 'static', avatarFileName));
-
-    // Обновляем путь к аватару у пользователя
-    user.avatarImage = avatarFileName;
-
-    // Сохраняем изменения в базе данных
+    const imgType = image.mimetype.split('/')[1];
+    const imageUrl = v4() + '.' + imgType;
+    await image.mv(path.resolve(__dirname, '..', 'static', imageUrl));
+    user.image = imageUrl;
     await user.save();
-
     return res.json({ success: true });
   } catch (error) {
     console.log(error);

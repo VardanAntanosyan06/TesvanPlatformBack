@@ -310,9 +310,10 @@ const getUserCourses = async (req, res) => {
         .split('T')[0]
         .slice(5)
         .replace('-', '.');
+      const year = new Date(e?.GroupCourse.Groups[0].startDate).getFullYear();
       e['id'] = e.GroupCourse.Groups[0].id;
       e['groupCourseId'] = e.GroupCourse.Groups[0].assignCourseId;
-      e['startDate'] = formattedDate.replace('/', '.');
+      e['startDate'] = `${formattedDate}.${year}`;
       e['title'] = e.GroupCourse.CoursesContents[0].title;
       e['description'] = e.GroupCourse.CoursesContents[0].description;
       e['percent'] = 0;
