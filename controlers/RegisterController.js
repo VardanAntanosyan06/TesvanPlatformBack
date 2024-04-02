@@ -21,7 +21,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const path = require('path');
-
+const { v4 } = require('uuid');
 require('dotenv').config();
 
 const BCRYPT_HASH_SALT = 10;
@@ -247,16 +247,18 @@ const getMembers = async (req, res) => {
 
 const getMember = async (req, res) => {
   try {
-    const {id} = req.params; 
+    const { id } = req.params;
 
     const user = await Users.findOne({
       where: {
-         id,
+        id,
       },
-      attributes:{exclude:["token","tokenCreatedAt","likedCourses","createdAt","updatedAt","password"]}
+      attributes: {
+        exclude: ['token', 'tokenCreatedAt', 'likedCourses', 'createdAt', 'updatedAt', 'password'],
+      },
     });
 
-    if(!user) return res.json({succes:false,message:`with id ${id} user not found`})
+    if (!user) return res.json({ succes: false, message: `with id ${id} user not found` });
     return res.json(user);
   } catch (error) {
     console.log(error);
@@ -333,6 +335,36 @@ const deleteMembers = async (req, res) => {
   }
 };
 
+const editImage = async (req, res) => {
+  try {
+    const { user_id: id } = req.user;
+    const { avatarImage } = req.files; // Получаем изображение из запроса
+
+    const user = await Users.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ success: false });
+    }
+
+    // Предполагая, что avatarImage - это путь к временному файлу, загруженному через multer
+    const imgType = avatarImage.mimetype.split('/')[1];
+    const avatarFileName = v4() + '.' + imgType;
+
+    // Сохраняем изображение в папке static
+    await avatarImage.mv(path.resolve(__dirname, '..', 'static', avatarFileName));
+
+    // Обновляем путь к аватару у пользователя
+    user.avatarImage = avatarFileName;
+
+    // Сохраняем изменения в базе данных
+    await user.save();
+
+    return res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
 module.exports = {
   UserRegistartion,
   UserRegistartionSendEmail,
@@ -343,4 +375,5 @@ module.exports = {
   getMember,
   editMember,
   deleteMembers,
+  editImage,
 };

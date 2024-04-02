@@ -290,7 +290,7 @@ const getUserCourses = async (req, res) => {
             {
               model: CoursesContents,
               where: { language },
-              attributes: ['title', 'description'],
+              attributes: ['title', 'description', 'level'],
             },
             {
               model: Groups,
@@ -361,7 +361,7 @@ const getUserCourse = async (req, res) => {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
-};;
+};
 
 const createCourse = async (req, res) => {
   try {
@@ -604,8 +604,8 @@ const getOneGroup = async (req, res) => {
 
 const updateCourse = async (req, res) => {
   try {
-    const {courseId} = req.params;
-    
+    const { courseId } = req.params;
+
     let {
       language,
       title,
@@ -618,13 +618,13 @@ const updateCourse = async (req, res) => {
       lessons,
       image,
       trainers,
-      trainersImages
+      trainersImages,
     } = req.body;
-    
+
     trainers = JSON.parse(trainers);
     if (!Array.isArray(lessons)) lessons = [lessons];
     if (!Array.isArray(trainersImages)) trainersImages = [trainersImages];
-    
+
     await GroupCourses.update({ img: image[0].url }, { where: { id: courseId } });
     await CoursesContents.update(
       {
@@ -646,7 +646,6 @@ const updateCourse = async (req, res) => {
         lessonId: e,
       });
     });
-
 
     await Trainer.destroy({ where: { courseId } });
     trainers.forEach(async (e, i) => {
@@ -702,7 +701,7 @@ const getCourseForAdmin = async (req, res) => {
         },
         {
           model: Lesson,
-          attributes: ['id', ['title_en', 'title'],['description_en','description']],
+          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
         },
       ],
       attributes: ['id', 'img'],
@@ -731,9 +730,9 @@ const getCourseForAdmin = async (req, res) => {
       level: course.CoursesContents[0].level,
       level: course.CoursesContents[0].level,
       levelDescriptions: course.CoursesContents[0].levelDescriptions,
-      lessons:course.Lessons.map((lesson, index) => {
+      lessons: course.Lessons.map((lesson, index) => {
         const formattedLesson = {
-          id:lesson.dataValues.id,
+          id: lesson.dataValues.id,
           title: lesson.dataValues.title,
           description: lesson.dataValues.description,
           number: index + 1,
@@ -746,7 +745,6 @@ const getCourseForAdmin = async (req, res) => {
     };
     delete course.CoursesContents;
     return res.json(course);
-    
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Something went wrong.' });
