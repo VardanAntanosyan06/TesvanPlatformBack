@@ -217,12 +217,12 @@ const update = async (req, res) => {
     await group.save();
 
     await GroupsPerUsers.destroy({ where: { groupId: id } });
-    users.forEach((e) => {
-      console.log(e);
-      GroupsPerUsers.create({ groupId: id, userId: e });
-    });
-    res.status(200).json({ message: 'Group updated successfully' });
-    await GroupsPerUsers.update({ groupId: group.id }, { where: { groupId: id } });
+
+    if (users && Array.isArray(users)) {
+      for (const userId of users) {
+        await GroupsPerUsers.create({ groupId: id, userId });
+      }
+    }
 
     return res.status(200).json({ message: 'Group updated successfully' });
   } catch (error) {
