@@ -318,7 +318,7 @@ const getUserCourses = async (req, res) => {
 
       e['id'] = groups[0]?.id || null;
       e['groupCourseId'] = groups[0]?.assignCourseId || null;
-      e['startDate'] = startDate ? `${formattedDate}.${year}` : null;
+      e['startDate'] = formattedDate.replace('/', '.');
       e['title'] = coursesContents[0]?.title || null;
       e['description'] = coursesContents[0]?.description || null;
       e['percent'] = 0;
