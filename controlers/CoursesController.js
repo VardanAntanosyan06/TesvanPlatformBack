@@ -305,18 +305,24 @@ const getUserCourses = async (req, res) => {
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-      const formattedDate = new Date(e?.GroupCourse.Groups[0].startDate)
-        .toISOString()
-        .split('T')[0]
-        .slice(5)
-        .replace('-', '.');
-      const year = new Date(e?.GroupCourse.Groups[0].startDate).getFullYear();
-      e['id'] = e.GroupCourse.Groups[0].id;
-      e['groupCourseId'] = e.GroupCourse.Groups[0].assignCourseId;
-      e['startDate'] = `${formattedDate}.${year}`;
-      e['title'] = e.GroupCourse.CoursesContents[0].title;
-      e['description'] = e.GroupCourse.CoursesContents[0].description;
+
+      const groupCourse = e.GroupCourse;
+      const groups = groupCourse?.Groups || [];
+      const coursesContents = groupCourse?.CoursesContents || [];
+
+      const startDate = groups[0]?.startDate || null;
+      const formattedDate = startDate
+        ? new Date(startDate).toISOString().split('T')[0].slice(5).replace('-', '.')
+        : null;
+      const year = startDate ? new Date(startDate).getFullYear() : null;
+
+      e['id'] = groups[0]?.id || null;
+      e['groupCourseId'] = groups[0]?.assignCourseId || null;
+      e['startDate'] = startDate ? `${formattedDate}.${year}` : null;
+      e['title'] = coursesContents[0]?.title || null;
+      e['description'] = coursesContents[0]?.description || null;
       e['percent'] = 0;
+
       delete e.GroupCourse;
       return e;
     });
