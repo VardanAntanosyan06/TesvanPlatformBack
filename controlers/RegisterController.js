@@ -186,31 +186,35 @@ const UserRegistartionVerification = async (req, res) => {
 };
 const AddMember = async (req, res) => {
   try {
-    const { role, firstName, lastName, email, phoneNumber, birthday, gender, password } = req.body;
-
-    const hashPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT);
-    const isoDate = new Date(birthday).toISOString();
-    const isoDateToken = new Date().toISOString();
+    const { role, firstName, lastName, email, phoneNumber, birthday, gender, city } = req.body;
     const user = await Users.create({
       role,
       firstName,
       lastName,
       email,
       phoneNumber,
-      birthday: isoDate,
+      birthday,
       gender,
       password: hashPassword,
       isVerified: true,
-      country: 'USA',
-      city: 'Yerevan',
-      education: 'Harvard',
-      backgroundInQA: true,
-      tokenCreatedAt: isoDateToken,
+      country: ' ',
+      city,
+      education: '',
+      backgroundInQA: 'true',
+      tokenCreatedAt: new Date().toISOString(),
     });
 
-    return res.send(user);
+    const hashPassword = await bcrypt.hash(v4(), BCRYPT_HASH_SALT);
+
+    const token = jwt.sign({ user_id: user.id, email, role: user.role }, process.env.SECRET);
+
+    if (!emailSent) {
+      return res.status(500).json({ message: 'Failed to send verification email' });
+    }
+
+    return res.status(200).json({ success: true, message: 'Member added successfully' });
   } catch (error) {
-    console.log(error.name);
+    console.error(error);
     if (
       error.name === 'SequelizeValidationError' ||
       error.name === 'RangeError' ||
