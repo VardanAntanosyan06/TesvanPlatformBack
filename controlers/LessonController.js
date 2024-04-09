@@ -310,7 +310,7 @@ const createLesson = async (req, res) => {
     await HomeworkPerLesson.create({
       homeworkId,
       lessonId,
-      maxPoints:maxPoints/2
+      maxPoints:Math.round(maxPoints/2)
     });
     await LessonsPerQuizz.create({
       quizzId,

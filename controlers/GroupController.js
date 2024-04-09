@@ -7,6 +7,7 @@ const {
   Certificates,
   GroupCourses,
   CoursesPerLessons,
+  PaymentWays,
   CoursesContents,
   Lesson,
   UserLesson,
@@ -21,9 +22,11 @@ const { Op } = require('sequelize');
 
 const CreateGroup = async (req, res) => {
   try {
-    const { name, assignCourseId, users, startDate, endDate, price, sale } = req.body;
+    const { name, assignCourseId, users, startDate, endDate,payment } = req.body;
 
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
+
+    let {price,discount} = payment.reduce((min, item) => item.price < min.price ? item : min, payment[0]);
 
     const task = await Groups.create({
       name,
@@ -32,12 +35,19 @@ const CreateGroup = async (req, res) => {
       startDate,
       endDate,
       price,
-      sale,
-      description,
-      price,
-      type,
+      sale:discount,
     });
 
+    payment.map((e)=>{
+      PaymentWays.create({
+        title:e.title,
+        description:e.description,
+        price:e.price,
+        discount,
+        groupId:task.id
+      })
+    })
+    
     await Promise.all(
       users.map(async (userId) => {
         console.log(userId);
@@ -48,10 +58,8 @@ const CreateGroup = async (req, res) => {
         const lessons = await CoursesPerLessons.findAll({
           where: { courseId: task.assignCourseId },
         });
-
         await Promise.all(
           lessons.map(async (e) => {
-            console.log(e, '++++++++++++++++++++++++++++++++++++++++++++++++');
             await UserLesson.create({
               GroupCourseId: task.assignCourseId,
               UserId: userId,
@@ -73,7 +81,7 @@ const CreateGroup = async (req, res) => {
       }),
     );
 
-    return res.status(200).json({ success: true, task });
+    res.status(200).json({ success: true, task });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Something went wrong.' });
