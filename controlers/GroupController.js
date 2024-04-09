@@ -12,6 +12,7 @@ const {
   UserLesson,
   UserTests,
   Tests,
+  PaymentBlocks,
 } = require('../models');
 const { v4 } = require('uuid');
 const groups = require('../models/groups');
@@ -32,6 +33,9 @@ const CreateGroup = async (req, res) => {
       endDate,
       price,
       sale,
+      description,
+      price,
+      type,
     });
 
     await Promise.all(
@@ -58,6 +62,13 @@ const CreateGroup = async (req, res) => {
         await GroupsPerUsers.create({
           groupId: task.id,
           userId,
+        });
+        await PaymentBlocks.create({
+          title,
+          description,
+          price,
+          type,
+          courseId: id,
         });
       }),
     );
