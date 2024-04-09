@@ -71,19 +71,12 @@ const CreateGroup = async (req, res) => {
           groupId: task.id,
           userId,
         });
-        await PaymentBlocks.create({
-          title,
-          description,
-          price,
-          type,
-          courseId: id,
-        });
       }),
     );
 
     res.status(200).json({ success: true, task });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
