@@ -6,7 +6,6 @@ const checkAuth = require('../middleware/checkAuth');
 
 router.post('/create', checkAuth(['ADMIN']), controller.CreateGroup);
 router.post('/addMember', checkAuth(['ADMIN']), controller.addMember);
-router.post('/addUserSkill', checkAuth(['TEACHER', 'ADMIN']), controller.AddUserSkill);
 router.post(
   '/recordUserStatics',
   checkAuth(['TEACHER', 'ADMIN', 'STUDENT']),
@@ -32,7 +31,7 @@ router.get(
   controller.getGroupesForTeacher,
 );
 
-router.put('/update', checkAuth(['ADMIN']), controller.update);
+router.put('/update/:groupId', checkAuth(['ADMIN']), controller.update);
 router.patch('/finishGroup/:id', checkAuth(['TEACHER', 'ADMIN']), controller.finishGroup);
 
 router.delete('/deleteMember', checkAuth(['ADMIN']), controller.deleteMember);

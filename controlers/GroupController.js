@@ -21,11 +21,14 @@ const { Op } = require('sequelize');
 
 const CreateGroup = async (req, res) => {
   try {
-    const { name, assignCourseId, users, startDate, endDate,payment } = req.body;
+    const { name, assignCourseId, users, startDate, endDate, payment } = req.body;
 
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
-    let {price,discount} = payment.reduce((min, item) => item.price < min.price ? item : min, payment[0]);
+    let { price, discount } = payment.reduce(
+      (min, item) => (item.price < min.price ? item : min),
+      payment[0],
+    );
 
     const task = await Groups.create({
       name,
@@ -34,11 +37,12 @@ const CreateGroup = async (req, res) => {
       startDate,
       endDate,
       price,
-      sale:discount,
+      sale: discount,
     });
 
-    payment.map((e)=>{
+    payment.map((e) => {
       PaymentWays.create({
+<<<<<<< Updated upstream
         title:e.title,
         description:e.description,
         price:e.price,
@@ -47,6 +51,16 @@ const CreateGroup = async (req, res) => {
       })
     })
     
+=======
+        title: e.title,
+        description: e.description,
+        price: e.price,
+        discount,
+        groupId: task.id,
+      });
+    });
+
+>>>>>>> Stashed changes
     await Promise.all(
       users.map(async (userId) => {
         console.log(userId);
@@ -209,35 +223,38 @@ const findAll = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { name, startDate, endDate, price, sale, assignCourseId, id, users } = req.body;
-
   try {
-    const group = await Groups.findOne({ where: { id } });
+    const { groupId } = req.params;
+    const { name, assignCourseId, users, startDate, endDate, payment } = req.body;
 
+    let group = await Groups.findByPk(groupId);
     if (!group) {
-      return res.status(404).json({ error: 'Group not found' });
+      return res.status(404).json({ message: 'Group not found' });
     }
 
     group.name = name;
+    group.assignCourseId = assignCourseId;
     group.startDate = startDate;
     group.endDate = endDate;
-    group.price = price;
-    group.sale = sale;
-    group.assignCourseId = assignCourseId;
+
+    if (payment && payment.length > 0) {
+      let { price, discount } = payment.reduce(
+        (min, item) => (item.price < min.price ? item : min),
+        payment[0],
+      );
+      group.price = price;
+      group.sale = discount;
+
+      await PaymentWays.destroy({ where: { groupId } });
+
+      await PaymentWays.bulkCreate(payment);
+    }
 
     await group.save();
 
-    await GroupsPerUsers.destroy({ where: { groupId: id } });
-
-    if (users && Array.isArray(users)) {
-      for (const userId of users) {
-        await GroupsPerUsers.create({ groupId: id, userId });
-      }
-    }
-
-    return res.status(200).json({ message: 'Group updated successfully' });
+    return res.status(200).json({ success: true, group, PaymentWays });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
@@ -324,41 +341,41 @@ const SingleUserStstic = async (req, res) => {
   }
 };
 
-const AddUserSkill = async (req, res) => {
-  try {
-    const { groupId, userId, skill, type } = req.body;
+// const AddUserSkill = async (req, res) => {
+//   try {
+//     const { groupId, userId, skill, type } = req.body;
 
-    const user = await UserCourses.findOne({
-      where: { GroupCourseId: groupId, UserId: userId },
-    });
-    if (!user) {
-      return res.status(404).json({ success: false, message: 'Invalid groupId or userId' });
-    }
+//     const user = await UserCourses.findOne({
+//       where: { GroupCourseId: groupId, UserId: userId },
+//     });
+//     if (!user) {
+//       return res.status(404).json({ success: false, message: 'Invalid groupId or userId' });
+//     }
 
-    if (!Array.isArray(skill)) {
-      return res.status(403).json({ success: false, message: 'Skill must be an array' });
-    }
+//     if (!Array.isArray(skill)) {
+//       return res.status(403).json({ success: false, message: 'Skill must be an array' });
+//     }
 
-    if (type !== 'professional' && type !== 'personal') {
-      return res
-        .status(403)
-        .json({ success: false, message: 'Type must be professional or personal' });
-    }
+//     if (type !== 'professional' && type !== 'personal') {
+//       return res
+//         .status(403)
+//         .json({ success: false, message: 'Type must be professional or personal' });
+//     }
 
-    if (type === 'professional') {
-      user.professionalSkills.push(...skill);
-    } else if (type === 'personal') {
-      user.personalSkills.push(...skill);
-    }
+//     if (type === 'professional') {
+//       user.professionalSkills.push(...skill);
+//     } else if (type === 'personal') {
+//       user.personalSkills.push(...skill);
+//     }
 
-    await user.save();
+//     await user.save();
 
-    return res.status(200).json({ success: true });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
-  }
-};
+//     return res.status(200).json({ success: true });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: 'Something went wrong.' });
+//   }
+// };
 
 const recordUserStatics = async (req, res) => {
   try {
@@ -635,40 +652,6 @@ const deleteMember = async (req, res) => {
   }
 };
 
-// const editGroup = async (req, res) => {
-//   try {
-//     const { groupId } = req.params; // Assuming groupId is passed as a route parameter
-//     const { name, assignCourseId, users, startDate, endDate, price, sale, teachers } = req.body;
-
-//     const group = await Groups.findByPk(groupId);
-//     if (!group) {
-//       return res.status(404).json({ message: 'Group not found' });
-//     }
-
-//     group.name = name;
-//     group.assignCourseId = assignCourseId;
-//     group.startDate = startDate;
-//     group.endDate = endDate;
-//     group.price = price;
-//     group.sale = sale;
-
-//     await group.save();
-
-//     await PaymentBlocks.create({
-//       title,
-//       description,
-//       price,
-//       type,
-//       courseId: id,
-//     });
-
-//     return res.status(200).json({ success: true, group });
-//   } catch (error) {
-//     console.log(error.message);
-//     return res.status(500).json({ message: 'Something went wrong.' });
-//   }
-// };
-
 module.exports = {
   CreateGroup,
   findOne,
@@ -677,7 +660,6 @@ module.exports = {
   addMember,
   SingleUserStstic,
   recordUserStatics,
-  AddUserSkill,
   getUserStaticChart,
   finishGroup,
   getUsers,
@@ -687,5 +669,4 @@ module.exports = {
   getTeachers,
   deleteGroup,
   deleteMember,
-  // editGroup,
 };

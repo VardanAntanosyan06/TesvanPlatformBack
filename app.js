@@ -25,6 +25,7 @@ var UploadFileRouter = require('./routes/UploadFile');
 var QuizzRouter = require('./routes/quizz');
 var TestQuizz = require('./routes/TestQuizz');
 var DashboardRouter = require('./routes/Dashboard');
+var SkillRouter = require('./routes/Skill');
 var app = express();
 
 // view engine setup
@@ -63,7 +64,7 @@ app.use('/api/v2/Certifictaes', CertifictaesRouter);
 app.use('/api/v2/TestQuizz', TestQuizz);
 app.use('/api/v2/Quizz', QuizzRouter);
 app.use('/api/v2/Dashboard', DashboardRouter);
-
+app.use('/api/v2/Skill', SkillRouter);
 app.use(require('express-status-monitor')());
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

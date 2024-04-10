@@ -7,51 +7,40 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       groupId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       userId: {
-        type: Sequelize.INTEGER
-      },
-      personalSkils: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-        defaultValue:[]
-      },
-      professionalSkils: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-        defaultValue:[]
-
+        type: Sequelize.INTEGER,
       },
       certification: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       lessons: {
         type: Sequelize.INTEGER,
-        defaultValue:0
+        defaultValue: 0,
       },
       homeWork: {
         type: Sequelize.INTEGER,
-        defaultValue:0
-
+        defaultValue: 0,
       },
       quizzes: {
         type: Sequelize.INTEGER,
-        defaultValue:0
-
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('GroupsPerUsers');
-  }
+  },
 };
