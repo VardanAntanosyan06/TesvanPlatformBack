@@ -42,7 +42,7 @@ const CreateGroup = async (req, res) => {
         title:e.title,
         description:e.description,
         price:e.price,
-        discount,
+        discount:e.discount,
         groupId:task.id
       })
     })

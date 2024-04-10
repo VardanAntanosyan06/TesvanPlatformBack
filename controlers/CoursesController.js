@@ -5,6 +5,7 @@ const {
   CoursesPerLessons,
   Groups,
   GroupsPerUsers,
+  levelDescription,
   PaymentWays,
 } = require('../models');
 
@@ -125,7 +126,24 @@ const getOne = async (req, res) => {
     let course = await GroupCourses.findOne({
       where: { id: groups.assignCourseId },
       include: [
-        { model: CoursesContents, where: { language } },
+        {
+          model: CoursesContents,
+          where: { language },
+          attributes: [
+            "id",
+            "courseId",
+            "language",
+            "title",
+            "description",
+            "courseType",
+            "lessonType",
+            "level",
+          ],
+        },
+        {
+            model:levelDescription,
+            attributes:["title","description"]
+        },
         {
           model: Lesson,
           attributes: [
@@ -336,12 +354,12 @@ const getUserCourses = async (req, res) => {
         : null;
       const year = startDate ? new Date(startDate).getFullYear() : null;
 
-      e['id'] = groups[0]?.id || null;
-      e['groupCourseId'] = groups[0]?.assignCourseId || null;
-      e['startDate'] = formattedDate.replace('/', '.');
-      e['title'] = coursesContents[0]?.title || null;
-      e['description'] = coursesContents[0]?.description || null;
-      e['percent'] = 0;
+      e["id"] = groups[0]?.id || null;
+      e["groupCourseId"] = groups[0]?.assignCourseId || null;
+      e["startDate"] = formattedDate.replace("/", ".");
+      e["title"] = coursesContents[0]?.title || null;
+      e["description"] = coursesContents[0]?.description || null;
+      e["percent"] = 0;
 
       delete e.GroupCourse;
       return e;
@@ -447,6 +465,13 @@ const createCourse = async (req, res) => {
         fullName: e.fullName,
         img: fileName,
         profession: e.profession,
+        courseId,
+      });
+    });
+    levelDescriptions.map((e) => {
+      levelDescription.create({
+        title: e.title,
+        description: e.description,
         courseId,
       });
     });
@@ -669,6 +694,17 @@ const updateCourse = async (req, res) => {
       },
       { where: { courseId, language } },
     );
+
+    await levelDescription.destroy({where:{courseId}})
+    levelDescriptions.map((e) => {
+      levelDescription.create({
+        title: e.title,
+        description: e.description,
+        courseId,
+      });
+    });
+
+    
 
     await CoursesPerLessons.destroy({ where: { courseId } });
     lessons.forEach(async (e) => {

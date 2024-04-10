@@ -51,6 +51,11 @@ module.exports = (sequelize, DataTypes) => {
   GroupCourses.hasMany(PaymentWays,{foreignKey:"groupId",as:"payment"})
   const Groups = sequelize.define("Groups");
   GroupCourses.hasMany(Groups, { foreignKey: "assignCourseId" });
+
+  const levelDescription = sequelize.define("levelDescription")
+  GroupCourses.hasMany(levelDescription,{
+    foreignKey:"courseId"
+  })
   // const UserCourses = sequelize.define("UserCourses");
   // GroupCourses.hasMany(Paym);
   // //
