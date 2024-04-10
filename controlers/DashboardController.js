@@ -1,4 +1,6 @@
-const { Users, Groups, GroupsPerUsers } = require("../models");
+const { where } = require("sequelize");
+const { Users, Groups, GroupsPerUsers,GroupCourses,CoursesContents,CoursesPerLessons,Skills } = require("../models");
+// const  = require("../models/groupCourses");
 
 const getUserStatictis = async (req, res) => {
   try {
@@ -10,57 +12,44 @@ const getUserStatictis = async (req, res) => {
         userId,
         groupId: id,
       },
-      
     });
-    if(!group) return res.json({success:false,message:"Group not found or user doesn't in group"})
+    const students = await GroupsPerUsers.count({ where: { groupId: id } });
+    // const coursesContents = ;
 
-    const response = {
-      lesson:group.lessons,
-      homeWork:group.homeWork,
-      quizzes:group.quizzes,
+    let course = await Groups.findByPk(id,{
+      include:[
+        {
+        model:GroupCourses,
+        include:{
+          model:CoursesContents
+        }
+      }
+    ]
+    })
+    const lessons = await CoursesPerLessons.count({where:{
+      courseId:course.assignCourseId
+    }})
+
+    if (!group)
+      return res.json({
+        success: false,
+        message: "Group not found or user doesn't in group",
+      });
+
+      const mySkils = await Skills.findAll({
+        where:{userId}
+      })
+
+      const response = {
+      lesson: group.lessons,
+      homeWork: group.homeWork,
+      quizzes: group.quizzes,
       totalPoints: (group.lessons + group.homeWork + group.quizzes) / 3,
-      mySkils: [
-        {
-          name: "Communication",
-          point: 10,
-        },
-        {
-          name: "Test case execution",
-          pont: 80,
-        },
-        {
-          name: "Agile methodology",
-          point: 100,
-        },
-        {
-          name: "Scrum methodology",
-          point: 100,
-        },
-        {
-          name: "Cypress",
-          point: 10,
-        },
-      ],
+      mySkils,
       course: {
-        students: 21,
-        lessons: 30,
-        course: 1
-      },
-      daily: {
-        quizz: [
-          {
-            id: 1,
-            title: "Lorem ipsum",
-            description: "Lorem ipsum",
-          },
-        ],
-        homework: [
-          {
-            id: 1,
-            title: "test",
-            description: "test",
-          },
-        ],
+        students,
+        lessons,
+        lessonType:course.GroupCourse.CoursesContents[0].level,
       },
     };
     return res.json(response);

@@ -467,7 +467,7 @@ const createCourse = async (req, res) => {
         profession: e.profession,
         courseId,
       });
-    });
+      });
     levelDescriptions.map((e) => {
       levelDescription.create({
         title: e.title,

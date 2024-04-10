@@ -272,8 +272,6 @@ const AddMember = async (req, res) => {
       console.log('Email sent:', body);
       return res.status(200).json({ success: true });
     });
-
-    return res.status(200).json({ success: true, message: 'Member added successfully' });
   } catch (error) {
     console.error(error);
     if (
@@ -287,6 +285,7 @@ const AddMember = async (req, res) => {
     }
   }
 };
+
 const getMembers = async (req, res) => {
   try {
     const teachers = await Users.findAll({
