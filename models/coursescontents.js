@@ -1,5 +1,5 @@
-"use strict";
-const { Model, Sequelize } = require("sequelize");
+'use strict';
+const { Model, Sequelize } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class CoursesContents extends Model {
     /**
@@ -17,12 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       language: {
         type: DataTypes.STRING,
         isIn: {
-          args: [["en,ru,am"]],
-          msg: "Language must be en,ru  or am",
+          args: [['en,ru,am']],
+          msg: 'Language must be en,ru  or am',
         },
       },
       title: DataTypes.STRING,
-      description: DataTypes.TEXT("long"),
+      description: DataTypes.TEXT('long'),
       courseType: DataTypes.STRING,
       lessonType: DataTypes.STRING,
       // lessonsCount: DataTypes.INTEGER,
@@ -32,21 +32,26 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "CoursesContents",
+      modelName: 'CoursesContents',
       timestamps: false,
-    }
+    },
   );
 
-  const GroupCourses = sequelize.define("GroupCourses");
+  const InvidualCourses = sequelize.define('InvidualCourses');
+  CoursesContents.hasOne(InvidualCourses, {
+    foreignKey: 'id',
+  });
+
+  const GroupCourses = sequelize.define('GroupCourses');
 
   CoursesContents.hasOne(GroupCourses, {
-    foreignKey: "id",
+    foreignKey: 'id',
   });
-  const Levels = sequelize.define("Levels");
+  const Levels = sequelize.define('Levels');
 
   CoursesContents.hasOne(Levels, {
-    foreignKey: "slug",
-    sourceKey: "level",
+    foreignKey: 'slug',
+    sourceKey: 'level',
   });
 
   return CoursesContents;

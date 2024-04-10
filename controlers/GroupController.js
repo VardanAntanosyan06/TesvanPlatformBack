@@ -14,7 +14,6 @@ const {
   Tests,
 } = require('../models');
 const { v4 } = require('uuid');
-const groups = require('../models/groups');
 const sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
@@ -621,6 +620,40 @@ const deleteMember = async (req, res) => {
   }
 };
 
+// const editGroup = async (req, res) => {
+//   try {
+//     const { groupId } = req.params; // Assuming groupId is passed as a route parameter
+//     const { name, assignCourseId, users, startDate, endDate, price, sale, teachers } = req.body;
+
+//     const group = await Groups.findByPk(groupId);
+//     if (!group) {
+//       return res.status(404).json({ message: 'Group not found' });
+//     }
+
+//     group.name = name;
+//     group.assignCourseId = assignCourseId;
+//     group.startDate = startDate;
+//     group.endDate = endDate;
+//     group.price = price;
+//     group.sale = sale;
+
+//     await group.save();
+
+//     await PaymentBlocks.create({
+//       title,
+//       description,
+//       price,
+//       type,
+//       courseId: id,
+//     });
+
+//     return res.status(200).json({ success: true, group });
+//   } catch (error) {
+//     console.log(error.message);
+//     return res.status(500).json({ message: 'Something went wrong.' });
+//   }
+// };
+
 module.exports = {
   CreateGroup,
   findOne,
@@ -639,4 +672,5 @@ module.exports = {
   getTeachers,
   deleteGroup,
   deleteMember,
+  // editGroup,
 };
