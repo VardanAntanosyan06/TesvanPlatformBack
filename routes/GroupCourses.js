@@ -9,18 +9,19 @@ router.get('/getCourseTitles', controller.getCourseTitles);
 router.get('/getOneGroup/:id', controller.getOneGroup);
 
 router.get('/getByFilter', controller.getCoursesByFilter);
-<<<<<<< Updated upstream
 
 router.post('/createCourse', checkAuth(['TEACHER', 'ADMIN']), controller.createCourse);
-=======
 router.post('/createCourse', controller.createCourse);
->>>>>>> Stashed changes
 router.get('/getCourseForAdmin/:id', checkAuth(['ADMIN']), controller.getCourseForAdmin);
 
 router.get('/getOne/:id', controller.getOne);
 router.get('/like/:courseId', checkAuth(['STUDENT']), controller.like);
 router.get('/buy/:groupId', checkAuth(['STUDENT']), controller.buy);
-router.get('/getUserCourses/:id', controller.getUserCourses);
+router.get(
+  '/getUserCourses',
+  checkAuth(['ADMIN', 'TEACHER', 'STUDENT']),
+  controller.getUserCourses,
+);
 router.get(
   '/getUserCourse/:courseId',
   checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
@@ -30,6 +31,6 @@ router.get(
 router.post('/createTest/', checkAuth(['STUDENT']), controller.createTest);
 
 router.delete('/delete/:id', checkAuth(['ADMIN']), controller.deleteCourse);
-router.put('/update', checkAuth(['ADMIN']), controller.updateCourse);
+router.put('/update/:courseId', checkAuth(['ADMIN']), controller.updateCourse);
 
 module.exports = router;

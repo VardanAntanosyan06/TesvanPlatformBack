@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       lessons: DataTypes.INTEGER,
       homeWork: DataTypes.INTEGER,
       quizzes: DataTypes.INTEGER,
-      
     },
     {
       sequelize,
@@ -31,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 
   const Users = sequelize.define("Users");
 
-  GroupsPerUsers.belongsTo(Users, { foreignKey: 'userId' });
+  GroupsPerUsers.belongsTo(Users, { foreignKey: "userId" });
+
   return GroupsPerUsers;
 };

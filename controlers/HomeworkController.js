@@ -16,18 +16,15 @@ const Sequelize = require('sequelize');
 const create = async (req, res) => {
   try {
     const {
-      lessonId,
       title_en,
       title_ru,
       title_am,
       description_en,
       description_ru,
       description_am,
-      maxPoints,
-      dueDate,
     } = req.body;
 
-    let homework = await Homework.create({
+     await Homework.create({
       title_en,
       title_ru,
       title_am,
@@ -35,15 +32,7 @@ const create = async (req, res) => {
       description_ru,
       description_am,
     });
-    console.log(homework.id, maxPoints, dueDate, lessonId);
-    await HomeworkPerLesson.create({
-      homeworkId: 1,
-      maxPoints: 10,
-      dueDate: '2024-03-26T10:36:04.309Z',
-      lessonId: 1,
-    });
-
-    res.send(homework);
+    return res.send({success:true});
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -511,6 +500,18 @@ const priceHomeWork = async (req, res) => {
   }
 };
 
+const getHomeworkTitles = async(req,res)=>{
+  try{
+    const homeworks = await Homework.findAll({
+      attributes:["id",["title_en","title"]]
+    })
+
+    return res.json(homeworks)
+  }catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+}
 module.exports = {
   create,
   open,
@@ -523,4 +524,5 @@ module.exports = {
   priceHomeWork,
   getHomeWorkForTeacherForSingleUser,
   deleteFile,
+  getHomeworkTitles
 };

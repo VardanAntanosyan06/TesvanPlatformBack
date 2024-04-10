@@ -21,7 +21,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const path = require('path');
-
+const { v4 } = require('uuid');
 require('dotenv').config();
 
 const BCRYPT_HASH_SALT = 10;
@@ -186,31 +186,35 @@ const UserRegistartionVerification = async (req, res) => {
 };
 const AddMember = async (req, res) => {
   try {
-    const { role, firstName, lastName, email, phoneNumber, birthday, gender, password } = req.body;
-
-    const hashPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT);
-    const isoDate = new Date(birthday).toISOString();
-    const isoDateToken = new Date().toISOString();
+    const { role, firstName, lastName, email, phoneNumber, birthday, gender, city } = req.body;
     const user = await Users.create({
       role,
       firstName,
       lastName,
       email,
       phoneNumber,
-      birthday: isoDate,
+      birthday,
       gender,
       password: hashPassword,
       isVerified: true,
-      country: 'USA',
-      city: 'Yerevan',
-      education: 'Harvard',
-      backgroundInQA: true,
-      tokenCreatedAt: isoDateToken,
+      country: ' ',
+      city,
+      education: '',
+      backgroundInQA: 'true',
+      tokenCreatedAt: new Date().toISOString(),
     });
 
-    return res.send(user);
+    const hashPassword = await bcrypt.hash(v4(), BCRYPT_HASH_SALT);
+
+    const token = jwt.sign({ user_id: user.id, email, role: user.role }, process.env.SECRET);
+
+    if (!emailSent) {
+      return res.status(500).json({ message: 'Failed to send verification email' });
+    }
+
+    return res.status(200).json({ success: true, message: 'Member added successfully' });
   } catch (error) {
-    console.log(error.name);
+    console.error(error);
     if (
       error.name === 'SequelizeValidationError' ||
       error.name === 'RangeError' ||
@@ -247,16 +251,18 @@ const getMembers = async (req, res) => {
 
 const getMember = async (req, res) => {
   try {
-    const {id} = req.params; 
+    const { id } = req.params;
 
     const user = await Users.findOne({
       where: {
-         id,
+        id,
       },
-      attributes:{exclude:["token","tokenCreatedAt","likedCourses","createdAt","updatedAt","password"]}
+      attributes: {
+        exclude: ['token', 'tokenCreatedAt', 'likedCourses', 'createdAt', 'updatedAt', 'password'],
+      },
     });
 
-    if(!user) return res.json({succes:false,message:`with id ${id} user not found`})
+    if (!user) return res.json({ succes: false, message: `with id ${id} user not found` });
     return res.json(user);
   } catch (error) {
     console.log(error);
@@ -333,6 +339,23 @@ const deleteMembers = async (req, res) => {
   }
 };
 
+const editImage = async (req, res) => {
+  try {
+    const { user_id: id } = req.user;
+    const { image } = req.files;
+    const user = await Users.findByPk(id);
+    const imgType = image.mimetype.split('/')[1];
+    const imageUrl = v4() + '.' + imgType;
+    await image.mv(path.resolve(__dirname, '..', 'static', imageUrl));
+    user.image = imageUrl;
+    await user.save();
+    return res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
 module.exports = {
   UserRegistartion,
   UserRegistartionSendEmail,
@@ -343,4 +366,5 @@ module.exports = {
   getMember,
   editMember,
   deleteMembers,
+  editImage,
 };

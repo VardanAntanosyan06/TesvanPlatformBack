@@ -4,7 +4,7 @@ var router = express.Router();
 const controller = require('../controlers/HomeworkController');
 const checkAuth = require('../middleware/checkAuth');
 
-router.post('/create', controller.create);
+router.post('/create', checkAuth(['TEACHER', 'ADMIN']),controller.create);
 router.post('/open', checkAuth(['TEACHER', 'ADMIN']), controller.open);
 
 router.get(
@@ -13,6 +13,7 @@ router.get(
   controller.getHomeworks,
 );
 
+router.get('/titles', checkAuth(['TEACHER', 'ADMIN']), controller.getHomeworkTitles);
 router.get('/getHomework/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getHomework);
 router.get(
   '/getHomeworkForTeacher/:id',

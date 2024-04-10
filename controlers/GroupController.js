@@ -7,11 +7,13 @@ const {
   Certificates,
   GroupCourses,
   CoursesPerLessons,
+  PaymentWays,
   CoursesContents,
   Lesson,
   UserLesson,
   UserTests,
   Tests,
+  PaymentBlocks,
 } = require('../models');
 const { v4 } = require('uuid');
 const sequelize = require('sequelize');
@@ -19,9 +21,11 @@ const { Op } = require('sequelize');
 
 const CreateGroup = async (req, res) => {
   try {
-    const { name, assignCourseId, users, startDate, endDate, price, sale } = req.body;
+    const { name, assignCourseId, users, startDate, endDate,payment } = req.body;
 
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
+
+    let {price,discount} = payment.reduce((min, item) => item.price < min.price ? item : min, payment[0]);
 
     const task = await Groups.create({
       name,
@@ -30,9 +34,19 @@ const CreateGroup = async (req, res) => {
       startDate,
       endDate,
       price,
-      sale,
+      sale:discount,
     });
 
+    payment.map((e)=>{
+      PaymentWays.create({
+        title:e.title,
+        description:e.description,
+        price:e.price,
+        discount,
+        groupId:task.id
+      })
+    })
+    
     await Promise.all(
       users.map(async (userId) => {
         console.log(userId);
@@ -43,10 +57,8 @@ const CreateGroup = async (req, res) => {
         const lessons = await CoursesPerLessons.findAll({
           where: { courseId: task.assignCourseId },
         });
-
         await Promise.all(
           lessons.map(async (e) => {
-            console.log(e, '++++++++++++++++++++++++++++++++++++++++++++++++');
             await UserLesson.create({
               GroupCourseId: task.assignCourseId,
               UserId: userId,
@@ -61,9 +73,9 @@ const CreateGroup = async (req, res) => {
       }),
     );
 
-    return res.status(200).json({ success: true, task });
+    res.status(200).json({ success: true, task });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
@@ -216,12 +228,12 @@ const update = async (req, res) => {
     await group.save();
 
     await GroupsPerUsers.destroy({ where: { groupId: id } });
-    users.forEach((e) => {
-      console.log(e);
-      GroupsPerUsers.create({ groupId: id, userId: e });
-    });
-    res.status(200).json({ message: 'Group updated successfully' });
-    await GroupsPerUsers.update({ groupId: group.id }, { where: { groupId: id } });
+
+    if (users && Array.isArray(users)) {
+      for (const userId of users) {
+        await GroupsPerUsers.create({ groupId: id, userId });
+      }
+    }
 
     return res.status(200).json({ message: 'Group updated successfully' });
   } catch (error) {
@@ -316,31 +328,34 @@ const AddUserSkill = async (req, res) => {
   try {
     const { groupId, userId, skill, type } = req.body;
 
-    const User = await UserCourses.findOne({
+    const user = await UserCourses.findOne({
       where: { GroupCourseId: groupId, UserId: userId },
     });
-    if (!User) return res.status(404).json({ success: false, message: 'Invalid id or userId' });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Invalid groupId or userId' });
+    }
 
-    if (!Array.isArray(skill))
+    if (!Array.isArray(skill)) {
       return res.status(403).json({ success: false, message: 'Skill must be an array' });
+    }
+
+    if (type !== 'professional' && type !== 'personal') {
+      return res
+        .status(403)
+        .json({ success: false, message: 'Type must be professional or personal' });
+    }
 
     if (type === 'professional') {
-      User.professionalSkils = [...User.professionalSkils, ...skill];
-      User.save();
+      user.professionalSkills.push(...skill);
     } else if (type === 'personal') {
-      User.personalSkils = [...User.personalSkils, ...skill];
-
-      User.save();
-    } else {
-      return res.status(403).json({
-        success: false,
-        message: 'Type must be professional or personal',
-      });
+      user.personalSkills.push(...skill);
     }
+
+    await user.save();
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.log(error.message);
+    console.error(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };

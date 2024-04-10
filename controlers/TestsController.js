@@ -7,7 +7,7 @@ const {
   Users,
 } = require('../models');
 
-const Sequelize = require("sequelize")
+const Sequelize = require('sequelize');
 
 const createTest = async (req, res) => {
   try {
@@ -198,18 +198,20 @@ const getUserTests = async (req, res) => {
     });
 
     // Filter tests where language is "en" and add amId and ruId based on UUID
-    const filteredTests = tests.filter(test => test.language === 'en').map(test => {
-      const amTest = tests.find(t => t.language === 'am' && t.Test.uuid === test.Test.uuid);
-      const ruTest = tests.find(t => t.language === 'ru' && t.Test.uuid === test.Test.uuid);
-      return {
-        test:test.Test,
-        status:test.status,
-        point:test.point,
-        passDate:test.passDate,
-        am: amTest ? amTest.id : null,
-        ru: ruTest ? ruTest.id : null,
-      };
-    });
+    const filteredTests = tests
+      .filter((test) => test.language === 'en')
+      .map((test) => {
+        const amTest = tests.find((t) => t.language === 'am' && t.Test.uuid === test.Test.uuid);
+        const ruTest = tests.find((t) => t.language === 'ru' && t.Test.uuid === test.Test.uuid);
+        return {
+          test: test.Test,
+          status: test.status,
+          point: test.point,
+          passDate: test.passDate,
+          am: amTest ? amTest.id : null,
+          ru: ruTest ? ruTest.id : null,
+        };
+      });
 
     return res.status(200).json({ success: true, tests: filteredTests });
   } catch (error) {
@@ -259,28 +261,27 @@ const findAll = async (req, res) => {
         // include: [[Sequelize.fn('COUNT', Sequelize.col('TestsQuizzes.id')), 'quizzCount']]
       },
       // include: [TestsQuizz],
-    }
-    );
+    });
 
     const testsWithCounts = await Promise.all(
       test.map(async (test) => {
         // Fetch quizzes count for the test
         const quizzesCount = await TestsQuizz.count({
-          where: { testId: test.id }
+          where: { testId: test.id },
         });
 
         // Fetch users count for the test
         const usersCount = await UserTests.count({
-          where: { testId: test.id }
+          where: { testId: test.id },
         });
 
         // Return an object with test data and counts
         return {
           ...test.dataValues,
           quizzesCount: quizzesCount,
-          usersCount: usersCount
+          usersCount: usersCount,
         };
-      })
+      }),
     );
 
     return res.send(testsWithCounts);

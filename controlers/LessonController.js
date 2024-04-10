@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const {
   UserLesson,
   Lesson,
@@ -8,6 +9,8 @@ const {
   LessonsPerQuizz,
   UserCourses,
   Message,
+  HomeworkPerLesson,
+  Homework
 } = require('../models');
 const lessonsperquizz = require('../models/lessonsperquizz');
 const { userSockets } = require('../userSockets');
@@ -96,15 +99,28 @@ const getLesson = async (req, res) => {
             'maxPoints',
             'htmlContent',
           ],
+          include:
+          [{
+            model:Quizz,
+            as:"quizz",
+            attributes:['id',['title_en','title'],['description_en','description']],
+            through:{
+              attributes:[]
+            }
+          },
+          {
+            model:Homework,
+            as:"homework",
+            attributes:['id',['title_en','title'],['description_en','description']],
+            through:{
+              attributes:[]
+            }
+          }
+        ]
         },
       ],
     });
 
-    const quizzes = await LessonsPerQuizz.findOne({
-      where: {
-        lessonId: id,
-      },
-    });
     if (!lesson) {
       return res.status(403).json({
         message: "Lessons not found or User doesn't have the lessons",
@@ -116,7 +132,6 @@ const getLesson = async (req, res) => {
       pointsOfPercent: Math.round((lesson.points * 100) / lesson.Lesson.maxPoints),
       attempt: lesson.attempt,
       ...lesson.dataValues.Lesson.dataValues,
-      quizzId: quizzes?.quizzId ? quizzes.quizzId : null,
     };
 
     res.send(lesson);
@@ -139,6 +154,24 @@ const getLessonForAdmin = async (req, res) => {
         'maxPoints',
         'htmlContent',
       ],
+      include:
+          [{
+            model:Quizz,
+            as:"quizz",
+            attributes:['id',['title_en','title'],['description_en','description']],
+            through:{
+              attributes:[]
+            }
+          },
+          {
+            model:Homework,
+            as:"homework",
+            attributes:['id',['title_en','title'],['description_en','description']],
+            through:{
+              attributes:[]
+            }
+          }
+        ]
     });
 
     if (!lesson) {
@@ -268,9 +301,22 @@ const openLesson = async (req, res) => {
 
 const createLesson = async (req, res) => {
   try {
-    const { title_en, description_en, maxPoints, htmlContent } = req.body;
+    const { title_en, description_en, maxPoints, htmlContent,quizzId,homeworkId } = req.body;
 
-    await Lesson.create({ title_en, description_en, maxPoints, htmlContent });
+    
+    const {id:lessonId} = await Lesson.create({ title_en, description_en, maxPoints, htmlContent });
+    
+
+    await HomeworkPerLesson.create({
+      homeworkId,
+      lessonId,
+      maxPoints:Math.round(maxPoints/2)
+    });
+    await LessonsPerQuizz.create({
+      quizzId,
+      // maxPoints:maxPoints/2,
+      lessonId,
+    });
 
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -307,9 +353,23 @@ const deleteLesson = async (req, res) => {
 
 const updateLesson = async (req, res) => {
   try {
-    const { title_en, description_en, id, htmlContent } = req.body;
+    const { title_en, description_en, id, htmlContent,quizzId,homeworkId } = req.body;
 
     await Lesson.update({ title_en, description_en, htmlContent }, { where: { id } });
+
+    await HomeworkPerLesson.destroy(
+      { where: { lessonId: id } }
+    );
+    await HomeworkPerLesson.create({
+      homeworkId, 
+      lessonId: id
+    })
+    await LessonsPerQuizz.destroy(
+      { where: { lessonId: id } }
+    );
+    await LessonsPerQuizz.create(
+      { quizzId, lessonId: id },
+    );
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
