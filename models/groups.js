@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
 
   const CoursesContents = sequelize.define("CoursesContents")
   Groups.belongsTo(CoursesContents,{foreignKey:"assignCourseId"})
+  const PaymentWays = sequelize.define("PaymentWays")
+  Groups.hasMany(PaymentWays,{
+    foreignKey:"groupId",
+    as:"payment"
+  })
   const GroupsPerUsers = sequelize.define("GroupsPerUsers")
   const Users = sequelize.define("Users")
 

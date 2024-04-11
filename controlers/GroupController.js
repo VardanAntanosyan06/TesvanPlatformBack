@@ -89,14 +89,21 @@ const findOne = async (req, res) => {
     const { id } = req.params;
     const group = await Groups.findOne({
       where: { id },
-      include: {
-        model: GroupsPerUsers,
-        attributes: ["id", "userId"],
-        include: {
-          model: Users,
-          attributes: ["id", "firstName", "lastName", "role", "image"],
+      include: [
+        {
+          model: GroupsPerUsers,
+          attributes: ["id", "userId"],
+          include: {
+            model: Users,
+            attributes: ["id", "firstName", "lastName", "role", "image"],
+          },
         },
-      },
+        {
+          model: PaymentWays,
+          as: "payment",
+          attributes: ["title", "description", "price", "discount"],
+        },
+      ],
     });
 
     if (!group)
@@ -117,6 +124,7 @@ const findOne = async (req, res) => {
       endDate: group.endDate,
       price: group.price,
       sale: group.sale,
+      payment: group.payment,
       course: course,
       TEACHER: [],
       STUDENT: [],
