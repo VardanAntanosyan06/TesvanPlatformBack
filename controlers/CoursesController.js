@@ -431,6 +431,7 @@ const createCourse = async (req, res) => {
     const { id: courseId } = await GroupCourses.create({ img: imgFileName });
 
     trainers = JSON.parse(trainers);
+    levelDescriptions = JSON.parse(levelDescriptions)
     if (!Array.isArray(lessons)) lessons = [lessons];
     if (!Array.isArray(trainersImages)) trainersImages = [trainersImages];
 
