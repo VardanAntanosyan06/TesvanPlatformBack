@@ -66,6 +66,8 @@ const getLessonTitles = async (req, res) => {
 
     let lessons = await Lesson.findAll({
       attributes: ['id', ['title_en', 'title']],
+      order: [["id", "DESC"]],
+
     });
 
     if (!lessons.length) {
@@ -376,6 +378,7 @@ const updateLesson = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
 module.exports = {
   getLessons,
   getLesson,

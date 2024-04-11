@@ -292,11 +292,14 @@ const getMembers = async (req, res) => {
       where: {
         role: 'TEACHER',
       },
+      order:[["id","DESC"]]
     });
     const students = await Users.findAll({
       where: {
         role: 'STUDENT',
       },
+      order:[["id","DESC"]]
+
     });
     const members = {
       teachers,

@@ -469,7 +469,7 @@ const findGroups = async (req, res) => {
   try {
     let group = await Groups.findAll({
       attributes: ["id", "name"],
-      order: [["id", "ASC"]],
+      order: [["id", "DESC"]],
       include: [
         {
           model: GroupsPerUsers,
@@ -480,6 +480,7 @@ const findGroups = async (req, res) => {
             where: { role: { [Op.in]: ["TEACHER", "STUDENT"] } },
           },
           attributes: ["userId"],
+          
         },
       ],
     });

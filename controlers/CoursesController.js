@@ -98,7 +98,7 @@ const getCourseTitles = async (req, res) => {
           attributes: ['title', 'description'],
         },
       ],
-      order: [['id', 'ASC']],
+      order: [['id', 'DESC']],
       attributes: ['id'],
     });
     Courses = Courses.map((item) => {
@@ -441,10 +441,9 @@ const createCourse = async (req, res) => {
       description,
       courseType,
       lessonType,
-      whyThisCourse: whyThisCourse.split(','),
+      whyThisCourse,
       level,
-      // levelDescriptions,
-    });
+        });
 
     // Ensure lessons and trainers are arrays before using map
     lessons = Array.isArray(lessons) ? lessons : [lessons];
@@ -468,7 +467,8 @@ const createCourse = async (req, res) => {
         courseId,
       });
       });
-    levelDescriptions.map((e) => {
+      
+      levelDescriptions.map((e) => {
       levelDescription.create({
         title: e.title,
         description: e.description,

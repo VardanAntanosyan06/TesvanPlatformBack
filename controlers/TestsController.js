@@ -261,6 +261,8 @@ const findAll = async (req, res) => {
         // include: [[Sequelize.fn('COUNT', Sequelize.col('TestsQuizzes.id')), 'quizzCount']]
       },
       // include: [TestsQuizz],
+      order: [["id", "DESC"]],
+
     });
 
     const testsWithCounts = await Promise.all(
