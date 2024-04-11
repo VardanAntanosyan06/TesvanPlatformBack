@@ -27,6 +27,10 @@ module.exports = {
       lessonType: {
         type: Sequelize.STRING,
       },
+      shortDescription: {
+        type:Sequelize.STRING
+      },
+
       whyThisCourse: {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },

@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.TEXT('long'),
       courseType: DataTypes.STRING,
       lessonType: DataTypes.STRING,
-      // lessonsCount: DataTypes.INTEGER,
+      shortDescription: DataTypes.STRING,
       whyThisCourse: DataTypes.ARRAY(DataTypes.STRING),
       level: DataTypes.STRING,
       levelDescriptions: DataTypes.ARRAY(DataTypes.STRING),

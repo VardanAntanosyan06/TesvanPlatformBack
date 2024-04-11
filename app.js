@@ -25,6 +25,7 @@ var UploadFileRouter = require('./routes/UploadFile');
 var QuizzRouter = require('./routes/quizz');
 var TestQuizz = require('./routes/TestQuizz');
 var DashboardRouter = require('./routes/Dashboard');
+var PaymentRouter = require('./routes/Payment');
 var SkillRouter = require('./routes/Skill');
 var app = express();
 
@@ -58,13 +59,15 @@ app.use('/api/v2/register', RegisterRouter);
 app.use('/api/v2/user', LoginRouter);
 app.use('/api/v2/contactMessage', ContactMessageRouter);
 app.use('/api/v2/upload', UploadFileRouter);
-app.use('/api/v2/Calendar', CalendarRouter);
-app.use('/api/v2/Group', GroupRouter);
-app.use('/api/v2/Certifictaes', CertifictaesRouter);
-app.use('/api/v2/TestQuizz', TestQuizz);
-app.use('/api/v2/Quizz', QuizzRouter);
-app.use('/api/v2/Dashboard', DashboardRouter);
-app.use('/api/v2/Skill', SkillRouter);
+app.use('/api/v2/calendar', CalendarRouter);
+app.use('/api/v2/group', GroupRouter);
+app.use('/api/v2/certifictaes', CertifictaesRouter);
+app.use('/api/v2/testQuizz', TestQuizz);
+app.use('/api/v2/quizz', QuizzRouter);
+app.use('/api/v2/dashboard', DashboardRouter);
+app.use('/api/v2/skill', SkillRouter);
+app.use('/api/v2/payment', PaymentRouter);
+
 app.use(require('express-status-monitor')());
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

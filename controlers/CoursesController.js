@@ -136,6 +136,7 @@ const getOne = async (req, res) => {
             "title",
             "description",
             "courseType",
+            "shortDescription",
             "lessonType",
             "whyThisCourse",
             "level",
@@ -420,6 +421,7 @@ const createCourse = async (req, res) => {
       whyThisCourse,
       level,
       levelDescriptions,
+      shortDescription,
       lessons,
       trainers,
     } = req.body;
@@ -443,6 +445,7 @@ const createCourse = async (req, res) => {
       language,
       title,
       description,
+      shortDescription,
       courseType,
       lessonType,
       whyThisCourse,
