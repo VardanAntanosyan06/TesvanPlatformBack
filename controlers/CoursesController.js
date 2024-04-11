@@ -137,6 +137,7 @@ const getOne = async (req, res) => {
             "description",
             "courseType",
             "lessonType",
+            "whyThisCourse",
             "level",
           ],
         },
@@ -432,6 +433,8 @@ const createCourse = async (req, res) => {
 
     trainers = JSON.parse(trainers);
     levelDescriptions = JSON.parse(levelDescriptions)
+    whyThisCourse = JSON.parse(whyThisCourse)
+
     if (!Array.isArray(lessons)) lessons = [lessons];
     if (!Array.isArray(trainersImages)) trainersImages = [trainersImages];
 
