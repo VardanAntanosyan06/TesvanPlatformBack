@@ -11,6 +11,7 @@ const {
   Users,
 } = require("../models");
 
+const sequelize = require("sequelize")
 const payUrl = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
@@ -55,12 +56,12 @@ const buy = async (req, res) => {
     const payment = await Payment.findOne({
       where: { orderKey },
     });
-    if(!payment) return res.json({success:false,message:"Payment does not exist"})
+    if(!payment) return res.status(400).json({success:false,message:"Payment does not exist"})
     payment.status = paymentResponse.errorMessage
 
     payment.save();
-
-    if(paymentResponse.error && paymentResponse.orderStatus!==2) return res.json({success:false,errorMessage:payment.errorMessage})
+    
+    if(paymentResponse.error && paymentResponse.orderStatus!==2) return res.json({success:false,errorMessage:paymentResponse.errorMessage})
 
     const user = await Users.findOne({ where: { id: payment.userId } });
     const group = await Groups.findByPk(payment.groupId);
@@ -101,6 +102,7 @@ const buy = async (req, res) => {
       },
     });
 
+    console.log(boughtTests,"+++++++++++++++++++++++++++");
     boughtTests.map((test) => {
       UserTests.findOrCreate({
         where: {
