@@ -168,7 +168,7 @@ const getOne = async (req, res) => {
     });
     const payment = await PaymentWays.findAll({
       where: { groupId: groups.id },
-      attributes: ['title', 'description', 'price', 'discount'],
+      attributes: ['id','title', 'description', 'price', 'discount'],
     });
 
     const duration = moment(groups.endDate).diff(moment(groups.startDate), 'days');
@@ -617,7 +617,7 @@ const getCoursesByFilter = async (req, res) => {
 
 const getOneGroup = async (req, res) => {
   try {
-    let { id } = req.params;
+    let { id,priceId } = req.query;
 
     let Courses = await Groups.findByPk(id, {
       include: [
@@ -634,6 +634,9 @@ const getOneGroup = async (req, res) => {
         },
       ],
     });
+
+    const {price,discount} = await PaymentWays.findByPk(priceId)
+
     Courses = Courses.toJSON();
     delete Courses.dataValues;
     // return res.json({Courses})
@@ -651,12 +654,12 @@ const getOneGroup = async (req, res) => {
       //     : moment().diff(new Date().toISOString(), "days") +
       //       " " +
       //       days[language],
-      price: Courses.price,
-      sale: Courses.sale,
+      price,
+      sale: discount,
       saledValue:
-        Courses.price > 0
-          ? Courses.price - Math.round(Courses.price * Courses.sale) / 100
-          : Courses.price,
+      price > 0
+          ? price - Math.round(price * discount) / 100
+          : price,
     };
     return res.status(200).json(Courses);
   } catch (error) {
