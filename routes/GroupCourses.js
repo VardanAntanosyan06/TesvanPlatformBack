@@ -16,7 +16,7 @@ router.get('/getCourseForAdmin/:id', checkAuth(['ADMIN']), controller.getCourseF
 
 router.get('/getOne/:id', controller.getOne);
 router.get('/like/:courseId', checkAuth(['STUDENT']), controller.like);
-router.get('/buy/:groupId', checkAuth(['STUDENT']), controller.buy);
+// router.get('/buy/:groupId', checkAuth(['STUDENT']), controller.buy);
 router.get(
   '/getUserCourses',
   checkAuth(['ADMIN', 'TEACHER', 'STUDENT']),

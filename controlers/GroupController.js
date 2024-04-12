@@ -113,7 +113,7 @@ const findOne = async (req, res) => {
 
     const course = await CoursesContents.findOne({
       where: { courseId: group.assignCourseId },
-      attributes: ["id", "title"],
+      attributes: [["courseId","id"], "title"],
     });
 
     const groupedUsers = {
@@ -129,8 +129,8 @@ const findOne = async (req, res) => {
       TEACHER: [],
       STUDENT: [],
     };
-    // return res.json()
-    console.log(group.GroupsPerUsers.length);
+    // console.log(course)
+    // console.log(group.assignCourseId);
     group.GroupsPerUsers.forEach((userCourse) => {
       const user = userCourse.User;
       if (user) {
@@ -147,7 +147,7 @@ const findOne = async (req, res) => {
 
     return res.status(200).json({ success: true, group: groupedUsers });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
