@@ -61,7 +61,7 @@ const buy = async (req, res) => {
 
     payment.save();
     
-    if(paymentResponse.error && paymentResponse.orderStatus!==2) return res.json({success:false,errorMessage:paymentResponse.errorMessage})
+    if(paymentResponse.error && paymentResponse.orderStatus!==2) return res.json({success:false,errorMessage:paymentResponse.errorMessage,groupId:payment.groupId})
 
     const user = await Users.findOne({ where: { id: payment.userId } });
     const group = await Groups.findByPk(payment.groupId);
