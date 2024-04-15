@@ -307,6 +307,7 @@ const addMember = async (req, res) => {
                 userId,
                 courseId: test.courseId,
                 language: test.language,
+                type: 'Group',
               },
               defaults: {
                 testId: test.id,

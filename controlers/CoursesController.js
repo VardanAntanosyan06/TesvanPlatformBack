@@ -298,6 +298,7 @@ const createTest = async (req, res) => {
           testId: e.id,
           status: 'not passed',
           point: 0,
+          type: 'Group',
         },
       });
     });
@@ -446,6 +447,7 @@ const createCourse = async (req, res) => {
       lessonType,
       whyThisCourse,
       level,
+      type: 'Group',
     });
 
     // Ensure lessons and trainers are arrays before using map
@@ -456,6 +458,7 @@ const createCourse = async (req, res) => {
       CoursesPerLessons.create({
         courseId,
         lessonId: e,
+        type: 'Group',
       });
     });
     trainers.map((e, i) => {
@@ -468,6 +471,7 @@ const createCourse = async (req, res) => {
         img: fileName,
         profession: e.profession,
         courseId,
+        type: 'Group',
       });
     });
 
@@ -476,6 +480,7 @@ const createCourse = async (req, res) => {
         title: e.title,
         description: e.description,
         courseId,
+        type: 'Group',
       });
     });
     res.status(200).json({ success: true });
@@ -617,7 +622,7 @@ const getCoursesByFilter = async (req, res) => {
     if (order === 'newest') Courses = Courses.sort((a, b) => b.courseStartDate - a.courseStartDate);
     if (order === 'lowToHigh') Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
     Courses = Courses.filter((e) => e.saledValue >= minPrice && e.saledValue <= maxPrice);
-    return res.status(200).json({ Courses, criticalPrices});
+    return res.status(200).json({ Courses, criticalPrices });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -717,6 +722,7 @@ const updateCourse = async (req, res) => {
           title: e.title,
           description: e.description,
           courseId,
+          type: 'Group',
         });
       });
     }
@@ -726,6 +732,7 @@ const updateCourse = async (req, res) => {
       await CoursesPerLessons.create({
         courseId,
         lessonId: e,
+        type: 'Group',
       });
     });
 
@@ -736,6 +743,7 @@ const updateCourse = async (req, res) => {
         img: trainersImages[i],
         profession: e.profession,
         courseId,
+        type: 'Group',
       });
     });
 

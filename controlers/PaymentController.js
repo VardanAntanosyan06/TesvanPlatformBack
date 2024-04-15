@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require('axios');
 const {
   Tests,
   UserTests,
@@ -9,9 +9,9 @@ const {
   UserLesson,
   Payment,
   Users,
-} = require("../models");
+} = require('../models');
 
-const sequelize = require("sequelize")
+const sequelize = require('sequelize');
 const payUrl = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
@@ -19,7 +19,7 @@ const payUrl = async (req, res) => {
     const orderNumber = Math.floor(Date.now() * Math.random());
     const data = `userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}&amount=${amount}&currency=${process.env.CURRENCY}&language=en&orderNumber=${orderNumber}&returnUrl=${process.env.RETURNURL}&failUrl=${process.env.FAILURL}&pageView=DESKTOP`;
     let { data: paymentResponse } = await axios.post(
-      `https://ipay.arca.am/payment/rest/register.do?${data}`
+      `https://ipay.arca.am/payment/rest/register.do?${data}`,
     );
 
     if (paymentResponse.errorCode)
@@ -32,7 +32,7 @@ const payUrl = async (req, res) => {
       orderKey: paymentResponse.orderId,
       orderNumber,
       paymentWay,
-      status: "Pending",
+      status: 'Pending',
       groupId,
       userId,
     });
@@ -40,7 +40,7 @@ const payUrl = async (req, res) => {
     return res.json({ success: true, formUrl: paymentResponse.formUrl });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something Went Wrong" });
+    return res.status(500).json({ message: 'Something Went Wrong' });
   }
 };
 
@@ -48,29 +48,36 @@ const buy = async (req, res) => {
   try {
     const { orderKey } = req.body;
 
-  
-    const data  = `orderId=${orderKey}&language=en&userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}`
+    const data = `orderId=${orderKey}&language=en&userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}`;
 
-    const {data:paymentResponse} = await axios.post(`https://ipay.arca.am/payment/rest/getOrderStatus.do?${data}`)
+    const { data: paymentResponse } = await axios.post(
+      `https://ipay.arca.am/payment/rest/getOrderStatus.do?${data}`,
+    );
 
     const payment = await Payment.findOne({
       where: { orderKey },
     });
-    if(!payment) return res.status(400).json({success:false,message:"Payment does not exist"})
-    payment.status = paymentResponse.errorMessage
+    if (!payment)
+      return res.status(400).json({ success: false, message: 'Payment does not exist' });
+    payment.status = paymentResponse.errorMessage;
 
     payment.save();
-    
-    if(paymentResponse.error && paymentResponse.orderStatus!==2) return res.json({success:false,errorMessage:paymentResponse.errorMessage,groupId:payment.groupId})
+
+    if (paymentResponse.error && paymentResponse.orderStatus !== 2)
+      return res.json({
+        success: false,
+        errorMessage: paymentResponse.errorMessage,
+        groupId: payment.groupId,
+      });
 
     const user = await Users.findOne({ where: { id: payment.userId } });
     const group = await Groups.findByPk(payment.groupId);
     if (!group) {
-      return res.json({ success: false, message: "Group not found" });
+      return res.json({ success: false, message: 'Group not found' });
     }
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     await GroupsPerUsers.create({
@@ -95,14 +102,11 @@ const buy = async (req, res) => {
     });
     const boughtTests = await Tests.findAll({
       where: {
-        [sequelize.Op.or]: [
-          { courseId: group.assignCourseId },
-          { courseId: null },
-        ],
+        [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
       },
     });
 
-    console.log(boughtTests,"+++++++++++++++++++++++++++");
+    console.log(boughtTests, '+++++++++++++++++++++++++++');
     boughtTests.map((test) => {
       UserTests.findOrCreate({
         where: {
@@ -110,6 +114,7 @@ const buy = async (req, res) => {
           userId: payment.userId,
           courseId: test.courseId,
           language: test.language,
+          type: 'Group',
         },
         defaults: {
           testId: test.id,
@@ -121,10 +126,10 @@ const buy = async (req, res) => {
     res.send({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something Went Wrong" });
+    return res.status(500).json({ message: 'Something Went Wrong' });
   }
 };
 module.exports = {
   payUrl,
-  buy
+  buy,
 };

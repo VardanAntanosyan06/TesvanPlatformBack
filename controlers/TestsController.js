@@ -29,6 +29,7 @@ const createTest = async (req, res) => {
       description_ru,
       description_am,
       courseId,
+      type: 'Group',
     });
 
     return res.status(200).json({ success: true });
@@ -50,6 +51,7 @@ const createQuizz = async (req, res) => {
       type,
       time,
       percent,
+      type: 'Group',
     });
     questions.map((e) => {
       TestsQuizz.create({
@@ -261,8 +263,7 @@ const findAll = async (req, res) => {
         // include: [[Sequelize.fn('COUNT', Sequelize.col('TestsQuizzes.id')), 'quizzCount']]
       },
       // include: [TestsQuizz],
-      order: [["id", "DESC"]],
-
+      order: [['id', 'DESC']],
     });
 
     const testsWithCounts = await Promise.all(
