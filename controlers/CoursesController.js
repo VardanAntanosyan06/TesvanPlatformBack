@@ -554,6 +554,7 @@ const getCoursesByFilter = async (req, res) => {
         {
           model: GroupsPerUsers,
           where: { userRole: 'STUDENT' },
+          required: false,
         },
         {
           model: GroupCourses,
