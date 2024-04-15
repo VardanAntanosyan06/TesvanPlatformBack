@@ -42,6 +42,9 @@ module.exports = {
       },
       levelDescriptions: {
         type: Sequelize.ARRAY(Sequelize.STRING),
+      },
+      type:{
+        type:Sequelize.STRING
       }
     });
   },

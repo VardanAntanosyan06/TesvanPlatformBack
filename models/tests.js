@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       description: DataTypes.STRING,
       courseId: DataTypes.INTEGER,
+      type:DataTypes.STRING,
       language: DataTypes.STRING,
       uuid:DataTypes.STRING,
       type: DataTypes.STRING,

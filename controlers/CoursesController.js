@@ -606,8 +606,7 @@ const getCoursesByFilter = async (req, res) => {
           : moment(e.endDate).diff(new Date(e.startDate), 'days') + ' ' + days[language]),
         (e.price = e.price);
       (e.saledValue = e.price > 0 ? e.price - Math.round(e.price * e.sale) / 100 : e.price),
-        (e.bought = GroupsPerUsers.length);
-      e.criticalPrices = criticalPrices;
+        (e.bought = e.GroupsPerUsers.length);
       delete e.GroupCourse;
       return e;
     });
@@ -617,7 +616,7 @@ const getCoursesByFilter = async (req, res) => {
     if (order === 'newest') Courses = Courses.sort((a, b) => b.courseStartDate - a.courseStartDate);
     if (order === 'lowToHigh') Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
     Courses = Courses.filter((e) => e.saledValue >= minPrice && e.saledValue <= maxPrice);
-    return res.status(200).json({ Courses });
+    return res.status(200).json({ Courses, criticalPrices});
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });

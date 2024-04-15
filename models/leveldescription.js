@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   levelDescription.init({
     title: DataTypes.STRING,
     description: DataTypes.STRING,
-    courseId: DataTypes.INTEGER
+    courseId: DataTypes.INTEGER,
+    type:DataTypes.STRING,
+
   }, {
     sequelize,
     modelName: 'levelDescription',

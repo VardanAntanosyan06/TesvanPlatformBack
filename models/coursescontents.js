@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   CoursesContents.init(
     {
       courseId: DataTypes.INTEGER,
+      type:DataTypes.STRING,
       language: {
         type: DataTypes.STRING,
         isIn: {
@@ -29,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       whyThisCourse: DataTypes.ARRAY(DataTypes.STRING),
       level: DataTypes.STRING,
       levelDescriptions: DataTypes.ARRAY(DataTypes.STRING),
+      type:DataTypes.STRING
     },
     {
       sequelize,
