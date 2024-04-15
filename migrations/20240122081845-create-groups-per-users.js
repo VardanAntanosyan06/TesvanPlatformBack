@@ -15,6 +15,9 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
       },
+      userRole: {
+        type: Sequelize.STRING,
+      },
       certification: {
         type: Sequelize.STRING,
       },

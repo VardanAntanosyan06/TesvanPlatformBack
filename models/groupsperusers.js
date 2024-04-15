@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       groupId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
+      userRole: DataTypes.STRING,
       certification: DataTypes.STRING,
       lessons: DataTypes.INTEGER,
       homeWork: DataTypes.INTEGER,

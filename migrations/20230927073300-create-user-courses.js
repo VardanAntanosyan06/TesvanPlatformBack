@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("UserCourses", {
+    await queryInterface.createTable('UserCourses', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,16 +13,16 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "GroupCourses",
-          key: "id",
+          model: 'GroupCourses',
+          key: 'id',
         },
       },
       UserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
       totalPoints: {
@@ -33,17 +33,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
-      personalSkils: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-        defaultValue:[]
-      },
-      professionalSkils: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-        defaultValue:[]
-
-      },
       certification: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -56,6 +47,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("UserCourses");
+    await queryInterface.dropTable('UserCourses');
   },
 };

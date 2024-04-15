@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class UserCourses extends Model {
     /**
@@ -16,36 +16,31 @@ module.exports = (sequelize, DataTypes) => {
       GroupCourseId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-
       },
       UserId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-
       },
       totalPoints: DataTypes.INTEGER,
       takenQuizzes: DataTypes.INTEGER,
-      personalSkils: DataTypes.ARRAY(DataTypes.STRING),
-      professionalSkils: DataTypes.ARRAY(DataTypes.STRING),
       certification: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "UserCourses",
-    }
+      modelName: 'UserCourses',
+    },
   );
-  
-  const GroupCourses = sequelize.define("GroupCourses");  
-  const Groups = sequelize.define("Groups");
-  const Users = sequelize.define("Users");
 
-  UserCourses.belongsTo(Groups,{
-    foreignKey:"GroupCourseId"
+  const GroupCourses = sequelize.define('GroupCourses');
+  const Groups = sequelize.define('Groups');
+  const Users = sequelize.define('Users');
+
+  UserCourses.belongsTo(Groups, {
+    foreignKey: 'GroupCourseId',
   });
-
 
   UserCourses.belongsTo(GroupCourses);
   UserCourses.belongsTo(Users);
-  
+
   return UserCourses;
 };

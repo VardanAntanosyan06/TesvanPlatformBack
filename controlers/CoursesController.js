@@ -114,7 +114,6 @@ const getCourseTitles = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
-
 const getOne = async (req, res) => {
   try {
     const { id } = req.params;
@@ -130,21 +129,21 @@ const getOne = async (req, res) => {
           model: CoursesContents,
           where: { language },
           attributes: [
-            "id",
-            "courseId",
-            "language",
-            "title",
-            "description",
-            "courseType",
-            "shortDescription",
-            "lessonType",
-            "whyThisCourse",
-            "level",
+            'id',
+            'courseId',
+            'language',
+            'title',
+            'description',
+            'courseType',
+            'shortDescription',
+            'lessonType',
+            'whyThisCourse',
+            'level',
           ],
         },
         {
-            model:levelDescription,
-            attributes:["title","description"]
+          model: levelDescription,
+          attributes: ['title', 'description'],
         },
         {
           model: Lesson,
@@ -168,7 +167,7 @@ const getOne = async (req, res) => {
     });
     const payment = await PaymentWays.findAll({
       where: { groupId: groups.id },
-      attributes: ['id','title', 'description', 'price', 'discount'],
+      attributes: ['id', 'title', 'description', 'price', 'discount'],
     });
 
     const duration = moment(groups.endDate).diff(moment(groups.startDate), 'days');
@@ -193,7 +192,6 @@ const getOne = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
-
 const like = async (req, res) => {
   try {
     let { courseId } = req.params;
@@ -354,12 +352,12 @@ const getUserCourses = async (req, res) => {
         : null;
       const year = startDate ? new Date(startDate).getFullYear() : null;
 
-      e["id"] = groups[0]?.id || null;
-      e["groupCourseId"] = groups[0]?.assignCourseId || null;
-      e["startDate"] = formattedDate.replace("/", ".");
-      e["title"] = coursesContents[0]?.title || null;
-      e["description"] = coursesContents[0]?.description || null;
-      e["percent"] = 0;
+      e['id'] = groups[0]?.id || null;
+      e['groupCourseId'] = groups[0]?.assignCourseId || null;
+      e['startDate'] = formattedDate.replace('/', '.');
+      e['title'] = coursesContents[0]?.title || null;
+      e['description'] = coursesContents[0]?.description || null;
+      e['percent'] = 0;
 
       delete e.GroupCourse;
       return e;
@@ -432,8 +430,8 @@ const createCourse = async (req, res) => {
     const { id: courseId } = await GroupCourses.create({ img: imgFileName });
 
     trainers = JSON.parse(trainers);
-    levelDescriptions = JSON.parse(levelDescriptions)
-    whyThisCourse = JSON.parse(whyThisCourse)
+    levelDescriptions = JSON.parse(levelDescriptions);
+    whyThisCourse = JSON.parse(whyThisCourse);
 
     if (!Array.isArray(lessons)) lessons = [lessons];
     if (!Array.isArray(trainersImages)) trainersImages = [trainersImages];
@@ -448,7 +446,7 @@ const createCourse = async (req, res) => {
       lessonType,
       whyThisCourse,
       level,
-        });
+    });
 
     // Ensure lessons and trainers are arrays before using map
     lessons = Array.isArray(lessons) ? lessons : [lessons];
@@ -471,9 +469,9 @@ const createCourse = async (req, res) => {
         profession: e.profession,
         courseId,
       });
-      });
-      
-      levelDescriptions.map((e) => {
+    });
+
+    levelDescriptions.map((e) => {
       levelDescription.create({
         title: e.title,
         description: e.description,
@@ -554,7 +552,8 @@ const getCoursesByFilter = async (req, res) => {
     let Courses = await Groups.findAll({
       include: [
         {
-          model:GroupsPerUsers
+          model: GroupsPerUsers,
+          where: { userRole: 'STUDENT' },
         },
         {
           model: GroupCourses,
@@ -572,7 +571,6 @@ const getCoursesByFilter = async (req, res) => {
                 lessonType: {
                   [Op.in]: format,
                 },
-
               },
               attributes: { exclude: ['id', 'language', 'courseId'] },
               include: [Levels],
@@ -586,18 +584,16 @@ const getCoursesByFilter = async (req, res) => {
       require: true,
     });
 
-
     const criticalPrices = await Groups.findOne({
       attributes: [
         [sequelize.fn('min', sequelize.col('price')), 'minPrice'],
-        [sequelize.fn('max', sequelize.col('price')), 'maxPrice']
+        [sequelize.fn('max', sequelize.col('price')), 'maxPrice'],
       ],
-    })
+    });
     Courses = Courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
 
-            
       e.img = `https://platform.tesvan.com/server/${e.GroupCourse.img}`;
       e.description = e.GroupCourse.CoursesContents[0].description;
       e.courseType = e.GroupCourse.CoursesContents[0].courseType;
@@ -611,11 +607,11 @@ const getCoursesByFilter = async (req, res) => {
         (e.price = e.price);
       (e.saledValue = e.price > 0 ? e.price - Math.round(e.price * e.sale) / 100 : e.price),
         (e.bought = GroupsPerUsers.length);
-        e.criticalPrices =criticalPrices
+      e.criticalPrices = criticalPrices;
       delete e.GroupCourse;
       return e;
     });
-    
+
     if (order === 'highToLow') Courses = Courses.sort((a, b) => b.saledValue - a.saledValue);
     if (order === 'popularity') Courses = Courses.sort((a, b) => b.bought - a.bought);
     if (order === 'newest') Courses = Courses.sort((a, b) => b.courseStartDate - a.courseStartDate);
@@ -630,7 +626,7 @@ const getCoursesByFilter = async (req, res) => {
 
 const getOneGroup = async (req, res) => {
   try {
-    let { id,priceId } = req.query;
+    let { id, priceId } = req.query;
 
     let Courses = await Groups.findByPk(id, {
       include: [
@@ -648,7 +644,7 @@ const getOneGroup = async (req, res) => {
       ],
     });
 
-    const {price,discount} = await PaymentWays.findByPk(priceId)
+    const { price, discount } = await PaymentWays.findByPk(priceId);
 
     Courses = Courses.toJSON();
     delete Courses.dataValues;
@@ -669,10 +665,7 @@ const getOneGroup = async (req, res) => {
       //       days[language],
       price,
       sale: discount,
-      saledValue:
-      price > 0
-          ? price - Math.round(price * discount) / 100
-          : price,
+      saledValue: price > 0 ? price - Math.round(price * discount) / 100 : price,
     };
     return res.status(200).json(Courses);
   } catch (error) {
@@ -717,17 +710,16 @@ const updateCourse = async (req, res) => {
       },
       { where: { courseId, language } },
     );
-
-    await levelDescription.destroy({where:{courseId}})
-    levelDescriptions.map((e) => {
-      levelDescription.create({
-        title: e.title,
-        description: e.description,
-        courseId,
+    await levelDescription.destroy({ where: { courseId } });
+    if (!levelDescription) {
+      levelDescriptions.map((e) => {
+        levelDescription.create({
+          title: e.title,
+          description: e.description,
+          courseId,
+        });
       });
-    });
-
-    
+    }
 
     await CoursesPerLessons.destroy({ where: { courseId } });
     lessons.forEach(async (e) => {
