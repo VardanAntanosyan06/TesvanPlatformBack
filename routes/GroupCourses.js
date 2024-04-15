@@ -11,7 +11,7 @@ router.get('/getOneGroup/', controller.getOneGroup);
 router.get('/getByFilter', controller.getCoursesByFilter);
 
 router.post('/createCourse', checkAuth(['TEACHER', 'ADMIN']), controller.createCourse);
-router.post('/createCourse', controller.createCourse);
+// router.post('/createCourse', controller.createCourse);
 router.get('/getCourseForAdmin/:id', checkAuth(['ADMIN']), controller.getCourseForAdmin);
 
 router.get('/getOne/:id', controller.getOne);

@@ -226,7 +226,7 @@ const AddMember = async (req, res) => {
         </head>
         <body>
           <center style="height:1000px;">
-            <h1 style="font-style: normal; font-weight: 600; font-size: 32px; line-height: 48px;">Forgot Password Tesvan Platform</h1>
+            <h1 style="font-style: normal; font-weight: 600; font-size: 32px; line-height: 48px;">Generate new password Tesvan Platform</h1>
 
             <img src='https://platform.tesvan.com/server/forgotPassword.png' alt="" style="width:185px;" />
             
@@ -235,7 +235,7 @@ const AddMember = async (req, res) => {
               <p style="font-style: normal; font-size: 20px; text-align: left;">In order to complete your registration and start preparing for college admissions, you'll need to verify your email address.</p>
               <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email} as the email address for your account. Please verify this email address by clicking the button below.</p>
               <a href="http://platform.tesvan.com/changePassword?token=${User.token}" style="text-decoration:none">
-                <div style="width: 130px; height: 40px; background: #FFC038; border-radius: 5px; border:none; font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #143E59; cursor:pointer; padding:7px; box-sizing:border-box;">Verify</div>
+                <div style="width: 130px; height: 40px; background: #FFC038; border-radius: 5px; border:none; font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #143E59; cursor:pointer; padding:7px; box-sizing:border-box;">Create password</div>
               </a>
             </div>
             <div style="width: 70%; margin-top: 30px; border-top: 1px solid #d4d4d4; border-bottom: 1px solid #d4d4d4;">

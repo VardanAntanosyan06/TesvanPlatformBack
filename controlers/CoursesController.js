@@ -222,7 +222,6 @@ const like = async (req, res) => {
   }
 };
 
-// const buy = async (req, res) => {
 //   try {
 //     const { groupId } = req.params;
 //     const { user_id: userId } = req.user;
@@ -341,7 +340,6 @@ const getUserCourses = async (req, res) => {
         },
       ],
     });
-    // return res.json(courses)
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
@@ -349,7 +347,7 @@ const getUserCourses = async (req, res) => {
       const groupCourse = e.GroupCourse;
       const groups = groupCourse?.Groups || [];
       const coursesContents = groupCourse?.CoursesContents || [];
-
+      console.log(groups);
       const startDate = groups[0]?.startDate || null;
       const formattedDate = startDate
         ? new Date(startDate).toISOString().split('T')[0].slice(5).replace('-', '.')
@@ -556,6 +554,9 @@ const getCoursesByFilter = async (req, res) => {
     let Courses = await Groups.findAll({
       include: [
         {
+          model:GroupsPerUsers
+        },
+        {
           model: GroupCourses,
           required: true,
           include: [
@@ -571,6 +572,7 @@ const getCoursesByFilter = async (req, res) => {
                 lessonType: {
                   [Op.in]: format,
                 },
+
               },
               attributes: { exclude: ['id', 'language', 'courseId'] },
               include: [Levels],
@@ -584,28 +586,39 @@ const getCoursesByFilter = async (req, res) => {
       require: true,
     });
 
+
+    const criticalPrices = await Groups.findOne({
+      attributes: [
+        [sequelize.fn('min', sequelize.col('price')), 'minPrice'],
+        [sequelize.fn('max', sequelize.col('price')), 'maxPrice']
+      ],
+    })
     Courses = Courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-      console.log(e.GroupCourse);
+
+            
       e.img = `https://platform.tesvan.com/server/${e.GroupCourse.img}`;
       e.description = e.GroupCourse.CoursesContents[0].description;
       e.courseType = e.GroupCourse.CoursesContents[0].courseType;
       e.lessonType = e.GroupCourse.CoursesContents[0].lessonType;
       e.level = e.GroupCourse.CoursesContents[0].level;
-      e.courseStartDate = moment().format('ll');
+      e.courseStartDate = moment(e.startDate).format('ll');
       (e.courseDate =
-        moment().diff(new Date().toISOString(), 'months') > 0
-          ? moment().diff(new Date().toISOString(), 'months') + ' ' + months[language]
-          : moment().diff(new Date().toISOString(), 'days') + ' ' + days[language]),
+        moment(new Date(e.endDate)).diff(new Date(e.startDate), 'months') > 0
+          ? moment(e.endDate).diff(new Date(e.startDate), 'months') + ' ' + months[language]
+          : moment(e.endDate).diff(new Date(e.startDate), 'days') + ' ' + days[language]),
         (e.price = e.price);
       (e.saledValue = e.price > 0 ? e.price - Math.round(e.price * e.sale) / 100 : e.price),
-        (e.bought = 100);
-
+        (e.bought = GroupsPerUsers.length);
+        e.criticalPrices =criticalPrices
       delete e.GroupCourse;
       return e;
     });
+    
     if (order === 'highToLow') Courses = Courses.sort((a, b) => b.saledValue - a.saledValue);
+    if (order === 'popularity') Courses = Courses.sort((a, b) => b.bought - a.bought);
+    if (order === 'newest') Courses = Courses.sort((a, b) => b.courseStartDate - a.courseStartDate);
     if (order === 'lowToHigh') Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
     Courses = Courses.filter((e) => e.saledValue >= minPrice && e.saledValue <= maxPrice);
     return res.status(200).json({ Courses });
