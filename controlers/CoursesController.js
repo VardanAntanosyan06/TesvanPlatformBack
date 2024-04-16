@@ -9,6 +9,7 @@ const {
   PaymentWays,
   CoursesPerQuizz,
   Quizz,
+  IndividualCourses,
 } = require('../models');
 
 const { CoursesContents } = require('../models');
@@ -432,7 +433,14 @@ const createCourse = async (req, res) => {
     const imgType = img.mimetype.split('/')[1];
     const imgFileName = v4() + '.' + imgType;
     img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
-    const { id: courseId } = await GroupCourses.create({ img: imgFileName });
+
+    let courseId;
+
+    if (courseType == 'Individual') {
+      courseId = await IndividualCourses.create({ img: imgFileName }).id;
+    } else {
+      courseId = await GroupCourses.create({ img: imgFileName }).id;
+    }
 
     trainers = JSON.parse(trainers);
     levelDescriptions = JSON.parse(levelDescriptions);
@@ -459,7 +467,6 @@ const createCourse = async (req, res) => {
       courseId,
       type: courseType,
     });
-    // Ensure lessons and trainers are arrays before using map
     lessons = Array.isArray(lessons) ? lessons : [lessons];
     trainers = Array.isArray(trainers) ? trainers : [trainers];
 
@@ -480,7 +487,7 @@ const createCourse = async (req, res) => {
         img: fileName,
         profession: e.profession,
         courseId,
-        type: 'Group',
+        type,
       });
     });
 
@@ -489,7 +496,7 @@ const createCourse = async (req, res) => {
         title: e.title,
         description: e.description,
         courseId,
-        type: 'Group',
+        type,
       });
     });
     res.status(200).json({ success: true });
@@ -510,6 +517,7 @@ const getCoursesByFilter = async (req, res) => {
       language = 'en',
       limit = null,
       order = 'popularity',
+      courseType,
     } = req.query;
 
     format = format.split('_');
@@ -526,6 +534,21 @@ const getCoursesByFilter = async (req, res) => {
       return res.status(403).json({
         message: 'level, format, isDiscount and language is requred values',
       });
+
+    // if (courseType === 'Individual') {
+    //   return res.status(200).send(IndividualCourses);
+    // }
+    // if (courseType === 'Group') {
+    //   return res.status(200).send(GroupCourses);
+    // }
+    // let course = {
+    //   ...IndividualCourses,
+    //   ...GroupCourses,
+    // };
+
+    // if (courseType === 'All') {
+    //   return res.status(200).json(course);
+    // }
 
     let type = { [Op.gte]: 0 };
     if (isDiscount === 'true') {
