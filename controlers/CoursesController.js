@@ -7,6 +7,8 @@ const {
   GroupsPerUsers,
   levelDescription,
   PaymentWays,
+  CoursesPerQuizz,
+  Quizz,
 } = require('../models');
 
 const { CoursesContents } = require('../models');
@@ -26,6 +28,7 @@ const { v4 } = require('uuid');
 const moment = require('moment');
 const path = require('path');
 const { group } = require('console');
+const quizz = require('../models/quizz');
 
 const getAllCourses = async (req, res) => {
   try {
@@ -289,8 +292,7 @@ const createTest = async (req, res) => {
     const { courseId } = req.body;
 
     const tests = await Tests.findAll({ where: { courseId } });
-
-    tests.map((e) => {
+    const course = await tests.map((e) => {
       UserTests.findOrCreate({
         where: { userId, testId: e.id },
         defaults: {
@@ -421,6 +423,8 @@ const createCourse = async (req, res) => {
       shortDescription,
       lessons,
       trainers,
+      type,
+      quizzId,
     } = req.body;
 
     let { img, trainersImages } = req.files;
@@ -447,9 +451,14 @@ const createCourse = async (req, res) => {
       lessonType,
       whyThisCourse,
       level,
-      type: 'Group',
+      type,
     });
 
+    await CoursesPerQuizz.create({
+      quizzId,
+      courseId,
+      type: courseType,
+    });
     // Ensure lessons and trainers are arrays before using map
     lessons = Array.isArray(lessons) ? lessons : [lessons];
     trainers = Array.isArray(trainers) ? trainers : [trainers];
@@ -458,7 +467,7 @@ const createCourse = async (req, res) => {
       CoursesPerLessons.create({
         courseId,
         lessonId: e,
-        type: 'Group',
+        type,
       });
     });
     trainers.map((e, i) => {
@@ -555,8 +564,8 @@ const getCoursesByFilter = async (req, res) => {
     });
 
     let Courses = await Groups.findAll({
-      where:{
-        sale:type
+      where: {
+        sale: type,
       },
       include: [
         {
@@ -699,6 +708,8 @@ const updateCourse = async (req, res) => {
       image,
       trainers,
       trainersImages,
+      quizzId,
+      type,
     } = req.body;
 
     trainers = JSON.parse(trainers);
@@ -718,14 +729,25 @@ const updateCourse = async (req, res) => {
       },
       { where: { courseId, language } },
     );
-    await levelDescription.destroy({ where: { courseId } });
-    if (!levelDescription) {
+
+    await CoursesPerQuizz.destroy({
+      where: {
+        id: quizzId,
+      },
+    });
+    await CoursesPerQuizz.create({
+      courseId,
+      quizzId,
+    });
+
+    if (Array.isArray(levelDescriptions) && levelDescriptions.length > 0) {
+      await levelDescription.destroy({ where: { courseId } });
       levelDescriptions.map((e) => {
         levelDescription.create({
           title: e.title,
           description: e.description,
           courseId,
-          type: 'Group',
+          type,
         });
       });
     }
@@ -793,8 +815,17 @@ const getCourseForAdmin = async (req, res) => {
           where: { language: 'en' },
         },
         {
+          model: levelDescription,
+          attributes: ['title', 'description'],
+        },
+        {
           model: Lesson,
           attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+        },
+        {
+          model: Quizz,
+          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+          through: { attributes: [] },
         },
       ],
       attributes: ['id', 'img'],
@@ -816,24 +847,24 @@ const getCourseForAdmin = async (req, res) => {
       id: course.id,
       img: course.img,
       title: course.CoursesContents[0].title,
-      description: course.CoursesContents[0].description.match(/\b(\w+\b\s*){1,16}/)[0],
+      description: course.CoursesContents[0].description,
       courseType: course.CoursesContents[0].courseType,
       lessonType: course.CoursesContents[0].lessonType,
       whyThisCourse: course.CoursesContents[0].whyThisCourse,
       level: course.CoursesContents[0].level,
       level: course.CoursesContents[0].level,
-      levelDescriptions: course.CoursesContents[0].levelDescriptions,
+      levelDescriptions: course.levelDescriptions,
       lessons: course.Lessons.map((lesson, index) => {
         const formattedLesson = {
           id: lesson.dataValues.id,
           title: lesson.dataValues.title,
-          description: lesson.dataValues.description,
+          description: lesson.dataValues.description.match(/\b(\w+\b\s*){1,16}/)[0],
           number: index + 1,
           isOpen: true,
         };
         return formattedLesson;
       }),
-      // lessons: course.Lessons,
+      quizz: course.Quizzs[0],
       trainers,
     };
     delete course.CoursesContents;
