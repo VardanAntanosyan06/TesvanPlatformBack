@@ -555,6 +555,9 @@ const getCoursesByFilter = async (req, res) => {
     });
 
     let Courses = await Groups.findAll({
+      where:{
+        sale:type
+      },
       include: [
         {
           model: GroupsPerUsers,
@@ -813,7 +816,7 @@ const getCourseForAdmin = async (req, res) => {
       id: course.id,
       img: course.img,
       title: course.CoursesContents[0].title,
-      description: course.CoursesContents[0].description,
+      description: course.CoursesContents[0].description.match(/\b(\w+\b\s*){1,16}/)[0],
       courseType: course.CoursesContents[0].courseType,
       lessonType: course.CoursesContents[0].lessonType,
       whyThisCourse: course.CoursesContents[0].whyThisCourse,
