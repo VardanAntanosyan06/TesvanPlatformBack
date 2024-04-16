@@ -15,7 +15,7 @@ const sequelize = require('sequelize');
 const payUrl = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { paymentWay, groupId, amount } = req.body;
+    const { paymentWay, groupId, amount, type } = req.body;
     const orderNumber = Math.floor(Date.now() * Math.random());
     const data = `userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}&amount=${amount}&currency=${process.env.CURRENCY}&language=en&orderNumber=${orderNumber}&returnUrl=${process.env.RETURNURL}&failUrl=${process.env.FAILURL}&pageView=DESKTOP`;
     let { data: paymentResponse } = await axios.post(
@@ -35,6 +35,7 @@ const payUrl = async (req, res) => {
       status: 'Pending',
       groupId,
       userId,
+      type,
     });
     console.log(paymentResponse);
     return res.json({ success: true, formUrl: paymentResponse.formUrl });
@@ -80,10 +81,13 @@ const buy = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    await GroupsPerUsers.create({
-      groupId: payment.groupId,
-      userId: payment.userId,
-    });
+    if (payment.type == 'Group') {
+      await GroupsPerUsers.create({
+        groupId: payment.groupId,
+        userId: payment.userId,
+      });
+    }
+
     await UserCourses.create({
       GroupCourseId: group.assignCourseId,
 
