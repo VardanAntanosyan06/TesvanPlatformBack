@@ -19,12 +19,13 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.INTEGER,
       validate: {
         isIn: {
-          args: [[1,2]],
-          msg: "status must be '1' or '2'",
+          args: [[1,2,3]],
+          msg: "status must be '1' or '2','3'",
         },
       },
     },
-    giveDate: DataTypes.DATE
+    giveDate: DataTypes.DATE,
+    courseName:DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Certificates',

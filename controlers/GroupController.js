@@ -387,22 +387,24 @@ const getUserStaticChart = async (req, res) => {
 const finishGroup = async (req, res) => {
   try {
     const { id } = req.params;
-
+    const {language} = req.query
     const Group = await Groups.findOne({
       where: {
         id,
       },
       include: { model: UserCourses },
     });
-    console.log(Group.UserCourses[0]);
+
     if (!Group)
-      return res.json({
+    return res.json({
         success: false,
         message: `Group with ID ${id} not defined`,
       });
 
-    let status = 1 
+      let status = 1 
+      const {title:courseName} = await CoursesContents.findOne({where:{courseId:Group.assignCourseId,language}})
 
+      console.log(5);
     Group.UserCourses.map((e) => {
       if(e.totalPoints>40){
         status = 2
@@ -411,6 +413,7 @@ const finishGroup = async (req, res) => {
       }
         Certificates.create({
           userId: e.UserId,
+          courseName,
           status,
           giveDate:new Date().toISOString()
         });

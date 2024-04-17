@@ -51,7 +51,7 @@ const getUserCertificates = async(req,res)=>{
 
     let certificates = await Certificates.findAll({
       where:{userId},
-      attributes: ["id", "userId", "status", "giveDate"],
+      attributes: ["id", "userId", "status", "giveDate","courseName"],
       include: { model: Users, attributes: ["firstName", "lastName"] },
     });
 

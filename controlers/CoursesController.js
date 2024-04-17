@@ -696,7 +696,7 @@ const getCoursesByFilter = async (req, res) => {
     //   ...GroupCourses,
     // };
     
-    return res.status(200).json({ Courses, criticalPrices,Individual });
+    return res.status(200).json({ Courses, criticalPrices });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
