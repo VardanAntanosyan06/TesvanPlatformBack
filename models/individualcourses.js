@@ -21,26 +21,5 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // const UserCourses = sequelize.define("UserCourses");
-  // IndividualCourses.hasMany(UserCourses, { foreignKey: "GroupCourseId" });
-
-  // const GroupCourses = sequelize.define("GroupCourses");
-  // IndividualCourses.belongsTo(GroupCourses);
-
-  const CoursesContents = sequelize.define("CoursesContents");
-  IndividualCourses.belongsTo(CoursesContents,{foreignKey:"id"});
-  const PaymentWays = sequelize.define("PaymentWays");
-
-  IndividualCourses.hasMany(PaymentWays, {
-    foreignKey: "groupId",
-    as: "payment",
-  });
-  const GroupsPerUsers = sequelize.define("GroupsPerUsers");
-  const Users = sequelize.define("Users");
-
-  IndividualCourses.hasMany(GroupsPerUsers, {
-    foreignKey: "groupId",
-  });
-
   return IndividualCourses;
 };

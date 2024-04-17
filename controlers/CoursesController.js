@@ -344,14 +344,13 @@ const getUserCourses = async (req, res) => {
         },
       ],
     });
+
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-
       const groupCourse = e.GroupCourse;
       const groups = groupCourse?.Groups || [];
       const coursesContents = groupCourse?.CoursesContents || [];
-      console.log(groups);
       const startDate = groups[0]?.startDate || null;
       const formattedDate = startDate
         ? new Date(startDate).toISOString().split('T')[0].slice(5).replace('-', '.')
@@ -436,16 +435,10 @@ const createCourse = async (req, res) => {
     const imgFileName = v4() + '.' + imgType;
     img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
 
-    let courseId;
-
-    if (courseType == 'Individual') {
-      let Course = await IndividualCourses.create({ img: imgFileName }).id;
-
-      courseId = Course.id
-    } else {
-      let Course = await GroupCourses.create({ img: imgFileName });
-      courseId = Course.id
-    }
+    // let courseId;
+      let {id:courseId} = await GroupCourses.create({ img: imgFileName });
+      //  = Course.id
+    // }
 
     trainers = JSON.parse(trainers);
     levelDescriptions = JSON.parse(levelDescriptions);
@@ -615,8 +608,26 @@ const getCoursesByFilter = async (req, res) => {
       require: true,
     });
 
-    const Individual = await IndividualCourses.findAll({
+    const Individual = await GroupCourses.findAll({
+      where:{},
+      include: [
+        {
+          model: CoursesContents,
+          required: true,
 
+          where: {
+            language,
+            level: {
+              [Op.in]: level,
+            },
+            lessonType: {
+              [Op.in]: format,
+            },
+          },
+          attributes: { exclude: ['id', 'language', 'courseId'] },
+          include: [Levels],
+        },
+      ],
     })
 
     const criticalPrices = await Groups.findOne({
