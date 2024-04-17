@@ -394,20 +394,27 @@ const finishGroup = async (req, res) => {
       },
       include: { model: UserCourses },
     });
-
+    console.log(Group.UserCourses[0]);
     if (!Group)
       return res.json({
         success: false,
         message: `Group with ID ${id} not defined`,
       });
 
+    let status = 1 
+
     Group.UserCourses.map((e) => {
-      if (e.totalPoints >= 10) {
+      if(e.totalPoints>40){
+        status = 2
+      } else if(e.totalPoints>90){
+        status = 3
+      }
         Certificates.create({
           userId: e.UserId,
+          status,
+          giveDate:new Date().toISOString()
         });
         return;
-      }
     });
 
     Group.finished = true;

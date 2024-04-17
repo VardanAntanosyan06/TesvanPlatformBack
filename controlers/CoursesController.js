@@ -225,6 +225,7 @@ const like = async (req, res) => {
 };
 
 //   try {
+
 //     const { groupId } = req.params;
 //     const { user_id: userId } = req.user;
 
@@ -287,6 +288,7 @@ const like = async (req, res) => {
 //     return res.status(500).json({ message: 'Something went wrong.' });
 //   }
 // };
+
 const createTest = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
@@ -535,21 +537,6 @@ const getCoursesByFilter = async (req, res) => {
         message: 'level, format, isDiscount and language is requred values',
       });
 
-    // if (courseType === 'Individual') {
-    //   return res.status(200).send(IndividualCourses);
-    // }
-    // if (courseType === 'Group') {
-    //   return res.status(200).send(GroupCourses);
-    // }
-    // let course = {
-    //   ...IndividualCourses,
-    //   ...GroupCourses,
-    // };
-
-    // if (courseType === 'All') {
-    //   return res.status(200).json(course);
-    // }
-
     let type = { [Op.gte]: 0 };
     if (isDiscount === 'true') {
       type = { [Op.gt]: 0 };
@@ -625,6 +612,45 @@ const getCoursesByFilter = async (req, res) => {
       require: true,
     });
 
+    // const Individual = await IndividualCourses.findAll({
+    //   where: {
+    //     sale: type,
+    //   },
+    //   include: [
+    //     {
+    //       model: GroupsPerUsers,
+    //       where: { userRole: 'STUDENT' },
+    //       required: false,
+    //     },
+    //     // {
+    //       // model: GroupCourses,
+    //       // required: true,
+    //       // include: [
+    //         {
+    //           model: CoursesContents,
+    //           required: true,
+
+    //           where: {
+    //             language,
+    //             level: {
+    //               [Op.in]: level,
+    //             },
+    //             lessonType: {
+    //               [Op.in]: format,
+    //             },
+    //           },
+    //           attributes: { exclude: ['id', 'language', 'courseId'] },
+    //           include: [Levels],
+    //         // },
+    //       // ],
+    //     },
+    //   ],
+    //   // order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
+    //   limit,
+    //   attributes: ['id', ['name', 'title'], 'startDate', 'endDate', 'price', 'sale'],
+    //   require: true,
+    // })
+
     const criticalPrices = await Groups.findOne({
       attributes: [
         [sequelize.fn('min', sequelize.col('price')), 'minPrice'],
@@ -657,7 +683,20 @@ const getCoursesByFilter = async (req, res) => {
     if (order === 'newest') Courses = Courses.sort((a, b) => b.courseStartDate - a.courseStartDate);
     if (order === 'lowToHigh') Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
     Courses = Courses.filter((e) => e.saledValue >= minPrice && e.saledValue <= maxPrice);
-    return res.status(200).json({ Courses, criticalPrices });
+
+
+    // if (courseType === 'Individual') {
+    //   return res.status(200).send(IndividualCourses);
+    // }
+    // if (courseType === 'Group') {
+    //   return res.status(200).send(GroupCourses);
+    // }
+    // let course = {
+    //   ...IndividualCourses,
+    //   ...GroupCourses,
+    // };
+    
+    return res.status(200).json({ Courses, criticalPrices,Individual });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -881,7 +920,7 @@ const getCourseForAdmin = async (req, res) => {
         const formattedLesson = {
           id: lesson.dataValues.id,
           title: lesson.dataValues.title,
-          description: lesson.dataValues.description.match(/\b(\w+\b\s*){1,16}/)[0],
+          description: lesson.dataValues.description ? lesson.dataValues.description.match(/\b(\w+\b\s*){1,16}/)[0]:lesson.dataValues.description,
           number: index + 1,
           isOpen: true,
         };
