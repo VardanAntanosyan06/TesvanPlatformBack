@@ -10,10 +10,17 @@ router.get(
   checkAuth(["TEACHER", "ADMIN"]),
   controller.findAllStudents
 );
+router.get(
+  "/getUserCertificates",
+  checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+  controller.getUserCertificates
+);
 
 router.patch(
   "/changeStatus",
   checkAuth(["ADMIN"]),
   controller.changeStatus
 );
+
+
 module.exports = router;
