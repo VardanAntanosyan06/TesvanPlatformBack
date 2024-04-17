@@ -439,9 +439,12 @@ const createCourse = async (req, res) => {
     let courseId;
 
     if (courseType == 'Individual') {
-      courseId = await IndividualCourses.create({ img: imgFileName }).id;
+      let Course = await IndividualCourses.create({ img: imgFileName }).id;
+
+      courseId = Course.id
     } else {
-      courseId = await GroupCourses.create({ img: imgFileName }).id;
+      let Course = await GroupCourses.create({ img: imgFileName });
+      courseId = Course.id
     }
 
     trainers = JSON.parse(trainers);
@@ -612,44 +615,9 @@ const getCoursesByFilter = async (req, res) => {
       require: true,
     });
 
-    // const Individual = await IndividualCourses.findAll({
-    //   where: {
-    //     sale: type,
-    //   },
-    //   include: [
-    //     {
-    //       model: GroupsPerUsers,
-    //       where: { userRole: 'STUDENT' },
-    //       required: false,
-    //     },
-    //     // {
-    //       // model: GroupCourses,
-    //       // required: true,
-    //       // include: [
-    //         {
-    //           model: CoursesContents,
-    //           required: true,
+    const Individual = await IndividualCourses.findAll({
 
-    //           where: {
-    //             language,
-    //             level: {
-    //               [Op.in]: level,
-    //             },
-    //             lessonType: {
-    //               [Op.in]: format,
-    //             },
-    //           },
-    //           attributes: { exclude: ['id', 'language', 'courseId'] },
-    //           include: [Levels],
-    //         // },
-    //       // ],
-    //     },
-    //   ],
-    //   // order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
-    //   limit,
-    //   attributes: ['id', ['name', 'title'], 'startDate', 'endDate', 'price', 'sale'],
-    //   require: true,
-    // })
+    })
 
     const criticalPrices = await Groups.findOne({
       attributes: [
