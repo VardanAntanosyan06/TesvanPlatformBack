@@ -394,6 +394,18 @@ const getUserCourse = async (req, res) => {
         },
       ],
     });
+
+    let { Quizzs } = await GroupCourses.findOne({
+      where: { id: courseId },
+      include: [
+        {
+          model: Quizz,
+          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+          through: { attributes: [] },
+        },
+      ],
+    });
+
     lessons = lessons.map((e, i) => {
       e = e.toJSON();
       delete e.dataValues;
@@ -404,6 +416,13 @@ const getUserCourse = async (req, res) => {
       delete e.Lessons;
       return e;
     });
+
+    // lessons = {
+    // ...lessons.dataValues,
+    // quizz: Quizzs,
+    // };
+    console.log(Quizzs);
+    lessons.unshift(Quizzs[0]);
     return res.json(lessons);
   } catch (error) {
     console.log(error);
@@ -436,8 +455,8 @@ const createCourse = async (req, res) => {
     img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
 
     // let courseId;
-      let {id:courseId} = await GroupCourses.create({ img: imgFileName });
-      //  = Course.id
+    let { id: courseId } = await GroupCourses.create({ img: imgFileName });
+    //  = Course.id
     // }
 
     trainers = JSON.parse(trainers);
@@ -609,7 +628,7 @@ const getCoursesByFilter = async (req, res) => {
     });
 
     const Individual = await GroupCourses.findAll({
-      where:{},
+      where: {},
       include: [
         {
           model: CoursesContents,
@@ -628,7 +647,7 @@ const getCoursesByFilter = async (req, res) => {
           include: [Levels],
         },
       ],
-    })
+    });
 
     const criticalPrices = await Groups.findOne({
       attributes: [
@@ -663,7 +682,6 @@ const getCoursesByFilter = async (req, res) => {
     if (order === 'lowToHigh') Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
     Courses = Courses.filter((e) => e.saledValue >= minPrice && e.saledValue <= maxPrice);
 
-
     // if (courseType === 'Individual') {
     //   return res.status(200).send(IndividualCourses);
     // }
@@ -674,7 +692,7 @@ const getCoursesByFilter = async (req, res) => {
     //   ...IndividualCourses,
     //   ...GroupCourses,
     // };
-    
+
     return res.status(200).json({ Courses, criticalPrices });
   } catch (error) {
     console.log(error);
@@ -899,7 +917,9 @@ const getCourseForAdmin = async (req, res) => {
         const formattedLesson = {
           id: lesson.dataValues.id,
           title: lesson.dataValues.title,
-          description: lesson.dataValues.description ? lesson.dataValues.description.match(/\b(\w+\b\s*){1,16}/)[0]:lesson.dataValues.description,
+          description: lesson.dataValues.description
+            ? lesson.dataValues.description.match(/\b(\w+\b\s*){1,16}/)[0]
+            : lesson.dataValues.description,
           number: index + 1,
           isOpen: true,
         };
