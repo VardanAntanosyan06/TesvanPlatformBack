@@ -306,7 +306,8 @@ const openLesson = async (req, res) => {
 
 const createLesson = async (req, res) => {
   try {
-    const { title_en, description_en, maxPoints, htmlContent, quizzId, homeworkId } = req.body;
+    const { title_en, description_en, maxPoints, htmlContent, quizzId, homeworkId, title } =
+      req.body;
 
     const { id: lessonId } = await Lesson.create({
       title_en,
@@ -315,6 +316,21 @@ const createLesson = async (req, res) => {
       htmlContent,
     });
 
+    let { file } = req.files;
+
+    const fileType = file.mimetype.split('/')[1];
+    const fileName = v4() + '.' + fileType;
+    file.mv(path.resolve(__dirname, '..', 'static', fileName));
+
+    const lesson = await Presentations.findOne({ where: { lessonId } });
+    if (lesson) {
+      return res.status(400).json({ message: 'Lesson Already have a Presentation' });
+    }
+    await Presentations.create({
+      title,
+      lessonId: id,
+      url: fileName,
+    });
     await HomeworkPerLesson.create({
       homeworkId,
       lessonId,
