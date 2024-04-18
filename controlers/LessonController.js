@@ -10,7 +10,8 @@ const {
   UserCourses,
   Message,
   HomeworkPerLesson,
-  Homework
+  Homework,
+  Presentations,
 } = require('../models');
 const lessonsperquizz = require('../models/lessonsperquizz');
 const { userSockets } = require('../userSockets');
@@ -66,8 +67,7 @@ const getLessonTitles = async (req, res) => {
 
     let lessons = await Lesson.findAll({
       attributes: ['id', ['title_en', 'title']],
-      order: [["id", "DESC"]],
-
+      order: [['id', 'DESC']],
     });
 
     if (!lessons.length) {
@@ -101,24 +101,27 @@ const getLesson = async (req, res) => {
             'maxPoints',
             'htmlContent',
           ],
-          include:
-          [{
-            model:Quizz,
-            as:"quizz",
-            attributes:['id',['title_en','title'],['description_en','description']],
-            through:{
-              attributes:[]
-            }
-          },
-          {
-            model:Homework,
-            as:"homework",
-            attributes:['id',['title_en','title'],['description_en','description']],
-            through:{
-              attributes:[]
-            }
-          }
-        ]
+          include: [
+            {
+              model: Presentations,
+            },
+            {
+              model: Quizz,
+              as: 'quizz',
+              attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+              through: {
+                attributes: [],
+              },
+            },
+            {
+              model: Homework,
+              as: 'homework',
+              attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+              through: {
+                attributes: [],
+              },
+            },
+          ],
         },
       ],
     });
@@ -156,24 +159,24 @@ const getLessonForAdmin = async (req, res) => {
         'maxPoints',
         'htmlContent',
       ],
-      include:
-          [{
-            model:Quizz,
-            as:"quizz",
-            attributes:['id',['title_en','title'],['description_en','description']],
-            through:{
-              attributes:[]
-            }
+      include: [
+        {
+          model: Quizz,
+          as: 'quizz',
+          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+          through: {
+            attributes: [],
           },
-          {
-            model:Homework,
-            as:"homework",
-            attributes:['id',['title_en','title'],['description_en','description']],
-            through:{
-              attributes:[]
-            }
-          }
-        ]
+        },
+        {
+          model: Homework,
+          as: 'homework',
+          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
     });
 
     if (!lesson) {
@@ -303,16 +306,19 @@ const openLesson = async (req, res) => {
 
 const createLesson = async (req, res) => {
   try {
-    const { title_en, description_en, maxPoints, htmlContent,quizzId,homeworkId } = req.body;
+    const { title_en, description_en, maxPoints, htmlContent, quizzId, homeworkId } = req.body;
 
-    
-    const {id:lessonId} = await Lesson.create({ title_en, description_en, maxPoints, htmlContent });
-    
+    const { id: lessonId } = await Lesson.create({
+      title_en,
+      description_en,
+      maxPoints,
+      htmlContent,
+    });
 
     await HomeworkPerLesson.create({
       homeworkId,
       lessonId,
-      maxPoints:Math.round(maxPoints/2)
+      maxPoints: Math.round(maxPoints / 2),
     });
     await LessonsPerQuizz.create({
       quizzId,
@@ -355,23 +361,17 @@ const deleteLesson = async (req, res) => {
 
 const updateLesson = async (req, res) => {
   try {
-    const { title_en, description_en, id, htmlContent,quizzId,homeworkId } = req.body;
+    const { title_en, description_en, id, htmlContent, quizzId, homeworkId } = req.body;
 
     await Lesson.update({ title_en, description_en, htmlContent }, { where: { id } });
 
-    await HomeworkPerLesson.destroy(
-      { where: { lessonId: id } }
-    );
+    await HomeworkPerLesson.destroy({ where: { lessonId: id } });
     await HomeworkPerLesson.create({
-      homeworkId, 
-      lessonId: id
-    })
-    await LessonsPerQuizz.destroy(
-      { where: { lessonId: id } }
-    );
-    await LessonsPerQuizz.create(
-      { quizzId, lessonId: id },
-    );
+      homeworkId,
+      lessonId: id,
+    });
+    await LessonsPerQuizz.destroy({ where: { lessonId: id } });
+    await LessonsPerQuizz.create({ quizzId, lessonId: id });
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);

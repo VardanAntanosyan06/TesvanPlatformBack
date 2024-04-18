@@ -27,6 +27,7 @@ var TestQuizz = require('./routes/TestQuizz');
 var DashboardRouter = require('./routes/Dashboard');
 var PaymentRouter = require('./routes/Payment');
 var SkillRouter = require('./routes/Skill');
+var PresentationRouter = require('./routes/Presentation');
 var app = express();
 
 // view engine setup
@@ -67,6 +68,7 @@ app.use('/api/v2/quizz', QuizzRouter);
 app.use('/api/v2/dashboard', DashboardRouter);
 app.use('/api/v2/skill', SkillRouter);
 app.use('/api/v2/payment', PaymentRouter);
+app.use('/api/v2/presentation', PresentationRouter);
 
 app.use(require('express-status-monitor')());
 // catch 404 and forward to error handler

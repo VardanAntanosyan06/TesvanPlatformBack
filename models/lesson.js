@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Lesson extends Model {
     /**
@@ -14,56 +14,60 @@ module.exports = (sequelize, DataTypes) => {
   Lesson.init(
     {
       title_en: DataTypes.STRING,
-      description_en: DataTypes.TEXT("long"),
+      description_en: DataTypes.TEXT('long'),
       title_ru: DataTypes.STRING,
-      description_ru: DataTypes.TEXT("long"),
+      description_ru: DataTypes.TEXT('long'),
       title_am: DataTypes.STRING,
-      description_am: DataTypes.TEXT("long"),
+      description_am: DataTypes.TEXT('long'),
       maxPoints: DataTypes.INTEGER,
-      htmlContent:DataTypes.TEXT("long")
+      htmlContent: DataTypes.TEXT('long'),
     },
     {
       sequelize,
-      modelName: "Lesson",
-    }
+      modelName: 'Lesson',
+    },
   );
 
-  const GroupCourses = sequelize.define("GroupCourses");
+  const GroupCourses = sequelize.define('GroupCourses');
   // Lesson.belongsTo(GroupCourses, { foreignKey: "id" });
 
-  const Users = sequelize.define("Users");
-  Lesson.belongsToMany(Users, { through: "UserLesson" });
+  const Users = sequelize.define('Users');
+  Lesson.belongsToMany(Users, { through: 'UserLesson' });
 
-  const Quizz = sequelize.define("Quizz");
-  const LessonsPerQuizz = sequelize.define("LessonsPerQuizz")
-  const HomeworkPerLesson = sequelize.define("HomeworkPerLesson")
-  const Homework = sequelize.define("Homework")
+  const Quizz = sequelize.define('Quizz');
+  const LessonsPerQuizz = sequelize.define('LessonsPerQuizz');
+  const HomeworkPerLesson = sequelize.define('HomeworkPerLesson');
+  const Homework = sequelize.define('Homework');
   // Lesson.hasOne(Quizz, { foreignKey: "lessonId", as: "quizz" });
 
+  const Video = sequelize.define('Video');
+  Lesson.hasOne(Video, { foreignKey: 'lessonId', as: 'video' });
 
-  const Video = sequelize.define("Video");
-  Lesson.hasOne(Video, { foreignKey: "lessonId", as: "video" });
-
-  const CoursesPerLessons = sequelize.define("CoursesPerLessons")
+  const CoursesPerLessons = sequelize.define('CoursesPerLessons');
 
   Lesson.belongsToMany(GroupCourses, {
     through: 'CoursesPerLessons',
     foreignKey: 'courseId', // Specify lowercase column name
-    otherKey: 'lessonId' // Assuming the column name in GroupCourse is 'id'
+    otherKey: 'lessonId', // Assuming the column name in GroupCourse is 'id'
   });
-  
-  Lesson.belongsToMany(Quizz,{
-    through:LessonsPerQuizz,
-    foreignKey:"lessonId",
-    otherKey:"quizzId",
-    as:"quizz"
-  })
-    
-  Lesson.belongsToMany(Homework,{
-    through:HomeworkPerLesson,
-    foreignKey:"lessonId",
-    otherKey:"homeworkId",
-    as:"homework"
-  })
+
+  Lesson.belongsToMany(Quizz, {
+    through: LessonsPerQuizz,
+    foreignKey: 'lessonId',
+    otherKey: 'quizzId',
+    as: 'quizz',
+  });
+
+  Lesson.belongsToMany(Homework, {
+    through: HomeworkPerLesson,
+    foreignKey: 'lessonId',
+    otherKey: 'homeworkId',
+    as: 'homework',
+  });
+
+  const Presentations = sequelize.define('Presentations');
+  Lesson.hasOne(Presentations, {
+    foreignKey: 'lessonId',
+  });
   return Lesson;
 };
