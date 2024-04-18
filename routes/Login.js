@@ -1,28 +1,25 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
 
-const controller = require("../controlers/LoginController");
-const checkAuth = require("../middleware/checkAuth");
+const controller = require('../controlers/LoginController');
+const checkAuth = require('../middleware/checkAuth');
 
-router.post("/Login", controller.LoginUsers);
-router.get("/ForgotPassword", controller.sendEmailForForgotPassword);
-router.patch("/ChangePassword", controller.forgotPassword);
-router.patch("/ChangeEmail", controller.changeEmail);
+router.post('/Login', controller.LoginUsers);
+router.get('/ForgotPassword', controller.sendEmailForForgotPassword);
+router.patch('/ChangePassword', controller.forgotPassword);
+router.post('/ChangeEmail', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.changeEmail);
 
-router.get(
-  "/authMe",
-  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-  controller.authMe
-);
-router.put(
-  "/changeUserData",
-  checkAuth(["STUDENT", "TEACHER"]),
-  controller.changeUserData
+router.get('/authMe', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.authMe);
+router.put('/changeUserData', checkAuth(['STUDENT', 'TEACHER']), controller.changeUserData);
+router.patch(
+  '/changeUserImage',
+  checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
+  controller.changeUserImage,
 );
 router.patch(
-  "/changeUserImage",
-  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-  controller.changeUserImage
+  '/verifyNewEmail',
+  checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
+  controller.verifyChangeEmail,
 );
 
 module.exports = router;
