@@ -30,6 +30,7 @@ const moment = require('moment');
 const path = require('path');
 const { group } = require('console');
 const quizz = require('../models/quizz');
+// const { finished } = require('stream/promises');
 
 const getAllCourses = async (req, res) => {
   try {
@@ -674,6 +675,7 @@ const getCoursesByFilter = async (req, res) => {
     let Courses = await Groups.findAll({
       where: {
         sale: type,
+        finished:false
       },
       include: [
         {
@@ -797,12 +799,21 @@ const getCoursesByFilter = async (req, res) => {
         level:e.level,
       }
     });
-
-    Courses = [
-      ...Courses,
-      ...Individual
-  ]
-    return res.status(200).json({Courses,criticalPrices });
+    
+    if(courseType=="Group"){
+      
+      return res.status(200).json({Courses,criticalPrices });
+    }else if(courseType=="Individual"){
+      console.log("++++");
+      return res.status(200).json({Courses:Individual,criticalPrices });
+      
+    }else{
+      Courses = [
+        ...Courses,
+        ...Individual
+      ]
+      return res.status(200).json({Courses,criticalPrices });
+    }
 // >>>>>>> Stashed changes
   } catch (error) {
     console.log(error);
