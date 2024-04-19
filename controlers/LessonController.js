@@ -13,6 +13,9 @@ const {
   Homework,
   Presentations,
 } = require('../models');
+const { v4 } = require('uuid');
+const path = require('path');
+
 const lessonsperquizz = require('../models/lessonsperquizz');
 const { userSockets } = require('../userSockets');
 
@@ -306,8 +309,16 @@ const openLesson = async (req, res) => {
 
 const createLesson = async (req, res) => {
   try {
-    const { title_en, description_en, maxPoints, htmlContent, quizzId, homeworkId, title } =
-      req.body;
+    const {
+      title_en,
+      description_en,
+      maxPoints,
+      htmlContent,
+      quizzId,
+      homeworkId,
+      presentationTitle,
+      presentationDescription,
+    } = req.body;
 
     const { id: lessonId } = await Lesson.create({
       title_en,
@@ -327,9 +338,10 @@ const createLesson = async (req, res) => {
       return res.status(400).json({ message: 'Lesson Already have a Presentation' });
     }
     await Presentations.create({
-      title,
-      lessonId: id,
+      title: presentationTitle,
+      lessonId: lessonId,
       url: fileName,
+      description: presentationDescription,
     });
     await HomeworkPerLesson.create({
       homeworkId,
