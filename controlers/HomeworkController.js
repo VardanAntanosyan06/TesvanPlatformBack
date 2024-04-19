@@ -238,12 +238,12 @@ const getHomework = async (req, res) => {
           // model: Homework,
           attributes: [
             'id',
-            'courseId',
+            // 'courseId',
             [`title_${language}`, 'title'],
             [`description_${language}`, 'description'],
-            'maxPoints',
-            'dueDate',
-            'startDate',
+            // 'maxPoints',
+            // 'dueDate',
+            // 'startDate',
           ],
         // },
       // ],
@@ -262,21 +262,21 @@ const getHomework = async (req, res) => {
       // await homework.save();
     // }
 
-    const Files = await HomeWorkFiles.findAll({
-      where: { userId, homeWorkId: homework.Homework.id },
-      attributes: ['id', ['fileName', 'name'], ['fileLink', 'link']],
-    });
+    // const Files = await HomeWorkFiles.findAll({
+    //   where: { userId, homeWorkId: homework.Homework.id },
+    //   attributes: ['id', ['fileName', 'name'], ['fileLink', 'link']],
+    // });
 
-    homework = {
-      points: homework.points,
-      status: homework.status,
-      answer: homework.answer,
-      feedback: homework.feedback,
-      UserStartDate: homework.startDate,
-      startDate: homework.Homework.startDate,
-      ...homework.dataValues.Homework.dataValues,
-      Files,
-    };
+    // homework = {
+    //   points: homework.points,
+    //   status: homework.status,
+    //   answer: homework.answer,
+    //   feedback: homework.feedback,
+    //   UserStartDate: homework.startDate,
+    //   startDate: homework.Homework.startDate,
+    //   ...homework.dataValues.Homework.dataValues,
+    //   Files,
+    // };
 
     res.send(homework);
   } catch (error) {
