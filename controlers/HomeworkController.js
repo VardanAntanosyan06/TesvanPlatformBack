@@ -230,12 +230,12 @@ const getHomework = async (req, res) => {
     const { id } = req.params;
     const { user_id: userId, role } = req.user;
     const { language } = req.query;
-    let homework = await UserHomework.findOne({
-      where: { HomeworkId: id, UserId: userId },
+    let homework = await Homework.findOne({
+      where: { id },
       // attributes: ["id","points", "status", "answer", "feedback","startDate"],
-      include: [
-        {
-          model: Homework,
+      // include: [
+        // {
+          // model: Homework,
           attributes: [
             'id',
             'courseId',
@@ -245,8 +245,8 @@ const getHomework = async (req, res) => {
             'dueDate',
             'startDate',
           ],
-        },
-      ],
+        // },
+      // ],
     });
 
     if (!homework) {
@@ -255,12 +255,12 @@ const getHomework = async (req, res) => {
       });
     }
     // return res.status(403).json({homework})
-    console.log(!homework.startDate, homework.status);
-    if (!homework.startDate) {
-      homework.startDate = new Date().toISOString();
-      homework.status = 1;
-      await homework.save();
-    }
+
+    // if (!homework.startDate) {
+      // homework.startDate = new Date().toISOString();
+      // homework.status = 1;
+      // await homework.save();
+    // }
 
     const Files = await HomeWorkFiles.findAll({
       where: { userId, homeWorkId: homework.Homework.id },

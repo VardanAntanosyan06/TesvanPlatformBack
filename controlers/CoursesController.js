@@ -505,9 +505,9 @@ const getUserCourse = async (req, res) => {
     // ...lessons.dataValues,
     // quizz: Quizzs,
     // };
-    console.log(Quizzs);
-    lessons.unshift(Quizzs[0]);
-    return res.json(lessons);
+    // console.log(Quizzs);
+    // lessons.unshift(Quizzs[0]);
+    return res.json({lessons,quizz:Quizzs[0]});
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -776,33 +776,33 @@ const getCoursesByFilter = async (req, res) => {
 //     return res.status(200).json({ Courses, criticalPrices });
 // =======
 //     // return res.json({Individual})
-//     Individual = Individual.map((e) => {
-//       e = e.toJSON();
-//       delete e.dataValues;
-//       return {
-//         id: e.courseId,
-//         title: e.title,
-//         // startDate: "2024-04-15T20:00:00.000Z",
-//         // endDate: "2024-04-29T20:00:00.000Z",
-//         price: 112,
-//         sale: 1,
-//         // courseStartDate: "Apr 16, 2024",
-//         courseDate: "1 month",
-//         saledValue: 110.88,
-//         bought: 0,
-//         img: `https://platform.tesvan.com/server/${e.img}`,
-//         description: e.description,
-//         courseType: e.courseType,
-//         lessonType: e.lessonType,
-//         level:e.level,
-//       }
-//     });
+    Individual = Individual.map((e) => {
+      e = e.toJSON();
+      delete e.dataValues;
+      return {
+        id: e.courseId,
+        title: e.title,
+        // startDate: "2024-04-15T20:00:00.000Z",
+        // endDate: "2024-04-29T20:00:00.000Z",
+        price: 112,
+        sale: 1,
+        // courseStartDate: "Apr 16, 2024",
+        courseDate: "1 month",
+        saledValue: 110.88,
+        bought: 0,
+        img: `https://platform.tesvan.com/server/${e.img}`,
+        description: e.description,
+        courseType: e.courseType,
+        lessonType: e.lessonType,
+        level:e.level,
+      }
+    });
 
-//     Courses = [
-//       ...Courses,
-//       ...Individual
-//   ]
-//     return res.status(200).json({Courses,criticalPrices });
+    Courses = [
+      ...Courses,
+      ...Individual
+  ]
+    return res.status(200).json({Courses,criticalPrices });
 // >>>>>>> Stashed changes
   } catch (error) {
     console.log(error);
