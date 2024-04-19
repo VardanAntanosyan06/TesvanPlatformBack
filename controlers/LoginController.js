@@ -379,7 +379,7 @@ const verifyChangeEmail = async (req, res) => {
     // });
     if (User.save()) {
       await Email.destroy({ where: { userId: id } });
-      return res.status(200).json({ succes: true });
+      return res.status(200).json({ success: true,role:User.role });
     }
   } catch (error) {
     console.log(error);

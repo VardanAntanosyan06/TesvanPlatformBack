@@ -110,7 +110,6 @@ const buy = async (req, res) => {
       },
     });
 
-    console.log(boughtTests, '+++++++++++++++++++++++++++');
     boughtTests.map((test) => {
       UserTests.findOrCreate({
         where: {
