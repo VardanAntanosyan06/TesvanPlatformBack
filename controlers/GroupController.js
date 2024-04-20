@@ -14,6 +14,7 @@ const {
   UserTests,
   Tests,
   PaymentBlocks,
+  UserPoints
 } = require('../models');
 const { v4 } = require('uuid');
 const sequelize = require('sequelize');
@@ -292,13 +293,24 @@ const addMember = async (req, res) => {
             });
           }),
         );
+        await UserPoints.findOrCreate({
+          where:{
+            userId
+          },
+          defaults:{
+            userId:userId,
+            lesson: 0,
+            quizz: 0,
+            finalInterview: 0
+          }
+        })
 
         const boughtTests = await Tests.findAll({
           where: {
             [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
           },
         });
-
+        
         await Promise.all(
           boughtTests.map(async (test) => {
             await UserTests.findOrCreate({
@@ -612,7 +624,11 @@ const deleteMember = async (req, res) => {
         UserId: userId,
       },
     });
-
+    await UserPoints.destroy({
+      where:{
+        userId
+      }
+    })
     await UserTests.destroy({
       where: {
         userId: userId,

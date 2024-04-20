@@ -8,6 +8,7 @@ const {
   UserCourses,
   UserLesson,
   Payment,
+  UserPoints,
   Users,
 } = require('../models');
 
@@ -96,7 +97,17 @@ const buy = async (req, res) => {
     const lessons = await CoursesPerLessons.findAll({
       where: { courseId: group.assignCourseId },
     });
-
+    await UserPoints.findOrCreate({
+      where:{
+        userId:payment.userId
+      },
+      defaults:{
+        userId:payment.userId,
+        lesson: 0,
+        quizz: 0,
+        finalInterview: 0
+      }
+    })
     lessons.map((e) => {
       UserLesson.create({
         GroupCourseId: group.assignCourseId,

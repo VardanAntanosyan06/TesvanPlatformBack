@@ -10,6 +10,7 @@ const {
   UserCourses,
   Message,
   HomeworkPerLesson,
+  UserAnswersQuizz,
   Homework,
   Presentations,
   LessonTime,
@@ -93,6 +94,7 @@ const getLesson = async (req, res) => {
     const { user_id: userId } = req.user;
     const { language } = req.query;
 
+ 
     let lesson = await UserLesson.findOne({
       where: { LessonId: id, UserId: userId },
       attributes: ['points', 'attempt'],
@@ -135,6 +137,12 @@ const getLesson = async (req, res) => {
         message: "Lessons not found or User doesn't have the lessons",
       });
     }
+
+    const userAnswers = await  UserAnswersQuizz.findAll({
+      where:{userId,testId:lesson.Lesson.quizz[0].id}
+    })
+
+    console.log(userAnswers);
 
     lesson = {
       points: lesson.points,
@@ -328,26 +336,30 @@ const createLesson = async (req, res) => {
       htmlContent,
     });
 
-    let { file } = req.files;
-
-    const fileType = file.mimetype.split('/')[1];
-    const fileName = v4() + '.' + fileType;
-    file.mv(path.resolve(__dirname, '..', 'static', fileName));
+    
+    // let file = ;
+    // console.log();
+    if(req.files && req.files.file){
+      const {file} = req.files
+      const fileType = file.mimetype.split('/')[1];
+      const fileName = v4() + '.' + fileType;
+      file.mv(path.resolve(__dirname, '..', 'static', fileName));
+      await Presentations.create({
+        title: presentationTitle,
+        lessonId: lessonId,
+        url: fileName,
+        description: presentationDescription,
+      });
+    }
 
     const lesson = await Presentations.findOne({ where: { lessonId } });
     if (lesson) {
       return res.status(400).json({ message: 'Lesson Already have a Presentation' });
     }
-    await Presentations.create({
-      title: presentationTitle,
-      lessonId: lessonId,
-      url: fileName,
-      description: presentationDescription,
-    });
+
     await HomeworkPerLesson.create({
       homeworkId,
       lessonId,
-      maxPoints: Math.round(maxPoints / 2),
     });
     await LessonsPerQuizz.create({
       quizzId,

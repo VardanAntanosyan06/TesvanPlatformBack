@@ -1,4 +1,4 @@
-const { Op } = require('sequelize');
+const { Op, where } = require("sequelize");
 const {
   Quizz,
   Option,
@@ -8,12 +8,14 @@ const {
   CoursesPerLessons,
   Lesson,
   LessonsPerQuizz,
-} = require('../models');
-const lessonsperquizz = require('../models/lessonsperquizz');
+  UserPoints,
+  UserLesson,
+} = require("../models");
 
 const createQuizz = async (req, res) => {
   try {
-    const { title, description, lessonId, courseId, time, percent, questions } = req.body;
+    const { title, description, lessonId, courseId, time, percent, questions } =
+      req.body;
 
     let { id: quizzId } = await Quizz.create({
       title_en: title,
@@ -45,13 +47,13 @@ const createQuizz = async (req, res) => {
       await CoursesPerQuizz.create({
         quizzId,
         courseId,
-        type: 'Group',
+        type: "Group",
       });
     }
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -96,7 +98,7 @@ const getQuizzes = async (req, res) => {
     return res.status(200).json({ success: true, quizz });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -120,33 +122,33 @@ const submitQuizz = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
 const finishQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { quizzId } = req.params;
+    const { quizzId,isFinal } = req.query;
 
     let correctAnswers = await Quizz.findByPk(quizzId, {
-      attributes: ['id'],
+      attributes: ["id"],
       include: [
         {
           model: Question,
-          attributes: ['id'],
+          attributes: ["id"],
           include: [
             {
               model: Option,
               where: { isCorrect: true },
-              attributes: ['id'],
+              attributes: ["id"],
             },
           ],
         },
       ],
     });
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
-      (a, b) => a.id - b.id,
+      (a, b) => a.id - b.id
     );
 
     const userAnswers = await UserAnswersQuizz.findAll({
@@ -154,8 +156,8 @@ const finishQuizz = async (req, res) => {
         testId: quizzId,
         userId,
       },
-      attributes: ['optionId'],
-      order: [['id', 'ASC']],
+      attributes: ["optionId"],
+      order: [["id", "ASC"]],
     });
     userAnswers.map((e) => {
       correctAnswers.push(e.optionId);
@@ -164,8 +166,19 @@ const finishQuizz = async (req, res) => {
     const point = Math.round(
       ((correctAnswers.length - new Set(correctAnswers).size) /
         Math.ceil(correctAnswers.length / 2)) *
-        100,
+        100
     );
+    await UserPoints.findOrCreate({
+      where: {
+        userId,
+      },
+      defaults: {
+        quizzId,
+        userId,
+        point,
+        isFinal
+      },
+    });
 
     return res.json({
       point,
@@ -173,20 +186,20 @@ const finishQuizz = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
 const getAll = async (req, res) => {
   try {
     const quizzes = await Quizz.findAll({
-      attributes: ['id', ['title_en', 'title']],
+      attributes: ["id", ["title_en", "title"]],
     });
 
     return res.json(quizzes);
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -208,13 +221,14 @@ const deleteQuizz = async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
 const updateQuizz = async (req, res) => {
   try {
-    const { title, description, time, percent, questions, id, lessonId } = req.body;
+    const { title, description, time, percent, questions, id, lessonId } =
+      req.body;
 
     await Quizz.update(
       {
@@ -223,7 +237,7 @@ const updateQuizz = async (req, res) => {
         time,
         percent,
       },
-      { where: { id } },
+      { where: { id } }
     );
 
     await Question.destroy({ where: { quizzId: id } });
@@ -252,7 +266,7 @@ const updateQuizz = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
