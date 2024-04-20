@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Calendar extends Model {
     /**
@@ -13,18 +11,22 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Calendar.init({
-    title: DataTypes.STRING,
-    start: DataTypes.DATE,
-    end: DataTypes.DATE,
-    description: DataTypes.STRING,
-    format: DataTypes.STRING,
-    link: DataTypes.STRING,
-    type: DataTypes.STRING,
-    userId:DataTypes.ARRAY(DataTypes.STRING)
-  }, {
-    sequelize,
-    modelName: 'Calendar',
-  });
+  Calendar.init(
+    {
+      title: DataTypes.STRING,
+      start: DataTypes.DATE,
+      end: DataTypes.DATE,
+      description: DataTypes.STRING,
+      format: DataTypes.STRING,
+      link: DataTypes.STRING,
+      type: DataTypes.STRING,
+      userId: DataTypes.ARRAY(DataTypes.STRING),
+      groupId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Calendar',
+    },
+  );
   return Calendar;
 };

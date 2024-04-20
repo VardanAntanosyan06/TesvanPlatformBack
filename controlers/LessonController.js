@@ -12,6 +12,7 @@ const {
   HomeworkPerLesson,
   Homework,
   Presentations,
+  LessonTime,
 } = require('../models');
 const { v4 } = require('uuid');
 const path = require('path');
@@ -406,7 +407,29 @@ const updateLesson = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+const createLessonTime = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { lessonId } = req.params;
+    const { time } = req.body;
 
+    const createdTime = await LessonTime.findOrCreate({
+      where: {
+        userId,
+        lessonId,
+      },
+      defaults: {
+        userId,
+        lessonId,
+        time,
+      },
+    });
+    return res.status(200).json({ createdTime });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong .' });
+  }
+};
 module.exports = {
   getLessons,
   getLesson,
@@ -418,4 +441,5 @@ module.exports = {
   deleteLesson,
   updateLesson,
   getLessonForAdmin,
+  createLessonTime,
 };

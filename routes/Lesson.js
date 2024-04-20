@@ -1,60 +1,35 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
 
-const controller = require("../controlers/LessonController");
-const checkAuth = require("../middleware/checkAuth");
+const controller = require('../controlers/LessonController');
+const checkAuth = require('../middleware/checkAuth');
 
 router.get(
-  "/getLessons/:courseId",
-  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-  controller.getLessons
+  '/getLessons/:courseId',
+  checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
+  controller.getLessons,
 );
 
-router.get(
-  "/getLessonTitles",
-  controller.getLessonTitles
-);
+router.get('/getLessonTitles', controller.getLessonTitles);
 
-router.get(
-  "/getLessonTitles",
-  controller.getLessonTitles
-);
-router.get(
-  "/getLesson/:id",
-  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-  controller.getLesson
-);
-router.get(
-  "/getLessonForAdmin/:id",
-  checkAuth(["ADMIN"]),
-  controller.getLessonForAdmin
-);
+router.get('/getLessonTitles', controller.getLessonTitles);
+router.get('/getLesson/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getLesson);
+router.get('/getLessonForAdmin/:id', checkAuth(['ADMIN']), controller.getLessonForAdmin);
 
-router.get(
-  "/getLesson/:id",
-  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-  controller.getLesson
-);
+router.get('/getLesson/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getLesson);
+
+router.post('/createLesson', checkAuth(['TEACHER', 'ADMIN']), controller.createLesson);
+
+router.post('/submitQuizz/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.submitQuizz);
+router.patch('/openLesson/', checkAuth(['TEACHER', 'ADMIN']), controller.openLesson);
+
+router.put('/update', checkAuth(['ADMIN']), controller.updateLesson);
+
+router.delete('/delete/:id', checkAuth(['ADMIN']), controller.deleteLesson);
 
 router.post(
-  "/createLesson",
-  checkAuth(["TEACHER", "ADMIN"]),
-  controller.createLesson
+  '/time/:lessonId',
+  checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
+  controller.createLessonTime,
 );
-
-router.post(
-  "/submitQuizz/:id",
-  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-  controller.submitQuizz
-);
-router.patch(
-  "/openLesson/",
-  checkAuth(["TEACHER", "ADMIN"]),
-  controller.openLesson
-);
-
-router.put("/update", checkAuth(["ADMIN"]), controller.updateLesson);
-
-router.delete("/delete/:id", checkAuth(["ADMIN"]), controller.deleteLesson);
-
 module.exports = router;
