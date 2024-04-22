@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   const Presentations = sequelize.define('Presentations');
-  Lesson.hasOne(Presentations, {
+  Lesson.hasMany(Presentations, {
     foreignKey: 'lessonId',
   });
   return Lesson;

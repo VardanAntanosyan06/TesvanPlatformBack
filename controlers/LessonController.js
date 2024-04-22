@@ -13,6 +13,7 @@ const {
   UserAnswersQuizz,
   Homework,
   Presentations,
+  UserPoints,
   LessonTime,
 } = require("../models");
 const { v4 } = require("uuid");
@@ -144,16 +145,24 @@ const getLesson = async (req, res) => {
         message: "Lessons not found or User doesn't have the lessons",
       });
     }
-
-    // const userAnswers = await  UserAnswersQuizz.findAll({
-    //   where:{userId,testId:lesson.Lesson.quizz[0].id}
-    // })
+    let userPoint = null;
+    if (lesson.Lesson.quizz[0].id) {
+      userPoint = await UserPoints.findOne({
+        where: {
+          userId,
+          quizzId: lesson.Lesson.quizz[0].id,
+          isFinal: false,
+        },
+      });
+    }
 
     lesson = {
       points: lesson.points,
       pointsOfPercent: Math.round(
         (lesson.points * 100) / lesson.Lesson.maxPoints
       ),
+      quizzPoint: userPoint ? userPoint.point : null,
+      maxQuizzPoints: lesson.Lesson.maxPoints / 2,
       attempt: lesson.attempt,
       ...lesson.dataValues.Lesson.dataValues,
     };

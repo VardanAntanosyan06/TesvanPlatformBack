@@ -129,7 +129,10 @@ const submitQuizz = async (req, res) => {
 const finishQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { quizzId,isFinal } = req.query;
+    const { quizzId,isFinal,lessonId } = req.body;
+
+
+    const {maxPoints} = await Lesson.findByPk(lessonId)
 
     let correctAnswers = await Quizz.findByPk(quizzId, {
       attributes: ["id"],
@@ -147,6 +150,7 @@ const finishQuizz = async (req, res) => {
         },
       ],
     });
+
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
       (a, b) => a.id - b.id
     );
@@ -167,7 +171,8 @@ const finishQuizz = async (req, res) => {
       ((correctAnswers.length - new Set(correctAnswers).size) /
         Math.ceil(correctAnswers.length / 2)) *
         100
-    );
+    )*(maxPoints/2)/100;
+    
     await UserPoints.findOrCreate({
       where: {
         userId,
@@ -179,13 +184,13 @@ const finishQuizz = async (req, res) => {
         isFinal
       },
     });
-
+    console.log(point);
     return res.json({
       point,
       correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
