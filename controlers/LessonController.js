@@ -138,11 +138,10 @@ const getLesson = async (req, res) => {
       });
     }
 
-    const userAnswers = await  UserAnswersQuizz.findAll({
-      where:{userId,testId:lesson.Lesson.quizz[0].id}
-    })
+    // const userAnswers = await  UserAnswersQuizz.findAll({
+    //   where:{userId,testId:lesson.Lesson.quizz[0].id}
+    // })
 
-    console.log(userAnswers);
 
     lesson = {
       points: lesson.points,
@@ -350,11 +349,6 @@ const createLesson = async (req, res) => {
         url: fileName,
         description: presentationDescription,
       });
-    }
-
-    const lesson = await Presentations.findOne({ where: { lessonId } });
-    if (lesson) {
-      return res.status(400).json({ message: 'Lesson Already have a Presentation' });
     }
 
     await HomeworkPerLesson.create({
