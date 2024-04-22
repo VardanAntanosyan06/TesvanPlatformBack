@@ -348,17 +348,6 @@ const createLesson = async (req, res) => {
       presentationDescription,
     } = req.body;
 
-    console.log(
-      title_en,
-      description_en,
-      maxPoints,
-      htmlContent,
-      quizzId,
-      homeworkId,
-      presentationTitle,
-      presentationDescription
-    );
-
     const { id: lessonId } = await Lesson.create({
       title_en,
       description_en,
@@ -366,20 +355,21 @@ const createLesson = async (req, res) => {
       htmlContent,
     });
 
-    // let file = ;
-    // console.log();
     if (req.files && req.files.file) {
       const { file } = req.files;
       const fileType = file.mimetype.split("/")[1];
       const fileName = v4() + "." + fileType;
       file.mv(path.resolve(__dirname, "..", "static", fileName));
+
       await Presentations.create({
         title: presentationTitle,
-        lessonId: lessonId,
         url: fileName,
+
         description: presentationDescription,
+        lessonId,
       });
     }
+
     if (homeworkId) {
       await HomeworkPerLesson.create({
         homeworkId,
@@ -388,9 +378,8 @@ const createLesson = async (req, res) => {
     }
     if (quizzId) {
       await LessonsPerQuizz.create({
-        quizzId,
-        // maxPoints:maxPoints/2,
         lessonId,
+        quizzId,
       });
     }
 
