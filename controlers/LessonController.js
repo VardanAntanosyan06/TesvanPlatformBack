@@ -1,4 +1,4 @@
-const { where } = require('sequelize');
+const { where } = require("sequelize");
 const {
   UserLesson,
   Lesson,
@@ -14,12 +14,12 @@ const {
   Homework,
   Presentations,
   LessonTime,
-} = require('../models');
-const { v4 } = require('uuid');
-const path = require('path');
+} = require("../models");
+const { v4 } = require("uuid");
+const path = require("path");
 
-const lessonsperquizz = require('../models/lessonsperquizz');
-const { userSockets } = require('../userSockets');
+const lessonsperquizz = require("../models/lessonsperquizz");
+const { userSockets } = require("../userSockets");
 
 const getLessons = async (req, res) => {
   try {
@@ -29,17 +29,17 @@ const getLessons = async (req, res) => {
 
     let lessons = await UserLesson.findAll({
       where: { GroupCourseId: courseId, UserId: userId },
-      attributes: ['points', 'attempt'],
+      attributes: ["points", "attempt"],
       include: [
         {
           model: Lesson,
           attributes: [
-            'id',
-            'courseId',
-            'number',
-            [`title_${language}`, 'title'],
-            [`description_${language}`, 'description'],
-            'maxPoints',
+            "id",
+            "courseId",
+            "number",
+            [`title_${language}`, "title"],
+            [`description_${language}`, "description"],
+            "maxPoints",
           ],
         },
       ],
@@ -62,7 +62,7 @@ const getLessons = async (req, res) => {
     res.send(lessons);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -71,20 +71,20 @@ const getLessonTitles = async (req, res) => {
     const { language } = req.query;
 
     let lessons = await Lesson.findAll({
-      attributes: ['id', ['title_en', 'title']],
-      order: [['id', 'DESC']],
+      attributes: ["id", ["title_en", "title"]],
+      order: [["id", "DESC"]],
     });
 
     if (!lessons.length) {
       return res.status(403).json({
-        message: 'Lessons not found',
+        message: "Lessons not found",
       });
     }
 
     return res.send(lessons);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -94,18 +94,17 @@ const getLesson = async (req, res) => {
     const { user_id: userId } = req.user;
     const { language } = req.query;
 
- 
     let lesson = await UserLesson.findOne({
       where: { LessonId: id, UserId: userId },
-      attributes: ['points', 'attempt'],
+      attributes: ["points", "attempt"],
       include: [
         {
           model: Lesson,
           attributes: [
-            ['title_en', 'title'],
-            ['description_en', 'description'],
-            'maxPoints',
-            'htmlContent',
+            ["title_en", "title"],
+            ["description_en", "description"],
+            "maxPoints",
+            "htmlContent",
           ],
           include: [
             {
@@ -113,16 +112,24 @@ const getLesson = async (req, res) => {
             },
             {
               model: Quizz,
-              as: 'quizz',
-              attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+              as: "quizz",
+              attributes: [
+                "id",
+                ["title_en", "title"],
+                ["description_en", "description"],
+              ],
               through: {
                 attributes: [],
               },
             },
             {
               model: Homework,
-              as: 'homework',
-              attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+              as: "homework",
+              attributes: [
+                "id",
+                ["title_en", "title"],
+                ["description_en", "description"],
+              ],
               through: {
                 attributes: [],
               },
@@ -142,10 +149,11 @@ const getLesson = async (req, res) => {
     //   where:{userId,testId:lesson.Lesson.quizz[0].id}
     // })
 
-
     lesson = {
       points: lesson.points,
-      pointsOfPercent: Math.round((lesson.points * 100) / lesson.Lesson.maxPoints),
+      pointsOfPercent: Math.round(
+        (lesson.points * 100) / lesson.Lesson.maxPoints
+      ),
       attempt: lesson.attempt,
       ...lesson.dataValues.Lesson.dataValues,
     };
@@ -153,7 +161,7 @@ const getLesson = async (req, res) => {
     res.send(lesson);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -165,24 +173,32 @@ const getLessonForAdmin = async (req, res) => {
     let lesson = await Lesson.findOne({
       where: { id },
       attributes: [
-        ['title_en', 'title'],
-        ['description_en', 'description'],
-        'maxPoints',
-        'htmlContent',
+        ["title_en", "title"],
+        ["description_en", "description"],
+        "maxPoints",
+        "htmlContent",
       ],
       include: [
         {
           model: Quizz,
-          as: 'quizz',
-          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+          as: "quizz",
+          attributes: [
+            "id",
+            ["title_en", "title"],
+            ["description_en", "description"],
+          ],
           through: {
             attributes: [],
           },
         },
         {
           model: Homework,
-          as: 'homework',
-          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
+          as: "homework",
+          attributes: [
+            "id",
+            ["title_en", "title"],
+            ["description_en", "description"],
+          ],
           through: {
             attributes: [],
           },
@@ -199,7 +215,7 @@ const getLessonForAdmin = async (req, res) => {
     res.send(lesson);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -214,7 +230,9 @@ const submitQuizz = async (req, res) => {
     });
 
     if (!lesson) {
-      return res.status(403).json({ message: "Lesson not found or User doesn't have a lesson" });
+      return res
+        .status(403)
+        .json({ message: "Lesson not found or User doesn't have a lesson" });
     }
 
     let currentPoints = lesson.points;
@@ -226,14 +244,16 @@ const submitQuizz = async (req, res) => {
       lesson.attempt = lesson.attempt + 1;
     } else if (lesson.attempt === 2) {
       collectedPoints = points - 10;
-      lesson.points = collectedPoints > currentPoints ? collectedPoints : currentPoints;
+      lesson.points =
+        collectedPoints > currentPoints ? collectedPoints : currentPoints;
       lesson.attempt = lesson.attempt + 1;
     } else if (lesson.attempt === 3) {
       collectedPoints = points - 20;
-      lesson.points = collectedPoints > currentPoints ? collectedPoints : currentPoints;
+      lesson.points =
+        collectedPoints > currentPoints ? collectedPoints : currentPoints;
       lesson.attempt = lesson.attempt + 1;
     } else {
-      return res.status(403).json({ message: 'No more attempts' });
+      return res.status(403).json({ message: "No more attempts" });
     }
 
     await lesson.save();
@@ -241,7 +261,7 @@ const submitQuizz = async (req, res) => {
     res.send({ points: collectedPoints });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -255,7 +275,7 @@ const openLesson = async (req, res) => {
     const lesson = await Lesson.findOne({ where: { id } });
     console.log(userCourses.length, lesson);
     if (!lesson) {
-      return res.status(404).json('lesson not found');
+      return res.status(404).json("lesson not found");
     }
     if (!lesson.isOpen) {
       await Promise.all(
@@ -274,19 +294,19 @@ const openLesson = async (req, res) => {
           });
           Message.create({
             UserId: user.UserId,
-            title_en: 'New Lesson',
-            title_ru: 'New Lesson',
-            title_am: 'New Lesson',
-            description_en: 'You have a new Lesson!',
-            description_ru: 'You have a new Lesson!',
-            description_am: 'You have a new Lesson!',
-            type: 'info',
+            title_en: "New Lesson",
+            title_ru: "New Lesson",
+            title_am: "New Lesson",
+            description_en: "You have a new Lesson!",
+            description_ru: "You have a new Lesson!",
+            description_am: "You have a new Lesson!",
+            type: "info",
           });
           const userSocket = userSockets.get(user.UserId);
           if (userSocket) {
-            userSocket.emit('new-message', 'New Message');
+            userSocket.emit("new-message", "New Message");
           }
-        }),
+        })
       );
     } else {
       await Promise.all(
@@ -302,7 +322,7 @@ const openLesson = async (req, res) => {
           } catch (error) {
             console.error(error);
           }
-        }),
+        })
       );
     }
 
@@ -311,7 +331,7 @@ const openLesson = async (req, res) => {
     return res.send({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -328,6 +348,17 @@ const createLesson = async (req, res) => {
       presentationDescription,
     } = req.body;
 
+    console.log(
+      title_en,
+      description_en,
+      maxPoints,
+      htmlContent,
+      quizzId,
+      homeworkId,
+      presentationTitle,
+      presentationDescription
+    );
+
     const { id: lessonId } = await Lesson.create({
       title_en,
       description_en,
@@ -335,14 +366,13 @@ const createLesson = async (req, res) => {
       htmlContent,
     });
 
-    
     // let file = ;
     // console.log();
-    if(req.files && req.files.file){
-      const {file} = req.files
-      const fileType = file.mimetype.split('/')[1];
-      const fileName = v4() + '.' + fileType;
-      file.mv(path.resolve(__dirname, '..', 'static', fileName));
+    if (req.files && req.files.file) {
+      const { file } = req.files;
+      const fileType = file.mimetype.split("/")[1];
+      const fileName = v4() + "." + fileType;
+      file.mv(path.resolve(__dirname, "..", "static", fileName));
       await Presentations.create({
         title: presentationTitle,
         lessonId: lessonId,
@@ -350,34 +380,37 @@ const createLesson = async (req, res) => {
         description: presentationDescription,
       });
     }
-
-    await HomeworkPerLesson.create({
-      homeworkId,
-      lessonId,
-    });
-    await LessonsPerQuizz.create({
-      quizzId,
-      // maxPoints:maxPoints/2,
-      lessonId,
-    });
+    if (homeworkId) {
+      await HomeworkPerLesson.create({
+        homeworkId,
+        lessonId,
+      });
+    }
+    if (quizzId) {
+      await LessonsPerQuizz.create({
+        quizzId,
+        // maxPoints:maxPoints/2,
+        lessonId,
+      });
+    }
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
 const getAllLessons = async (req, res) => {
   try {
     const lessons = await Lesson.findAll({
-      attributes: ['id', 'name'],
+      attributes: ["id", "name"],
     });
 
     return res.json(lessons);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -390,15 +423,19 @@ const deleteLesson = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
 const updateLesson = async (req, res) => {
   try {
-    const { title_en, description_en, id, htmlContent, quizzId, homeworkId } = req.body;
+    const { title_en, description_en, id, htmlContent, quizzId, homeworkId } =
+      req.body;
 
-    await Lesson.update({ title_en, description_en, htmlContent }, { where: { id } });
+    await Lesson.update(
+      { title_en, description_en, htmlContent },
+      { where: { id } }
+    );
 
     await HomeworkPerLesson.destroy({ where: { lessonId: id } });
     await HomeworkPerLesson.create({
@@ -410,7 +447,7 @@ const updateLesson = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 const createLessonTime = async (req, res) => {
@@ -419,7 +456,7 @@ const createLessonTime = async (req, res) => {
     const { lessonId } = req.params;
     const { time } = req.body;
 
-    const createdTime = await LessonTime.findOrCreate({
+    const [createdTime, status] = await LessonTime.findOrCreate({
       where: {
         userId,
         lessonId,
@@ -430,10 +467,12 @@ const createLessonTime = async (req, res) => {
         time,
       },
     });
-    return res.status(200).json({ createdTime });
+
+    if (!status) return res.status(400).json({ success: false });
+    return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something Went Wrong .' });
+    return res.status(500).json({ message: "Something Went Wrong ." });
   }
 };
 module.exports = {
