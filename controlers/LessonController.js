@@ -146,7 +146,7 @@ const getLesson = async (req, res) => {
       });
     }
     let userPoint = null;
-    if (lesson.Lesson.quizz[0].id) {
+    if (lesson.Lesson.quizz) {
       userPoint = await UserPoints.findOne({
         where: {
           userId,
