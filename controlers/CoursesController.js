@@ -501,10 +501,9 @@ const getUserCourse = async (req, res) => {
               model: Quizz,
               as:"quizz",
               required: true,
-              where: {
-              },
             },
           ],
+          required: true,
         },
       ],
     });
@@ -512,6 +511,7 @@ const getUserCourse = async (req, res) => {
     const userSubmited = await UserPoints.count({
       where:{userId:id,courseId}
     }) 
+
     let quizz = {
       id:Quizzs[0].id,
       title: Quizzs[0].dataValues.title,
