@@ -176,6 +176,7 @@ const finishQuizz = async (req, res) => {
     await UserPoints.findOrCreate({
       where: {
         userId,
+        quizzId
       },
       defaults: {
         quizzId,

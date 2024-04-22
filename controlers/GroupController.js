@@ -444,7 +444,7 @@ const finishGroup = async (req, res) => {
 const findGroups = async (req, res) => {
   try {
     let group = await Groups.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'name','assignCourseId'],
       order: [['id', 'DESC']],
       include: [
         {

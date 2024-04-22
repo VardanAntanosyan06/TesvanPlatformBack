@@ -581,7 +581,7 @@ const createCourse = async (req, res) => {
 
     lessons.map((e) => {
       CoursesPerLessons.create({
-        courseId,
+        courspeId,
         lessonId: e,
         type,
       });
