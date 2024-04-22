@@ -479,15 +479,6 @@ const getUserCourse = async (req, res) => {
         },
       ],
     });
-    let finalInterview = await Calendar.findOne({
-      where: {
-        groupId: courseId,
-        userId: {
-          [Op.contains]: [id],
-        },
-      },
-      attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
-    });
 
     let { Quizzs } = await GroupCourses.findOne({
       where: { id: courseId },
@@ -498,6 +489,20 @@ const getUserCourse = async (req, res) => {
           through: { attributes: [] },
         },
       ],
+    });
+    let groups = await GroupCourses.findOne({
+      where: {
+        id: courseId,
+      },
+    });
+    let finalInterview = await Calendar.findOne({
+      where: {
+        groupId: groups.id,
+        userId: {
+          [Op.contains]: [id],
+        },
+      },
+      attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
     });
 
     lessons = lessons.map((e, i) => {
