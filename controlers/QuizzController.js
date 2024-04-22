@@ -129,7 +129,7 @@ const submitQuizz = async (req, res) => {
 const finishQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { quizzId,isFinal,lessonId } = req.body;
+    const { quizzId,isFinal,lessonId,courseId } = req.body;
 
 
     const {maxPoints} = await Lesson.findByPk(lessonId)
@@ -176,13 +176,15 @@ const finishQuizz = async (req, res) => {
     await UserPoints.findOrCreate({
       where: {
         userId,
-        quizzId
+        quizzId,
+        courseId
       },
       defaults: {
         quizzId,
         userId,
         point,
-        isFinal
+        isFinal,
+        courseId
       },
     });
     console.log(point);

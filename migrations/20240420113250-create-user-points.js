@@ -21,6 +21,9 @@ module.exports = {
       isFinal:{
         type:Sequelize.BOOLEAN
       },
+      courseId:{
+        type:Sequelize.INTEGER
+      }, 
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

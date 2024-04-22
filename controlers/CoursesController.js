@@ -10,6 +10,7 @@ const {
   CoursesPerQuizz,
   Quizz,
   IndividualCourses,
+  UserPoints,
   Calendar,
 } = require('../models');
 
@@ -490,6 +491,34 @@ const getUserCourse = async (req, res) => {
         },
       ],
     });
+    const lessonsHaveQuizz = await CoursesPerLessons.count({
+      where: { courseId },
+      include: [
+        {
+          model: Lesson,
+          include: [
+            {
+              model: Quizz,
+              as:"quizz",
+              required: true,
+              where: {
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    const userSubmited = await UserPoints.count({
+      where:{userId:id,courseId}
+    }) 
+    let quizz = {
+      id:Quizzs[0].id,
+      title: Quizzs[0].dataValues.title,
+      description:Quizzs[0].dataValues.description,
+      isOpen: lessonsHaveQuizz === userSubmited
+    };
+
     let groups = await GroupCourses.findOne({
       where: {
         id: courseId,
@@ -516,7 +545,7 @@ const getUserCourse = async (req, res) => {
       return e;
     });
 
-    return res.json({ lessons, quizz: Quizzs[0], finalInterview });
+    return res.json({ lessons, quizz, finalInterview });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -581,7 +610,7 @@ const createCourse = async (req, res) => {
 
     lessons.map((e) => {
       CoursesPerLessons.create({
-        courspeId,
+        courseId,
         lessonId: e,
         type,
       });
