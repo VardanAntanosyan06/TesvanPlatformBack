@@ -180,6 +180,9 @@ const getLessonForAdmin = async (req, res) => {
       ],
       include: [
         {
+          model: Presentations,
+        },
+        {
           model: Quizz,
           as: 'quizz',
           attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
