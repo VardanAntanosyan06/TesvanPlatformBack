@@ -110,6 +110,7 @@ const getLesson = async (req, res) => {
           include: [
             {
               model: Presentations,
+              attributes: { exclude: ['createdAt', 'updatedAt'] },
             },
             {
               model: Quizz,
@@ -181,6 +182,7 @@ const getLessonForAdmin = async (req, res) => {
       include: [
         {
           model: Presentations,
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
         },
         {
           model: Quizz,
@@ -355,7 +357,6 @@ const createLesson = async (req, res) => {
       await Presentations.create({
         title: presentationTitle,
         url: fileName,
-
         description: presentationDescription,
         lessonId,
       });
@@ -373,7 +374,6 @@ const createLesson = async (req, res) => {
         quizzId,
       });
     }
-
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
@@ -434,7 +434,7 @@ const updateLesson = async (req, res) => {
           description: presentationDescription,
         },
 
-        { where: { lessonId: lesson.id } },
+        { where: { lessonId: id } },
       );
     }
 
