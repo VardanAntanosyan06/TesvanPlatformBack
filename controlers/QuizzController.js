@@ -8,6 +8,7 @@ const {
   CoursesPerLessons,
   Lesson,
   LessonsPerQuizz,
+  UserCourses,
   UserPoints,
   UserLesson,
 } = require("../models");
@@ -129,10 +130,12 @@ const submitQuizz = async (req, res) => {
 const finishQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { quizzId,isFinal,lessonId,courseId } = req.body;
+    const { quizzId, isFinal, lessonId, courseId } = req.body;
+    const userCourses = await UserCourses.findOne({
+      where: { UserId: userId, GroupCourseId: courseId },
+    });
 
-
-    if(!lessonId){
+    if (!lessonId) {
       let correctAnswers = await Quizz.findByPk(quizzId, {
         attributes: ["id"],
         include: [
@@ -149,11 +152,11 @@ const finishQuizz = async (req, res) => {
           },
         ],
       });
-  
-      correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
-        (a, b) => a.id - b.id
-      );
-  
+
+      correctAnswers = correctAnswers.Questions.map(
+        (e) => e.Options[0].id
+      ).sort((a, b) => a.id - b.id);
+
       const userAnswers = await UserAnswersQuizz.findAll({
         where: {
           testId: quizzId,
@@ -165,31 +168,38 @@ const finishQuizz = async (req, res) => {
       userAnswers.map((e) => {
         correctAnswers.push(e.optionId);
       });
-  
-      const point = Math.round(
-        ((correctAnswers.length - new Set(correctAnswers).size) /
-          Math.ceil(correctAnswers.length / 2)) *
-          100
-      )*(10/2)/100;
+
+      const point =
+        (Math.round(
+          ((correctAnswers.length - new Set(correctAnswers).size) /
+            Math.ceil(correctAnswers.length / 2)) *
+            100
+        ) *
+          (10 / 2)) /
+        100;
 
       await UserPoints.findOrCreate({
         where: {
           userId,
           quizzId,
           courseId,
-          isFinal
+          isFinal,
         },
         defaults: {
           quizzId,
           userId,
           point,
           isFinal,
-          courseId
+          courseId,
         },
-      }); 
-      return res.json({success:true})
+      });
+
+      userCourses.totalPoints = userCourses.totalPoints + point;
+      await userCourses.save();
+
+      return res.json({ success: true });
     }
-    const {maxPoints} = await Lesson.findByPk(lessonId)
+    const { maxPoints } = await Lesson.findByPk(lessonId);
 
     let correctAnswers = await Quizz.findByPk(quizzId, {
       attributes: ["id"],
@@ -224,27 +234,31 @@ const finishQuizz = async (req, res) => {
       correctAnswers.push(e.optionId);
     });
 
-    const point = Math.round(
-      ((correctAnswers.length - new Set(correctAnswers).size) /
-        Math.ceil(correctAnswers.length / 2)) *
-        100
-    )*(maxPoints/2)/100;
-    
+    const point =
+      (Math.round(
+        ((correctAnswers.length - new Set(correctAnswers).size) /
+          Math.ceil(correctAnswers.length / 2)) *
+          100
+      ) *
+        (maxPoints / 2)) /
+      100;
+
     await UserPoints.findOrCreate({
       where: {
         userId,
         quizzId,
-        courseId
+        courseId,
       },
       defaults: {
         quizzId,
         userId,
         point,
         isFinal,
-        courseId
+        courseId,
       },
     });
-    console.log(point);
+    userCourses.totalPoints = userCourses.totalPoints + point;
+    await userCourses.save();
     return res.json({
       point,
       correctAnswers: correctAnswers.length - new Set(correctAnswers).size,

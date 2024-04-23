@@ -404,8 +404,9 @@ const finishGroup = async (req, res) => {
       where: {
         id,
       },
-      include: { model: UserCourses },
-    });
+      include: [{
+        model: UserCourses,
+      }]    });
 
     if (!Group)
     return res.json({
@@ -416,7 +417,6 @@ const finishGroup = async (req, res) => {
       let status = 1 
       const {title:courseName} = await CoursesContents.findOne({where:{courseId:Group.assignCourseId,language}})
 
-      console.log(5);
     Group.UserCourses.map((e) => {
       if(e.totalPoints>40){
         status = 2
@@ -434,7 +434,7 @@ const finishGroup = async (req, res) => {
 
     Group.finished = true;
     Group.save();
-    return res.status(200).json({ success: true });
+    res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
