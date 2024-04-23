@@ -426,7 +426,7 @@ const updateLesson = async (req, res) => {
       const fileType = file.mimetype.split('/')[1];
       const fileName = v4() + '.' + fileType;
       file.mv(path.resolve(__dirname, '..', 'static', fileName));
-      // await Presentations.destroy({ where: { lessonId: id } });
+      await Presentations.destroy({ where: { lessonId: id } });
       await Presentations.update({
         title: presentationTitle,
         url: fileName,
