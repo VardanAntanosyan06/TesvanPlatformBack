@@ -132,6 +132,63 @@ const finishQuizz = async (req, res) => {
     const { quizzId,isFinal,lessonId,courseId } = req.body;
 
 
+    if(!lessonId){
+      let correctAnswers = await Quizz.findByPk(quizzId, {
+        attributes: ["id"],
+        include: [
+          {
+            model: Question,
+            attributes: ["id"],
+            include: [
+              {
+                model: Option,
+                where: { isCorrect: true },
+                attributes: ["id"],
+              },
+            ],
+          },
+        ],
+      });
+  
+      correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
+        (a, b) => a.id - b.id
+      );
+  
+      const userAnswers = await UserAnswersQuizz.findAll({
+        where: {
+          testId: quizzId,
+          userId,
+        },
+        attributes: ["optionId"],
+        order: [["id", "ASC"]],
+      });
+      userAnswers.map((e) => {
+        correctAnswers.push(e.optionId);
+      });
+  
+      const point = Math.round(
+        ((correctAnswers.length - new Set(correctAnswers).size) /
+          Math.ceil(correctAnswers.length / 2)) *
+          100
+      )*(10/2)/100;
+
+      await UserPoints.findOrCreate({
+        where: {
+          userId,
+          quizzId,
+          courseId,
+          isFinal
+        },
+        defaults: {
+          quizzId,
+          userId,
+          point,
+          isFinal,
+          courseId
+        },
+      }); 
+      return res.json({success:true})
+    }
     const {maxPoints} = await Lesson.findByPk(lessonId)
 
     let correctAnswers = await Quizz.findByPk(quizzId, {
