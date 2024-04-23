@@ -362,13 +362,13 @@ const createLesson = async (req, res) => {
       });
     }
 
-    if (homeworkId) {
+    if (!isNaN(+homeworkId)) {
       await HomeworkPerLesson.create({
         homeworkId,
         lessonId,
       });
     }
-    if (quizzId) {
+    if (!isNaN(+quizzId)) {
       await LessonsPerQuizz.create({
         lessonId,
         quizzId,
@@ -420,22 +420,19 @@ const updateLesson = async (req, res) => {
       presentationDescription,
     } = req.body;
 
-    let lesson = await Lesson.update({ title_en, description_en, htmlContent }, { where: { id } });
+    await Lesson.update({ title_en, description_en, htmlContent }, { where: { id } });
     if (req.files && req.files.file) {
       const { file } = req.files;
       const fileType = file.mimetype.split('/')[1];
       const fileName = v4() + '.' + fileType;
       file.mv(path.resolve(__dirname, '..', 'static', fileName));
-
-      await Presentations.update(
-        {
-          title: presentationTitle,
-          url: fileName,
-          description: presentationDescription,
-        },
-
-        { where: { lessonId: id } },
-      );
+      await Presentations.destroy({ where: { lessonId: id } });
+      await Presentations.create({
+        title: presentationTitle,
+        url: fileName,
+        description: presentationDescription,
+        lessonId: id,
+      });
     }
 
     await HomeworkPerLesson.destroy({ where: { lessonId: id } });
