@@ -34,14 +34,16 @@ module.exports = (sequelize, DataTypes) => {
   const GroupCourses = sequelize.define('GroupCourses');
   const Groups = sequelize.define('Groups');
   const Users = sequelize.define('Users');
+  const CoursesContents = sequelize.define('CoursesContents');
 
   // UserCourses.belongsTo(Groups, {
   //   foreignKey: 'GroupCourseId',
   // });
-  UserCourses.belongsTo(Groups, { foreignKey: 'GroupCourseId'});
+  UserCourses.belongsTo(Groups, { foreignKey: 'GroupCourseId' });
+  UserCourses.belongsTo(Groups, { foreignKey: 'GroupCourseId' });
 
   UserCourses.belongsTo(GroupCourses);
-  UserCourses.belongsTo(Users);
+  UserCourses.belongsTo(CoursesContents, { foreignKey: 'GroupCourseId' });
 
   return UserCourses;
 };

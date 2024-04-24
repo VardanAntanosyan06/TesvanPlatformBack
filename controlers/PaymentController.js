@@ -8,6 +8,7 @@ const {
   UserCourses,
   UserLesson,
   Payment,
+  GroupCourses,
   UserPoints,
   Users,
 } = require('../models');
@@ -72,72 +73,128 @@ const buy = async (req, res) => {
         groupId: payment.groupId,
       });
 
-    const user = await Users.findOne({ where: { id: payment.userId } });
-    const group = await Groups.findByPk(payment.groupId);
-    if (!group) {
-      return res.json({ success: false, message: 'Group not found' });
-    }
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
     if (payment.type == 'Group') {
+      const user = await Users.findOne({ where: { id: payment.userId } });
+      const group = await Groups.findByPk(payment.groupId);
+      if (!group) {
+        return res.json({ success: false, message: 'Group not found' });
+      }
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
       await GroupsPerUsers.create({
         groupId: payment.groupId,
         userId: payment.userId,
       });
-    }
 
-    await UserCourses.create({
-      GroupCourseId: group.assignCourseId,
-
-      UserId: payment.userId,
-    });
-    const lessons = await CoursesPerLessons.findAll({
-      where: { courseId: group.assignCourseId },
-    });
-    await UserPoints.findOrCreate({
-      where:{
-        userId:payment.userId
-      },
-      defaults:{
-        userId:payment.userId,
-        lesson: 0,
-        quizz: 0,
-        finalInterview: 0
-      }
-    })
-    lessons.map((e) => {
-      UserLesson.create({
+      await UserCourses.create({
         GroupCourseId: group.assignCourseId,
-        UserId: payment.userId,
-        LessonId: e.lessonId,
-      });
-    });
-    const boughtTests = await Tests.findAll({
-      where: {
-        [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
-      },
-    });
 
-    boughtTests.map((test) => {
-      UserTests.findOrCreate({
+        UserId: payment.userId,
+      });
+      const lessons = await CoursesPerLessons.findAll({
+        where: { courseId: group.assignCourseId },
+      });
+      await UserPoints.findOrCreate({
         where: {
-          testId: test.id,
           userId: payment.userId,
-          courseId: test.courseId,
-          language: test.language,
-          type: 'Group',
         },
         defaults: {
-          testId: test.id,
           userId: payment.userId,
+          lesson: 0,
+          quizz: 0,
+          finalInterview: 0,
         },
       });
-    });
+      lessons.map((e) => {
+        UserLesson.create({
+          GroupCourseId: group.assignCourseId,
+          UserId: payment.userId,
+          LessonId: e.lessonId,
+        });
+      });
+      const boughtTests = await Tests.findAll({
+        where: {
+          [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
+        },
+      });
 
-    res.send({ success: true });
+      boughtTests.map((test) => {
+        UserTests.findOrCreate({
+          where: {
+            testId: test.id,
+            userId: payment.userId,
+            courseId: test.courseId,
+            language: test.language,
+            type: 'Group',
+          },
+          defaults: {
+            testId: test.id,
+            userId: payment.userId,
+          },
+        });
+      });
+      res.send({ success: true });
+    } else if (payment.type == 'Individual') {
+      const user = await Users.findOne({ where: { id: payment.userId } });
+      const course = await GroupCourses.findByPk(payment.groupId);
+      if (!course) {
+        return res.json({ success: false, message: 'Course not found' });
+      }
+
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      await UserCourses.create({
+        GroupCourseId: payment.groupId,
+
+        UserId: payment.userId,
+      });
+      const lessons = await CoursesPerLessons.findAll({
+        where: { courseId: payment.groupId },
+      });
+      await UserPoints.findOrCreate({
+        where: {
+          userId: payment.userId,
+        },
+        defaults: {
+          userId: payment.userId,
+          lesson: 0,
+          quizz: 0,
+          finalInterview: 0,
+        },
+      });
+      lessons.map((e) => {
+        UserLesson.create({
+          GroupCourseId: payment.groupId,
+          UserId: payment.userId,
+          LessonId: e.lessonId,
+        });
+      });
+      const boughtTests = await Tests.findAll({
+        where: {
+          [sequelize.Op.or]: [{ courseId: payment.groupId }, { courseId: null }],
+        },
+      });
+
+      boughtTests.map((test) => {
+        UserTests.findOrCreate({
+          where: {
+            testId: test.id,
+            userId: payment.userId,
+            courseId: test.courseId,
+            language: test.language,
+            type: 'Group',
+          },
+          defaults: {
+            testId: test.id,
+            userId: payment.userId,
+          },
+        });
+      });
+      res.send({ success: true });
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something Went Wrong' });

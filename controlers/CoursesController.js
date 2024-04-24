@@ -12,52 +12,50 @@ const {
   IndividualCourses,
   UserPoints,
   Calendar,
-} = require("../models");
+} = require('../models');
 
-const { CoursesContents } = require("../models");
-const { UserCourses } = require("../models");
-const { Levels } = require("../models");
-const { CourseType } = require("../models");
-const { Format } = require("../models");
-const { Users } = require("../models");
-const { CourseProgram } = require("../models");
-const { Trainer } = require("../models");
-const { UserLesson } = require("../models");
-const { Lesson } = require("../models");
-const { Op } = require("sequelize");
-const sequelize = require("sequelize");
-const CircularJSON = require("circular-json");
-const { v4 } = require("uuid");
-const moment = require("moment");
-const path = require("path");
-const { group } = require("console");
-const quizz = require("../models/quizz");
+const { CoursesContents } = require('../models');
+const { UserCourses } = require('../models');
+const { Levels } = require('../models');
+const { CourseType } = require('../models');
+const { Format } = require('../models');
+const { Users } = require('../models');
+const { CourseProgram } = require('../models');
+const { Trainer } = require('../models');
+const { UserLesson } = require('../models');
+const { Lesson } = require('../models');
+const { Op } = require('sequelize');
+const sequelize = require('sequelize');
+const CircularJSON = require('circular-json');
+const { v4 } = require('uuid');
+const moment = require('moment');
+const path = require('path');
+const { group } = require('console');
+const quizz = require('../models/quizz');
 // const { finished } = require('stream/promises');
 
 const getAllCourses = async (req, res) => {
   try {
     const { language } = req.query;
-    let months = "months";
-    let days = "days";
+    let months = 'months';
+    let days = 'days';
 
-    if (!["en", "ru", "am"].includes(language)) {
-      return res
-        .status(403)
-        .json({ message: "The language must be am, ru, or en." });
+    if (!['en', 'ru', 'am'].includes(language)) {
+      return res.status(403).json({ message: 'The language must be am, ru, or en.' });
     }
 
     switch (language) {
-      case "am":
-        months = "ամիս";
-        days = "օր";
+      case 'am':
+        months = 'ամիս';
+        days = 'օր';
         break;
-      case "ru":
-        months = "месяц";
-        days = "день";
+      case 'ru':
+        months = 'месяц';
+        days = 'день';
         break;
       default:
-        months = "months";
-        days = "days";
+        months = 'months';
+        days = 'days';
         break;
     }
     let Courses = await GroupCourses.findAll({
@@ -65,40 +63,38 @@ const getAllCourses = async (req, res) => {
         {
           model: CoursesContents,
           where: { language },
-          attributes: { exclude: ["id", "language", "courseId"] },
+          attributes: { exclude: ['id', 'language', 'courseId'] },
         },
       ],
-      order: [["bought", "DESC"]],
-      attributes: { exclude: ["id", "createdAt", "updatedAt"] },
+      order: [['bought', 'DESC']],
+      attributes: { exclude: ['id', 'createdAt', 'updatedAt'] },
     });
 
     Courses = Courses.map((e) => {
       return {
         course: e,
-        courseStartDate: moment(e.startDate).format("ll"),
+        courseStartDate: moment(e.startDate).format('ll'),
         courseDate:
-          moment().diff(e.startDate, "months") > 0
-            ? moment().diff(e.startDate, "months") + " " + months
-            : moment().diff(e.startDate, "days") + " " + days,
+          moment().diff(e.startDate, 'months') > 0
+            ? moment().diff(e.startDate, 'months') + ' ' + months
+            : moment().diff(e.startDate, 'days') + ' ' + days,
       };
     });
     return res.status(200).json({ Courses });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const getCourseTitles = async (req, res) => {
   try {
     const { language } = req.query;
-    let months = "months";
-    let days = "days";
+    let months = 'months';
+    let days = 'days';
 
-    if (!["en", "ru", "am"].includes(language)) {
-      return res
-        .status(403)
-        .json({ message: "The language must be am, ru, or en." });
+    if (!['en', 'ru', 'am'].includes(language)) {
+      return res.status(403).json({ message: 'The language must be am, ru, or en.' });
     }
 
     let Courses = await GroupCourses.findAll({
@@ -106,24 +102,23 @@ const getCourseTitles = async (req, res) => {
         {
           model: CoursesContents,
           where: { language },
-          attributes: ["title", "description"],
+          attributes: ['title', 'description'],
         },
       ],
-      order: [["id", "DESC"]],
-      attributes: ["id"],
+      order: [['id', 'DESC']],
+      attributes: ['id'],
     });
     Courses = Courses.map((item) => {
       return {
         id: item.id,
         title: item?.CoursesContents[0].title,
-        description:
-          item?.CoursesContents[0].description.match(/\b(\w+\b\s*){1,16}/)[0],
+        description: item?.CoursesContents[0].description.match(/\b(\w+\b\s*){1,16}/)[0],
       };
     });
     return res.status(200).json(Courses);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -135,41 +130,38 @@ const getOne = async (req, res) => {
     const isCourse = await CoursesContents.findOne({
       where: { courseId: id },
     });
-    console.log(
-      isCourse,
-      "++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-    );
+    console.log(isCourse, '++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     // if(!isCourse) return res.status(403).json({message:"Course not found"})
-    if (isCourse && isCourse.courseType === "Individual") {
+    if (isCourse && isCourse.courseType === 'Individual') {
       let course = await GroupCourses.findOne({
         where: { id },
         include: [
           {
             model: CoursesContents,
-            where: { language, courseType: "Individual" },
+            where: { language, courseType: 'Individual' },
             attributes: [
-              "id",
-              "courseId",
-              "language",
-              "title",
-              "description",
-              "courseType",
-              "shortDescription",
-              "lessonType",
-              "whyThisCourse",
-              "level",
+              'id',
+              'courseId',
+              'language',
+              'title',
+              'description',
+              'courseType',
+              'shortDescription',
+              'lessonType',
+              'whyThisCourse',
+              'level',
             ],
             required: true,
           },
           {
             model: levelDescription,
-            attributes: ["title", "description"],
+            attributes: ['title', 'description'],
           },
           {
             model: Lesson,
             attributes: [
-              ["title_en", "title"],
-              ["description_en", "description"],
+              ['title_en', 'title'],
+              ['description_en', 'description'],
             ],
             through: {
               attributes: [],
@@ -179,7 +171,7 @@ const getOne = async (req, res) => {
       });
 
       if (!course) {
-        return res.status(403).json({ message: "Course not found." });
+        return res.status(403).json({ message: 'Course not found.' });
         // return res.json(groups)
       }
 
@@ -191,11 +183,11 @@ const getOne = async (req, res) => {
       // attributes: ['id', 'title', 'description', 'price', 'discount'],
       // });
 
-      const duration = moment(new Date()).diff(moment(new Date()), "days");
+      const duration = moment(new Date()).diff(moment(new Date()), 'days');
 
       const trainers = await Trainer.findAll({
         where: { courseId: id },
-        attributes: ["fullName", "img", "profession"],
+        attributes: ['fullName', 'img', 'profession'],
       });
 
       course = {
@@ -207,8 +199,8 @@ const getOne = async (req, res) => {
         payment: [
           {
             id: 3,
-            title: "drfdsg",
-            description: "gfds",
+            title: 'drfdsg',
+            description: 'gfds',
             price: 100,
             discount: 0,
           },
@@ -219,7 +211,7 @@ const getOne = async (req, res) => {
 
     const groups = await Groups.findOne({ where: { id } });
 
-    if (!groups) return res.status(403).json({ message: "Group not found" });
+    if (!groups) return res.status(403).json({ message: 'Group not found' });
     let course = await GroupCourses.findOne({
       where: { id: groups.assignCourseId },
       include: [
@@ -227,27 +219,27 @@ const getOne = async (req, res) => {
           model: CoursesContents,
           where: { language },
           attributes: [
-            "id",
-            "courseId",
-            "language",
-            "title",
-            "description",
-            "courseType",
-            "shortDescription",
-            "lessonType",
-            "whyThisCourse",
-            "level",
+            'id',
+            'courseId',
+            'language',
+            'title',
+            'description',
+            'courseType',
+            'shortDescription',
+            'lessonType',
+            'whyThisCourse',
+            'level',
           ],
         },
         {
           model: levelDescription,
-          attributes: ["title", "description"],
+          attributes: ['title', 'description'],
         },
         {
           model: Lesson,
           attributes: [
-            ["title_en", "title"],
-            ["description_en", "description"],
+            ['title_en', 'title'],
+            ['description_en', 'description'],
           ],
           through: {
             attributes: [],
@@ -257,7 +249,7 @@ const getOne = async (req, res) => {
     });
 
     if (!course) {
-      return res.status(500).json({ message: "Course not found." });
+      return res.status(500).json({ message: 'Course not found.' });
       // return res.json(groups)
     }
 
@@ -266,17 +258,14 @@ const getOne = async (req, res) => {
     });
     const payment = await PaymentWays.findAll({
       where: { groupId: groups.id },
-      attributes: ["id", "title", "description", "price", "discount"],
+      attributes: ['id', 'title', 'description', 'price', 'discount'],
     });
 
-    const duration = moment(groups.endDate).diff(
-      moment(groups.startDate),
-      "days"
-    );
+    const duration = moment(groups.endDate).diff(moment(groups.startDate), 'days');
 
     const trainers = await Trainer.findAll({
       where: { courseId: groups.assignCourseId },
-      attributes: ["fullName", "img", "profession"],
+      attributes: ['fullName', 'img', 'profession'],
     });
 
     course = {
@@ -290,7 +279,7 @@ const getOne = async (req, res) => {
     return res.send(course);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 const like = async (req, res) => {
@@ -303,7 +292,7 @@ const like = async (req, res) => {
     const user = await Users.findOne({ where: { id } });
 
     if (!user) {
-      return res.status(401).json({ message: "User not found" });
+      return res.status(401).json({ message: 'User not found' });
     }
 
     if (user.likedCourses && user.likedCourses.includes(courseId)) {
@@ -317,7 +306,7 @@ const like = async (req, res) => {
     res.send({ courses: user.likedCourses });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -398,9 +387,9 @@ const createTest = async (req, res) => {
         defaults: {
           userId,
           testId: e.id,
-          status: "not passed",
+          status: 'not passed',
           point: 0,
-          type: "Group",
+          type: 'Group',
         },
       });
     });
@@ -408,7 +397,7 @@ const createTest = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -417,12 +406,12 @@ const getUserCourses = async (req, res) => {
     const { user_id: id } = req.user;
     const { language } = req.query;
     if (!id) {
-      return res.status(500).json({ message: "User not found" });
+      return res.status(500).json({ message: 'User not found' });
     }
 
     let courses = await UserCourses.findAll({
       where: { UserId: id },
-      attributes: ["id", ["UserId", "userId"]],
+      attributes: ['id', ['UserId', 'userId']],
       include: [
         {
           model: GroupCourses,
@@ -430,7 +419,7 @@ const getUserCourses = async (req, res) => {
             {
               model: CoursesContents,
               where: { language },
-              attributes: ["title", "description", "level"],
+              attributes: ['title', 'description', 'level'],
             },
             {
               model: Groups,
@@ -450,20 +439,16 @@ const getUserCourses = async (req, res) => {
       const coursesContents = groupCourse?.CoursesContents || [];
       const startDate = groups[0]?.startDate || null;
       const formattedDate = startDate
-        ? new Date(startDate)
-            .toISOString()
-            .split("T")[0]
-            .slice(5)
-            .replace("-", ".")
+        ? new Date(startDate).toISOString().split('T')[0].slice(5).replace('-', '.')
         : null;
       const year = startDate ? new Date(startDate).getFullYear() : null;
 
-      e["id"] = groups[0]?.id || null;
-      e["groupCourseId"] = groups[0]?.assignCourseId || null;
-      e["startDate"] = formattedDate.replace("/", ".");
-      e["title"] = coursesContents[0]?.title || null;
-      e["description"] = coursesContents[0]?.description || null;
-      e["percent"] = 0;
+      e['id'] = groups[0]?.id || null;
+      e['groupCourseId'] = groups[0]?.assignCourseId || null;
+      e['startDate'] = formattedDate.replace('/', '.');
+      e['title'] = coursesContents[0]?.title || null;
+      e['description'] = coursesContents[0]?.description || null;
+      e['percent'] = 0;
 
       delete e.GroupCourse;
       return e;
@@ -471,7 +456,7 @@ const getUserCourses = async (req, res) => {
     return res.send({ courses });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -481,7 +466,7 @@ const getUserCourse = async (req, res) => {
     const { courseId } = req.params;
     const { language } = req.query;
     if (!id) {
-      return res.status(500).json({ message: "User not found" });
+      return res.status(500).json({ message: 'User not found' });
     }
     let lessons = await CoursesPerLessons.findAll({
       where: { courseId },
@@ -489,8 +474,8 @@ const getUserCourse = async (req, res) => {
         {
           model: Lesson,
           attributes: [
-            [`title_${language}`, "title"],
-            [`description_${language}`, "description"],
+            [`title_${language}`, 'title'],
+            [`description_${language}`, 'description'],
           ],
         },
       ],
@@ -501,11 +486,7 @@ const getUserCourse = async (req, res) => {
       include: [
         {
           model: Quizz,
-          attributes: [
-            "id",
-            ["title_en", "title"],
-            ["description_en", "description"],
-          ],
+          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
           through: { attributes: [] },
         },
       ],
@@ -518,7 +499,7 @@ const getUserCourse = async (req, res) => {
           include: [
             {
               model: Quizz,
-              as: "quizz",
+              as: 'quizz',
               required: true,
             },
           ],
@@ -554,16 +535,16 @@ const getUserCourse = async (req, res) => {
           [Op.contains]: [id],
         },
       },
-      attributes: { exclude: ["userId", "createdAt", "updatedAt"] },
+      attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
     });
 
     lessons = lessons.map((e, i) => {
       e = e.toJSON();
       delete e.dataValues;
-      e["title"] = e.Lesson.title;
-      e["description"] = e.Lesson.description;
-      e["number"] = i + 1;
-      e["isOpen"] = true;
+      e['title'] = e.Lesson.title;
+      e['description'] = e.Lesson.description;
+      e['number'] = i + 1;
+      e['isOpen'] = true;
       delete e.Lessons;
       return e;
     });
@@ -571,7 +552,7 @@ const getUserCourse = async (req, res) => {
     return res.json({ lessons, quizz, finalInterview });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -595,9 +576,9 @@ const createCourse = async (req, res) => {
 
     let { img, trainersImages } = req.files;
 
-    const imgType = img.mimetype.split("/")[1];
-    const imgFileName = v4() + "." + imgType;
-    img.mv(path.resolve(__dirname, "..", "static", imgFileName));
+    const imgType = img.mimetype.split('/')[1];
+    const imgFileName = v4() + '.' + imgType;
+    img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
 
     // let courseId;
     let { id: courseId } = await GroupCourses.create({ img: imgFileName });
@@ -639,9 +620,9 @@ const createCourse = async (req, res) => {
       });
     });
     trainers.map((e, i) => {
-      const type = trainersImages[i].mimetype.split("/")[1];
-      const fileName = v4() + "." + type;
-      trainersImages[i].mv(path.resolve(__dirname, "..", "static", fileName));
+      const type = trainersImages[i].mimetype.split('/')[1];
+      const fileName = v4() + '.' + type;
+      trainersImages[i].mv(path.resolve(__dirname, '..', 'static', fileName));
 
       Trainer.create({
         fullName: e.fullName,
@@ -663,7 +644,7 @@ const createCourse = async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -675,45 +656,42 @@ const getCoursesByFilter = async (req, res) => {
       maxPrice = 1000000000000000,
       format,
       isDiscount,
-      language = "en",
+      language = 'en',
       limit = null,
-      order = "popularity",
+      order = 'popularity',
       courseType,
     } = req.query;
 
-    format = format.split("_");
-    level = level.split("_");
-    if (!["en", "ru", "am"].includes(language)) {
-      return res
-        .status(403)
-        .json({ message: "The language must be am, ru, or en." });
+    format = format.split('_');
+    level = level.split('_');
+    if (!['en', 'ru', 'am'].includes(language)) {
+      return res.status(403).json({ message: 'The language must be am, ru, or en.' });
     }
-    if (!["popularity", "newest", "lowToHigh", "highToLow"].includes(order)) {
+    if (!['popularity', 'newest', 'lowToHigh', 'highToLow'].includes(order)) {
       return res.status(403).json({
-        message:
-          "The Order must be popularity or newest lowToHigh or highToLow.",
+        message: 'The Order must be popularity or newest lowToHigh or highToLow.',
       });
     }
     if (!(level && format && language))
       return res.status(403).json({
-        message: "level, format, isDiscount and language is requred values",
+        message: 'level, format, isDiscount and language is requred values',
       });
 
     let type = { [Op.gte]: 0 };
-    if (isDiscount === "true") {
+    if (isDiscount === 'true') {
       type = { [Op.gt]: 0 };
     }
 
-    const months = { am: "ամիս", ru: "месяц", en: "months" };
-    const days = { am: "օր", ru: "день", en: "days" };
+    const months = { am: 'ամիս', ru: 'месяц', en: 'months' };
+    const days = { am: 'օր', ru: 'день', en: 'days' };
     const orderTypes = {
-      popularity: ["bought", "DESC"],
-      newest: ["createdAt", "DESC"],
+      popularity: ['bought', 'DESC'],
+      newest: ['createdAt', 'DESC'],
     };
 
     const levels = {};
     const getLevels = await Levels.findAll({
-      attributes: [language, "slug"],
+      attributes: [language, 'slug'],
     });
     getLevels.map((e) => {
       levels[e.slug] = e[language];
@@ -721,7 +699,7 @@ const getCoursesByFilter = async (req, res) => {
 
     const formats = {};
     const getFormats = await Format.findAll({
-      attributes: [language, "slug"],
+      attributes: [language, 'slug'],
     });
     getFormats.map((e) => {
       formats[e.slug] = e[language];
@@ -729,7 +707,7 @@ const getCoursesByFilter = async (req, res) => {
 
     const groups = {};
     const getGroups = await CourseType.findAll({
-      attributes: [language, "slug"],
+      attributes: [language, 'slug'],
     });
     getGroups.map((e) => {
       groups[e.slug] = e[language];
@@ -743,7 +721,7 @@ const getCoursesByFilter = async (req, res) => {
       include: [
         {
           model: GroupsPerUsers,
-          where: { userRole: "STUDENT" },
+          where: { userRole: 'STUDENT' },
           required: false,
         },
         {
@@ -763,7 +741,7 @@ const getCoursesByFilter = async (req, res) => {
                   [Op.in]: format,
                 },
               },
-              attributes: { exclude: ["id", "language", "courseId"] },
+              attributes: { exclude: ['id', 'language', 'courseId'] },
               include: [Levels],
             },
           ],
@@ -771,20 +749,13 @@ const getCoursesByFilter = async (req, res) => {
       ],
       // order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
       limit,
-      attributes: [
-        "id",
-        ["name", "title"],
-        "startDate",
-        "endDate",
-        "price",
-        "sale",
-      ],
+      attributes: ['id', ['name', 'title'], 'startDate', 'endDate', 'price', 'sale'],
       require: true,
     });
 
     let Individual = await CoursesContents.findAll({
       where: {
-        courseType: "Individual",
+        courseType: 'Individual',
         courseId: {
           [Op.not]: null,
         },
@@ -801,8 +772,8 @@ const getCoursesByFilter = async (req, res) => {
     // return res.json({Individual})
     const criticalPrices = await Groups.findOne({
       attributes: [
-        [sequelize.fn("min", sequelize.col("price")), "minPrice"],
-        [sequelize.fn("max", sequelize.col("price")), "maxPrice"],
+        [sequelize.fn('min', sequelize.col('price')), 'minPrice'],
+        [sequelize.fn('max', sequelize.col('price')), 'maxPrice'],
       ],
     });
     Courses = Courses.map((e) => {
@@ -814,34 +785,23 @@ const getCoursesByFilter = async (req, res) => {
       e.courseType = e.GroupCourse.CoursesContents[0].courseType;
       e.lessonType = e.GroupCourse.CoursesContents[0].lessonType;
       e.level = e.GroupCourse.CoursesContents[0].level;
-      e.courseStartDate = moment(e.startDate).format("ll");
+      e.courseStartDate = moment(e.startDate).format('ll');
       (e.courseDate =
-        moment(new Date(e.endDate)).diff(new Date(e.startDate), "months") > 0
-          ? moment(e.endDate).diff(new Date(e.startDate), "months") +
-            " " +
-            months[language]
-          : moment(e.endDate).diff(new Date(e.startDate), "days") +
-            " " +
-            days[language]),
+        moment(new Date(e.endDate)).diff(new Date(e.startDate), 'months') > 0
+          ? moment(e.endDate).diff(new Date(e.startDate), 'months') + ' ' + months[language]
+          : moment(e.endDate).diff(new Date(e.startDate), 'days') + ' ' + days[language]),
         (e.price = e.price);
-      (e.saledValue =
-        e.price > 0 ? e.price - Math.round(e.price * e.sale) / 100 : e.price),
+      (e.saledValue = e.price > 0 ? e.price - Math.round(e.price * e.sale) / 100 : e.price),
         (e.bought = e.GroupsPerUsers.length);
       delete e.GroupCourse;
       return e;
     });
 
-    if (order === "highToLow")
-      Courses = Courses.sort((a, b) => b.saledValue - a.saledValue);
-    if (order === "popularity")
-      Courses = Courses.sort((a, b) => b.bought - a.bought);
-    if (order === "newest")
-      Courses = Courses.sort((a, b) => b.courseStartDate - a.courseStartDate);
-    if (order === "lowToHigh")
-      Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
-    Courses = Courses.filter(
-      (e) => e.saledValue >= minPrice && e.saledValue <= maxPrice
-    );
+    if (order === 'highToLow') Courses = Courses.sort((a, b) => b.saledValue - a.saledValue);
+    if (order === 'popularity') Courses = Courses.sort((a, b) => b.bought - a.bought);
+    if (order === 'newest') Courses = Courses.sort((a, b) => b.courseStartDate - a.courseStartDate);
+    if (order === 'lowToHigh') Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
+    Courses = Courses.filter((e) => e.saledValue >= minPrice && e.saledValue <= maxPrice);
 
     // if (courseType === 'Individual') {
     //   return res.status(200).send(IndividualCourses);
@@ -869,7 +829,7 @@ const getCoursesByFilter = async (req, res) => {
         price: 80,
         sale: 1,
         // courseStartDate: "Apr 16, 2024",
-        courseDate: "1 month",
+        courseDate: '1 month',
         saledValue: 79.2,
         bought: 0,
         img: `https://platform.tesvan.com/server/${e.img}`,
@@ -880,10 +840,10 @@ const getCoursesByFilter = async (req, res) => {
       };
     });
 
-    if (courseType == "Group") {
+    if (courseType == 'Group') {
       return res.status(200).json({ Courses, criticalPrices });
-    } else if (courseType == "Individual") {
-      console.log("++++");
+    } else if (courseType == 'Individual') {
+      console.log('++++');
       return res.status(200).json({ Courses: Individual, criticalPrices });
     } else {
       Courses = [...Courses, ...Individual];
@@ -892,7 +852,7 @@ const getCoursesByFilter = async (req, res) => {
     // >>>>>>> Stashed changes
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -904,24 +864,24 @@ const getOneGroup = async (req, res) => {
       where: { courseId: id },
     });
     // if(!isCourse) return res.status(403).json({message:"Course not found"})
-    if (isCourse && isCourse.courseType === "Individual") {
+    if (isCourse && isCourse.courseType === 'Individual') {
       let course = await GroupCourses.findOne({
         where: { id },
         include: [
           {
             model: CoursesContents,
-            where: { language, courseType: "Individual" },
+            where: { language, courseType: 'Individual' },
             attributes: [
-              "id",
-              "courseId",
-              "language",
-              "title",
-              "description",
-              "courseType",
-              "shortDescription",
-              "lessonType",
-              "whyThisCourse",
-              "level",
+              'id',
+              'courseId',
+              'language',
+              'title',
+              'description',
+              'courseType',
+              'shortDescription',
+              'lessonType',
+              'whyThisCourse',
+              'level',
             ],
             required: true,
           },
@@ -929,7 +889,7 @@ const getOneGroup = async (req, res) => {
       });
 
       if (!course) {
-        return res.status(403).json({ message: "Course not found." });
+        return res.status(403).json({ message: 'Course not found.' });
         // return res.json(groups)
       }
 
@@ -963,7 +923,7 @@ const getOneGroup = async (req, res) => {
           include: [
             {
               model: CoursesContents,
-              attributes: { exclude: ["id", "language", "courseId"] },
+              attributes: { exclude: ['id', 'language', 'courseId'] },
               include: [Levels],
             },
           ],
@@ -981,7 +941,7 @@ const getOneGroup = async (req, res) => {
       courseType: Courses.GroupCourse.CoursesContents[0].courseType,
       lessonType: Courses.GroupCourse.CoursesContents[0].lessonType,
       level: Courses.GroupCourse.CoursesContents[0].level,
-      courseStartDate: moment().format("ll"),
+      courseStartDate: moment().format('ll'),
       // courseDate:
       //   moment().diff(new Date().toISOString(), "months") > 0
       //     ? moment().diff(new Date().toISOString(), "months") +
@@ -992,13 +952,12 @@ const getOneGroup = async (req, res) => {
       //       days[language],
       price,
       sale: discount,
-      saledValue:
-        price > 0 ? price - Math.round(price * discount) / 100 : price,
+      saledValue: price > 0 ? price - Math.round(price * discount) / 100 : price,
     };
     return res.status(200).json(Courses);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -1027,10 +986,7 @@ const updateCourse = async (req, res) => {
     if (!Array.isArray(lessons)) lessons = [lessons];
     if (!Array.isArray(trainersImages)) trainersImages = [trainersImages];
 
-    await GroupCourses.update(
-      { img: image[0].url },
-      { where: { id: courseId } }
-    );
+    await GroupCourses.update({ img: image[0].url }, { where: { id: courseId } });
     await CoursesContents.update(
       {
         language,
@@ -1041,7 +997,7 @@ const updateCourse = async (req, res) => {
         whyThisCourse,
         level,
       },
-      { where: { courseId, language } }
+      { where: { courseId, language } },
     );
 
     await CoursesPerQuizz.destroy({
@@ -1071,7 +1027,7 @@ const updateCourse = async (req, res) => {
       await CoursesPerLessons.create({
         courseId,
         lessonId: e,
-        type: "Group",
+        type: 'Group',
       });
     });
 
@@ -1082,20 +1038,32 @@ const updateCourse = async (req, res) => {
         img: trainersImages[i],
         profession: e.profession,
         courseId,
-        type: "Group",
+        type: 'Group',
       });
     });
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const deleteCourse = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const assignCourse = await Groups.findOne({
+      where: {
+        assignCourseId: id,
+      },
+    });
+
+    if (assignCourse) {
+      return res
+        .status(403)
+        .json({ message: 'This course is attached to a group, ungroup before deleting' });
+    }
 
     GroupCourses.destroy({ where: { id } });
     CoursesContents.destroy({
@@ -1112,7 +1080,7 @@ const deleteCourse = async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -1125,40 +1093,31 @@ const getCourseForAdmin = async (req, res) => {
       include: [
         {
           model: CoursesContents,
-          attributes: { exclude: ["id", "courseId", "language"] },
-          where: { language: "en" },
+          attributes: { exclude: ['id', 'courseId', 'language'] },
+          where: { language: 'en' },
         },
         {
           model: levelDescription,
-          attributes: ["title", "description"],
+          attributes: ['title', 'description'],
         },
         {
           model: Lesson,
-          attributes: [
-            "id",
-            ["title_en", "title"],
-            ["description_en", "description"],
-          ],
+          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
         },
         {
           model: Quizz,
-          attributes: [
-            "id",
-            ["title_en", "title"],
-            ["description_en", "description"],
-          ],
+          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
           through: { attributes: [] },
         },
       ],
-      attributes: ["id", "img"],
+      attributes: ['id', 'img'],
     });
 
-    if (!course)
-      return res.json({ success: false, message: "Course not found" });
+    if (!course) return res.json({ success: false, message: 'Course not found' });
 
     const trainers = await Trainer.findAll({
       where: { courseId: id },
-      attributes: ["fullName", "img", "profession"],
+      attributes: ['fullName', 'img', 'profession'],
     });
 
     course.Lesson = course.Lessons.map((e) => {
@@ -1196,7 +1155,7 @@ const getCourseForAdmin = async (req, res) => {
     return res.json(course);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -1211,30 +1170,30 @@ const IndividualGetOne = async (req, res) => {
       include: [
         {
           model: CoursesContents,
-          where: { language, courseType: "Individual" },
+          where: { language, courseType: 'Individual' },
           attributes: [
-            "id",
-            "courseId",
-            "language",
-            "title",
-            "description",
-            "courseType",
-            "shortDescription",
-            "lessonType",
-            "whyThisCourse",
-            "level",
+            'id',
+            'courseId',
+            'language',
+            'title',
+            'description',
+            'courseType',
+            'shortDescription',
+            'lessonType',
+            'whyThisCourse',
+            'level',
           ],
           required: true,
         },
         {
           model: levelDescription,
-          attributes: ["title", "description"],
+          attributes: ['title', 'description'],
         },
         {
           model: Lesson,
           attributes: [
-            ["title_en", "title"],
-            ["description_en", "description"],
+            ['title_en', 'title'],
+            ['description_en', 'description'],
           ],
           through: {
             attributes: [],
@@ -1243,7 +1202,7 @@ const IndividualGetOne = async (req, res) => {
       ],
     });
     if (!course) {
-      return res.status(403).json({ message: "Course not found." });
+      return res.status(403).json({ message: 'Course not found.' });
       // return res.json(groups)
     }
 
@@ -1255,11 +1214,11 @@ const IndividualGetOne = async (req, res) => {
     // attributes: ['id', 'title', 'description', 'price', 'discount'],
     // });
 
-    const duration = moment(new Date()).diff(moment(new Date()), "days");
+    const duration = moment(new Date()).diff(moment(new Date()), 'days');
 
     const trainers = await Trainer.findAll({
       where: { courseId: id },
-      attributes: ["fullName", "img", "profession"],
+      attributes: ['fullName', 'img', 'profession'],
     });
 
     course = {
@@ -1271,8 +1230,8 @@ const IndividualGetOne = async (req, res) => {
       payment: [
         {
           id: 3,
-          title: "drfdsg",
-          description: "gfds",
+          title: 'drfdsg',
+          description: 'gfds',
           price: 100,
           discount: 0,
         },
@@ -1281,9 +1240,7 @@ const IndividualGetOne = async (req, res) => {
     res.send(course);
   } catch (error) {
     console.log(error.message);
-    return res
-      .status(500)
-      .json({ success: false, message: "Something went wrong" });
+    return res.status(500).json({ success: false, message: 'Something went wrong' });
   }
 };
 

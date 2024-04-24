@@ -3,8 +3,9 @@ var router = express.Router();
 
 const controller = require('../controlers/HomeworkController');
 const checkAuth = require('../middleware/checkAuth');
+const { userSockets } = require('../userSockets');
 
-router.post('/create', checkAuth(['TEACHER', 'ADMIN']),controller.create);
+router.post('/create', checkAuth(['TEACHER', 'ADMIN']), controller.create);
 router.post('/open', checkAuth(['TEACHER', 'ADMIN']), controller.open);
 
 router.get(
@@ -37,6 +38,14 @@ router.post(
 );
 router.patch('/HomeworkFeedback/', checkAuth(['TEACHER', 'ADMIN']), controller.HomeworkFeedback);
 router.patch('/priceHomeWork/', checkAuth(['TEACHER', 'ADMIN']), controller.priceHomeWork);
+router.post('/test/', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), (req, res) => {
+  const { user_id: userId } = req.user;
+  const userSocket = userSockets.get(userId);
+  if (userSocket) {
+    userSocket.emit('new-message', '!!!!!!!!!!!!!!!!!!!!!!!!');
+  }
+  return res.send({ success: true });
+});
 
 router.delete('/deleteFile/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.deleteFile);
 
