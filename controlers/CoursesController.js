@@ -128,7 +128,7 @@ const getOne = async (req, res) => {
     const { language } = req.query;
 
     const isCourse = await CoursesContents.findOne({
-      where: { courseId: id },
+      where: { courseId: id , language},
     });
     console.log(isCourse, '++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     // if(!isCourse) return res.status(403).json({message:"Course not found"})
@@ -861,7 +861,7 @@ const getOneGroup = async (req, res) => {
     let { id, priceId, language } = req.query;
 
     const isCourse = await CoursesContents.findOne({
-      where: { courseId: id },
+      where: { courseId: id, language},
     });
     // if(!isCourse) return res.status(403).json({message:"Course not found"})
     if (isCourse && isCourse.courseType === 'Individual') {
@@ -924,6 +924,7 @@ const getOneGroup = async (req, res) => {
             {
               model: CoursesContents,
               attributes: { exclude: ['id', 'language', 'courseId'] },
+
               include: [Levels],
             },
           ],
@@ -1087,7 +1088,7 @@ const deleteCourse = async (req, res) => {
 const getCourseForAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-
+    const {language}=req.query
     let course = await GroupCourses.findOne({
       where: { id },
       include: [
@@ -1095,6 +1096,7 @@ const getCourseForAdmin = async (req, res) => {
           model: CoursesContents,
           attributes: { exclude: ['id', 'courseId', 'language'] },
           where: { language: 'en' },
+
         },
         {
           model: levelDescription,
