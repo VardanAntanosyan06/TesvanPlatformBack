@@ -27,6 +27,9 @@ var TestQuizz = require('./routes/TestQuizz');
 var DashboardRouter = require('./routes/Dashboard');
 var PaymentRouter = require('./routes/Payment');
 var SkillRouter = require('./routes/Skill');
+var ChatRouter = require('./routes/Chat');
+var ChatMessageRouter = require('./routes/ChatMessage');
+var GroupChatRouter = require('./routes/GroupChat')
 // var PresentationRouter = require('./routes/Presentation');
 var app = express();
 
@@ -68,6 +71,10 @@ app.use('/api/v2/quizz', QuizzRouter);
 app.use('/api/v2/dashboard', DashboardRouter);
 app.use('/api/v2/skill', SkillRouter);
 app.use('/api/v2/payment', PaymentRouter);
+app.use('/api/v2/chat', ChatRouter);
+app.use('/api/v2/groupChat', GroupChatRouter);
+app.use('/api/v2/chatMessage', ChatMessageRouter);
+
 // app.use('/api/v2/presentation', PresentationRouter);
 
 app.use(require('express-status-monitor')());
