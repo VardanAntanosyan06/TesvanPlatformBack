@@ -33,6 +33,7 @@ const path = require("path");
 const { group } = require("console");
 const quizz = require("../models/quizz");
 const { lang } = require("moment/moment");
+const { title } = require("process");
 // const { finished } = require('stream/promises');
 
 const getAllCourses = async (req, res) => {
@@ -164,7 +165,7 @@ const getOne = async (req, res) => {
           },
           {
             model: levelDescription,
-            attributes: ["title", "description"],
+            attributes: [[`title_${language}`,['title']], [`description_${title}`,'description']],
           },
           {
             model: Lesson,
