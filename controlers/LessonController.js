@@ -113,7 +113,7 @@ const getLesson = async (req, res) => {
           include: [
             {
               model: Presentations,
-              attributes: { exclude: ["createdAt", "updatedAt"] },
+              attributes: [[`title_${language}`,'title'],[`description_${language}`,'text'],[`url_${language}`,'url']],
             },
             {
               model: Quizz,
