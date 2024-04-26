@@ -240,6 +240,7 @@ const remove = async (req, res) => {
 const getUsers = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
+    const {language} = req.query;
     let Group = await Groups.findAll({
       include: [
         {
@@ -252,7 +253,7 @@ const getUsers = async (req, res) => {
           required: true,
         },
       ],
-      attributes: ['id', 'name'],
+      attributes: ['id', [`name_${language}`,'name']],
     });
     Group = await Promise.all(
       Group.map(async (grp) => {
