@@ -118,7 +118,7 @@ const getCourseTitles = async (req, res) => {
         id: item.id,
         title: item?.CoursesContents[0].title,
         description:
-          item?.CoursesContents[0].description.match(/\b(\w+\b\s*){1,16}/)[0],
+          item?.CoursesContents[0].description,
       };
     });
     return res.status(200).json(Courses);
@@ -597,9 +597,9 @@ const createCourse = async (req, res) => {
       level_ru,
       level_am,
       level_en,
-      levelDescriptions,
-      // levelDescriptions_ru,
-      // levelDescriptions_am,
+      levelDescriptions_en,
+      levelDescriptions_ru,
+      levelDescriptions_am,
       shortDescription_en,
       shortDescription_ru,
       shortDescription_am,
@@ -661,23 +661,31 @@ const createCourse = async (req, res) => {
       trainersImages[i].mv(path.resolve(__dirname, "..", "static", fileName));
 
       await Trainer.create({
-        fullName: e.fullName,
+        fullName_en: e.fullName_en,
+        fullName_ru: e.fullName_en,
+        fullName_am: e.fullName_en,
         img: fileName,
-        profession: e.profession,
+        profession_en: e.profession_en,
+        profession_ru: e.profession_ru,
+        profession_am: e.profession_am,
         courseId,
         type,
       });
     });
-    if(!Array.isArray(levelDescriptions)) {
-      levelDescriptions = [levelDescription]
+    if(!Array.isArray(levelDescriptions_en)) {
+      levelDescriptions_en = [levelDescriptions_en]
     }else{
-      levelDescriptions = JSON.parse(levelDescriptions);
+      levelDescriptions_en = JSON.parse(levelDescriptions_en);
     }
 
-    levelDescriptions.map(async (e) => {
+    levelDescriptions_en.map(async (e,i) => {
       await levelDescription.create({
-        title: e.title,
-        description: e.description,
+        title_en: e.title,
+        description_en: e.description,
+        title_ru: levelDescriptions_ru[i].title,
+        description_ru: levelDescriptions_ru[i].description,
+        title_am: levelDescriptions_am[i].title,
+        description_am: levelDescriptions_am[i].description,
         courseId,
         type,
       });

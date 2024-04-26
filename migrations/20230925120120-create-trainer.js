@@ -9,13 +9,25 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      fullName: {
+      fullName_en: {
+        type: Sequelize.STRING,
+      },
+      fullName_ru: {
+        type: Sequelize.STRING,
+      },
+      fullName_am: {
         type: Sequelize.STRING,
       },
       img: {
         type: Sequelize.STRING,
       },
-      profession: {
+      profession_en: {
+        type: Sequelize.STRING,
+      },
+      profession_ru: {
+        type: Sequelize.STRING,
+      },
+      profession_am: {
         type: Sequelize.STRING,
       },
       courseId:{

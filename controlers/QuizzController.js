@@ -36,10 +36,12 @@ const createQuizz = async (req, res) => {
           title_am: questions_en[i].question_am,
           quizzId,
         }).then((data) => {
-          e.options.map((i) => {
+          questions_en[i].options.map((i) => {
             Option.create({
               questionId: data.id,
-              title_en: questions_en[i].question_en,
+              title_en: e.question_en,
+              // title_en: e.question_en,
+              // title_en: e.question_en,
               isCorrect: i.isCorrect,
             });
           });

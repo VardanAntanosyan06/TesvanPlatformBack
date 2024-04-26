@@ -14,8 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   levelDescription.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
+    title_en: DataTypes.STRING,
+    title_ru: DataTypes.STRING,
+    title_am: DataTypes.STRING,
+    description_en: DataTypes.STRING,
+    description_ru: DataTypes.STRING,
+    description_am: DataTypes.STRING,
     courseId: DataTypes.INTEGER,
     type:DataTypes.STRING,
 

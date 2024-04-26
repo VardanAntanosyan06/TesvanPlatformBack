@@ -13,9 +13,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   Trainer.init(
     {
-      fullName: DataTypes.STRING,
+      fullName_en: DataTypes.STRING,
+      fullName_ru: DataTypes.STRING,
+      fullName_am: DataTypes.STRING,
       img: DataTypes.STRING,
-      profession: DataTypes.STRING,
+      profession_en: DataTypes.STRING,
+      profession_ru: DataTypes.STRING,
+      profession_am: DataTypes.STRING,
       courseId:DataTypes.INTEGER,
       type:DataTypes.STRING,
     },
