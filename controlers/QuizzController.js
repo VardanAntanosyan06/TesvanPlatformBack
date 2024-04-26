@@ -15,30 +15,37 @@ const {
 
 const createQuizz = async (req, res) => {
   try {
-    const { title, description, lessonId, courseId, time, percent, questions } =
+    const { title_en,title_ru,title_am, description_en, description_ru,description_am,lessonId, courseId, time, percent, questions_en, questions_ru,questions_am} =
       req.body;
 
     let { id: quizzId } = await Quizz.create({
-      title_en: title,
-      description_en: description,
+      title_en,
+      title_ru,
+      title_am,
+      description_en,
+      description_ru,
+      description_am,
       time,
       percent,
     });
-    console.log(questions);
-    questions.map((e) => {
-      Question.create({
-        title: e.question,
-        quizzId,
-      }).then((data) => {
-        e.options.map((i) => {
-          Option.create({
-            questionId: data.id,
-            title: i.option,
-            isCorrect: i.isCorrect,
+
+    for(let i=0;i<questions_en.length;i++){
+        Question.create({
+          title_en: questions_en[i].question_en,
+          title_ru: questions_ru[i].question_ru,
+          title_am: questions_en[i].question_am,
+          quizzId,
+        }).then((data) => {
+          e.options.map((i) => {
+            Option.create({
+              questionId: data.id,
+              title_en: questions_en[i].question_en,
+              isCorrect: i.isCorrect,
+            });
           });
         });
-      });
-    });
+    }
+   
     if (lessonId) {
       await LessonsPerQuizz.create({
         quizzId,

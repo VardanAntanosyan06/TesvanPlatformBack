@@ -12,7 +12,13 @@ module.exports = {
       quizzId: {
         type: Sequelize.INTEGER,
       },
-      title: {
+      title_en: {
+        type: Sequelize.STRING,
+      },
+      title_ru: {
+        type: Sequelize.STRING,
+      },
+      title_am: {
         type: Sequelize.STRING,
       },
       points: {

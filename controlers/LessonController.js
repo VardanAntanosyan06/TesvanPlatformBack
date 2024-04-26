@@ -363,11 +363,17 @@ const createLesson = async (req, res) => {
       description_ru,
       description_am,
       maxPoints,
-      htmlContent,
+      htmlContent_en,
+      htmlContent_ru,
+      htmlContent_am,
       quizzId,
       homeworkId,
-      presentationTitle,
-      presentationDescription,
+      presentationTitle_en,
+      presentationDescription_en,
+      presentationTitle_ru,
+      presentationDescription_ru,
+      presentationTitle_am,
+      presentationDescription_am,
     } = req.body;
 
     const { id: lessonId } = await Lesson.create({
@@ -378,19 +384,35 @@ const createLesson = async (req, res) => {
       description_am,
       description_en,
       maxPoints,
-      htmlContent,
+      htmlContent_en,
+      htmlContent_ru,
+      htmlContent_am,
     });
 
-    if (req.files && req.files.file) {
-      const { file } = req.files;
-      const fileType = file.mimetype.split("/")[1];
-      const fileName = v4() + "." + fileType;
-      file.mv(path.resolve(__dirname, "..", "static", fileName));
+    if (req.files) {
+      const { file_en,file_ru,file_am } = req.files;
+      const fileEnType = file_en.mimetype.split("/")[1];
+      const fileNameEn = v4() + "." + fileEnType;
+      file_en.mv(path.resolve(__dirname, "..", "static", fileNameEn));
+
+      const fileRuType = file_en.mimetype.split("/")[1];
+      const fileNameRu = v4() + "." + fileRuType;
+      file_ru.mv(path.resolve(__dirname, "..", "static", fileNameRu));
+
+      const fileAmType = file_en.mimetype.split("/")[1];
+      const fileNameAm = v4() + "." + fileAmType;
+      file_am.mv(path.resolve(__dirname, "..", "static", fileNameAm));
 
       await Presentations.create({
-        title: presentationTitle,
-        url: fileName,
-        description: presentationDescription,
+        title_en: presentationDescription_en,
+        url_en: fileNameEn,
+        description_en: presentationDescription_en,
+        title_ru: presentationDescription_ru,
+        url_ru: fileNameRu,
+        description_ru: presentationDescription_ru,
+        title_am: presentationDescription_am,
+        url_am: fileNameAm,
+        description_am: presentationDescription_am,
         lessonId,
       });
     }
@@ -472,12 +494,12 @@ const updateLesson = async (req, res) => {
     if (req.files && req.files.file) {
       const { file } = req.files;
 
-      const fileType = file.mimetype.split('/')[1];
-      const fileName = v4() + '.' + fileType;
-      file.mv(path.resolve(__dirname, '..', 'static', fileName));
+      const fileType = file.mimetype.split("/")[1];
+      const fileName = v4() + "." + fileType;
+      file.mv(path.resolve(__dirname, "..", "static", fileName));
       await Presentations.destroy({ where: { lessonId: id } });
 
-      await Presentations.update({
+      await Presentations.create({
         title: presentationTitle,
         url: fileName,
         description: presentationDescription,

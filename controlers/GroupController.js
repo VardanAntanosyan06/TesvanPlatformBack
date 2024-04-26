@@ -22,34 +22,40 @@ const { Op } = require('sequelize');
 
 const CreateGroup = async (req, res) => {
   try {
-    const { name, assignCourseId, users, startDate, endDate, payment } = req.body;
+    const { name_en,name_am,name_ru, assignCourseId, users, startDate, endDate, payment_en } = req.body;
 
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
-    let { price, discount } = payment.reduce(
+    let { price, discount } = payment_en.reduce(
       (min, item) => (item.price < min.price ? item : min),
-      payment[0],
+      payment_en[0],
     );
 
     const task = await Groups.create({
-      name,
+      name_am,
+      name_ru,
+      name_en,
       groupeKey,
       assignCourseId,
       startDate,
       endDate,
-      price,
-      sale: discount,
+      price:10,
+      sale: 1,
     });
 
-    payment.map((e) => {
+    // payment_en.map((e) => {
       PaymentWays.create({
-        title: e.title,
-        description: e.description,
-        price: e.price,
-        discount: e.discount,
+        title_en: "Static title",
+        title_ru: "Static title",
+        title_am: "Static title",
+        description_en: "Static description",
+        description_en: "Static description",
+        description_en: "Static description",
+        price: 10,
+        discount: 5,
         groupId: task.id,
       });
-    });
+    // });
 
     await Promise.all(
       users.map(async (userId) => {
@@ -444,7 +450,7 @@ const finishGroup = async (req, res) => {
 const findGroups = async (req, res) => {
   try {
     let group = await Groups.findAll({
-      attributes: ['id', 'name','assignCourseId'],
+      attributes: ['id', ['name_en','name'],'assignCourseId'],
       order: [['id', 'DESC']],
       include: [
         {

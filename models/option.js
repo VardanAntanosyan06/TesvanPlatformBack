@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
   Option.init(
     {
       questionId: DataTypes.INTEGER,
-      title: DataTypes.STRING,
+      title_en: DataTypes.STRING,
+      title_ru: DataTypes.STRING,
+      title_am: DataTypes.STRING,
       isCorrect: DataTypes.BOOLEAN,
     },
     {
@@ -24,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const Question = sequelize.define("Question");
-  Option.belongsTo(Question, { foreignKey: "id"});
+  Option.belongsTo(Question, { foreignKey: "id" });
 
   return Option;
 };

@@ -9,10 +9,22 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      title: {
+      title_en: {
         type: Sequelize.STRING,
       },
-      description: {
+      title_ru: {
+        type: Sequelize.STRING,
+      },
+      title_am: {
+        type: Sequelize.STRING,
+      },
+      description_en: {
+        type: Sequelize.STRING,
+      },
+      description_ru: {
+        type: Sequelize.STRING,
+      },
+      description_am: {
         type: Sequelize.STRING,
       },
       price: {
