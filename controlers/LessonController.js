@@ -108,7 +108,7 @@ const getLesson = async (req, res) => {
             [`title_${language}`, "title"],
             [`description_${language}`, "description"],
             "maxPoints",
-            "htmlContent",
+            [`htmlContent_${language}`,'htmlContent'],
           ],
           include: [
             {
