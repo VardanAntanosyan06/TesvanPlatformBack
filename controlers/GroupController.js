@@ -108,7 +108,7 @@ const findOne = async (req, res) => {
         {
           model: PaymentWays,
           as: 'payment',
-          attributes: ['title', 'description', 'price', 'discount'],
+          // attributes: ['title', 'description', 'price', 'discount'],
         },
       ],
     });
