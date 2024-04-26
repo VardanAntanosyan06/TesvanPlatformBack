@@ -165,7 +165,7 @@ const getOne = async (req, res) => {
           },
           {
             model: levelDescription,
-            attributes: [[`title_${language}`,'title'], [`description_${title}`,'description']],
+            attributes: [[`title_${language}`,'title'], [`description_${language}`,'description']],
           },
           {
             model: Lesson,
@@ -243,7 +243,7 @@ const getOne = async (req, res) => {
         },
         {
           model: levelDescription,
-          attributes: [[`title_${language}`,'title'], [`description_${title}`,'description']],
+          attributes: [[`title_${language}`,'title'], [`description_${language}`,'description']],
         },
         {
           model: Lesson,
