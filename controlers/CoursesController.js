@@ -197,7 +197,7 @@ const getOne = async (req, res) => {
 
       const trainers = await Trainer.findAll({
         where: { courseId: id },
-        attributes: ["fullName", "img", "profession"],
+        attributes: [[`fullName_${language}`,'fullName'], "img", [`profession_${language}`,'profession']],
       });
 
       course = {
@@ -278,7 +278,7 @@ const getOne = async (req, res) => {
 
     const trainers = await Trainer.findAll({
       where: { courseId: groups.assignCourseId },
-      attributes: ["fullName", "img", "profession"],
+      attributes: [[`fullName_${language}`,'fullName'], "img", [`profession_${language}`,'profession']],
     });
 
     course = {
