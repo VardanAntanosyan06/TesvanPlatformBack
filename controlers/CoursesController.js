@@ -1133,9 +1133,7 @@ const updateCourse = async (req, res) => {
             shortDescription: req.body[`shortDescription_${language}`],
             courseType: req.body[`courseType_${language}`],
             lessonType: req.body[`lessonType_${language}`],
-            whyThisCourse: !Array.isArray(req.body[`whyThisCourse_${language}`])
-              ? [req.body[`whyThisCourse_${language}`]]
-              : JSON.parse(req.body[`whyThisCourse_${language}`]),
+            whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
             level: req.body[`level_${language}`],
           },
           { where: { courseId, language } }
