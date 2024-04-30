@@ -1165,17 +1165,17 @@ const updateCourse = async (req, res) => {
     await Trainer.destroy({
       where:{courseId}
     })
-
+    console.log(courseId);
     parsedTrainers.map(async (e, i) => {
-      const type = trainersImages[i].mimetype.split("/")[1];
-      const fileName = v4() + "." + type;
-      trainersImages[i].mv(path.resolve(__dirname, "..", "static", fileName));
+      // const type = trainersImages[i].mimetype.split("/")[1];
+      // const fileName = v4() + "." + type;
+      // .mv(path.resolve(__dirname, "..", "static", fileName));
 
       await Trainer.create({
         fullName_en: e.fullName_en,
-        fullName_ru: e.fullName_en,
+        fullName_ru: e.fullName_ru,
         fullName_am: e.fullName_en,
-        img: fileName,
+        img: trainersImages[i],
         profession_en: e.profession_en,
         profession_ru: e.profession_ru,
         profession_am: e.profession_am,
@@ -1186,21 +1186,21 @@ const updateCourse = async (req, res) => {
     const levelDescEn = JSON.parse(levelDescriptions_en);
     const levelDescRu = JSON.parse(levelDescriptions_ru);
     const levelDescAm = JSON.parse(levelDescriptions_am);
-    await Promise.all(
-      levelDescEn.map(async (descEn, i) => {
-        await levelDescription.update(
-          {
-            title_en: descEn.title,
-            description_en: descEn.description,
-            title_ru: levelDescRu[i].title,
-            description_ru: levelDescRu[i].description,
-            title_am: levelDescAm[i].title,
-            description_am: levelDescAm[i].description,
-          },
-          { where: { courseId, id: descEn.id } } // Assuming each level description has an ID
-        );
-      })
-    );
+
+    await levelDescription.destroy({where:{courseId}})
+
+    levelDescEn.map(async (e, i) => {
+      await levelDescription.create({
+        title_en: e.title,
+        description_en: e.description,
+        title_ru: levelDescRu[i].title,
+        description_ru: levelDescRu[i].description,
+        title_am: levelDescAm[i].title,
+        description_am: levelDescAm[i].description,
+        courseId,
+        type,
+      });
+    });
 
     res.status(200).json({ success: true });
   } catch (error) {
