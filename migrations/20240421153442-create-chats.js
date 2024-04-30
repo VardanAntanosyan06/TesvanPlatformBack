@@ -1,4 +1,7 @@
 'use strict';
+
+const { sequelize } = require('../models');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -9,17 +12,23 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      members: {
-        type: Sequelize.ARRAY(Sequelize.INTEGER)
+      // members: {
+      //   type: Sequelize.ARRAY(Sequelize.INTEGER),
+      // }
+      firstId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id"
+        },
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+      secondId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id"
+        },
       },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
     });
   },
   async down(queryInterface, Sequelize) {

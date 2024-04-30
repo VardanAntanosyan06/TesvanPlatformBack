@@ -14,11 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   GroupChats.init({
+    name: DataTypes.STRING,
     adminId: DataTypes.INTEGER,
     members: DataTypes.ARRAY(DataTypes.INTEGER)
   }, {
     sequelize,
     modelName: 'GroupChats',
+    timestamps: false
   });
   return GroupChats;
 };

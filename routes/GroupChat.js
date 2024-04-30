@@ -22,16 +22,28 @@ router.get(
     controller.getGroupChats
 );
 
-router.put(
+router.patch(
     "/updateNameGroupChat/:groupChatId",
     checkAuth(["STUDENT","TEACHER", "ADMIN"]),
     controller.updateNameGroupChat
 );
 
-// router.delete(
-//     "/deleteChat/:chatId",
-//     checkAuth(["STUDENT","TEACHER", "ADMIN"]),
-//     controller.deleteChat
-// );
+router.patch(
+    "/addMemberGroupChat/:groupChatId",
+    checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+    controller.addMemberGroupChat
+  );
+
+router.delete(
+    "/deleteMemberGroupChat/:groupChatId",
+    checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+    controller.deleteMemberGroupChat
+);
+
+router.delete(
+    "/deleteGroupChat/:groupChatId",
+    checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+    controller.deleteGroupChat
+);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const { ChatMessages, Chats } = require('../../models');
+const { ChatMessages, Chats, Users } = require('../../models');
 const { Op } = require('sequelize');
 const { userSockets } = require("../../userSockets");
 
@@ -11,24 +11,19 @@ const createChatMessage = async (req, res) => {
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
-                members: {
-                    [Op.and]: [
-                        { [Op.contains]: [userId] },
-                    ]
-                }
-            }
+                [Op.or]: [{secondId:userId}, {firstId:userId}] 
+            },
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
         await ChatMessages.create({ chatId, senderId, text })
         let socketSendId
-        if(userId == chat.members[0]){
-            socketSendId = chat.members[1]
+        if (userId == chat.firstId) {
+            socketSendId = chat.secondId
         } else {
-            socketSendId = chat.members[0]
+            socketSendId = chat.firstId
         }
-        const userSocket = userSockets.get(socketSendId); // um id-n grenq iran
-        io.to(userSocket.id).emit('new-chatMessage', {message: text});
-
+        const userSocket = await userSockets.get(socketSendId)
+        if (userSocket) { io.to(userSocket.id).emit('new-chatMessage', { message: text }) };
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -43,18 +38,22 @@ const getChatMessages = async (req, res) => {
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
-                members: {
-                    [Op.and]: [
-                        { [Op.contains]: [userId] },
-                    ]
-                }
-            }
+                [Op.or]: [{secondId:userId}, {firstId:userId}] 
+            },
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
         const messages = await ChatMessages.findAll({
             where: {
                 chatId: chat.id,
-            }
+            },
+            attributes:["text","isUpdated"],
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                }
+            ]
+
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
         return res.status(200).json(messages)
@@ -72,19 +71,23 @@ const updateChatMessage = async (req, res) => {
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
-                members: {
-                    [Op.and]: [
-                        { [Op.contains]: [userId] },
-                    ]
-                }
-            }
+                [Op.or]: [{secondId:userId}, {firstId:userId}] 
+            },
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
         const updateMessage = await ChatMessages.update(
             { text: text, isUpdated: true },
             { where: { id: messageId } }
         );
-        if(updateMessage[0] === 0) return res.status(404).json({ message: 'Message not found' });
+        if (updateMessage[0] === 0) return res.status(404).json({ message: 'Message not found' });
+        let socketSendId
+        if (userId == chat.firstId) {
+            socketSendId = chat.secondId
+        } else {
+            socketSendId = chat.firstId
+        }
+        const userSocket = await userSockets.get(socketSendId)
+        if (userSocket) { io.to(userSocket.id).emit('new-chatMessage', { message: text }) };
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -99,18 +102,22 @@ const deleteChatMessage = async (req, res) => {
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
-                members: {
-                    [Op.and]: [
-                        { [Op.contains]: [userId] },
-                    ]
-                }
-            }
+                [Op.or]: [{secondId:userId}, {firstId:userId}] 
+            },
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
         const deleteMessage = await ChatMessages.destroy({
             where: { id: messageId }
         });
-        if(deleteMessage === 0) return res.status(404).json({ message: 'Message not found' });
+        if (deleteMessage === 0) return res.status(404).json({ message: 'Message not found' });
+        let socketSendId
+        if (userId == chat.firstId) {
+            socketSendId = chat.secondId
+        } else {
+            socketSendId = chat.firstId
+        }
+        const userSocket = await userSockets.get(socketSendId)
+        if (userSocket) { io.to(userSocket.id).emit('new-chatMessage', { message: text }) };
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
