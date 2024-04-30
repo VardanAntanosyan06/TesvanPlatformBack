@@ -468,9 +468,10 @@ const deleteLesson = async (req, res) => {
 
 const updateLesson = async (req, res) => {
   try {
-    const { lessonId } = req.params;
+    // const {  } = req.params;
 
     const {
+      lessonId,
       title_en,
       title_ru,
       title_am,
@@ -520,7 +521,8 @@ const updateLesson = async (req, res) => {
       ]);
 
       // Update or create presentation
-      await Presentations.upsert({
+      await Presentations.destroy({where:{lessonId}})
+      await Presentations.create({
         title_en: presentationTitle_en,
         url_en: fileUrls[0],
         description_en: presentationDescription_en,

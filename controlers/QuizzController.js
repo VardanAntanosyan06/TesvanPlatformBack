@@ -29,24 +29,26 @@ const createQuizz = async (req, res) => {
       percent,
     });
 
-    for(let i=0;i<questions_en.length;i++){
+    questions_en.map((question,i)=>{
         Question.create({
-          title_en: questions_en[i].question_en,
-          title_ru: questions_ru[i].question_ru,
-          title_am: questions_en[i].question_am,
-          quizzId,
-        }).then((data) => {
-          questions_en[i].options.map((i) => {
+          title_en:question.question_en,
+          title_ru:questions_ru[i].question_ru,
+          title_am:questions_am[i].question_am,
+          quizzId
+        }).then((data)=>{
+          question.options.map((option,optionIndex)=>{
+            console.log(questions_ru[i].options[optionIndex]);
             Option.create({
-              questionId: data.id,
-              title_en: e.question_en,
-              // title_en: e.question_en,
-              // title_en: e.question_en,
-              isCorrect: i.isCorrect,
-            });
-          });
-        });
-    }
+              title_en:option.option_en,
+              title_ru:questions_ru[i].options[optionIndex].option_ru,
+              title_am:questions_am[i].options[optionIndex].option_am,
+              isCorrect:option.isCorrect_en,
+              questionId:data.id
+            })
+          })
+          // console.log(question);
+        })
+    })
    
     if (lessonId) {
       await LessonsPerQuizz.create({
@@ -60,7 +62,7 @@ const createQuizz = async (req, res) => {
         type: "Group",
       });
     }
-    return res.status(200).json({ success: true });
+    res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "Something went wrong." });
