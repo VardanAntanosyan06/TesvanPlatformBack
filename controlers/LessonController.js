@@ -490,6 +490,9 @@ const updateLesson = async (req, res) => {
       presentationDescription_ru,
       presentationTitle_am,
       presentationDescription_am,
+      file_en, 
+      file_ru, 
+      file_am
     } = req.body;
 
     // Update Lesson
@@ -509,34 +512,48 @@ const updateLesson = async (req, res) => {
       { where: { id: lessonId } },
     );
 
-    // Handle presentation files
     if (req.files) {
+      // if(!file_en)
       const { file_en, file_ru, file_am } = req.files;
+      const fileEnType = file_en.mimetype.split('/')[1];
+      const fileNameEn = v4() + '.' + fileEnType;
+      file_en.mv(path.resolve(__dirname, '..', 'static', fileNameEn));
 
-      // Upload files and get file URLs
-      const fileUrls = await Promise.all([
-        uploadFileAndGetUrl(file_en),
-        uploadFileAndGetUrl(file_ru),
-        uploadFileAndGetUrl(file_am),
-      ]);
+      const fileRuType = file_en.mimetype.split('/')[1];
+      const fileNameRu = v4() + '.' + fileRuType;
+      file_ru.mv(path.resolve(__dirname, '..', 'static', fileNameRu));
 
-      // Update or create presentation
+      const fileAmType = file_en.mimetype.split('/')[1];
+      const fileNameAm = v4() + '.' + fileAmType;
+      file_am.mv(path.resolve(__dirname, '..', 'static', fileNameAm));
+
       await Presentations.destroy({where:{lessonId}})
       await Presentations.create({
-        title_en: presentationTitle_en,
-        url_en: fileUrls[0],
+        title_en: presentationDescription_en,
+        url_en: fileNameEn,
         description_en: presentationDescription_en,
-        title_ru: presentationTitle_ru,
-        url_ru: fileUrls[1],
+        title_ru: presentationDescription_ru,
+        url_ru: fileNameRu,
         description_ru: presentationDescription_ru,
-        title_am: presentationTitle_am,
-        url_am: fileUrls[2],
+        title_am: presentationDescription_am,
+        url_am: fileNameAm,
         description_am: presentationDescription_am,
         lessonId,
       });
     }
-
-    // Handle homework association
+    await Presentations.destroy({where:{lessonId}})
+    await Presentations.create({
+      title_en: presentationDescription_en,
+      url_en: file_en,
+      description_en: presentationDescription_en,
+      title_ru: presentationDescription_ru,
+      url_ru: file_ru,
+      description_ru: presentationDescription_ru,
+      title_am: presentationDescription_am,
+      url_am: file_am,
+      description_am: presentationDescription_am,
+      lessonId,
+    });
     if (!isNaN(+homeworkId)) {
       await HomeworkPerLesson.upsert({
         homeworkId,
@@ -544,7 +561,6 @@ const updateLesson = async (req, res) => {
       });
     }
 
-    // Handle quizz association
     if (!isNaN(+quizzId)) {
       await LessonsPerQuizz.upsert({
         lessonId,

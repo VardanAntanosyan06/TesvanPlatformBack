@@ -859,10 +859,10 @@ const getCoursesByFilter = async (req, res) => {
       delete e.dataValues;
 
       e.img = `https://platform.tesvan.com/server/${e.GroupCourse.img}`;
-      e.description = e.Gro_enupCourse.CoursesContents[0].description;
-      e.courseType = e.Gro_enupCourse.CoursesContents[0].courseType;
-      e.lessonType = e.Gro_enupCourse.CoursesContents[0].lessonType;
-      e.level = e.Gro_enupCourse.CoursesContents[0].level;
+      e.description = e.GroupCourse.CoursesContents[0].description;
+      e.courseType = e.GroupCourse.CoursesContents[0].courseType;
+      e.lessonType = e.GroupCourse.CoursesContents[0].lessonType;
+      e.level = e.GroupCourse.CoursesContents[0].level;
       e.courseStartDate = moment(e.startDate).format("ll");
       (e.courseDate =
         moment(new Date(e.endDate)).diff(new Date(e.startDate), "months") > 0
