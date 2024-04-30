@@ -20,6 +20,7 @@ const path = require('path');
 
 const lessonsperquizz = require('../models/lessonsperquizz');
 const { userSockets } = require('../userSockets');
+const { where } = require('sequelize');
 
 const getLessons = async (req, res) => {
   try {
@@ -199,6 +200,7 @@ const getLessonForAdmin = async (req, res) => {
           through: {
             attributes: [],
           },
+          attributes:['id',[`title_${language}`,'title'],[`description_${language}`,'description']]
         },
         {
           model: Homework,
@@ -206,6 +208,7 @@ const getLessonForAdmin = async (req, res) => {
           through: {
             attributes: [],
           },
+          attributes:['id',[`title_${language}`,'title'],[`description_${language}`,'description']]
         },
       ],
     });
@@ -215,7 +218,26 @@ const getLessonForAdmin = async (req, res) => {
         message: "Lessons not found or User doesn't have the lessons",
       });
     }
-
+    
+    lesson = {
+      ...lesson.dataValues,
+      presentation_en:{
+        presentationTitle_en:lesson.Presentations[0].title_en,
+        url:lesson.Presentations[0].url_en,
+        presentationDescription_en:lesson.Presentations[0].title_en,
+      },
+      presentation_ru:{
+        presentationTitle_ru:lesson.Presentations[0].title_ru,
+        url:lesson.Presentations[0].url_ru,
+        presentationDescription_ru:lesson.Presentations[0].title_ru,
+      },
+      presentation_am:{
+        presentationTitle_am:lesson.Presentations[0].title_am,
+        url:lesson.Presentations[0].url_am,
+        despresentationDescription_amcription:lesson.Presentations[0].title_en,
+      }
+    } 
+    delete lesson.Presentations;
     res.send(lesson);
   } catch (error) {
     console.log(error);

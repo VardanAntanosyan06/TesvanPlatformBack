@@ -651,9 +651,7 @@ const createCourse = async (req, res) => {
           shortDescription: req.body[`shortDescription_${language}`],
           courseType: req.body[`courseType_${language}`],
           lessonType: req.body[`lessonType_${language}`],
-          whyThisCourse: !Array.isArray(req.body[`whyThisCourse_${language}`])
-            ? [req.body[`whyThisCourse_${language}`]]
-            : JSON.parse(req.body[`whyThisCourse_${language}`]),
+          whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
           level: req.body[`level_${language}`],
         });
       })
@@ -675,8 +673,8 @@ const createCourse = async (req, res) => {
         lessonId: e,
         type,
       });
-    }); 
-    trainers = JSON.parse(trainers)
+    });
+    trainers = JSON.parse(trainers);
 
     trainers.map(async (e, i) => {
       const type = trainersImages[i].mimetype.split("/")[1];
@@ -1056,7 +1054,7 @@ const getOneGroup = async (req, res) => {
 
 const updateCourse = async (req, res) => {
   try {
-    const {courseId} = req.params; 
+    const { courseId } = req.params;
 
     const {
       title_en,
@@ -1167,7 +1165,9 @@ const updateCourse = async (req, res) => {
       parsedTrainers.map(async (trainer, i) => {
         const type = trainersImages[i].mimetype.split("/")[1];
         const fileName = `${v4()}.${type}`;
-        await trainersImages[i].mv(path.resolve(__dirname, "..", "static", fileName));
+        await trainersImages[i].mv(
+          path.resolve(__dirname, "..", "static", fileName)
+        );
 
         await Trainer.update(
           {
@@ -1268,7 +1268,7 @@ const getCourseForAdmin = async (req, res) => {
           model: Lesson,
           attributes: [
             "id",
-            [`title_${language}`, "title"],
+            [`title_en`, "title"],
             ["description_en", "description"],
           ],
         },
@@ -1276,7 +1276,7 @@ const getCourseForAdmin = async (req, res) => {
           model: Quizz,
           attributes: [
             "id",
-            [`title_${language}`, "title"],
+            [`title_en`, "title"],
             ["description_en", "description"],
           ],
           through: { attributes: [] },
@@ -1303,22 +1303,19 @@ const getCourseForAdmin = async (req, res) => {
       img: course.img,
       title_en: course.CoursesContents[0].title,
       description_en: course.CoursesContents[0].description,
-      courseType_en: course.CoursesContents[0].courseType,
-      lessonType_en: course.CoursesContents[0].lessonType,
+      shortDescription_en: course.CoursesContents[0].shortDescription,
+      shortDescription_am: course.CoursesContents[1].shortDescription,
+      shortDescription_ru: course.CoursesContents[2].shortDescription,
+      courseType: course.CoursesContents[0].courseType,
+      lessonType: course.CoursesContents[0].lessonType,
       whyThisCourse_en: course.CoursesContents[0].whyThisCourse,
-      level_en: course.CoursesContents[0].level,
+      level: course.CoursesContents[0].level,
       title_am: course.CoursesContents[1].title,
       description_am: course.CoursesContents[1].description,
-      courseType_am: course.CoursesContents[1].courseType,
-      lessonType_am: course.CoursesContents[1].lessonType,
       whyThisCourse_am: course.CoursesContents[1].whyThisCourse,
-      level_am: course.CoursesContents[1].level,
       title_ru: course.CoursesContents[2].title,
       description_ru: course.CoursesContents[2].description,
-      courseType_ru: course.CoursesContents[2].courseType,
-      lessonType_ru: course.CoursesContents[2].lessonType,
       whyThisCourse_ru: course.CoursesContents[2].whyThisCourse,
-      level_ru: course.CoursesContents[2].level,
       levelDescriptions: course.levelDescriptions,
       lessons: course.Lessons.map((lesson, index) => {
         const formattedLesson = {
@@ -1332,7 +1329,7 @@ const getCourseForAdmin = async (req, res) => {
         };
         return formattedLesson;
       }),
-      quizz: course.Quizzs[0],
+      quizz: course.Quizzs[0]?course.Quizzs[0]:[],
       trainers,
     };
     delete course.CoursesContents;
