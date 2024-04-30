@@ -1082,6 +1082,7 @@ const updateCourse = async (req, res) => {
       shortDescription_ru,
       shortDescription_am,
       lessons,
+      trainersImages,
       trainers,
       type,
       quizzId,
@@ -1093,6 +1094,7 @@ const updateCourse = async (req, res) => {
       title_ru,
       description_en,
       description_am,
+      
       description_ru,
       courseType_ru,
       courseType_am,
@@ -1159,32 +1161,28 @@ const updateCourse = async (req, res) => {
 
     // Update trainers information
     const parsedTrainers = JSON.parse(trainers);
-    await Promise.all(
-      parsedTrainers.map(async (trainer, i) => {
-        const type = trainersImages[i].mimetype.split("/")[1];
-        const fileName = `${v4()}.${type}`;
-        await trainersImages[i].mv(
-          path.resolve(__dirname, "..", "static", fileName)
-        );
 
-        await Trainer.update(
-          {
-            fullName_en: trainer.fullName_en,
-            fullName_ru: trainer.fullName_ru,
-            fullName_am: trainer.fullName_am,
-            img: fileName,
-            profession_en: trainer.profession_en,
-            profession_ru: trainer.profession_ru,
-            profession_am: trainer.profession_am,
-            courseId,
-            type,
-          },
-          { where: { courseId, id: trainer.id } } // Assuming each trainer has an ID in the database
-        );
-      })
-    );
+    await Trainer.destroy({
+      where:{courseId}
+    })
 
-    // Update level descriptions
+    parsedTrainers.map(async (e, i) => {
+      const type = trainersImages[i].mimetype.split("/")[1];
+      const fileName = v4() + "." + type;
+      trainersImages[i].mv(path.resolve(__dirname, "..", "static", fileName));
+
+      await Trainer.create({
+        fullName_en: e.fullName_en,
+        fullName_ru: e.fullName_en,
+        fullName_am: e.fullName_en,
+        img: fileName,
+        profession_en: e.profession_en,
+        profession_ru: e.profession_ru,
+        profession_am: e.profession_am,
+        courseId,
+        type,
+      });
+    });
     const levelDescEn = JSON.parse(levelDescriptions_en);
     const levelDescRu = JSON.parse(levelDescriptions_ru);
     const levelDescAm = JSON.parse(levelDescriptions_am);
