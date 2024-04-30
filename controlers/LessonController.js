@@ -188,12 +188,6 @@ const getLessonForAdmin = async (req, res) => {
 
     let lesson = await Lesson.findOne({
       where: { id },
-      attributes: [
-        ['title_en', 'title'],
-        ['description_en', 'description'],
-        'maxPoints',
-        'htmlContent',
-      ],
       include: [
         {
           model: Presentations,
@@ -202,7 +196,6 @@ const getLessonForAdmin = async (req, res) => {
         {
           model: Quizz,
           as: 'quizz',
-          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
           through: {
             attributes: [],
           },
@@ -210,7 +203,6 @@ const getLessonForAdmin = async (req, res) => {
         {
           model: Homework,
           as: 'homework',
-          attributes: ['id', ['title_en', 'title'], ['description_en', 'description']],
           through: {
             attributes: [],
           },
@@ -550,7 +542,7 @@ const uploadFileAndGetUrl = async (file) => {
   await file.mv(path.resolve(__dirname, '..', 'static', fileName));
   return fileName;
 };
-s;
+
 const createLessonTime = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
