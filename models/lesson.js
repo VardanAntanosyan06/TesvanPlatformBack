@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     through: HomeworkPerLesson,
     foreignKey: 'lessonId',
     otherKey: 'homeworkId',
-    as: 'homework',
+    // as: 'homework',
   });
 
   const Presentations = sequelize.define('Presentations');

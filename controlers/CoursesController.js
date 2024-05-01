@@ -451,7 +451,7 @@ const getUserCourses = async (req, res) => {
             {
               model: CoursesContents,
               where: { language },
-              attributes: ["title", "description", "level"],
+              attributes: ["title", "description", "level", "courseType"],
             },
             {
               model: Groups,
@@ -466,6 +466,18 @@ const getUserCourses = async (req, res) => {
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
+      if (e.GroupCourse.CoursesContents[0].courseType === "Individual") {
+        const IndividualCourse = {
+          id: e.id,
+          userId: e.userId,
+          groupCourseId: null,
+          startDate: null,
+          title: e.GroupCourse.CoursesContents[0].title,
+          description: e.GroupCourse.CoursesContents[0].description,
+          percent: 0,
+        };
+        return IndividualCourse;
+      }
       const groupCourse = e.GroupCourse;
       const groups = groupCourse?.Groups || [];
       const coursesContents = groupCourse?.CoursesContents || [];
@@ -481,7 +493,7 @@ const getUserCourses = async (req, res) => {
 
       e["id"] = groups[0]?.id || null;
       e["groupCourseId"] = groups[0]?.assignCourseId || null;
-      e["startDate"] = formattedDate.replace("/", ".");
+      e["startDate"] = formattedDate && formattedDate.replace("/", ".");
       e["title"] = coursesContents[0]?.title || null;
       e["description"] = coursesContents[0]?.description || null;
       e["percent"] = 0;
@@ -1094,7 +1106,7 @@ const updateCourse = async (req, res) => {
       title_ru,
       description_en,
       description_am,
-      
+
       description_ru,
       courseType_ru,
       courseType_am,
@@ -1163,8 +1175,8 @@ const updateCourse = async (req, res) => {
     const parsedTrainers = JSON.parse(trainers);
 
     await Trainer.destroy({
-      where:{courseId}
-    })
+      where: { courseId },
+    });
     console.log(courseId);
     parsedTrainers.map(async (e, i) => {
       // const type = trainersImages[i].mimetype.split("/")[1];
@@ -1187,7 +1199,7 @@ const updateCourse = async (req, res) => {
     const levelDescRu = JSON.parse(levelDescriptions_ru);
     const levelDescAm = JSON.parse(levelDescriptions_am);
 
-    await levelDescription.destroy({where:{courseId}})
+    await levelDescription.destroy({ where: { courseId } });
 
     levelDescEn.map(async (e, i) => {
       await levelDescription.create({
@@ -1325,7 +1337,7 @@ const getCourseForAdmin = async (req, res) => {
         };
         return formattedLesson;
       }),
-      quizz: course.Quizzs[0]?course.Quizzs[0]:[],
+      quizz: course.Quizzs[0] ? course.Quizzs[0] : [],
       trainers,
     };
     delete course.CoursesContents;
