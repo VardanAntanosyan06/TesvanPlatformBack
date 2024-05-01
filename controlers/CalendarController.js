@@ -1,15 +1,14 @@
-const { Calendar, Groups, Users, GroupsPerUsers } = require('../models');
+const { Calendar, Groups, Users, GroupsPerUsers, UserInterview } = require('../models');
 const { Op, where } = require('sequelize');
 
 const create = async (req, res) => {
   try {
-    let { title, start, end, description, format, link, type, userId, groupId } = req.body;
     const { user_id } = req.user;
+    let { title, start, end, description, format, link, type, userId, groupId } = req.body;
 
     userId.push(user_id);
-    userId.push(5);
 
-    await Calendar.create({
+    let calendar = await Calendar.create({
       title,
       start,
       end,
@@ -20,6 +19,15 @@ const create = async (req, res) => {
       userId,
       groupId,
     });
+    if (type == 'finalInterview') {
+      await UserInterview.create({
+        userId,
+        type,
+        points: 0,
+        calendarId: calendar.id,
+      });
+    }
+
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
@@ -223,7 +231,11 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     const { id } = req.params;
+    let calendar = await Calendar.findOne({ where: { id } });
 
+    if (calendar.type == 'finalInterview') {
+      await UserInterview.destroy({ where: { calendarId: id } });
+    }
     const status = await Calendar.destroy({
       where: { id },
     });
@@ -240,7 +252,7 @@ const remove = async (req, res) => {
 const getUsers = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const {language} = req.query;
+    const { language } = req.query;
     let Group = await Groups.findAll({
       include: [
         {
@@ -253,7 +265,7 @@ const getUsers = async (req, res) => {
           required: true,
         },
       ],
-      attributes: ['id', [`name_${language}`,'name']],
+      attributes: ['id', [`name_${language}`, 'name']],
     });
     Group = await Promise.all(
       Group.map(async (grp) => {

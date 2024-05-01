@@ -15,16 +15,10 @@ const Sequelize = require('sequelize');
 
 const create = async (req, res) => {
   try {
-    const {
-      title_en,
-      title_ru,
-      title_am,
-      description_en,
-      description_ru,
-      description_am,
-    } = req.body;
+    const { title_en, title_ru, title_am, description_en, description_ru, description_am } =
+      req.body;
 
-     await Homework.create({
+    await Homework.create({
       title_en,
       title_ru,
       title_am,
@@ -32,7 +26,7 @@ const create = async (req, res) => {
       description_ru,
       description_am,
     });
-    return res.send({success:true});
+    return res.send({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -234,18 +228,18 @@ const getHomework = async (req, res) => {
       where: { id },
       // attributes: ["id","points", "status", "answer", "feedback","startDate"],
       // include: [
-        // {
-          // model: Homework,
-          attributes: [
-            'id',
-            // 'courseId',
-            [`title_${language}`, 'title'],
-            [`description_${language}`, 'description'],
-            // 'maxPoints',
-            // 'dueDate',
-            // 'startDate',
-          ],
-        // },
+      // {
+      // model: Homework,
+      attributes: [
+        'id',
+        // 'courseId',
+        [`title_${language}`, 'title'],
+        [`description_${language}`, 'description'],
+        // 'maxPoints',
+        // 'dueDate',
+        // 'startDate',
+      ],
+      // },
       // ],
     });
 
@@ -257,9 +251,9 @@ const getHomework = async (req, res) => {
     // return res.status(403).json({homework})
 
     // if (!homework.startDate) {
-      // homework.startDate = new Date().toISOString();
-      // homework.status = 1;
-      // await homework.save();
+    // homework.startDate = new Date().toISOString();
+    // homework.status = 1;
+    // await homework.save();
     // }
 
     // const Files = await HomeWorkFiles.findAll({
@@ -500,18 +494,39 @@ const priceHomeWork = async (req, res) => {
   }
 };
 
-const getHomeworkTitles = async(req,res)=>{
-  try{
+const getHomeworkTitles = async (req, res) => {
+  try {
     const homeworks = await Homework.findAll({
-      attributes:["id",["title_en","title"]]
-    })
+      attributes: ['id', ['title_en', 'title']],
+    });
 
-    return res.json(homeworks)
-  }catch (error) {
+    return res.json(homeworks);
+  } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
-}
+};
+
+const homeworkPoints = async (req, res) => {
+  try {
+    const { userId, homeworkId, points } = req.body;
+    const task = await UserHomework.update(
+      {
+        points,
+      },
+      {
+        where: {
+          userId,
+          HomeworkId: homeworkId,
+        },
+      },
+    );
+    return res.json({ task });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong .' });
+  }
+};
 module.exports = {
   create,
   open,
@@ -524,5 +539,6 @@ module.exports = {
   priceHomeWork,
   getHomeWorkForTeacherForSingleUser,
   deleteFile,
-  getHomeworkTitles
+  getHomeworkTitles,
+  homeworkPoints,
 };

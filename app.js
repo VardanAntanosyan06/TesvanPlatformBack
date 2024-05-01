@@ -29,8 +29,8 @@ var PaymentRouter = require('./routes/Payment');
 var SkillRouter = require('./routes/Skill');
 var ChatRouter = require('./routes/Chat');
 var ChatMessageRouter = require('./routes/ChatMessage');
-var GroupChatRouter = require('./routes/GroupChat')
-// var PresentationRouter = require('./routes/Presentation');
+var GroupChatRouter = require('./routes/GroupChat');
+var interviewRouter = require('./routes/Interview');
 var app = express();
 
 // view engine setup
@@ -74,6 +74,7 @@ app.use('/api/v2/payment', PaymentRouter);
 app.use('/api/v2/chat', ChatRouter);
 app.use('/api/v2/groupChat', GroupChatRouter);
 app.use('/api/v2/chatMessage', ChatMessageRouter);
+app.use('/api/v2/interview', interviewRouter);
 
 // app.use('/api/v2/presentation', PresentationRouter);
 

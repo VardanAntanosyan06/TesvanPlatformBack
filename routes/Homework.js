@@ -48,5 +48,5 @@ router.post('/test/', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), (req, res) => 
 });
 
 router.delete('/deleteFile/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.deleteFile);
-
+router.put('/addPoint', checkAuth(['TEACHER', 'ADMIN']), controller.homeworkPoints);
 module.exports = router;
