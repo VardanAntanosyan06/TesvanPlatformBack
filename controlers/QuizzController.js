@@ -26,7 +26,7 @@ const createQuizz = async (req, res) => {
       description_ru,
       description_am,
       time,
-      percent,
+      percent,  
     });
 
     questions_en.map((question,i)=>{
@@ -93,18 +93,24 @@ const getQuizzes = async (req, res) => {
         message: `with ID ${id} Quizz not found`,
       });
 
-    // const lesson = await Lesson.findOne({
-    //   include:{
-    //     where:{quizzId:id},
-    //     model:LessonsPerQuizz,
-    //   },
-    //   attributes:['id',['title_en','title']]
-    // })
+      const questions_en = []
+      const questions_ru = []
+      const questions_am = []
+
+    quizz.Questions.map((question)=>{ 
+      const options_en = question.Options.map((e)=>{
+        return {
+        title_en:e.title_en,
+        isCorrect:e.isCorrect
+      }
+      })
+      questions_en.push(question.title_en,options_en)
+    })
+
 
     quizz = {
-      // lesson:lesson?lesson:null,
-      time: 22,
       ...quizz.dataValues,
+      questions_en
     };
 
     return res.status(200).json({ success: true, quizz });
