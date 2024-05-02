@@ -567,6 +567,7 @@ const getUserCourse = async (req, res) => {
     const userPoint = await UserPoints.findOne({
       where: { isFinal: true, courseId },
     });
+    console.log(Quizzs);
     let quizz = {
       id: Quizzs[0].id,
       title: Quizzs[0].dataValues.title,
@@ -1106,7 +1107,6 @@ const updateCourse = async (req, res) => {
       title_ru,
       description_en,
       description_am,
-
       description_ru,
       courseType_ru,
       courseType_am,
@@ -1157,10 +1157,11 @@ const updateCourse = async (req, res) => {
 
     // Update course per quizz if available
     if (quizzId !== "undefined") {
-      await CoursesPerQuizz.update(
-        { type: courseType_en },
-        { where: { quizzId, courseId } }
+      await CoursesPerQuizz.destroy(
+        // { type: courseType_en },
+        { where: { courseId } }
       );
+      await await CoursesPerQuizz.create({ quizzId, courseId });
     }
 
     // Update course per lesson entries

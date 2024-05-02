@@ -77,7 +77,7 @@ const createQuizz = async (req, res) => {
     }
     res.status(200).json({ success: true });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
@@ -86,14 +86,17 @@ const createQuizz = async (req, res) => {
 const getQuizzes = async (req, res) => {
   try {
     const { id } = req.params;
+    const { language } = req.query;
 
     let quizz = await Quizz.findOne({
       where: { id },
       include: [
         {
           model: Question,
+          attributes: ["id", "quizzId", [`title_${language}`,"title"]],
           include: {
             model: Option,
+            attributes: ["id", [`title_${language}`,"title"]],
             required: true,
           },
         },
@@ -125,7 +128,7 @@ const getQuizzes = async (req, res) => {
             title_am: e.title_am,
             isCorrect_am: e.isCorrect,
           });
-          return acc
+          return acc;
         },
         {
           option_en: [],
@@ -140,9 +143,9 @@ const getQuizzes = async (req, res) => {
       // }
       // })
       questions_en.push({
-        question_en:question.title_en,
-        options_en:options.option_en
-      })
+        question_en: question.title_en,
+        options_en: options.option_en,
+      });
 
       // const options_ru = question.Options.map((e) => {
       //   return {
@@ -154,7 +157,6 @@ const getQuizzes = async (req, res) => {
         question_ru: question.title_ru,
         options_ru: options.option_ru,
       });
-
 
       questions_am.push({
         question_am: question.title_am,
@@ -411,50 +413,44 @@ const updateQuizz = async (req, res) => {
       { where: { id } }
     );
 
-    // Delete existing questions and options associated with the Quizz
-    await Question.destroy({ where: { quizzId: id } });
-    await Option.destroy({
+    await Question.destroy({
       where: {
-        questionId:id
+        quizzId: id,
       },
     });
 
-    for (let i = 0; i < questions_en.length; i++) {
-      const question = questions_en[i];
-      const createdQuestion = await Question.create({
+    questions_en.map((question, i) => {
+      Question.create({
         title_en: question.question_en,
         title_ru: questions_ru[i].question_ru,
         title_am: questions_am[i].question_am,
         quizzId: id,
-      });
-
-      for (let optionIndex = 0; optionIndex < question.options.length; optionIndex++) {
-        const option = question.options[optionIndex];
-        await Option.create({
-          title_en: option.option_en,
-          title_ru: questions_ru[i].options[optionIndex].option_ru,
-          title_am: questions_am[i].options[optionIndex].option_am,
-          isCorrect: option.isCorrect_en,
-          questionId: createdQuestion.id,
+      }).then((data) => {
+        console.log(question);
+        question.options_en.map((option, optionIndex) => {
+          Option.destroy({
+            where: {
+              questionId: data.id,
+            },
+          });
+          Option.create({
+            title_en: option.option_en,
+            title_ru: questions_ru[i].options_ru[optionIndex].option_ru,
+            title_am: questions_am[i].options_am[optionIndex].option_am,
+            isCorrect: option.isCorrect_en,
+            questionId: data.id,
+          });
         });
-      }
-    }
-
-    if (lessonId) {
-      await LessonsPerQuizz.update({ lessonId }, { where: { quizzId: id } });
-      await CoursesPerQuizz.destroy({ where: { quizzId: id } });
-    } else {
-      await CoursesPerQuizz.update({ courseId, type: "Group" }, { where: { quizzId: id } });
-      await LessonsPerQuizz.destroy({ where: { quizzId: id } });
-    }
+        // console.log(question);
+      });
+    });
 
     res.status(200).json({ success: true });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
   }
 };
-
 
 module.exports = {
   createQuizz,

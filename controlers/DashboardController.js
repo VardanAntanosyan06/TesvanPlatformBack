@@ -89,8 +89,11 @@ const getUserStatictis = async (req, res) => {
             include: [
               {
                 model: Homework,
-                // as: 'homework',
-                required: true,
+                as: 'homework',
+                through: {
+                  attributes: [],
+                },
+                attributes:['id',[`title_${language}`,'title'],[`description_${language}`,'description']]
               },
             ],
             required: true,
@@ -190,7 +193,8 @@ const getUserStatictis = async (req, res) => {
           include: [
             {
               model: Homework,
-              required: true,
+              as: 'homework',
+       
             },
           ],
           required: true,
