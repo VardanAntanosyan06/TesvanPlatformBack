@@ -3,6 +3,7 @@ const {
   Users,
   Groups,
   GroupsPerUsers,
+  UserPoints,
   GroupCourses,
   CoursesContents,
   CoursesPerLessons,
@@ -12,9 +13,9 @@ const {
   UserCourses,
   Homework,
   UserHomework,
-  Quizz
+  Quizz,
 } = require("../models");
-// const  = require("../models/groupCourses");
+const { Op } = require("sequelize");
 
 const getUserStatictis = async (req, res) => {
   try {
@@ -89,11 +90,15 @@ const getUserStatictis = async (req, res) => {
             include: [
               {
                 model: Homework,
-                as: 'homework',
+                as: "homework",
                 through: {
                   attributes: [],
                 },
-                attributes:['id',[`title_${language}`,'title'],[`description_${language}`,'description']]
+                attributes: [
+                  "id",
+                  [`title_${language}`, "title"],
+                  [`description_${language}`, "description"],
+                ],
               },
             ],
             required: true,
@@ -101,7 +106,7 @@ const getUserStatictis = async (req, res) => {
         ],
       });
 
-      const userSubmitedHomework = 5
+      const userSubmitedHomework = 5;
       const response = {
         lesson: 0,
         homework: {
@@ -112,7 +117,7 @@ const getUserStatictis = async (req, res) => {
         quizzes: {
           taken: userSubmitedHomework,
           all: allHomework,
-          percent: (userSubmitedHomework/allHomework)*100,
+          percent: (userSubmitedHomework / allHomework) * 100,
         },
         // totalPoints: (group.lessons + group.homeWork + group.quizzes) / 3,
         totalPoints: 0,
@@ -169,7 +174,7 @@ const getUserStatictis = async (req, res) => {
 
     charts = charts.map((e) => e.time);
     const allQuizz = await CoursesPerLessons.count({
-      where: { courseId: id },
+      where: { courseId: course.assignCourseId },
       include: [
         {
           model: Lesson,
@@ -186,37 +191,56 @@ const getUserStatictis = async (req, res) => {
     });
 
     const allHomework = await CoursesPerLessons.count({
-      where: { courseId: id },
+      where: { courseId: course.assignCourseId },
       include: [
         {
           model: Lesson,
           include: [
             {
               model: Homework,
-              as: 'homework',
-       
+              as: "homework",
             },
           ],
           required: true,
         },
       ],
     });
-
-    const userSubmitedHomework = 5
+    const userSubmitedQuizz = await UserPoints.count({
+      where: { courseId: course.assignCourseId, userId },
+    });
+    const userSubmitedHomework = await UserHomework.count({
+      where: {
+        UserId: userId,
+        points: { [Op.gt]: 0 },
+        GroupCourseId: course.assignCourseId,
+      },
+    });
     const response = {
       lesson: 0,
       homework: {
-        taken: 5,
-        all: 1,
-        percent: 20,
+        taken: userSubmitedHomework,
+        all: allHomework,
+        percent:
+          allHomework < 0 || userSubmitedHomework < 0
+            ? 0
+            : (userSubmitedHomework / allHomework) * 100,
       },
       quizzes: {
-        taken: 5,
-        all: 1,
-        percent: 20,
+        taken: userSubmitedQuizz,
+        all: allQuizz + 1, //final quizz
+        percent:
+          userSubmitedQuizz == 0
+            ? 0
+            : (userSubmitedQuizz / (allQuizz + 1)) * 100,
       },
-      // totalPoints: (group.lessons + group.homeWork + group.quizzes) / 3,
-      totalPoints: 0,
+      totalPoints:
+        ((userSubmitedQuizz == 0
+          ? 0
+          : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
+          (allHomework < 0 || userSubmitedHomework < 0
+            ? 0
+            : (userSubmitedHomework / allHomework) * 100)) /
+        2,
       mySkils,
       charts,
       course: {

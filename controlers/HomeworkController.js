@@ -509,22 +509,29 @@ const getHomeworkTitles = async (req, res) => {
 
 const homeworkPoints = async (req, res) => {
   try {
-    const { userId, homeworkId, points } = req.body;
-    const task = await UserHomework.update(
+    const { userId, homeworkId, points,feedback } = req.body;
+    const [status] = await UserHomework.update(
       {
         points,
+        feedback
       },
       {
         where: {
-          userId,
+          UserId:userId,
           HomeworkId: homeworkId,
+          
         },
       },
     );
-    return res.json({ task });
+    if (status === 0) {
+      return res.status(403).json({
+        message: 'Homework not found',
+      });
+    }
+    return res.json({ success:true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong .' });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 module.exports = {
