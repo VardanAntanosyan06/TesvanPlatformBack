@@ -1,4 +1,4 @@
-const { Op, where } = require("sequelize");
+const { Op, where } = require('sequelize');
 const {
   Quizz,
   Option,
@@ -11,7 +11,7 @@ const {
   UserCourses,
   UserPoints,
   UserLesson,
-} = require("../models");
+} = require('../models');
 
 const createQuizz = async (req, res) => {
   try {
@@ -72,13 +72,13 @@ const createQuizz = async (req, res) => {
       await CoursesPerQuizz.create({
         quizzId,
         courseId,
-        type: "Group",
+        type: 'Group',
       });
     }
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -93,10 +93,10 @@ const getQuizzes = async (req, res) => {
       include: [
         {
           model: Question,
-          attributes: ["id", "quizzId", [`title_${language}`,"title"]],
+          attributes: ['id', 'quizzId', [`title_${language}`, 'title']],
           include: {
             model: Option,
-            attributes: ["id", [`title_${language}`,"title"]],
+            attributes: ['id', [`title_${language}`, 'title']],
             required: true,
           },
         },
@@ -114,56 +114,42 @@ const getQuizzes = async (req, res) => {
     const questions_am = [];
 
     quizz.Questions.map((question) => {
-      const options = question.Options.reduce(
-        (acc, e) => {
-          acc.option_en.push({
-            title_en: e.title_en,
-            isCorrect_en: e.isCorrect,
-          });
-          acc.option_ru.push({
-            title_ru: e.title_ru,
-            isCorrect_ru: e.isCorrect,
-          });
-          acc.option_am.push({
-            title_am: e.title_am,
-            isCorrect_am: e.isCorrect,
-          });
-          return acc;
-        },
-        {
-          option_en: [],
-          option_ru: [],
-          option_am: [],
-        }
-      );
-      // const options_en = question.Options.map((e)=>{
-      //   return {
-      //   title_en:e.title_en,
-      //   isCorrect_en:e.isCorrect
-      // }
-      // })
+      const options_en = question.Options.map((e) => {
+        return {
+          title_en: e.title_en,
+          isCorrect_en: e.isCorrect,
+        };
+      });
       questions_en.push({
         question_en: question.title_en,
-        options_en: options.option_en,
+        options_en: options_en,
       });
-
-      // const options_ru = question.Options.map((e) => {
-      //   return {
-      //     title_ru: e.title_ru,
-      //     isCorrect_ru: e.isCorrect,
-      //   };
-      // });
+    });
+    quizz.Questions.map((question) => {
+      const options_ru = question.Options.map((e) => {
+        return {
+          title_ru: e.title_ru,
+          isCorrect_ru: e.isCorrect,
+        };
+      });
       questions_ru.push({
         question_ru: question.title_ru,
-        options_ru: options.option_ru,
-      });
-
-      questions_am.push({
-        question_am: question.title_am,
-        options_am: options.option_am,
+        options_ru: options_ru,
       });
     });
 
+    quizz.Questions.map((question) => {
+      const options_am = question.Options.map((e) => {
+        return {
+          title_am: e.title_am,
+          isCorrect_am: e.isCorrect,
+        };
+      });
+      questions_am.push({
+        question_am: question.title_am,
+        options_am: options_am,
+      });
+    });
     quizz = {
       ...quizz.dataValues,
       questions_en,
@@ -174,7 +160,7 @@ const getQuizzes = async (req, res) => {
     return res.status(200).json({ success: true, quizz });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -198,7 +184,7 @@ const submitQuizz = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -212,33 +198,33 @@ const finishQuizz = async (req, res) => {
 
     if (!lessonId) {
       let correctAnswers = await Quizz.findByPk(quizzId, {
-        attributes: ["id"],
+        attributes: ['id'],
         include: [
           {
             model: Question,
-            attributes: ["id"],
+            attributes: ['id'],
             include: [
               {
                 model: Option,
                 where: { isCorrect: true },
-                attributes: ["id"],
+                attributes: ['id'],
               },
             ],
           },
         ],
       });
 
-      correctAnswers = correctAnswers.Questions.map(
-        (e) => e.Options[0].id
-      ).sort((a, b) => a.id - b.id);
+      correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
+        (a, b) => a.id - b.id,
+      );
 
       const userAnswers = await UserAnswersQuizz.findAll({
         where: {
           testId: quizzId,
           userId,
         },
-        attributes: ["optionId"],
-        order: [["id", "ASC"]],
+        attributes: ['optionId'],
+        order: [['id', 'ASC']],
       });
       userAnswers.map((e) => {
         correctAnswers.push(e.optionId);
@@ -248,7 +234,7 @@ const finishQuizz = async (req, res) => {
         (Math.round(
           ((correctAnswers.length - new Set(correctAnswers).size) /
             Math.ceil(correctAnswers.length / 2)) *
-            100
+            100,
         ) *
           (10 / 2)) /
         100;
@@ -277,16 +263,16 @@ const finishQuizz = async (req, res) => {
     const { maxPoints } = await Lesson.findByPk(lessonId);
 
     let correctAnswers = await Quizz.findByPk(quizzId, {
-      attributes: ["id"],
+      attributes: ['id'],
       include: [
         {
           model: Question,
-          attributes: ["id"],
+          attributes: ['id'],
           include: [
             {
               model: Option,
               where: { isCorrect: true },
-              attributes: ["id"],
+              attributes: ['id'],
             },
           ],
         },
@@ -294,7 +280,7 @@ const finishQuizz = async (req, res) => {
     });
 
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
-      (a, b) => a.id - b.id
+      (a, b) => a.id - b.id,
     );
 
     const userAnswers = await UserAnswersQuizz.findAll({
@@ -302,8 +288,8 @@ const finishQuizz = async (req, res) => {
         testId: quizzId,
         userId,
       },
-      attributes: ["optionId"],
-      order: [["id", "ASC"]],
+      attributes: ['optionId'],
+      order: [['id', 'ASC']],
     });
     userAnswers.map((e) => {
       correctAnswers.push(e.optionId);
@@ -313,7 +299,7 @@ const finishQuizz = async (req, res) => {
       (Math.round(
         ((correctAnswers.length - new Set(correctAnswers).size) /
           Math.ceil(correctAnswers.length / 2)) *
-          100
+          100,
       ) *
         (maxPoints / 2)) /
       100;
@@ -340,20 +326,20 @@ const finishQuizz = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const getAll = async (req, res) => {
   try {
     const quizzes = await Quizz.findAll({
-      attributes: ["id", ["title_en", "title"]],
+      attributes: ['id', ['title_en', 'title']],
     });
 
     return res.json(quizzes);
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -375,7 +361,7 @@ const deleteQuizz = async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -410,7 +396,7 @@ const updateQuizz = async (req, res) => {
         time,
         percent,
       },
-      { where: { id } }
+      { where: { id } },
     );
 
     await Question.destroy({
@@ -448,7 +434,7 @@ const updateQuizz = async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
