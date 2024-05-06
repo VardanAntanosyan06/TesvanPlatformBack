@@ -996,7 +996,7 @@ const getOneGroup = async (req, res) => {
     // return res.json({Courses})
     Courses = {
       title: Courses.name,
-      courseType: Courses.GroupCourse.CoursesContents[0].courseType,
+      courseType: Courses.Gro_enupCourse.CoursesContents[0].courseType,
       lessonType: Courses.Gro_enupCourse.CoursesContents[0].lessonType,
       level: Courses.Gro_enupCourse.CoursesContents[0].level,
       courseStartDate: moment().format('ll'),
