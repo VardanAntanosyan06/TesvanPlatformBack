@@ -32,7 +32,7 @@ const getGroupChat = async (req, res) => {
             attributes: ["id", "name"]
         })
         const userSocket = await userSockets.get(userId);
-        if (userSocket) { userSocket.join(`room_${groupChatId}`) }
+        if (userSocket) { userSocket.join(`room_${groupChatId}`)}
         return res.status(200).json(groupChat)
     } catch (error) {
         console.log(error);
@@ -51,6 +51,12 @@ const getGroupChats = async (req, res) => {
             },
             attributes: ["id", "name"]
         })
+        const userSocket = await userSockets.get(userId);
+        if (userSocket) { 
+            groupChats.map((chat)=> {
+                userSocket.join(`room_${chat.id}`)
+            })
+        }
         return res.status(200).json(groupChats)
     } catch (error) {
         console.log(error);
