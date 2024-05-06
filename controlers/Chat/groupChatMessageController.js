@@ -17,7 +17,20 @@ const createGroupChatMessage = async (req, res)=> {
         });
         if (!groupChats) return res.status(404).json({message: 'Chat not found'});
         await GroupChatMessages.create({ groupChatId: chatId, senderId: userId, text })
-        io.to(`room_${chatId}`).emit("new-groupChatMessage", {message: text});
+        const messages = await GroupChatMessages.findAll({
+            where: {
+                groupChatId: chatId,
+            },
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                }
+            ],
+            limit: 20,
+        });
+        if (!messages) return res.status(404).json({ message: 'Message not found' });
+        io.to(`room_${chatId}`).emit("groupChatMessages", messages);
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -29,6 +42,7 @@ const getGroupChatMessages = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { chatId } = req.params;
+        const {quantity} = req.query;
         const chat = await GroupChats.findOne({
             where: {
                 id: chatId,
@@ -47,7 +61,9 @@ const getGroupChatMessages = async (req, res) => {
                     model: Users,
                     attributes: ["id", "firstName", "lastName", "image"],
                 }
-            ]
+            ],
+            limit: 20,
+            offset: quantity-20
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
         return res.status(200).json(messages)
@@ -76,7 +92,20 @@ const updateGroupChatMessage = async (req, res)=> {
             {text: text, isUpdated: true},
             {where: {id: messageId}}
         );
-        io.to(`room_${chatId}`).emit("new-groupChatMessage", {message: text});
+        const messages = await GroupChatMessages.findAll({
+            where: {
+                groupChatId: chatId,
+            },
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                }
+            ],
+            limit: 20,
+        });
+        if (!messages) return res.status(404).json({ message: 'Message not found' });
+        io.to(`room_${chatId}`).emit("groupChatMessages", messages);
         return res.status(200).json({ success: true });
     } catch(error) {
         console.log(error);
@@ -101,7 +130,20 @@ const deleteGroupChatMessage = async (req, res)=> {
         await GroupChatMessages.destroy({
             where: {id: messageId}
         });
-        io.to(`room_${chatId}`).emit("new-groupChatMessage");
+        const messages = await GroupChatMessages.findAll({
+            where: {
+                groupChatId: chatId,
+            },
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                }
+            ],
+            limit: 20,
+        });
+        if (!messages) return res.status(404).json({ message: 'Message not found' });
+        io.to(`room_${chatId}`).emit("groupChatMessages", messages);
         return res.status(200).json({ success: true });
     } catch(error) {
         console.log(error);

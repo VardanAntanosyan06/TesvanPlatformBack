@@ -16,6 +16,20 @@ const createChatMessage = async (req, res) => {
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
         await ChatMessages.create({ chatId, senderId, text })
+        const messages = await ChatMessages.findAll({
+            where: {
+                chatId: chatId,
+            },
+            attributes:["text","isUpdated"],
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                }
+            ]
+
+        });
+        if (!messages) return res.status(404).json({ message: 'Message not found' });
         let socketSendId
         if (userId == chat.firstId) {
             socketSendId = chat.secondId

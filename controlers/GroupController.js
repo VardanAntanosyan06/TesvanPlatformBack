@@ -95,7 +95,12 @@ const CreateGroup = async (req, res) => {
         });
       }),
     );
-
+    await GroupChats.create({
+      adminId: 5,
+      groupId: task.id,
+      name: name_en,
+      members: users
+  });
     res.status(200).json({ success: true, task });
   } catch (error) {
     console.log(error);
