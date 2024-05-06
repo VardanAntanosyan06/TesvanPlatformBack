@@ -1,4 +1,5 @@
-const { Users, UserCourses, Email } = require('../models');
+const { Users, UserCourses, Email, GroupChats } = require('../models');
+const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
@@ -262,8 +263,15 @@ const authMe = async (req, res) => {
     if (!User) {
       return res.send({ succes: false });
     }
-
-    res.send({ User });
+    const groupChats = await GroupChats.findAll({
+      where: {
+          members: {
+              [Op.contains]: [id]
+          }
+      },
+      attributes: ["id"]
+  })
+    res.send({ User, groupChats });
   } catch (e) {
     res.status(500).json({ succes: false });
     console.log(e);
