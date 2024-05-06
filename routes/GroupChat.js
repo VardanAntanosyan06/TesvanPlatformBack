@@ -22,6 +22,12 @@ router.get(
     controller.getGroupChats
 );
 
+router.get(
+    "/getGroupChatMembers/:groupChatId",
+    checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+    controller.getGroupChatMembers
+);
+
 router.patch(
     "/updateNameGroupChat/:groupChatId",
     checkAuth(["STUDENT","TEACHER", "ADMIN"]),

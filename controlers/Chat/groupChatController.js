@@ -49,7 +49,7 @@ const getGroupChats = async (req, res) => {
                     [Op.contains]: [userId]
                 }
             },
-            attributes: ["id", "name"]
+            attributes: ["id", "name", "members"]
         })
         const userSocket = await userSockets.get(userId);
         if (userSocket) { 
@@ -63,7 +63,29 @@ const getGroupChats = async (req, res) => {
         return res.status(500).json(error.message)
     }
 };
-
+const getGroupChatMembers = async (req, res)=> {
+    try {
+        const { user_id: userId } = req.user;
+        const { groupChatId } = req.params;
+        const groupChat = await GroupChats.findAll({
+            where: {
+                id: groupChatId,
+                members: {
+                    [Op.contains]: [userId]
+                }
+            },
+            attributes: ["members"]
+        })
+        const members = await Users.findAll({
+            where: groupChat.members,
+            attributes: ["id","firstName", "lastName", "image"]
+        })
+        return res.status(200).json(members)
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error.message)
+    }
+}
 const updateNameGroupChat = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
@@ -183,5 +205,6 @@ module.exports = {
     updateNameGroupChat,
     addMemberGroupChat,
     deleteMemberGroupChat,
-    deleteGroupChat
+    deleteGroupChat,
+    getGroupChatMembers
 }
