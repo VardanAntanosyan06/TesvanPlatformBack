@@ -22,9 +22,15 @@ module.exports = {
       text: {
         type: Sequelize.TEXT
       },
+      image: {
+        type: Sequelize.STRING
+      },
       isUpdated: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },
+      isReply: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

@@ -15,15 +15,21 @@ module.exports = {
       senderId: {
         type: Sequelize.INTEGER,
         references: {
-          models: "Users",
+          model: "Users",
           key: "id"
         }
       },
       text: {
         type: Sequelize.TEXT
       },
+      image: {
+        type: Sequelize.STRING
+      },
       isUpdated: {
         type: Sequelize.BOOLEAN
+      },
+      isReply: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

@@ -18,7 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     groupChatId: DataTypes.INTEGER,
     senderId: DataTypes.INTEGER,
     text: DataTypes.TEXT,
-    isUpdated: DataTypes.BOOLEAN
+    image: DataTypes.STRING,
+    isUpdated: DataTypes.BOOLEAN,
+    isReply: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'GroupChatMessages',

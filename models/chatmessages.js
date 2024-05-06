@@ -11,17 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      ChatMessages.belongsTo(models.Users, {foreignKey: "senderId"})
+      ChatMessages.belongsTo(models.Users, { foreignKey: "senderId" })
     }
   }
   ChatMessages.init({
     chatId: DataTypes.INTEGER,
     senderId: DataTypes.INTEGER,
     text: DataTypes.TEXT,
+    image: DataTypes.STRING,
     isUpdated: {
-      type:DataTypes.BOOLEAN,
+      type: DataTypes.BOOLEAN,
       defaultValue: false
-    }
+    },
+    isReply: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'ChatMessages',

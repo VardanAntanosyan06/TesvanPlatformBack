@@ -1,4 +1,4 @@
-const { GroupChats } = require("../../models");
+const { GroupChats, Users } = require("../../models");
 const { Op } = require('sequelize');
 const { userSockets } = require("../../userSockets");
 
@@ -93,8 +93,19 @@ const addMemberGroupChat = async (req, res) => {
             }
         })
         if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
+        const newMembers = [...receiverId, ...groupChats.members]
+        const uniqueUsers = [...new Set(newMembers)];
+        const users = await Users.findAll({
+            where: {
+                id: [...receiverId],
+            },
+            attributes: ['id']
+        });
+        if(users.length !== receiverId.length){
+            return res.status(400).json({message: "An error has occurred. The user you specified may not be found"})
+        }
         await GroupChats.update(
-            { members: [...groupChats.members, ...receiverId] },
+            { members: [...uniqueUsers] },
             { where: { id: groupChatId } }
         )
         return res.status(200).json({ success: true });
@@ -116,12 +127,21 @@ const deleteMemberGroupChat = async (req, res) => {
             }
         })
         if (!groupChat) return res.status(404).json({ message: 'Chat not found' });
-        const index = groupChat.members.indexOf(+receiverId);
-        const newMembers = groupChat.members.splice(index, 1);
+        const Users = new Set(groupChat.members)
+        let notFound = 0;
+        receiverId.forEach(user => {
+            if(!Users.has(user)) {
+                notFound++
+            }
+            Users.delete(user)
+        })
         await GroupChats.update(
-            { members: [...groupChat.members] },
+            { members: [...Users] },
             { where: { id: groupChatId } }
         )
+        if(notFound){
+            return res.status(200).json({ success: true, message: `${notFound} users not found`});
+        }
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
