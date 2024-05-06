@@ -100,7 +100,6 @@ io.on('connection', (socket) => {
   try {
     const token = socket?.handshake?.query?.token;
     if (token) {
-      console.log(500);
       jwt.verify(token, process.env.SECRET, (err, decoded) => {
         if (err) {
           console.error('Token verification error:', err);

@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class ChatMessages extends Model {
+  class GroupChatMessages extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,23 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      ChatMessages.belongsTo(models.Users, { foreignKey: "senderId" })
+      GroupChatMessages.belongsTo(models.Users, {foreignKey: "senderId"})
     }
   }
-  ChatMessages.init({
-    chatId: DataTypes.INTEGER,
+  GroupChatMessages.init({
+    groupChatId: DataTypes.INTEGER,
     senderId: DataTypes.INTEGER,
     text: DataTypes.TEXT,
     image: DataTypes.STRING,
-    isUpdated: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
+    isUpdated: DataTypes.BOOLEAN,
     isReply: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'ChatMessages',
+    modelName: 'GroupChatMessages',
   });
-
-  return ChatMessages;
+  return GroupChatMessages;
 };

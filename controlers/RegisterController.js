@@ -62,7 +62,7 @@ const UserRegistartion = async (req, res) => {
     });
     User.token = jwt.sign({ user_id: User.id, email, role }, process.env.SECRET);
     await User.save();
-    return res.status(200).json({ succes: true });
+    return res.status(200).json({ succes: true, token: User.token });
   } catch (error) {
     console.log(error.message);
     if (error.name == 'SequelizeValidationError') {

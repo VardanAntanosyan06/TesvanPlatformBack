@@ -1,5 +1,6 @@
-const { Chats } = require("../../models");
-const { Op } = require('sequelize');
+const { Chats, Users } = require("../../models");
+const { Op, Model } = require('sequelize');
+
 
 const createChat = async (req, res) => {
     try {
@@ -7,16 +8,27 @@ const createChat = async (req, res) => {
         const { receiverId } = req.body;
         const Chat = await Chats.findOne({
             where: {
-                members: {
-                    [Op.and]: [
-                        { [Op.contains]: [userId, receiverId] },
-                    ]
+                [Op.or]: [
+                    { [Op.and]: [{ firstId: userId }, { secondId: receiverId }] },
+                    { [Op.and]: [{ firstId: receiverId }, { secondId: userId }] }
+                ]
+            },
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                    as: 'firstIds'
+                },
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                    as: 'secondIds'
                 }
-            }
+            ]
         })
         if (Chat) return res.status(200).json(Chat);
-        const newChat = await Chats.create({ members: [userId, receiverId] });
-        return res.status(200).json(newChat);
+        await Chats.create({ firstId: userId, secondId: receiverId });
+        return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
@@ -30,13 +42,24 @@ const getChat = async (req, res) => {
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
-                members: {
-                    [Op.and]: [
-                        { [Op.contains]: [userId] },
-                    ]
+                [Op.or]: [{secondId:userId}, {firstId:userId}] 
+            },
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                    as: 'firstIds'
+                },
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                    as: 'secondIds'
                 }
-            }
+            ]
         })
+        if(!chat)
+        return res.status(400).json({message: "Chat not found"})
+        else
         return res.status(200).json(chat)
     } catch (error) {
         console.log(error);
@@ -49,11 +72,21 @@ const getChats = async (req, res) => {
         const { user_id: userId } = req.user;
         const chats = await Chats.findAll({
             where: {
-                members: {
-                    [Op.contains]: [userId],
+                [Op.or]: [{secondId:userId}, {firstId:userId}] 
+            },
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                    as: 'firstIds'
+                },
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                    as: 'secondIds'
                 }
-            }
-        })
+            ]
+        });
         return res.status(200).json(chats)
     } catch (error) {
         console.log(error);
@@ -68,18 +101,15 @@ const deleteChat = async (req, res) => {
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
-                members: {
-                    [Op.and]: [
-                        { [Op.contains]: [userId] },
-                    ]
-                }
+                [Op.or]: [{secondId:userId}, {firstId:userId}] 
             }
         })
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
+        
         const deleteChat = await Chats.destroy({
             where: { id: chatId }
         })
-        if(deleteChat === 0) return res.status(404).json({ message: 'Message not found' });
+        if (deleteChat === 0) return res.status(404).json({ message: 'Message not found' });
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
