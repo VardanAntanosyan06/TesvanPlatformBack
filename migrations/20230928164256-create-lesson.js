@@ -18,7 +18,9 @@ module.exports = {
       maxPoints: {
         type: Sequelize.INTEGER,
       },
-      htmlContent: { type: Sequelize.TEXT("long") },
+      htmlContent_en: { type: Sequelize.TEXT("long") },
+      htmlContent_ru: { type: Sequelize.TEXT("long") },
+      htmlContent_am: { type: Sequelize.TEXT("long") },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

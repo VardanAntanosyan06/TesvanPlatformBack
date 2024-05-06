@@ -1,4 +1,4 @@
-const { Op, where } = require("sequelize");
+const { Op, where } = require('sequelize');
 const {
   Quizz,
   Option,
@@ -11,34 +11,58 @@ const {
   UserCourses,
   UserPoints,
   UserLesson,
-} = require("../models");
+} = require('../models');
 
 const createQuizz = async (req, res) => {
   try {
-    const { title, description, lessonId, courseId, time, percent, questions } =
-      req.body;
+    const {
+      title_en,
+      title_ru,
+      title_am,
+      description_en,
+      description_ru,
+      description_am,
+      lessonId,
+      courseId,
+      time,
+      percent,
+      questions_en,
+      questions_ru,
+      questions_am,
+    } = req.body;
 
     let { id: quizzId } = await Quizz.create({
-      title_en: title,
-      description_en: description,
+      title_en,
+      title_ru,
+      title_am,
+      description_en,
+      description_ru,
+      description_am,
       time,
       percent,
     });
-    console.log(questions);
-    questions.map((e) => {
+
+    questions_en.map((question, i) => {
       Question.create({
-        title: e.question,
+        title_en: question.question_en,
+        title_ru: questions_ru[i].question_ru,
+        title_am: questions_am[i].question_am,
         quizzId,
       }).then((data) => {
-        e.options.map((i) => {
+        question.options.map((option, optionIndex) => {
+          console.log(questions_ru[i].options[optionIndex]);
           Option.create({
+            title_en: option.option_en,
+            title_ru: questions_ru[i].options[optionIndex].option_ru,
+            title_am: questions_am[i].options[optionIndex].option_am,
+            isCorrect: option.isCorrect_en,
             questionId: data.id,
-            title: i.option,
-            isCorrect: i.isCorrect,
           });
         });
+        // console.log(question);
       });
     });
+
     if (lessonId) {
       await LessonsPerQuizz.create({
         quizzId,
@@ -48,13 +72,13 @@ const createQuizz = async (req, res) => {
       await CoursesPerQuizz.create({
         quizzId,
         courseId,
-        type: "Group",
+        type: 'Group',
       });
     }
-    return res.status(200).json({ success: true });
+    res.status(200).json({ success: true });
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -62,14 +86,17 @@ const createQuizz = async (req, res) => {
 const getQuizzes = async (req, res) => {
   try {
     const { id } = req.params;
+    const { language } = req.query;
 
     let quizz = await Quizz.findOne({
       where: { id },
       include: [
         {
           model: Question,
+          attributes: ['id', 'quizzId', [`title_${language}`, 'title']],
           include: {
             model: Option,
+            attributes: ['id', [`title_${language}`, 'title']],
             required: true,
           },
         },
@@ -82,24 +109,58 @@ const getQuizzes = async (req, res) => {
         message: `with ID ${id} Quizz not found`,
       });
 
-    // const lesson = await Lesson.findOne({
-    //   include:{
-    //     where:{quizzId:id},
-    //     model:LessonsPerQuizz,
-    //   },
-    //   attributes:['id',['title_en','title']]
-    // })
+    const questions_en = [];
+    const questions_ru = [];
+    const questions_am = [];
 
+    quizz.Questions.map((question) => {
+      const options_en = question.Options.map((e) => {
+        return {
+          title_en: e.title_en,
+          isCorrect_en: e.isCorrect,
+        };
+      });
+      questions_en.push({
+        question_en: question.title_en,
+        options_en: options_en,
+      });
+    });
+    quizz.Questions.map((question) => {
+      const options_ru = question.Options.map((e) => {
+        return {
+          title_ru: e.title_ru,
+          isCorrect_ru: e.isCorrect,
+        };
+      });
+      questions_ru.push({
+        question_ru: question.title_ru,
+        options_ru: options_ru,
+      });
+    });
+
+    quizz.Questions.map((question) => {
+      const options_am = question.Options.map((e) => {
+        return {
+          title_am: e.title_am,
+          isCorrect_am: e.isCorrect,
+        };
+      });
+      questions_am.push({
+        question_am: question.title_am,
+        options_am: options_am,
+      });
+    });
     quizz = {
-      // lesson:lesson?lesson:null,
-      time: 22,
       ...quizz.dataValues,
+      questions_en,
+      questions_ru,
+      questions_am,
     };
 
     return res.status(200).json({ success: true, quizz });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -123,7 +184,7 @@ const submitQuizz = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -137,33 +198,33 @@ const finishQuizz = async (req, res) => {
 
     if (!lessonId) {
       let correctAnswers = await Quizz.findByPk(quizzId, {
-        attributes: ["id"],
+        attributes: ['id'],
         include: [
           {
             model: Question,
-            attributes: ["id"],
+            attributes: ['id'],
             include: [
               {
                 model: Option,
                 where: { isCorrect: true },
-                attributes: ["id"],
+                attributes: ['id'],
               },
             ],
           },
         ],
       });
 
-      correctAnswers = correctAnswers.Questions.map(
-        (e) => e.Options[0].id
-      ).sort((a, b) => a.id - b.id);
+      correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
+        (a, b) => a.id - b.id,
+      );
 
       const userAnswers = await UserAnswersQuizz.findAll({
         where: {
           testId: quizzId,
           userId,
         },
-        attributes: ["optionId"],
-        order: [["id", "ASC"]],
+        attributes: ['optionId'],
+        order: [['id', 'ASC']],
       });
       userAnswers.map((e) => {
         correctAnswers.push(e.optionId);
@@ -173,7 +234,7 @@ const finishQuizz = async (req, res) => {
         (Math.round(
           ((correctAnswers.length - new Set(correctAnswers).size) /
             Math.ceil(correctAnswers.length / 2)) *
-            100
+            100,
         ) *
           (10 / 2)) /
         100;
@@ -202,16 +263,16 @@ const finishQuizz = async (req, res) => {
     const { maxPoints } = await Lesson.findByPk(lessonId);
 
     let correctAnswers = await Quizz.findByPk(quizzId, {
-      attributes: ["id"],
+      attributes: ['id'],
       include: [
         {
           model: Question,
-          attributes: ["id"],
+          attributes: ['id'],
           include: [
             {
               model: Option,
               where: { isCorrect: true },
-              attributes: ["id"],
+              attributes: ['id'],
             },
           ],
         },
@@ -219,7 +280,7 @@ const finishQuizz = async (req, res) => {
     });
 
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
-      (a, b) => a.id - b.id
+      (a, b) => a.id - b.id,
     );
 
     const userAnswers = await UserAnswersQuizz.findAll({
@@ -227,8 +288,8 @@ const finishQuizz = async (req, res) => {
         testId: quizzId,
         userId,
       },
-      attributes: ["optionId"],
-      order: [["id", "ASC"]],
+      attributes: ['optionId'],
+      order: [['id', 'ASC']],
     });
     userAnswers.map((e) => {
       correctAnswers.push(e.optionId);
@@ -238,7 +299,7 @@ const finishQuizz = async (req, res) => {
       (Math.round(
         ((correctAnswers.length - new Set(correctAnswers).size) /
           Math.ceil(correctAnswers.length / 2)) *
-          100
+          100,
       ) *
         (maxPoints / 2)) /
       100;
@@ -265,20 +326,20 @@ const finishQuizz = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const getAll = async (req, res) => {
   try {
     const quizzes = await Quizz.findAll({
-      attributes: ["id", ["title_en", "title"]],
+      attributes: ['id', ['title_en', 'title']],
     });
 
     return res.json(quizzes);
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -300,52 +361,80 @@ const deleteQuizz = async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
 const updateQuizz = async (req, res) => {
   try {
-    const { title, description, time, percent, questions, id, lessonId } =
-      req.body;
+    const {
+      id,
+      title_en,
+      title_ru,
+      title_am,
+      description_en,
+      description_ru,
+      description_am,
+      time,
+      percent,
+      questions_en,
+      questions_ru,
+      questions_am,
+      lessonId,
+      courseId,
+    } = req.body;
 
+    // Update the Quizz details
     await Quizz.update(
       {
-        title_en: title,
-        description_en: description,
+        title_en,
+        title_ru,
+        title_am,
+        description_en,
+        description_ru,
+        description_am,
         time,
         percent,
       },
-      { where: { id } }
+      { where: { id } },
     );
 
-    await Question.destroy({ where: { quizzId: id } });
-
-    for (const e of questions) {
-      const question = await Question.create({
-        title: e.question,
+    await Question.destroy({
+      where: {
         quizzId: id,
-      });
+      },
+    });
 
-      for (const i of e.options) {
-        await Option.create({
-          questionId: question.id,
-          title: i.option,
-          isCorrect: i.isCorrect,
+    questions_en.map((question, i) => {
+      Question.create({
+        title_en: question.question_en,
+        title_ru: questions_ru[i].question_ru,
+        title_am: questions_am[i].question_am,
+        quizzId: id,
+      }).then((data) => {
+        console.log(question);
+        question.options_en.map((option, optionIndex) => {
+          Option.destroy({
+            where: {
+              questionId: data.id,
+            },
+          });
+          Option.create({
+            title_en: option.option_en,
+            title_ru: questions_ru[i].options_ru[optionIndex].option_ru,
+            title_am: questions_am[i].options_am[optionIndex].option_am,
+            isCorrect: option.isCorrect_en,
+            questionId: data.id,
+          });
         });
-      }
-    }
-    await LessonsPerQuizz.destroy({
-      where: { quizzId: id },
+        // console.log(question);
+      });
     });
-    await LessonsPerQuizz.create({
-      quizzId: id,
-      lessonId,
-    });
-    return res.status(200).json({ success: true });
+
+    res.status(200).json({ success: true });
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 

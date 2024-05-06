@@ -32,6 +32,7 @@ var ChatMessageRouter = require('./routes/ChatMessage');
 var GroupChatRouter = require('./routes/GroupChat')
 var GroupChatMessageRouter = require('./routes/GroupChatMessage');
 // var PresentationRouter = require('./routes/Presentation');
+var interviewRouter = require('./routes/Interview');
 var app = express();
 
 // view engine setup
@@ -76,6 +77,7 @@ app.use('/api/v2/chat', ChatRouter);
 app.use('/api/v2/groupChat', GroupChatRouter);
 app.use('/api/v2/chatMessage', ChatMessageRouter);
 app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
+app.use('/api/v2/interview', interviewRouter);
 
 // app.use('/api/v2/presentation', PresentationRouter);
 

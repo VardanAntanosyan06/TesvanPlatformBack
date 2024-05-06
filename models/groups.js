@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Groups.init({
-    name: DataTypes.STRING,
+    name_en: DataTypes.STRING,
+    name_ru: DataTypes.STRING,
+    name_am: DataTypes.STRING,
     assignCourseId:DataTypes.INTEGER,
     groupeKey:DataTypes.STRING,
     finished:DataTypes.BOOLEAN,

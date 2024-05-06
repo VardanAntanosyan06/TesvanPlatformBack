@@ -12,8 +12,14 @@ module.exports = {
       questionId: {
         type: Sequelize.INTEGER
       },
-      title: {
-        type: Sequelize.STRING
+      title_en: {
+        type: Sequelize.STRING,
+      },
+      title_ru: {
+        type: Sequelize.STRING,
+      },
+      title_am: {
+        type: Sequelize.STRING,
       },
       isCorrect: {
         type: Sequelize.BOOLEAN

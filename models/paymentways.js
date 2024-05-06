@@ -14,8 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   PaymentWays.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
+    title_en: DataTypes.STRING,
+    title_ru: DataTypes.STRING,
+    title_am: DataTypes.STRING,
+    description_en: DataTypes.STRING,
+    description_ru: DataTypes.STRING,
+    description_am: DataTypes.STRING,
     price: DataTypes.INTEGER,
     groupId: DataTypes.INTEGER,
     discount:DataTypes.INTEGER

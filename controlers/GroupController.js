@@ -14,7 +14,7 @@ const {
   UserTests,
   Tests,
   PaymentBlocks,
-  UserPoints
+  UserPoints,
 } = require('../models');
 const { v4 } = require('uuid');
 const sequelize = require('sequelize');
@@ -22,34 +22,52 @@ const { Op } = require('sequelize');
 
 const CreateGroup = async (req, res) => {
   try {
-    const { name, assignCourseId, users, startDate, endDate, payment } = req.body;
+    const {
+      name_en,
+      name_am,
+      name_ru,
+      assignCourseId,
+      users,
+      startDate,
+      endDate,
+      payment_en,
+      payment_ru,
+      payment_am,
+
+      sale,
+    } = req.body;
 
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
-    let { price, discount } = payment.reduce(
-      (min, item) => (item.price < min.price ? item : min),
-      payment[0],
+    let { price_en, discount_en } = payment_en.reduce(
+      (min, item) => (item.price_en < min.price_en ? item : min),
+      payment_en[0],
     );
-
     const task = await Groups.create({
-      name,
+      name_am,
+      name_ru,
+      name_en,
       groupeKey,
       assignCourseId,
       startDate,
       endDate,
-      price,
-      sale: discount,
+      price: price_en,
+      sale: discount_en,
     });
 
-    payment.map((e) => {
-      PaymentWays.create({
-        title: e.title,
-        description: e.description,
-        price: e.price,
-        discount: e.discount,
+    for (let i = 0; i < payment_en.length; i++) {
+      await PaymentWays.create({
+        title_en: payment_en[i].title_en,
+        title_ru: payment_ru[i].title_ru,
+        title_am: payment_am[i].title_am,
+        description_en: payment_en[i].description_en,
+        description_ru: payment_ru[i].description_ru,
+        description_am: payment_am[i].description_am,
+        price: payment_en[i].price_en,
+        discount: payment_en[i].discount_en,
         groupId: task.id,
       });
-    });
+    }
 
     await Promise.all(
       users.map(async (userId) => {
@@ -102,27 +120,55 @@ const findOne = async (req, res) => {
         {
           model: PaymentWays,
           as: 'payment',
-          attributes: ['title', 'description', 'price', 'discount'],
+          // attributes: ['title', 'description', 'price', 'discount'],
         },
       ],
     });
 
     if (!group) return res.status(404).json({ success: false, message: 'Group not found' });
-
+    console.log(group);
     const course = await CoursesContents.findOne({
       where: { courseId: group.assignCourseId },
       attributes: [['courseId', 'id'], 'title'],
     });
 
+    const payment_en = [];
+    const payment_ru = [];
+    const payment_am = [];
+    const payment = group.payment.forEach((pay) => {
+      payment_en.push({
+        title_en: pay.title_en,
+        description_en: pay.description_en,
+        price_en: pay.price,
+        discount_en: pay.discount,
+      });
+      payment_ru.push({
+        title_ru: pay.title_ru,
+        description_ru: pay.description_ru,
+        price_ru: pay.price,
+        discount_ru: pay.discount,
+      });
+      payment_am.push({
+        title_am: pay.title_am,
+        description_am: pay.description_am,
+        price_am: pay.price,
+        discount_am: pay.discount,
+      });
+    });
     const groupedUsers = {
       id: group.id,
-      name: group.name,
+      name_en: group.name_en,
+      name_ru: group.name_ru,
+      name_am: group.name_am,
       finished: group.finished,
       startDate: group.startDate,
       endDate: group.endDate,
       price: group.price,
       sale: group.sale,
       payment: group.payment,
+      payment_am,
+      payment_en,
+      payment_ru,
       course: course,
       TEACHER: [],
       STUDENT: [],
@@ -224,34 +270,87 @@ const findAll = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { groupId } = req.params;
-    const { name, assignCourseId, users, startDate, endDate, payment } = req.body;
 
-    let group = await Groups.findByPk(groupId);
-    if (!group) {
-      return res.status(404).json({ message: 'Group not found' });
+    const {
+      name_en,
+      name_am,
+      name_ru,
+      assignCourseId,
+      users,
+      startDate,
+      endDate,
+      payment_en,
+      payment_ru,
+      payment_am,
+      sale,
+    } = req.body;
+
+    let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
+
+    let { price_en, discount_en } = payment_en.reduce(
+      (min, item) => (item.price_en < min.price_en ? item : min),
+      payment_en[0],
+    );
+
+    await Groups.update(
+      {
+        name_am,
+        name_ru,
+        name_en,
+        groupeKey,
+        assignCourseId,
+        startDate,
+        endDate,
+        price: price_en,
+        sale: discount_en,
+      },
+      { where: { id: groupId } },
+    );
+
+    for (let i = 0; i < payment_en.length; i++) {
+      await PaymentWays.upsert({
+        title_en: payment_en[i].title_en,
+        title_ru: payment_ru[i].title_ru,
+        title_am: payment_am[i].title_am,
+        description_en: payment_en[i].description_en,
+        description_ru: payment_ru[i].description_ru,
+        description_am: payment_am[i].description_am,
+        price: payment_en[i].price_en,
+        discount: payment_en[i].discount_en,
+        groupId,
+      });
     }
 
-    group.name = name;
-    group.assignCourseId = assignCourseId;
-    group.startDate = startDate;
-    group.endDate = endDate;
+    await GroupsPerUsers.destroy({ where: { groupId } });
 
-    if (payment && payment.length > 0) {
-      let { price, discount } = payment.reduce(
-        (min, item) => (item.price < min.price ? item : min),
-        payment[0],
-      );
-      group.price = price;
-      group.sale = discount;
+    await Promise.all(
+      users.map(async (userId) => {
+        console.log(userId);
+        await UserCourses.create({
+          GroupCourseId: assignCourseId,
+          UserId: userId,
+        });
+        const lessons = await CoursesPerLessons.findAll({
+          where: { courseId: assignCourseId },
+        });
+        await Promise.all(
+          lessons.map(async (e) => {
+            await UserLesson.create({
+              GroupCourseId: assignCourseId,
+              UserId: userId,
+              LessonId: e.lessonId,
+            });
+          }),
+        );
+        await GroupsPerUsers.create({
+          groupId,
+          userId,
+          userRole: users.userRole,
+        });
+      }),
+    );
 
-      await PaymentWays.destroy({ where: { groupId } });
-
-      await PaymentWays.bulkCreate(payment);
-    }
-
-    await group.save();
-
-    return res.status(200).json({ success: true, group, PaymentWays });
+    res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -294,23 +393,23 @@ const addMember = async (req, res) => {
           }),
         );
         await UserPoints.findOrCreate({
-          where:{
-            userId
+          where: {
+            userId,
           },
-          defaults:{
-            userId:userId,
+          defaults: {
+            userId: userId,
             lesson: 0,
             quizz: 0,
-            finalInterview: 0
-          }
-        })
+            finalInterview: 0,
+          },
+        });
 
         const boughtTests = await Tests.findAll({
           where: {
             [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
           },
         });
-        
+
         await Promise.all(
           boughtTests.map(async (test) => {
             await UserTests.findOrCreate({
@@ -399,37 +498,42 @@ const getUserStaticChart = async (req, res) => {
 const finishGroup = async (req, res) => {
   try {
     const { id } = req.params;
-    const {language} = req.query
+    const { language } = req.query;
     const Group = await Groups.findOne({
       where: {
         id,
       },
-      include: [{
-        model: UserCourses,
-      }]    });
+      include: [
+        {
+          model: UserCourses,
+        },
+      ],
+    });
 
     if (!Group)
-    return res.json({
+      return res.json({
         success: false,
         message: `Group with ID ${id} not defined`,
       });
 
-      let status = 1 
-      const {title:courseName} = await CoursesContents.findOne({where:{courseId:Group.assignCourseId,language}})
+    let status = 1;
+    const { title: courseName } = await CoursesContents.findOne({
+      where: { courseId: Group.assignCourseId, language },
+    });
 
     Group.UserCourses.map((e) => {
-      if(e.totalPoints>40){
-        status = 2
-      } else if(e.totalPoints>90){
-        status = 3
+      if (e.totalPoints > 40) {
+        status = 2;
+      } else if (e.totalPoints > 90) {
+        status = 3;
       }
-        Certificates.create({
-          userId: e.UserId,
-          courseName,
-          status,
-          giveDate:new Date().toISOString()
-        });
-        return;
+      Certificates.create({
+        userId: e.UserId,
+        courseName,
+        status,
+        giveDate: new Date().toISOString(),
+      });
+      return;
     });
 
     Group.finished = true;
@@ -444,7 +548,7 @@ const finishGroup = async (req, res) => {
 const findGroups = async (req, res) => {
   try {
     let group = await Groups.findAll({
-      attributes: ['id', 'name','assignCourseId'],
+      attributes: ['id', ['name_en', 'name'], 'assignCourseId'],
       order: [['id', 'DESC']],
       include: [
         {
@@ -625,10 +729,10 @@ const deleteMember = async (req, res) => {
       },
     });
     await UserPoints.destroy({
-      where:{
-        userId
-      }
-    })
+      where: {
+        userId,
+      },
+    });
     await UserTests.destroy({
       where: {
         userId: userId,

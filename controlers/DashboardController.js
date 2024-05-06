@@ -1,16 +1,21 @@
-const { where } = require('sequelize');
+const { where } = require("sequelize");
 const {
   Users,
   Groups,
   GroupsPerUsers,
+  UserPoints,
   GroupCourses,
   CoursesContents,
   CoursesPerLessons,
   Skills,
   LessonTime,
+  Lesson,
   UserCourses,
-} = require('../models');
-// const  = require("../models/groupCourses");
+  Homework,
+  UserHomework,
+  Quizz,
+} = require("../models");
+const { Op } = require("sequelize");
 
 const getUserStatictis = async (req, res) => {
   try {
@@ -28,9 +33,11 @@ const getUserStatictis = async (req, res) => {
     if (
       isIndividual &&
       isIndividual.CoursesContent &&
-      isIndividual.CoursesContent.courseType == 'Individual'
+      isIndividual.CoursesContent.courseType == "Individual"
     ) {
-      const students = await UserCourses.count({ where: { GroupCourseId: id } });
+      const students = await UserCourses.count({
+        where: { GroupCourseId: id },
+      });
 
       let course = await GroupCourses.findByPk(id, {
         // include: [
@@ -58,11 +65,60 @@ const getUserStatictis = async (req, res) => {
       });
 
       charts = charts.map((e) => e.time);
+      const allQuizz = await CoursesPerLessons.count({
+        where: { courseId: id },
+        include: [
+          {
+            model: Lesson,
+            include: [
+              {
+                model: Quizz,
+                as: "quizz",
+                required: true,
+              },
+            ],
+            required: true,
+          },
+        ],
+      });
 
+      const allHomework = await CoursesPerLessons.count({
+        where: { courseId: id },
+        include: [
+          {
+            model: Lesson,
+            include: [
+              {
+                model: Homework,
+                as: "homework",
+                through: {
+                  attributes: [],
+                },
+                attributes: [
+                  "id",
+                  [`title_${language}`, "title"],
+                  [`description_${language}`, "description"],
+                ],
+              },
+            ],
+            required: true,
+          },
+        ],
+      });
+
+      const userSubmitedHomework = 5;
       const response = {
         lesson: 0,
-        homeWork: 0,
-        quizzes: 0,
+        homework: {
+          taken: 1,
+          all: allQuizz,
+          percent: 100,
+        },
+        quizzes: {
+          taken: userSubmitedHomework,
+          all: allHomework,
+          percent: (userSubmitedHomework / allHomework) * 100,
+        },
         // totalPoints: (group.lessons + group.homeWork + group.quizzes) / 3,
         totalPoints: 0,
         mySkils,
@@ -117,12 +173,74 @@ const getUserStatictis = async (req, res) => {
     });
 
     charts = charts.map((e) => e.time);
+    const allQuizz = await CoursesPerLessons.count({
+      where: { courseId: course.assignCourseId },
+      include: [
+        {
+          model: Lesson,
+          include: [
+            {
+              model: Quizz,
+              as: "quizz",
+              required: true,
+            },
+          ],
+          required: true,
+        },
+      ],
+    });
 
+    const allHomework = await CoursesPerLessons.count({
+      where: { courseId: course.assignCourseId },
+      include: [
+        {
+          model: Lesson,
+          include: [
+            {
+              model: Homework,
+              as: "homework",
+            },
+          ],
+          required: true,
+        },
+      ],
+    });
+    const userSubmitedQuizz = await UserPoints.count({
+      where: { courseId: course.assignCourseId, userId },
+    });
+    const userSubmitedHomework = await UserHomework.count({
+      where: {
+        UserId: userId,
+        points: { [Op.gt]: 0 },
+        GroupCourseId: course.assignCourseId,
+      },
+    });
     const response = {
-      lesson: group.lessons,
-      homeWork: group.homeWork,
-      quizzes: group.quizzes,
-      totalPoints: (group.lessons + group.homeWork + group.quizzes) / 3,
+      lesson: 0,
+      homework: {
+        taken: userSubmitedHomework,
+        all: allHomework,
+        percent:
+          allHomework < 0 || userSubmitedHomework < 0
+            ? 0
+            : (userSubmitedHomework / allHomework) * 100,
+      },
+      quizzes: {
+        taken: userSubmitedQuizz,
+        all: allQuizz + 1, //final quizz
+        percent:
+          userSubmitedQuizz == 0
+            ? 0
+            : (userSubmitedQuizz / (allQuizz + 1)) * 100,
+      },
+      totalPoints:
+        ((userSubmitedQuizz == 0
+          ? 0
+          : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
+          (allHomework < 0 || userSubmitedHomework < 0
+            ? 0
+            : (userSubmitedHomework / allHomework) * 100)) /
+        2,
       mySkils,
       charts,
       course: {
@@ -134,7 +252,9 @@ const getUserStatictis = async (req, res) => {
     return res.json(response);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ success: false, message: 'Something Went Wrong' });
+    return res
+      .status(500)
+      .json({ success: false, message: "Something Went Wrong" });
   }
 };
 
@@ -146,7 +266,7 @@ const getInvidualCourseStatics = async (req, res) => {
     const courses = await CoursesContents.findOne({
       where: {
         userId,
-        courseType: 'Individual',
+        courseType: "Individual",
       },
     });
     const courseType = courses.courseType;
@@ -185,7 +305,7 @@ const getInvidualCourseStatics = async (req, res) => {
     return res.json(response);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong .' });
+    return res.status(500).json({ message: "Something went wrong ." });
   }
 };
 

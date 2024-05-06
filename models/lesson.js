@@ -20,7 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       title_am: DataTypes.STRING,
       description_am: DataTypes.TEXT('long'),
       maxPoints: DataTypes.INTEGER,
-      htmlContent: DataTypes.TEXT('long'),
+      htmlContent_en: DataTypes.TEXT('long'),
+      htmlContent_ru: DataTypes.TEXT('long'),
+      htmlContent_am: DataTypes.TEXT('long'),
     },
     {
       sequelize,
