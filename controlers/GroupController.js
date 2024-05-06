@@ -14,6 +14,7 @@ const {
   UserTests,
   Tests,
   PaymentBlocks,
+  GroupChats,
   UserPoints,
 } = require('../models');
 const { v4 } = require('uuid');
