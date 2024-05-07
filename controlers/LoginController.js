@@ -250,6 +250,7 @@ const changeUserImage = async (req, res) => {
 
 const authMe = async (req, res) => {
   try {
+    
     const { user_id: id } = req.user;
     const User = await Users.findOne({
       where: { id },
@@ -271,7 +272,9 @@ const authMe = async (req, res) => {
       },
       attributes: ["id"]
   })
-    res.send({ User, groupChats });
+    User.setDataValue('groupChats', groupChats);
+    await User.save()
+    res.send(User);
   } catch (e) {
     res.status(500).json({ succes: false });
     console.log(e);

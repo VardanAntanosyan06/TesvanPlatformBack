@@ -78,7 +78,7 @@ const getGroupChatMembers = async (req, res)=> {
         })
         const members = await Users.findAll({
             where: groupChat.members,
-            attributes: ["id","firstName", "lastName", "image"]
+            attributes: ["id","firstName", "lastName", "image", "role"]
         })
         return res.status(200).json(members)
     } catch (error) {
