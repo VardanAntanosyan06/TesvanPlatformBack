@@ -93,7 +93,6 @@ const updateChatMessage = async (req, res) => {
             { text: text, isUpdated: true },
             { where: { id: messageId } }
         );
-        if (updateMessage[0] === 0) return res.status(404).json({ message: 'Message not found' });
         let socketSendId
         if (userId == chat.firstId) {
             socketSendId = chat.secondId
