@@ -93,10 +93,10 @@ const getQuizzes = async (req, res) => {
       include: [
         {
           model: Question,
-          attributes: ['id', 'quizzId', [`title_${language}`, 'title']],
+          attributes: ['id', 'quizzId', [`title_${language}`, 'title'],'title_ru','title_en','title_am'],
           include: {
             model: Option,
-            attributes: ['id', [`title_${language}`, 'title']],
+            attributes: ['id', [`title_${language}`, 'title'],'title_ru','title_en','title_am'],
             required: true,
           },
         },
