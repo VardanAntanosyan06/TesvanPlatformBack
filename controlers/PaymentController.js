@@ -145,8 +145,8 @@ const buy = async (req, res) => {
       const groupChats = await GroupChats.findOne({
         where: { groupId: payment.groupId },
       });
-
-      const newMembers = [...payment.userId, ...groupChats.members];
+      console.log(payment.userId);
+      const newMembers = [payment.userId, ...groupChats.members];
       const uniqueUsers = [...new Set(newMembers)];
       groupChats.members = uniqueUsers;
 
