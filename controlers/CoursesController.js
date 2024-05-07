@@ -446,7 +446,6 @@ const getUserCourses = async (req, res) => {
         },
       ],
     });
-    console.log(courses[0].Groups,"++++++++++++++++++++++++++++++++++++++++++++");
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;

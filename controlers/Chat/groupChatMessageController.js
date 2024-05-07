@@ -27,6 +27,7 @@ const createGroupChatMessage = async (req, res)=> {
                     attributes: ["id", "firstName", "lastName", "image"],
                 }
             ],
+            order: [['createdAt', 'DESC']],
             limit: 20,
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
@@ -62,6 +63,7 @@ const getGroupChatMessages = async (req, res) => {
                     attributes: ["id", "firstName", "lastName", "image"],
                 }
             ],
+            order: [['createdAt', 'DESC']],
             limit: 20,
             offset: quantity-20
         });
@@ -94,7 +96,6 @@ const updateGroupChatMessage = async (req, res)=> {
         message.text = text;
         message.isUpdated = true
         await message.save();
-
         const messages = await GroupChatMessages.findAll({
             where: {
                 groupChatId: chatId,
@@ -105,6 +106,7 @@ const updateGroupChatMessage = async (req, res)=> {
                     attributes: ["id", "firstName", "lastName", "image"],
                 }
             ],
+            order: [['createdAt', 'DESC']],
             limit: 20,
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
@@ -143,6 +145,7 @@ const deleteGroupChatMessage = async (req, res)=> {
                     attributes: ["id", "firstName", "lastName", "image"],
                 }
             ],
+            order: [['createdAt', 'DESC']],
             limit: 20,
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });

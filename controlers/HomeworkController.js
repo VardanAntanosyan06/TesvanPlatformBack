@@ -177,27 +177,27 @@ const getHomework = async (req, res) => {
     }
     // return res.status(403).json({homework})
 
-    // if (!homework.startDate) {
-    // homework.startDate = new Date().toISOString();
-    // homework.status = 1;
-    // await homework.save();
-    // }
+    if (!homework.startDate) {
+    homework.startDate = new Date().toISOString();
+    homework.status = 1;
+    await homework.save();
+    }
 
     // const Files = await HomeWorkFiles.findAll({
     //   where: { userId, homeWorkId: homework.Homework.id },
     //   attributes: ['id', ['fileName', 'name'], ['fileLink', 'link']],
     // });
 
-    // homework = {
-    //   points: homework.points,
-    //   status: homework.status,
-    //   answer: homework.answer,
-    //   feedback: homework.feedback,
-    //   UserStartDate: homework.startDate,
-    //   startDate: homework.Homework.startDate,
-    //   ...homework.dataValues.Homework.dataValues,
-    //   Files,
-    // };
+    homework = {
+      points: homework.points,
+      status: homework.status,
+      answer: homework.answer,
+      feedback: homework.feedback,
+      // UserStartDate: homework.startDate,
+      // startDate: homework.Homework.startDate,
+      // ...homework.dataValues.Homework.dataValues,
+      // Files,
+    };
 
     res.send(homework);
   } catch (error) {

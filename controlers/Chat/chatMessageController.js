@@ -95,6 +95,7 @@ const updateChatMessage = async (req, res) => {
             },
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
+
         const updateMessage = await ChatMessages.findOne({
             where: {id: messageId}
         })
