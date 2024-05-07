@@ -94,11 +94,8 @@ const updateGroupChatMessage = async (req, res)=> {
             where: {id: messageId}
         })
         message.text = text;
+        message.isUpdated = true
         await message.save();
-        await GroupChatMessages.update(
-            {text: text, isUpdated: true},
-            {where: {id: messageId}}
-        );
         const messages = await GroupChatMessages.findAll({
             where: {
                 groupChatId: chatId,
