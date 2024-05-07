@@ -88,10 +88,13 @@ const updateGroupChatMessage = async (req, res)=> {
             }
         });
         if (!groupChats) return res.status(404).json({message: 'Chat not found'});
-        await GroupChatMessages.update(
-            {text: text, isUpdated: true},
-            {where: {id: messageId}}
-        );
+        const message = await GroupChatMessages.findOne({
+            where: {id: messageId}
+        })
+        message.text = text;
+        message.isUpdated = true
+        await message.save();
+
         const messages = await GroupChatMessages.findAll({
             where: {
                 groupChatId: chatId,
