@@ -180,7 +180,7 @@ const getLesson = async (req, res) => {
       quizzPoint: userPoint ? userPoint.point : null,
       maxQuizzPoints: lesson.Lesson.maxPoints / 2,
       attempt: lesson.attempt,
-      time:lessonTime.time ? lessonTime.time :null, 
+      time:lessonTime ? lessonTime.time :null, 
       ...lesson.dataValues.Lesson.dataValues,
     };
 
