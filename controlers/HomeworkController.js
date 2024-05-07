@@ -1,4 +1,4 @@
-const { invalid } = require('moment');
+const { invalid } = require("moment");
 const {
   Homework,
   UserHomework,
@@ -6,17 +6,24 @@ const {
   Message,
   GroupCourses,
   Users,
+  Lesson,
   HomeWorkFiles,
   HomeworkPerLesson,
-} = require('../models');
-const { userSockets } = require('../userSockets');
-const { Op } = require('sequelize');
-const Sequelize = require('sequelize');
+} = require("../models");
+const { userSockets } = require("../userSockets");
+const { Op } = require("sequelize");
+const Sequelize = require("sequelize");
 
 const create = async (req, res) => {
   try {
-    const { title_en, title_ru, title_am, description_en, description_ru, description_am } =
-      req.body;
+    const {
+      title_en,
+      title_ru,
+      title_am,
+      description_en,
+      description_ru,
+      description_am,
+    } = req.body;
 
     await Homework.create({
       title_en,
@@ -29,7 +36,7 @@ const create = async (req, res) => {
     return res.send({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -43,7 +50,7 @@ const open = async (req, res) => {
 
     const homeWork = await Homework.findOne({ where: { id: homeworkId } });
     if (!homeWork) {
-      return res.status(404).json('HomeWork not found');
+      return res.status(404).json("HomeWork not found");
     }
     if (!homeWork.isOpen) {
       await Promise.all(
@@ -62,19 +69,19 @@ const open = async (req, res) => {
           });
           Message.create({
             UserId: user.UserId,
-            title_en: 'New Homework',
-            title_ru: 'New Homework',
-            title_am: 'New Homework',
-            description_en: 'You have a new homework!',
-            description_ru: 'You have a new homework!',
-            description_am: 'You have a new homework!',
-            type: 'info',
+            title_en: "New Homework",
+            title_ru: "New Homework",
+            title_am: "New Homework",
+            description_en: "You have a new homework!",
+            description_ru: "You have a new homework!",
+            description_am: "You have a new homework!",
+            type: "info",
           });
           const userSocket = userSockets.get(user.UserId);
           if (userSocket) {
-            userSocket.emit('new-message', 'New Message');
+            userSocket.emit("new-message", "New Message");
           }
-        }),
+        })
       );
       homeWork.startDate = new Date().toISOString();
     } else {
@@ -91,7 +98,7 @@ const open = async (req, res) => {
           } catch (error) {
             console.error(error);
           }
-        }),
+        })
       );
       homeWork.startDate = null;
     }
@@ -100,7 +107,7 @@ const open = async (req, res) => {
     res.send({ success: true, isOpen: homeWork.isOpen });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -109,113 +116,33 @@ const getHomeworks = async (req, res) => {
   try {
     const { courseId } = req.params;
     const { language } = req.query;
-    const { user_id: userId, role } = req.user;
-    console.log(role);
-    if (role == 'TEACHER') {
-      let homeworks = await GroupCourses.findAll({
-        where: {
-          trainers: {
-            [Op.contains]: [userId],
-          },
+    const { user_id: userId } = req.user;
+
+    let homeworks = await GroupCourses.findOne({
+      where: { id: courseId },
+      include: [
+        {
+          model: Lesson,
+          required: true,
+          through:{attributes:[]},
+          include: [
+            {
+              model: Homework,
+              as:"homework",
+              required: true,
+              attributes:['id',[`title_${language}`,'title'],[`description_${language}`,'description']],
+            through:{attributes:[]},
+            },
+          ],
         },
-        attributes: [['id', 'GroupCourseId']],
-        include: [
-          {
-            model: Homework,
-            attributes: [
-              'id',
-              'courseId',
-              [`title_${language}`, 'title'],
-              [`description_${language}`, 'description'],
-              'maxPoints',
-              'isOpen',
-              'dueDate',
-              'startDate',
-            ],
-            where: { courseId },
-          },
-        ],
-      });
+      ],
+    });
 
-      if (homeworks.length === 0) {
-        return res.status(403).json({
-          message: "Homeworks not found or User doesn't have the homeworks",
-        });
-      }
-      res.json(homeworks);
-    } else if (role == 'ADMIN') {
-      let homeworks = await GroupCourses.findAll({
-        attributes: [['id', 'GroupCourseId']],
-        include: [
-          {
-            model: Homework,
-            attributes: [
-              'id',
-              'courseId',
-              [`title_${language}`, 'title'],
-              [`description_${language}`, 'description'],
-              'maxPoints',
-              'isOpen',
-              'dueDate',
-              'startDate',
-            ],
-            where: { courseId },
-          },
-        ],
-      });
-      if (homeworks.length === 0) {
-        return res.status(403).json({
-          message: "Homeworks not found or User doesn't have the homeworks",
-        });
-      }
-      res.json(homeworks);
-    } else {
-      let homeworks = await UserHomework.findAll({
-        where: { GroupCourseId: courseId, UserId: userId },
-        // attributes: ["],
-        attributes: ['id', 'points', 'status'],
-        include: [
-          {
-            model: Homework,
-            attributes: [
-              'id',
-              'courseId',
-              [`title_${language}`, 'title'],
-              [`description_${language}`, 'description'],
-              'maxPoints',
-              'isOpen',
-              'dueDate',
-              'startDate',
-            ],
-            order: [['id', 'DESC']],
-          },
-        ],
-      });
-
-      homeworks = homeworks.map((e) => {
-        e = e.toJSON();
-        delete e.dataValues;
-        e['courseId'] = e.Homework.courseId;
-        e['id'] = e.Homework.id;
-        e['title'] = e.Homework.title;
-        e['description'] = e.Homework.description;
-        e['maxPoints'] = e.Homework.maxPoints;
-        e['dueDate'] = e.Homework.dueDate;
-        e['startDate'] = e.Homework.startDate;
-        delete e.Homework;
-        return e;
-      });
-
-      if (homeworks.length === 0) {
-        return res.status(403).json({
-          message: "Homeworks not found or User doesn't have the homeworks",
-        });
-      }
-      res.json([{ GroupCourseId: courseId, Homework: homeworks }]);
-    }
+    homeworks = homeworks.Lessons.map((lesson)=>lesson.homework[0])
+    return res.json(homeworks)
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -231,10 +158,10 @@ const getHomework = async (req, res) => {
       // {
       // model: Homework,
       attributes: [
-        'id',
+        "id",
         // 'courseId',
-        [`title_${language}`, 'title'],
-        [`description_${language}`, 'description'],
+        [`title_${language}`, "title"],
+        [`description_${language}`, "description"],
         // 'maxPoints',
         // 'dueDate',
         // 'startDate',
@@ -275,7 +202,7 @@ const getHomework = async (req, res) => {
     res.send(homework);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -309,7 +236,7 @@ const submitHomework = async (req, res) => {
         });
         // e['name'] = e.name;
         return e;
-      }),
+      })
     );
 
     homework = {
@@ -319,7 +246,7 @@ const submitHomework = async (req, res) => {
     res.send(homework);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 // ///////////////////////////////////////////////////
@@ -338,7 +265,7 @@ const HomeworkInProgress = async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 /////////////////////////////////////////////////
@@ -360,7 +287,7 @@ const HomeworkFeedback = async (req, res) => {
     res.send({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -368,46 +295,39 @@ const getHomeWorkForTeacher = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id: userId } = req.user;
-    const { filterType } = req.query;
+    const {language} = req.query
+    // const { filterType } = req.query;
 
     let users = await UserHomework.findAll({
       where: { HomeworkId: id },
-      attributes: ['startDate', 'points', 'status'],
-      include: [{ model: Users, attributes: ['firstName', 'lastName', 'id'] }],
-    });
-    users = users.map((e) => {
-      e = e.toJSON();
-      delete e.dataValues;
-      e['firstName'] = e.User.firstName;
-      e['lastName'] = e.User.lastName;
-      e['userId'] = e.User.id;
-
-      delete e.User;
-      return e;
-    });
-    const homeWorkInfo = await Homework.findOne({
-      where: { id },
-      attributes: [
-        'id',
-        'courseId',
-        ['title_en', 'title'],
-        ['description_en', 'description'],
-        'maxPoints',
-        'isOpen',
-        'dueDate',
-        'startDate',
-      ],
+      attributes: ["startDate", "points", "status"],
+      include: [{ model: Users, attributes: ["firstName", "lastName", "id"] }],
     });
     if (!users) {
       return res.status(403).json({
         message: "Homework not found or Teacher doesn't have the homeworks",
       });
     }
+    users = users.map((e) => {
+      e = e.toJSON();
+      delete e.dataValues;
+      e["firstName"] = e.User.firstName;
+      e["lastName"] = e.User.lastName;
+      e["userId"] = e.User.id;
 
-    res.json({ homeWorkInfo, users });
+      delete e.User;
+      return e;
+    });
+    const homeWorkInfo = await Homework.findOne({
+      where: { id },
+      attributes:['id',[`title_${language}`,'title'],[`description_${language}`,'description']],
+    });
+
+
+   return res.json({ homeWorkInfo, users });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -417,31 +337,34 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
 
     let user = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
-      attributes: ['startDate', 'points', 'status', 'answer', 'feedback'],
-      include: [{ model: Users, attributes: ['firstName', 'lastName', 'id'] }],
+      attributes: ["startDate", "points", "status", "answer", "feedback"],
+      include: [{ model: Users, attributes: ["firstName", "lastName", "id"] }],
     });
-    if (!user) return res.status(403).json({ success: false, message: 'Invalid userId' });
+    if (!user)
+      return res
+        .status(403)
+        .json({ success: false, message: "Invalid userId" });
     const Files = await HomeWorkFiles.findAll({
       where: { userId, homeWorkId: id },
     });
     user = user.toJSON();
     delete user.dataValues;
-    user['firstName'] = user.User.firstName;
-    user['lastName'] = user.User.lastName;
-    user['userId'] = user.User.id;
-    user['files'] = Files;
+    user["firstName"] = user.User.firstName;
+    user["lastName"] = user.User.lastName;
+    user["userId"] = user.User.id;
+    user["files"] = Files;
     delete user.User;
 
     let homeWorkInfo = await Homework.findOne({
       where: { id },
       attributes: [
-        'id',
-        'courseId',
-        ['title_en', 'title'],
-        ['description_en', 'description'],
-        'maxPoints',
-        'isOpen',
-        'dueDate',
+        "id",
+        "courseId",
+        ["title_en", "title"],
+        ["description_en", "description"],
+        "maxPoints",
+        "isOpen",
+        "dueDate",
       ],
     });
 
@@ -454,7 +377,7 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
     res.json({ homeWorkInfo, user });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -465,12 +388,14 @@ const deleteFile = async (req, res) => {
     let deleted = await HomeWorkFiles.destroy({ where: { id } });
 
     if (!deleted)
-      return res.status(403).json({ success: false, message: `In ID ${id} nothing is found.` });
+      return res
+        .status(403)
+        .json({ success: false, message: `In ID ${id} nothing is found.` });
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -479,59 +404,58 @@ const priceHomeWork = async (req, res) => {
     const { points, id, userId } = req.body;
     let [status] = await UserHomework.update(
       { points },
-      { where: { HomeworkId: id, UserId: userId } },
+      { where: { HomeworkId: id, UserId: userId } }
     );
 
     if (status === 0) {
       return res.status(403).json({
-        message: 'Homework not found',
+        message: "Homework not found",
       });
     }
     res.send({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
 const getHomeworkTitles = async (req, res) => {
   try {
     const homeworks = await Homework.findAll({
-      attributes: ['id', ['title_en', 'title']],
+      attributes: ["id", ["title_en", "title"]],
     });
 
     return res.json(homeworks);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
 const homeworkPoints = async (req, res) => {
   try {
-    const { userId, homeworkId, points,feedback } = req.body;
+    const { userId, homeworkId, points, feedback } = req.body;
     const [status] = await UserHomework.update(
       {
         points,
-        feedback
+        feedback,
       },
       {
         where: {
-          UserId:userId,
+          UserId: userId,
           HomeworkId: homeworkId,
-          
         },
-      },
+      }
     );
     if (status === 0) {
       return res.status(403).json({
-        message: 'Homework not found',
+        message: "Homework not found",
       });
     }
-    return res.json({ success:true });
+    return res.json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 module.exports = {

@@ -713,6 +713,7 @@ const deleteMember = async (req, res) => {
   try {
     const { groupId, userId } = req.query;
 
+    const {assignCourseId} = await Groups.findByPk({groupId}) 
     await GroupsPerUsers.destroy({
       where: {
         groupId,
@@ -722,7 +723,7 @@ const deleteMember = async (req, res) => {
 
     await UserCourses.destroy({
       where: {
-        GroupCourseId: groupId,
+        GroupCourseId: assignCourseId,
         UserId: userId,
       },
     });
@@ -730,7 +731,7 @@ const deleteMember = async (req, res) => {
     // Delete entries from UserLesson based on GroupCourseId and UserId
     await UserLesson.destroy({
       where: {
-        GroupCourseId: groupId,
+        GroupCourseId: assignCourseId,
         UserId: userId,
       },
     });
@@ -739,11 +740,12 @@ const deleteMember = async (req, res) => {
         userId,
       },
     });
+    
     await UserTests.destroy({
       where: {
         userId: userId,
         courseId: {
-          [sequelize.Op.or]: [groupId, null],
+          [sequelize.Op.or]: [assignCourseId, null],
         },
       },
     });
