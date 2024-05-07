@@ -264,16 +264,16 @@ const authMe = async (req, res) => {
     if (!User) {
       return res.send({ succes: false });
     }
-    // const groupChats = await GroupChats.findAll({
-    //   where: {
-    //       members: {
-    //           [Op.contains]: [id]
-    //       }
-    //   },
-    //   attributes: ["id"]
-  // })
-    // User.setDataValue('groupChats', groupChats);
-    // await User.save()
+    const groupChats = await GroupChats.findAll({
+      where: {
+          members: {
+              [Op.contains]: [id]
+          }
+      },
+      attributes: ["id"]
+  })
+    User.setDataValue('groupChats', groupChats);
+    await User.save()
     res.send(User);
   } catch (e) {
     res.status(500).json({ succes: false });
