@@ -31,18 +31,14 @@ const CreateGroup = async (req, res) => {
       users,
       startDate,
       endDate,
-      payment_en,
-      payment_ru,
-      payment_am,
-
-      sale,
+      payment,
     } = req.body;
 
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
-    let { price_en, discount_en } = payment_en.reduce(
+    let { price, discount } = payment.reduce(
       (min, item) => (item.price_en < min.price_en ? item : min),
-      payment_en[0],
+      payment[0],
     );
     const task = await Groups.create({
       name_am,
@@ -52,23 +48,25 @@ const CreateGroup = async (req, res) => {
       assignCourseId,
       startDate,
       endDate,
-      price: price_en,
-      sale: discount_en,
+      price: price,
+      sale: discount,
     });
 
-    for (let i = 0; i < payment_en.length; i++) {
-      await PaymentWays.create({
-        title_en: payment_en[i].title_en,
-        title_ru: payment_ru[i].title_ru,
-        title_am: payment_am[i].title_am,
-        description_en: payment_en[i].description_en,
-        description_ru: payment_ru[i].description_ru,
-        description_am: payment_am[i].description_am,
-        price: payment_en[i].price_en,
-        discount: payment_en[i].discount_en,
+    // for (let i = 0; i < payment_en.length; i++) {
+     payment.map((e)=>{
+       PaymentWays.create({
+         title_en: e.title,
+        title_ru: e.title,
+        title_am: e.title,
+        description_en: e.description_en,
+        description_ru: e.description_ru,
+        description_am: e.description_am,
+        price: e.price,
+        discount: e.discount,
         groupId: task.id,
       });
-    }
+    }) 
+    // }
 
     await Promise.all(
       users.map(async (userId) => {

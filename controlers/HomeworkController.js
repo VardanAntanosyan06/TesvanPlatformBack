@@ -333,7 +333,7 @@ const getHomeWorkForTeacher = async (req, res) => {
 
 const getHomeWorkForTeacherForSingleUser = async (req, res) => {
   try {
-    const { id, userId } = req.query;
+    const { id, userId,language } = req.query;
 
     let user = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
@@ -357,15 +357,7 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
 
     let homeWorkInfo = await Homework.findOne({
       where: { id },
-      attributes: [
-        "id",
-        "courseId",
-        ["title_en", "title"],
-        ["description_en", "description"],
-        "maxPoints",
-        "isOpen",
-        "dueDate",
-      ],
+      attributes:['id',[`title_${language}`,'title'],[`description_${language}`,'description']],
     });
 
     if (!user) {

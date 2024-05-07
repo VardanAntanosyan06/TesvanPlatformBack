@@ -270,7 +270,7 @@ const getOne = async (req, res) => {
     });
     const payment = await PaymentWays.findAll({
       where: { groupId: groups.id },
-      attributes: ['id', `title_${language}`, `description_${language}`, 'price', 'discount'],
+      attributes: ['id', [`title_${language}`,'title'], [`description_${language}`,'description'], 'price', 'discount'],
     });
 
     const duration = moment(groups.endDate).diff(moment(groups.startDate), 'days');
