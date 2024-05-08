@@ -25,11 +25,11 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-const socketIo = require('socket.io');
-var io = socketIo(server, {
+const {Server} = require('socket.io');
+const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
-  },
+    origin: "*"
+  }
 });
 app.set('io', io);
 
@@ -98,6 +98,7 @@ const jwt = require('jsonwebtoken');
 
 io.on('connection', (socket) => {
   try {
+    
     const token = socket?.handshake?.query?.token;
     if (token) {
       jwt.verify(token, process.env.SECRET, (err, decoded) => {

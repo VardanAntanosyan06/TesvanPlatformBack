@@ -151,24 +151,21 @@ const getHomework = async (req, res) => {
     const { id } = req.params;
     const { user_id: userId, role } = req.user;
     const { language } = req.query;
-    let homework = await Homework.findOne({
-      where: { id },
-      // attributes: ["id","points", "status", "answer", "feedback","startDate"],
-      // include: [
-      // {
-      // model: Homework,
-      attributes: [
-        "id",
-        // 'courseId',
-        [`title_${language}`, "title"],
-        [`description_${language}`, "description"],
-        // 'maxPoints',
-        // 'dueDate',
-        // 'startDate',
-      ],
-      // },
-      // ],
-    });
+
+
+    let homework = await UserHomework.findOne({
+      where: { HomeworkId:id },
+      include:[
+        {
+          model:Homework,
+          attributes: [
+            "id",
+            [`title_${language}`, "title"],
+            [`description_${language}`, "description"],
+          ],
+        },
+      ] ,
+    }); 
 
     if (!homework) {
       return res.status(403).json({
@@ -188,7 +185,8 @@ const getHomework = async (req, res) => {
     //   attributes: ['id', ['fileName', 'name'], ['fileLink', 'link']],
     // });
 
-    homework = {
+    const response = {
+      ...homework.dataValues,
       points: homework.points,
       status: homework.status,
       answer: homework.answer,
@@ -199,7 +197,7 @@ const getHomework = async (req, res) => {
       // Files,
     };
 
-    res.send(homework);
+    res.send(response);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
