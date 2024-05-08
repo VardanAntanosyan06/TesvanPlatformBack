@@ -20,6 +20,7 @@ const { Op } = require("sequelize");
 const getUserStatictis = async (req, res) => {
   try {
     const { id } = req.params;
+    const { language } = req.query;
     const { user_id: userId } = req.user;
 
     const isIndividual = await UserCourses.findOne({
@@ -76,7 +77,7 @@ const getUserStatictis = async (req, res) => {
           },
         ],
       });
-
+      //const language = "am";
       const allHomework = await CoursesPerLessons.count({
         where: { courseId: id },
         include: [
