@@ -1,4 +1,4 @@
-const { where } = require("sequelize");
+const { where } = require('sequelize');
 const {
   Users,
   Groups,
@@ -14,8 +14,8 @@ const {
   Homework,
   UserHomework,
   Quizz,
-} = require("../models");
-const { Op } = require("sequelize");
+} = require('../models');
+const { Op } = require('sequelize');
 
 const getUserStatictis = async (req, res) => {
   try {
@@ -33,21 +33,16 @@ const getUserStatictis = async (req, res) => {
     if (
       isIndividual &&
       isIndividual.CoursesContent &&
-      isIndividual.CoursesContent.courseType == "Individual"
+      isIndividual.CoursesContent.courseType == 'Individual'
     ) {
       const students = await UserCourses.count({
         where: { GroupCourseId: id },
       });
 
       let course = await GroupCourses.findByPk(id, {
-        // include: [
-        // {
-        // model: ,
         include: {
           model: CoursesContents,
         },
-        // },
-        // ],
       });
       const lessons = await CoursesPerLessons.count({
         where: {
@@ -73,7 +68,7 @@ const getUserStatictis = async (req, res) => {
             include: [
               {
                 model: Quizz,
-                as: "quizz",
+                as: 'quizz',
                 required: true,
               },
             ],
@@ -90,14 +85,14 @@ const getUserStatictis = async (req, res) => {
             include: [
               {
                 model: Homework,
-                as: "homework",
+                as: 'homework',
                 through: {
                   attributes: [],
                 },
                 attributes: [
-                  "id",
-                  [`title_${language}`, "title"],
-                  [`description_${language}`, "description"],
+                  'id',
+                  [`title_${language}`, 'title'],
+                  [`description_${language}`, 'description'],
                 ],
               },
             ],
@@ -132,6 +127,7 @@ const getUserStatictis = async (req, res) => {
 
       return res.json(response);
     }
+
     const group = await GroupsPerUsers.findOne({
       where: {
         userId,
@@ -140,28 +136,32 @@ const getUserStatictis = async (req, res) => {
     });
     const students = await GroupsPerUsers.count({ where: { groupId: id } });
 
-    let course = await Groups.findByPk(id, {
-      include: [
-        {
-          model: GroupCourses,
-          include: {
-            model: CoursesContents,
-          },
-        },
-      ],
+    let course = await GroupCourses.findByPk(id, {
+      include: {
+        model: CoursesContents,
+      },
     });
+    console.log(course, '===================================================');
     const lessons = await CoursesPerLessons.count({
       where: {
-        courseId: course.assignCourseId,
+        courseId: course.assignCourseId ? course.assignCourseId : 1,
       },
     });
 
-    if (!group)
+    // const courses = await CoursesContents.findOne({
+    //   where: {
+    //     id: id,
+    //     userId,
+    //     courseType: 'Individual',
+    //   },
+    // });
+    // console.log(courses);
+    if (!group) {
       return res.status(403).json({
         success: false,
         message: "Group not found or user doesn't in group",
       });
-
+    }
     const mySkils = await Skills.findAll({
       where: { userId },
     });
@@ -181,7 +181,7 @@ const getUserStatictis = async (req, res) => {
           include: [
             {
               model: Quizz,
-              as: "quizz",
+              as: 'quizz',
               required: true,
             },
           ],
@@ -198,7 +198,7 @@ const getUserStatictis = async (req, res) => {
           include: [
             {
               model: Homework,
-              as: "homework",
+              as: 'homework',
             },
           ],
           required: true,
@@ -228,15 +228,10 @@ const getUserStatictis = async (req, res) => {
       quizzes: {
         taken: userSubmitedQuizz,
         all: allQuizz + 1, //final quizz
-        percent:
-          userSubmitedQuizz == 0
-            ? 0
-            : (userSubmitedQuizz / (allQuizz + 1)) * 100,
+        percent: userSubmitedQuizz == 0 ? 0 : (userSubmitedQuizz / (allQuizz + 1)) * 100,
       },
       totalPoints:
-        ((userSubmitedQuizz == 0
-          ? 0
-          : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
+        ((userSubmitedQuizz == 0 ? 0 : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
           (allHomework < 0 || userSubmitedHomework < 0
             ? 0
             : (userSubmitedHomework / allHomework) * 100)) /
@@ -252,9 +247,7 @@ const getUserStatictis = async (req, res) => {
     return res.json(response);
   } catch (error) {
     console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, message: "Something Went Wrong" });
+    return res.status(500).json({ success: false, message: 'Something Went Wrong' });
   }
 };
 
@@ -266,7 +259,7 @@ const getInvidualCourseStatics = async (req, res) => {
     const courses = await CoursesContents.findOne({
       where: {
         userId,
-        courseType: "Individual",
+        courseType: 'Individual',
       },
     });
     const courseType = courses.courseType;
@@ -305,7 +298,7 @@ const getInvidualCourseStatics = async (req, res) => {
     return res.json(response);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong ." });
+    return res.status(500).json({ message: 'Something went wrong .' });
   }
 };
 

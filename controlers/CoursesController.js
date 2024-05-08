@@ -270,7 +270,13 @@ const getOne = async (req, res) => {
     });
     const payment = await PaymentWays.findAll({
       where: { groupId: groups.id },
-      attributes: ['id', [`title_${language}`,'title'], [`description_${language}`,'description'], 'price', 'discount'],
+      attributes: [
+        'id',
+        [`title_${language}`, 'title'],
+        [`description_${language}`, 'description'],
+        'price',
+        'discount',
+      ],
     });
 
     const duration = moment(groups.endDate).diff(moment(groups.startDate), 'days');
@@ -451,9 +457,9 @@ const getUserCourses = async (req, res) => {
       delete e.dataValues;
       if (e.GroupCourse.CoursesContents[0].courseType === 'Individual') {
         const IndividualCourse = {
-          id: e.id,
+          id: e.GroupCourse.id,
           userId: e.userId,
-          groupCourseId: null,
+          groupCourseId: e.GroupCourse.id,
           startDate: null,
           title: e.GroupCourse.CoursesContents[0].title,
           description: e.GroupCourse.CoursesContents[0].description,
@@ -542,7 +548,6 @@ const getUserCourse = async (req, res) => {
     const userPoint = await UserPoints.findOne({
       where: { isFinal: true, courseId },
     });
-    console.log(Quizzs);
     let quizz = {
       id: Quizzs[0].id,
       title: Quizzs[0].dataValues.title,
@@ -886,7 +891,7 @@ const getCoursesByFilter = async (req, res) => {
         sale: 1,
         // courseStartDate: "Apr 16, 2024",
         courseDate: '1 month',
-        saledValue: 79.2,
+        saledValue: 1,
         bought: 0,
         img: `https://platform.tesvan.com/server/${e.img}`,
         description: e.description,
@@ -1108,16 +1113,11 @@ const updateCourse = async (req, res) => {
       }),
     );
 
-    // Update course per quizz if available
     if (quizzId !== 'undefined') {
-      await CoursesPerQuizz.destroy(
-        // { type: courseType_en },
-        { where: { courseId } },
-      );
+      await CoursesPerQuizz.destroy({ where: { courseId } });
       await await CoursesPerQuizz.create({ quizzId, courseId });
     }
 
-    // Update course per lesson entries
     const lessonIds = Array.isArray(lessons) ? lessons : [lessons];
     await Promise.all(
       lessonIds.map((lessonId) =>
@@ -1125,7 +1125,6 @@ const updateCourse = async (req, res) => {
       ),
     );
 
-    // Update trainers information
     const parsedTrainers = JSON.parse(trainers);
 
     await Trainer.destroy({

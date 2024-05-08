@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require('axios');
 const {
   Tests,
   UserTests,
@@ -12,9 +12,9 @@ const {
   UserPoints,
   GroupChats,
   Users,
-} = require("../models");
+} = require('../models');
 
-const sequelize = require("sequelize");
+const sequelize = require('sequelize');
 const payUrl = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
@@ -22,7 +22,7 @@ const payUrl = async (req, res) => {
     const orderNumber = Math.floor(Date.now() * Math.random());
     const data = `userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}&amount=${amount}&currency=${process.env.CURRENCY}&language=en&orderNumber=${orderNumber}&returnUrl=${process.env.RETURNURL}&failUrl=${process.env.FAILURL}&pageView=DESKTOP&description='Payment Tesvan Platform'`;
     let { data: paymentResponse } = await axios.post(
-      `https://ipay.arca.am/payment/rest/register.do?${data}`
+      `https://ipay.arca.am/payment/rest/register.do?${data}`,
     );
 
     if (paymentResponse.errorCode)
@@ -35,7 +35,7 @@ const payUrl = async (req, res) => {
       orderKey: paymentResponse.orderId,
       orderNumber,
       paymentWay,
-      status: "Pending",
+      status: 'Pending',
       groupId,
       userId,
       type,
@@ -44,7 +44,7 @@ const payUrl = async (req, res) => {
     return res.json({ success: true, formUrl: paymentResponse.formUrl });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something Went Wrong" });
+    return res.status(500).json({ message: 'Something Went Wrong' });
   }
 };
 
@@ -55,16 +55,14 @@ const buy = async (req, res) => {
     const data = `orderId=${orderKey}&language=en&userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}`;
 
     const { data: paymentResponse } = await axios.post(
-      `https://ipay.arca.am/payment/rest/getOrderStatus.do?${data}`
+      `https://ipay.arca.am/payment/rest/getOrderStatus.do?${data}`,
     );
 
     const payment = await Payment.findOne({
       where: { orderKey },
     });
     if (!payment)
-      return res
-        .status(400)
-        .json({ success: false, message: "Payment does not exist" });
+      return res.status(400).json({ success: false, message: 'Payment does not exist' });
     payment.status = paymentResponse.errorMessage;
 
     payment.save();
@@ -76,15 +74,15 @@ const buy = async (req, res) => {
         groupId: payment.groupId,
       });
 
-    if (payment.type == "Group") {
+    if (payment.type == 'Group') {
       const user = await Users.findOne({ where: { id: payment.userId } });
       const group = await Groups.findByPk(payment.groupId);
       if (!group) {
-        return res.json({ success: false, message: "Group not found" });
+        return res.json({ success: false, message: 'Group not found' });
       }
 
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: 'User not found' });
       }
       await GroupsPerUsers.create({
         groupId: payment.groupId,
@@ -119,10 +117,7 @@ const buy = async (req, res) => {
       });
       const boughtTests = await Tests.findAll({
         where: {
-          [sequelize.Op.or]: [
-            { courseId: group.assignCourseId },
-            { courseId: null },
-          ],
+          [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
         },
       });
 
@@ -133,7 +128,7 @@ const buy = async (req, res) => {
             userId: payment.userId,
             courseId: test.courseId,
             language: test.language,
-            type: "Group",
+            type: 'Group',
           },
           defaults: {
             testId: test.id,
@@ -153,19 +148,18 @@ const buy = async (req, res) => {
       await groupChats.save();
 
       res.send({ success: true });
-    } else if (payment.type == "Individual") {
+    } else if (payment.type == 'Individual') {
       const user = await Users.findOne({ where: { id: payment.userId } });
       const course = await GroupCourses.findByPk(payment.groupId);
       if (!course) {
-        return res.json({ success: false, message: "Course not found" });
+        return res.status(404).json({ success: false, message: 'Course not found' });
       }
 
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: 'User not found' });
       }
       await UserCourses.create({
         GroupCourseId: payment.groupId,
-
         UserId: payment.userId,
       });
       const lessons = await CoursesPerLessons.findAll({
@@ -191,10 +185,7 @@ const buy = async (req, res) => {
       });
       const boughtTests = await Tests.findAll({
         where: {
-          [sequelize.Op.or]: [
-            { courseId: payment.groupId },
-            { courseId: null },
-          ],
+          [sequelize.Op.or]: [{ courseId: payment.groupId }, { courseId: null }],
         },
       });
 
@@ -205,7 +196,7 @@ const buy = async (req, res) => {
             userId: payment.userId,
             courseId: test.courseId,
             language: test.language,
-            type: "Group",
+            type: 'Group',
           },
           defaults: {
             testId: test.id,
@@ -217,7 +208,7 @@ const buy = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something Went Wrong" });
+    return res.status(500).json({ message: 'Something Went Wrong' });
   }
 };
 module.exports = {
