@@ -12,6 +12,7 @@ const {
   UserPoints,
   GroupChats,
   Users,
+  HomeworkPerLesson
 } = require('../models');
 
 const sequelize = require('sequelize');
@@ -115,6 +116,8 @@ const buy = async (req, res) => {
           LessonId: e.lessonId,
         });
       });
+
+      
       const boughtTests = await Tests.findAll({
         where: {
           [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
@@ -183,6 +186,7 @@ const buy = async (req, res) => {
           LessonId: e.lessonId,
         });
       });
+
       const boughtTests = await Tests.findAll({
         where: {
           [sequelize.Op.or]: [{ courseId: payment.groupId }, { courseId: null }],
