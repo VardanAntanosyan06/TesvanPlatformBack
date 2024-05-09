@@ -270,7 +270,7 @@ const authMe = async (req, res) => {
               [Op.contains]: [id]
           }
       },
-      attributes: ["id"]
+      attributes: ["id", "name", "image"]
   })
     User.setDataValue('groupChats', groupChats);
     await User.save()

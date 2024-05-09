@@ -29,8 +29,13 @@ const getGroupChat = async (req, res) => {
                     [Op.contains]: [userId]
                 },
             },
-            attributes: ["id", "name"]
+            attributes: ["id", "name", "image", "members"]
         })
+        const members = await Users.findAll({
+            where: {id: groupChat.members},
+            attributes: ["id","firstName", "lastName", "image", "role"]
+        })
+        groupChat.setDataValue('members', members);
         const userSocket = await userSockets.get(userId);
         if (userSocket) { userSocket.join(`room_${groupChatId}`)}
         return res.status(200).json(groupChat)

@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   GroupChats.init({
     name: DataTypes.STRING,
+    image: DataTypes.STRING,
     groupId: DataTypes.INTEGER,
     adminId: DataTypes.INTEGER,
     members: DataTypes.ARRAY(DataTypes.INTEGER)
