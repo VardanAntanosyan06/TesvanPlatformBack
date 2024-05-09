@@ -195,7 +195,6 @@ const finishQuizz = async (req, res) => {
     const userCourses = await UserCourses.findOne({
       where: { UserId: userId, GroupCourseId: courseId },
     });
-
     if (!lessonId) {
       let correctAnswers = await Quizz.findByPk(quizzId, {
         attributes: ['id'],
@@ -249,13 +248,13 @@ const finishQuizz = async (req, res) => {
         defaults: {
           quizzId,
           userId,
-          point,
+          points,
           isFinal,
           courseId,
         },
       });
 
-      userCourses.totalPoints = userCourses.totalPoints + point;
+      userCourses.totalPoints = Math.ceil(userCourses.totalPoints + point);
       await userCourses.save();
 
       return res.json({ success: true });
@@ -318,7 +317,7 @@ const finishQuizz = async (req, res) => {
         courseId,
       },
     });
-    userCourses.totalPoints = userCourses.totalPoints + point;
+    userCourses.totalPoints = Math.ceil(userCourses.totalPoints + point);
     await userCourses.save();
     return res.json({
       point,

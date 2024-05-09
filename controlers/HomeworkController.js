@@ -213,7 +213,8 @@ const submitHomework = async (req, res) => {
     let homework = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
     });
-
+    
+    console.log(homework)
     if (!homework) {
       return res.status(403).json({
         message: "Homework not found or User doesn't have a homework",
