@@ -176,7 +176,7 @@ const deleteGroupChatMessage = async (req, res)=> {
         await GroupChatMessages.destroy({
             where: {id: messageId}
         });
-        io.to(`room_${chatId}`).emit("groupChatMessages", messageId);
+        io.to(`room_${chatId}`).emit("deleteGroupChatMessages", messageId);
         return res.status(200).json({ success: true });
     } catch(error) {
         console.log(error);
