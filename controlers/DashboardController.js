@@ -224,16 +224,16 @@ const getUserStatictis = async (req, res) => {
       },
       quizzes: {
         taken: userSubmitedQuizz,
-        all: allQuizz + 1, //final quizz
+        all: allQuizz, //final quizz
         percent:
           userSubmitedQuizz == 0
             ? 0
-            : (userSubmitedQuizz / (allQuizz + 1)) * 100,
+            : (userSubmitedQuizz / (allQuizz)) * 100,
       },
       totalPoints:
         ((userSubmitedQuizz == 0
           ? 0
-          : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
+          : (userSubmitedQuizz / (allQuizz)) * 100) +
           (allHomework < 0 || userSubmitedHomework < 0
             ? 0
             : (userSubmitedHomework / allHomework) * 100)) /

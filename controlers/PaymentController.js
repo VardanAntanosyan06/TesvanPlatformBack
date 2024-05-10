@@ -7,10 +7,13 @@ const {
   GroupsPerUsers,
   UserCourses,
   UserLesson,
+  UserHomework,
   Payment,
   GroupCourses,
   UserPoints,
   GroupChats,
+  Lesson,
+  Homework,
   Users,
   HomeworkPerLesson
 } = require('../models');
@@ -62,6 +65,7 @@ const buy = async (req, res) => {
     const payment = await Payment.findOne({
       where: { orderKey },
     });
+    console.log(payment);
     if (!payment)
       return res.status(400).json({ success: false, message: 'Payment does not exist' });
     payment.status = paymentResponse.errorMessage;
@@ -117,7 +121,30 @@ const buy = async (req, res) => {
         });
       });
 
-      
+      const Course = await GroupCourses.findOne({
+        where:{id:group.assignCourseId},
+        include: [
+          {
+            model: Lesson,
+            include: [
+              {
+                model: Homework,
+                as: "homework",
+              },
+            ],
+            required: true,
+          },
+        ],
+      })  
+
+      Course.Lessons.map((lesson)=>{
+        UserHomework.create({
+          GroupCourseId: group.assignCourseId,
+          UserId:payment.userId,
+          HomeworkId: lesson.homework[0].id,
+          points: 0,
+        })
+      })
       const boughtTests = await Tests.findAll({
         where: {
           [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
@@ -143,7 +170,6 @@ const buy = async (req, res) => {
       const groupChats = await GroupChats.findOne({
         where: { groupId: payment.groupId },
       });
-      console.log(payment.userId);
       const newMembers = [payment.userId, ...groupChats.members];
       const uniqueUsers = [...new Set(newMembers)];
       groupChats.members = uniqueUsers;

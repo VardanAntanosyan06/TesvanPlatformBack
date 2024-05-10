@@ -90,10 +90,11 @@ const getQuizzes = async (req, res) => {
 
     let quizz = await Quizz.findOne({
       where: { id },
+      attributes: ['id', [`title_${language}`, 'title'],[`description_${language}`, 'description'],'time'],
       include: [
         {
           model: Question,
-          attributes: ['id', 'quizzId', [`title_${language}`, 'title'],'title_ru','title_en','title_am'],
+          attributes: ['id', 'quizzId', [`title_${language}`, 'title'],'title_ru','title_en','title_am',],
           include: {
             model: Option,
             attributes: ['id', [`title_${language}`, 'title'],'title_ru','title_en','title_am'],
