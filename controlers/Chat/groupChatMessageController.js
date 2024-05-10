@@ -1,7 +1,7 @@
-const {GroupChatMessages, GroupChats, Users} = require('../../models');
+const { GroupChatMessages, GroupChats, Users } = require('../../models');
 const { Op } = require('sequelize');
 
-const createGroupChatMessage = async (req, res)=> {
+const createGroupChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { chatId } = req.params;
@@ -15,8 +15,8 @@ const createGroupChatMessage = async (req, res)=> {
                 }
             }
         });
-        if (!groupChats) return res.status(404).json({message: 'Chat not found'});
-        const {id} = await GroupChatMessages.create({ groupChatId: chatId, senderId: userId, text })
+        if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
+        const { id } = await GroupChatMessages.create({ groupChatId: chatId, senderId: userId, text })
         const messages = await GroupChatMessages.findOne({
             where: {
                 id
@@ -52,7 +52,7 @@ const replyGroupChatMessage = async (req, res) => {
                 }
             }
         });
-        if (!groupChats) return res.status(404).json({message: 'Chat not found'});
+        if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
         const { id } = await GroupChatMessages.create({ groupChatId: chatId, senderId: userId, text, isReply: messageId })
         const message = await GroupChatMessages.findOne({
             where: {
@@ -87,7 +87,7 @@ const getGroupChatMessages = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { chatId } = req.params;
-        const {limit, page} = req.query;
+        const { limit, page } = req.query;
         const chat = await GroupChats.findOne({
             where: {
                 id: chatId,
@@ -129,11 +129,11 @@ const getGroupChatMessages = async (req, res) => {
     };
 };
 
-const updateGroupChatMessage = async (req, res)=> {
+const updateGroupChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
-        const {messageId, chatId} = req.params;
-        const {text} = req.body;
+        const { messageId, chatId } = req.params;
+        const { text } = req.body;
         const io = req.io;
         const groupChats = await GroupChats.findOne({
             where: {
@@ -143,9 +143,9 @@ const updateGroupChatMessage = async (req, res)=> {
                 }
             }
         });
-        if (!groupChats) return res.status(404).json({message: 'Chat not found'});
+        if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
         const message = await GroupChatMessages.findOne({
-            where: {id: messageId}
+            where: { id: messageId }
         })
         message.text = text;
         message.isUpdated = true
@@ -153,16 +153,16 @@ const updateGroupChatMessage = async (req, res)=> {
         if (!message) return res.status(404).json({ message: 'Message not found' });
         io.to(`room_${chatId}`).emit("updateGroupChatMessage", message);
         return res.status(200).json({ success: true });
-    } catch(error) {
+    } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
     }
 };
 
-const deleteGroupChatMessage = async (req, res)=> {
+const deleteGroupChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
-        const {messageId, chatId} = req.params;
+        const { messageId, chatId } = req.params;
         const io = req.io;
         const groupChats = await GroupChats.findOne({
             where: {
@@ -172,13 +172,13 @@ const deleteGroupChatMessage = async (req, res)=> {
                 }
             }
         });
-        if (!groupChats) return res.status(404).json({message: 'Chat not found'});
+        if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
         await GroupChatMessages.destroy({
-            where: {id: messageId}
+            where: { id: messageId }
         });
-        io.to(`room_${chatId}`).emit("deleteGroupChatMessages", messageId);
+        io.to(`room_${chatId}`).emit("deleteGroupChatMessage", messageId);
         return res.status(200).json({ success: true });
-    } catch(error) {
+    } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
     }

@@ -4,11 +4,11 @@ var router = express.Router();
 const controller = require("../controlers/Chat/groupChatController");
 const checkAuth = require("../middleware/checkAuth");
 
-router.post(
-  "/createGroupChat",
-  checkAuth(["STUDENT","TEACHER", "ADMIN"]),
-  controller.createGroupChat
-);
+// router.post(
+//   "/createGroupChat",
+//   checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+//   controller.createGroupChat
+// );
 
 router.get(
     "/getGroupChat/:groupChatId",
@@ -28,11 +28,11 @@ router.get(
 //     controller.getGroupChatMembers
 // );
 
-router.patch(
-    "/updateNameGroupChat/:groupChatId",
-    checkAuth(["STUDENT","TEACHER", "ADMIN"]),
-    controller.updateNameGroupChat
-);
+// router.patch(
+//     "/updateNameGroupChat/:groupChatId",
+//     checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+//     controller.updateNameGroupChat
+// );
 
 router.patch(
     "/addMemberGroupChat/:groupChatId",
