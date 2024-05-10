@@ -16,10 +16,10 @@ const createGroupChatMessage = async (req, res)=> {
             }
         });
         if (!groupChats) return res.status(404).json({message: 'Chat not found'});
-        await GroupChatMessages.create({ groupChatId: chatId, senderId: userId, text })
-        const messages = await GroupChatMessages.findAll({
+        const {id} = await GroupChatMessages.create({ groupChatId: chatId, senderId: userId, text })
+        const messages = await GroupChatMessages.findOne({
             where: {
-                groupChatId: chatId,
+                id
             },
             include: [
                 {
@@ -28,10 +28,9 @@ const createGroupChatMessage = async (req, res)=> {
                 }
             ],
             order: [['createdAt', 'DESC']],
-            limit: 1,
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
-        io.to(`room_${chatId}`).emit("groupChatMessages", messages);
+        io.to(`room_${chatId}`).emit("createGroupChatMessage", messages);
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -39,11 +38,56 @@ const createGroupChatMessage = async (req, res)=> {
     }
 };
 
+const replyGroupChatMessage = async (req, res) => {
+    try {
+        const { user_id: userId } = req.user;
+        const { chatId, messageId } = req.params;
+        const { text } = req.body;
+        const io = req.io;
+        const groupChats = await GroupChats.findOne({
+            where: {
+                id: chatId,
+                members: {
+                    [Op.contains]: [userId]
+                }
+            }
+        });
+        if (!groupChats) return res.status(404).json({message: 'Chat not found'});
+        const { id } = await GroupChatMessages.create({ groupChatId: chatId, senderId: userId, text, isReply: messageId })
+        const message = await GroupChatMessages.findOne({
+            where: {
+                id
+            },
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                },
+                {
+                    model: GroupChatMessages,
+                    as: "Reply",
+                    include: [
+                        {
+                            model: Users,
+                            attributes: ["id", "firstName", "lastName", "image"],
+                        },
+                    ],
+                }
+            ],
+        });
+        io.to(`room_${chatId}`).emit("replyGroupChatMessage", message);
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error.message)
+    }
+}
+
 const getGroupChatMessages = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { chatId } = req.params;
-        const {from, to} = req.query;
+        const {limit, page} = req.query;
         const chat = await GroupChats.findOne({
             where: {
                 id: chatId,
@@ -61,11 +105,21 @@ const getGroupChatMessages = async (req, res) => {
                 {
                     model: Users,
                     attributes: ["id", "firstName", "lastName", "image"],
+                },
+                {
+                    model: GroupChatMessages,
+                    as: "Reply",
+                    include: [
+                        {
+                            model: Users,
+                            attributes: ["id", "firstName", "lastName", "image"],
+                        },
+                    ],
                 }
             ],
             order: [['createdAt', 'DESC']],
-            limit: to,
-            offset: from
+            limit: limit,
+            offset: (page - 1) * limit
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
         return res.status(200).json(messages)
@@ -96,21 +150,8 @@ const updateGroupChatMessage = async (req, res)=> {
         message.text = text;
         message.isUpdated = true
         await message.save();
-        const messages = await GroupChatMessages.findAll({
-            where: {
-                groupChatId: chatId,
-            },
-            include: [
-                {
-                    model: Users,
-                    attributes: ["id", "firstName", "lastName", "image"],
-                }
-            ],
-            order: [['createdAt', 'DESC']],
-            limit: 1,
-        });
-        if (!messages) return res.status(404).json({ message: 'Message not found' });
-        io.to(`room_${chatId}`).emit("groupChatMessages", messages);
+        if (!message) return res.status(404).json({ message: 'Message not found' });
+        io.to(`room_${chatId}`).emit("updateGroupChatMessage", message);
         return res.status(200).json({ success: true });
     } catch(error) {
         console.log(error);
@@ -135,21 +176,7 @@ const deleteGroupChatMessage = async (req, res)=> {
         await GroupChatMessages.destroy({
             where: {id: messageId}
         });
-        const messages = await GroupChatMessages.findAll({
-            where: {
-                groupChatId: chatId,
-            },
-            include: [
-                {
-                    model: Users,
-                    attributes: ["id", "firstName", "lastName", "image"],
-                }
-            ],
-            order: [['createdAt', 'DESC']],
-            limit: 1,
-        });
-        if (!messages) return res.status(404).json({ message: 'Message not found' });
-        io.to(`room_${chatId}`).emit("groupChatMessages", messages);
+        io.to(`room_${chatId}`).emit("groupChatMessages", messageId);
         return res.status(200).json({ success: true });
     } catch(error) {
         console.log(error);
@@ -159,6 +186,7 @@ const deleteGroupChatMessage = async (req, res)=> {
 
 module.exports = {
     createGroupChatMessage,
+    replyGroupChatMessage,
     updateGroupChatMessage,
     deleteGroupChatMessage,
     getGroupChatMessages

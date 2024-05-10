@@ -29,7 +29,11 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       isReply: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'GroupChatMessages',
+          key: "id"
+        }
       },
       createdAt: {
         allowNull: false,

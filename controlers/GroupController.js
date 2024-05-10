@@ -23,6 +23,7 @@ const { Op } = require("sequelize");
 
 const CreateGroup = async (req, res) => {
   try {
+    const { user_id: userId } = req.user;
     const {
       name_en,
       name_am,
@@ -94,8 +95,12 @@ const CreateGroup = async (req, res) => {
         });
       })
     );
+    const {img} = await GroupCourses.findOne({
+      where: {id: task.assignCourseId}
+    });
     await GroupChats.create({
-      adminId: 5,
+      adminId: userId,
+      image: img,
       groupId: task.id,
       name: name_en,
       members: users,

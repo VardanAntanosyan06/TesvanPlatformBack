@@ -105,7 +105,6 @@ const deleteChat = async (req, res) => {
             }
         })
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
-        
         const deleteChat = await Chats.destroy({
             where: { id: chatId }
         })

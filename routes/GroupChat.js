@@ -16,17 +16,17 @@ router.get(
     controller.getGroupChat
 );
 
-router.get(
-    "/getGroupChats",
-    checkAuth(["STUDENT","TEACHER", "ADMIN"]),
-    controller.getGroupChats
-);
+// router.get(
+//     "/getGroupChats",
+//     checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+//     controller.getGroupChats
+// );
 
-router.get(
-    "/getGroupChatMembers/:groupChatId",
-    checkAuth(["STUDENT","TEACHER", "ADMIN"]),
-    controller.getGroupChatMembers
-);
+// router.get(
+//     "/getGroupChatMembers/:groupChatId",
+//     checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+//     controller.getGroupChatMembers
+// );
 
 router.patch(
     "/updateNameGroupChat/:groupChatId",

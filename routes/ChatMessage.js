@@ -10,13 +10,19 @@ router.post(
   controller.createChatMessage
 );
 
+router.post(
+  "/replyChatMessage/:chatId/:messageId",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.replyChatMessage
+);
+
 router.get(
   "/getChatMessages/:chatId",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getChatMessages
 );
 
-router.put(
+router.patch(
   "/updateChatMessage/:chatId/:messageId",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.updateChatMessage

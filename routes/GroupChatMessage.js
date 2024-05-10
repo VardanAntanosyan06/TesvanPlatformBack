@@ -10,6 +10,12 @@ router.post(
   controller.createGroupChatMessage
 );
 
+router.post(
+  "/replyGroupChatMessage/:chatId/:messageId",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.replyGroupChatMessage
+);
+
 router.get('/getGroupChatMessages/:chatId',
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getGroupChatMessages

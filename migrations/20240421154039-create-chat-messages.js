@@ -30,7 +30,11 @@ module.exports = {
         defaultValue: false
       },
       isReply: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'ChatMessages',
+          key: "id"
+        }
       },
       createdAt: {
         allowNull: false,
