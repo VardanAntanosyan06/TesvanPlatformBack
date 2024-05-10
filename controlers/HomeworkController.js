@@ -184,6 +184,9 @@ const getHomework = async (req, res) => {
     //   where: { userId, homeWorkId: homework.Homework.id },
     //   attributes: ['id', ['fileName', 'name'], ['fileLink', 'link']],
     // });
+    const Files = await HomeWorkFiles.findAll({
+      where: { userId, homeWorkId: id },
+    });
 
     const response = {
       ...homework.dataValues,
@@ -191,6 +194,7 @@ const getHomework = async (req, res) => {
       status: homework.status,
       answer: homework.answer,
       feedback: homework.feedback,
+      Files
       // UserStartDate: homework.startDate,
       // startDate: homework.Homework.startDate,
       // ...homework.dataValues.Homework.dataValues,
