@@ -28,7 +28,7 @@ const createGroupChatMessage = async (req, res)=> {
                 }
             ],
             order: [['createdAt', 'DESC']],
-            limit: 20,
+            limit: 1,
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
         io.to(`room_${chatId}`).emit("groupChatMessages", messages);
@@ -43,7 +43,7 @@ const getGroupChatMessages = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { chatId } = req.params;
-        const {quantity} = req.query;
+        const {from, to} = req.query;
         const chat = await GroupChats.findOne({
             where: {
                 id: chatId,
@@ -64,8 +64,8 @@ const getGroupChatMessages = async (req, res) => {
                 }
             ],
             order: [['createdAt', 'DESC']],
-            limit: 20,
-            offset: quantity-20
+            limit: to,
+            offset: from
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
         return res.status(200).json(messages)
@@ -107,7 +107,7 @@ const updateGroupChatMessage = async (req, res)=> {
                 }
             ],
             order: [['createdAt', 'DESC']],
-            limit: 20,
+            limit: 1,
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
         io.to(`room_${chatId}`).emit("groupChatMessages", messages);
@@ -146,7 +146,7 @@ const deleteGroupChatMessage = async (req, res)=> {
                 }
             ],
             order: [['createdAt', 'DESC']],
-            limit: 20,
+            limit: 1,
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
         io.to(`room_${chatId}`).emit("groupChatMessages", messages);
