@@ -1,4 +1,4 @@
-const { GroupChats, Users } = require("../../models");
+const { GroupChats, Users, Chats } = require("../../models");
 const { Op } = require('sequelize');
 const { userSockets } = require("../../userSockets");
 
@@ -32,12 +32,12 @@ const getGroupChat = async (req, res) => {
             attributes: ["id", "name", "image", "members"]
         })
         const members = await Users.findAll({
-            where: {id: groupChat.members},
-            attributes: ["id","firstName", "lastName", "image", "role"]
+            where: { id: groupChat.members },
+            attributes: ["id", "firstName", "lastName", "image", "role"]
         })
         groupChat.setDataValue('members', members);
         const userSocket = await userSockets.get(userId);
-        if (userSocket) { userSocket.join(`room_${groupChatId}`)}
+        if (userSocket) { userSocket.join(`room_${groupChatId}`) }
         return res.status(200).json(groupChat)
     } catch (error) {
         console.log(error);
@@ -134,8 +134,8 @@ const addMemberGroupChat = async (req, res) => {
             },
             attributes: ['id']
         });
-        if(users.length !== receiverId.length){
-            return res.status(400).json({message: "An error has occurred. The user you specified may not be found"})
+        if (users.length !== receiverId.length) {
+            return res.status(400).json({ message: "An error has occurred. The user you specified may not be found" })
         }
         await GroupChats.update(
             { members: [...uniqueUsers] },
@@ -163,7 +163,7 @@ const deleteMemberGroupChat = async (req, res) => {
         const Users = new Set(groupChat.members)
         let notFound = 0;
         receiverId.forEach(user => {
-            if(!Users.has(user)) {
+            if (!Users.has(user)) {
                 notFound++
             }
             Users.delete(user)
@@ -172,8 +172,8 @@ const deleteMemberGroupChat = async (req, res) => {
             { members: [...Users] },
             { where: { id: groupChatId } }
         )
-        if(notFound){
-            return res.status(200).json({ success: true, message: `${notFound} users not found`});
+        if (notFound) {
+            return res.status(200).json({ success: true, message: `${notFound} users not found` });
         }
         return res.status(200).json({ success: true });
     } catch (error) {
@@ -206,6 +206,8 @@ const deleteGroupChat = async (req, res) => {
 module.exports = {
     getGroupChat,
     // getGroupChats,
+    // createGroupChat,
+    // updateNameGroupChat,
     addMemberGroupChat,
     deleteMemberGroupChat,
     deleteGroupChat,
