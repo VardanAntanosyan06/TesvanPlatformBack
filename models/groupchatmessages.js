@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       GroupChatMessages.belongsTo(models.Users, {foreignKey: "senderId"})
+      GroupChatMessages.hasMany(models.GroupChatMessages, { foreignKey: "isReply", as: "ParentMessage" })
+      GroupChatMessages.belongsTo(models.GroupChatMessages, { foreignKey: "isReply", as: "Reply" })
     }
   }
   GroupChatMessages.init({

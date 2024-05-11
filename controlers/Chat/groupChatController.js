@@ -2,21 +2,21 @@ const { GroupChats, Users } = require("../../models");
 const { Op } = require('sequelize');
 const { userSockets } = require("../../userSockets");
 
-const createGroupChat = async (req, res) => {
-    try {
-        const { user_id: userId } = req.user;
-        const { receiverId, name } = req.body;
-        await GroupChats.create({
-            adminId: userId,
-            name: name,
-            members: [userId, ...receiverId]
-        });
-        return res.status(200).json({ success: true });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(error.message)
-    }
-};
+// const createGroupChat = async (req, res) => {
+//     try {
+//         const { user_id: userId } = req.user;
+//         const { receiverId, name } = req.body;
+//         await GroupChats.create({
+//             adminId: userId,
+//             name: name,
+//             members: [userId, ...receiverId]
+//         });
+//         return res.status(200).json({ success: true });
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json(error.message)
+//     }
+// };
 
 const getGroupChat = async (req, res) => {
     try {
@@ -45,74 +45,74 @@ const getGroupChat = async (req, res) => {
     }
 };
 
-const getGroupChats = async (req, res) => {
-    try {
-        const { user_id: userId } = req.user;
-        const groupChats = await GroupChats.findAll({
-            where: {
-                members: {
-                    [Op.contains]: [userId]
-                }
-            },
-            attributes: ["id", "name", "members"]
-        })
-        const userSocket = await userSockets.get(userId);
-        if (userSocket) { 
-            groupChats.map((chat)=> {
-                userSocket.join(`room_${chat.id}`)
-            })
-        }
-        return res.status(200).json(groupChats)
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(error.message)
-    }
-};
-const getGroupChatMembers = async (req, res)=> {
-    try {
-        const { user_id: userId } = req.user;
-        const { groupChatId } = req.params;
-        const groupChat = await GroupChats.findAll({
-            where: {
-                id: groupChatId,
-                members: {
-                    [Op.contains]: [userId]
-                }
-            },
-            attributes: ["members"]
-        })
-        const members = await Users.findAll({
-            where: groupChat.members,
-            attributes: ["id","firstName", "lastName", "image", "role"]
-        })
-        return res.status(200).json(members)
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(error.message)
-    }
-}
-const updateNameGroupChat = async (req, res) => {
-    try {
-        const { user_id: userId } = req.user;
-        const { groupChatId } = req.params;
-        const { name } = req.body;
-        const groupChats = await GroupChats.findOne({
-            where: {
-                id: groupChatId,
-                adminId: userId,
-            }
-        })
-        if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
-        await GroupChats.update(
-            { name },
-            { where: { id: groupChatId } }
-        )
-        return res.status(200).json({ success: true });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(error.message)
-    }
-}
+// const getGroupChats = async (req, res) => {
+//     try {
+//         const { user_id: userId } = req.user;
+//         const groupChats = await GroupChats.findAll({
+//             where: {
+//                 members: {
+//                     [Op.contains]: [userId]
+//                 }
+//             },
+//             attributes: ["id", "name", "members"]
+//         })
+//         const userSocket = await userSockets.get(userId);
+//         if (userSocket) { 
+//             groupChats.map((chat)=> {
+//                 userSocket.join(`room_${chat.id}`)
+//             })
+//         }
+//         return res.status(200).json(groupChats)
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json(error.message)
+//     }
+// };
+// const getGroupChatMembers = async (req, res)=> {
+//     try {
+//         const { user_id: userId } = req.user;
+//         const { groupChatId } = req.params;
+//         const groupChat = await GroupChats.findAll({
+//             where: {
+//                 id: groupChatId,
+//                 members: {
+//                     [Op.contains]: [userId]
+//                 }
+//             },
+//             attributes: ["members"]
+//         })
+//         const members = await Users.findAll({
+//             where: groupChat.members,
+//             attributes: ["id","firstName", "lastName", "image", "role"]
+//         })
+//         return res.status(200).json(members)
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json(error.message)
+//     }
+// }
+// const updateNameGroupChat = async (req, res) => {
+//     try {
+//         const { user_id: userId } = req.user;
+//         const { groupChatId } = req.params;
+//         const { name } = req.body;
+//         const groupChats = await GroupChats.findOne({
+//             where: {
+//                 id: groupChatId,
+//                 adminId: userId,
+//             }
+//         })
+//         if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
+//         await GroupChats.update(
+//             { name },
+//             { where: { id: groupChatId } }
+//         )
+//         return res.status(200).json({ success: true });
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json(error.message)
+//     }
+// }
 
 const addMemberGroupChat = async (req, res) => {
     try {
@@ -206,10 +206,10 @@ const deleteGroupChat = async (req, res) => {
 module.exports = {
     createGroupChat,
     getGroupChat,
-    getGroupChats,
+    // getGroupChats,
     updateNameGroupChat,
     addMemberGroupChat,
     deleteMemberGroupChat,
     deleteGroupChat,
-    getGroupChatMembers
+    // getGroupChatMembers
 }
