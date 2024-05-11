@@ -185,6 +185,7 @@ const getHomework = async (req, res) => {
     //   attributes: ['id', ['fileName', 'name'], ['fileLink', 'link']],
     // });
     const Files = await HomeWorkFiles.findAll({
+      attributes:['id',['fileName','name'],['fileLink','link']],
       where: { userId, homeWorkId: id },
     });
 

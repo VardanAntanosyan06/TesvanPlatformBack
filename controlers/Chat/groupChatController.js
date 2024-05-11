@@ -204,10 +204,8 @@ const deleteGroupChat = async (req, res) => {
 };
 
 module.exports = {
-    createGroupChat,
     getGroupChat,
     // getGroupChats,
-    updateNameGroupChat,
     addMemberGroupChat,
     deleteMemberGroupChat,
     deleteGroupChat,
