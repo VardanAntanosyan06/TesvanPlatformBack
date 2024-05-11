@@ -26,9 +26,52 @@ const createChat = async (req, res) => {
                 }
             ]
         })
-        if (Chat) return res.status(200).json(Chat);
-        await Chats.create({ firstId: userId, secondId: receiverId });
-        return res.status(200).json({ success: true });
+        if (Chat) {
+            if(Chat.firstId === userId){
+                delete Chat.dataValues.firstIds
+                Chat.setDataValue('receiver', Chat.dataValues.secondIds)
+                delete Chat.dataValues.secondIds
+                await Chat.save()
+            } else {
+                delete Chat.dataValues.secondIds
+                Chat.setDataValue('receiver', Chat.dataValues.firstIds)
+                delete Chat.dataValues.firstIds
+                await Chat.save()
+            }
+            return res.status(200).json(Chat);
+        } else {
+            const { id } = await Chats.create({ firstId: userId, secondId: receiverId });
+            const Chat = await Chats.findOne({
+                where: {
+                    id
+                },
+                include: [
+                    {
+                        model: Users,
+                        attributes: ["id", "firstName", "lastName", "image"],
+                        as: 'firstIds'
+                    },
+                    {
+                        model: Users,
+                        attributes: ["id", "firstName", "lastName", "image"],
+                        as: 'secondIds'
+                    }
+                ]
+            })
+
+            if(Chat.firstId === userId){
+                delete Chat.dataValues.firstIds
+                Chat.setDataValue('receiver', Chat.dataValues.secondIds)
+                delete Chat.dataValues.secondIds
+                await Chat.save()
+            } else {
+                delete Chat.dataValues.secondIds
+                Chat.setDataValue('receiver', Chat.dataValues.firstIds)
+                delete Chat.dataValues.firstIds
+                await Chat.save()
+            }
+            return res.status(200).json(Chat);
+        }
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
@@ -42,7 +85,7 @@ const getChat = async (req, res) => {
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
-                [Op.or]: [{secondId:userId}, {firstId:userId}] 
+                [Op.or]: [{ secondId: userId }, { firstId: userId }]
             },
             include: [
                 {
@@ -57,10 +100,10 @@ const getChat = async (req, res) => {
                 }
             ]
         })
-        if(!chat)
-        return res.status(400).json({message: "Chat not found"})
+        if (!chat)
+            return res.status(400).json({ message: "Chat not found" })
         else
-        return res.status(200).json(chat)
+            return res.status(200).json(chat)
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
@@ -72,7 +115,7 @@ const getChats = async (req, res) => {
         const { user_id: userId } = req.user;
         const chats = await Chats.findAll({
             where: {
-                [Op.or]: [{secondId:userId}, {firstId:userId}] 
+                [Op.or]: [{ secondId: userId }, { firstId: userId }]
             },
             include: [
                 {
@@ -101,7 +144,7 @@ const deleteChat = async (req, res) => {
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
-                [Op.or]: [{secondId:userId}, {firstId:userId}] 
+                [Op.or]: [{ secondId: userId }, { firstId: userId }]
             }
         })
         if (!chat) return res.status(404).json({ message: 'Chat not found' });

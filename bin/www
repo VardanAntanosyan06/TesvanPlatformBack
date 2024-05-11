@@ -98,10 +98,10 @@ const jwt = require('jsonwebtoken');
 
 io.on('connection', (socket) => {
   try {
-    
+
     const token = socket?.handshake?.query?.token;
     if (token) {
-      jwt.verify(token, process.env.SECRET, (err, decoded) => {
+      jwt.verify(token, process.env.SECRET,(err, decoded) => {
         if (err) {
           console.error('Token verification error:', err);
           socket.disconnect();
