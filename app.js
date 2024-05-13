@@ -7,8 +7,8 @@ var cors = require('cors');
 var fileUpload = require('express-fileupload');
 require('dotenv').config();
 const swaggerUi = require('swagger-ui-express');
-var http = require('http');
-
+const { Server } = require('socket.io');
+const jwt = require('jsonwebtoken');
 
 var indexRouter = require('./routes/index');
 const swaggerDocument = require('./swagger.json');
@@ -31,27 +31,72 @@ var PaymentRouter = require('./routes/Payment');
 var SkillRouter = require('./routes/Skill');
 var ChatRouter = require('./routes/Chat');
 var ChatMessageRouter = require('./routes/ChatMessage');
-var GroupChatRouter = require('./routes/GroupChat')
+var GroupChatRouter = require('./routes/GroupChat');
 var GroupChatMessageRouter = require('./routes/GroupChatMessage');
-// var PresentationRouter = require('./routes/Presentation');
 var interviewRouter = require('./routes/Interview');
 var app = express();
-var server = http.createServer(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// socket.io Server
+app.use((req, res, next) => {
+  req.io = req.app.get('io');
+  next();
+});
 
-const { Server } = require('socket.io');
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(cors());
+app.use(express.static(path.resolve(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload({}));
+
+app.use('/', indexRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Add your route handlers here
+app.use('/api/v2/courses', groupCoursesRouter);
+app.use('/api/v2/lessons', LessonsRouter);
+app.use('/api/v2/homework', HomeworkRouter);
+app.use('/api/v2/message', MessageRouter);
+app.use('/api/v2/comments', CommentsRouter);
+app.use('/api/v2/register', RegisterRouter);
+app.use('/api/v2/user', LoginRouter);
+app.use('/api/v2/contactMessage', ContactMessageRouter);
+app.use('/api/v2/upload', UploadFileRouter);
+app.use('/api/v2/calendar', CalendarRouter);
+app.use('/api/v2/group', GroupRouter);
+app.use('/api/v2/certifictaes', CertifictaesRouter);
+app.use('/api/v2/testQuizz', TestQuizz);
+app.use('/api/v2/quizz', QuizzRouter);
+app.use('/api/v2/dashboard', DashboardRouter);
+app.use('/api/v2/skill', SkillRouter);
+app.use('/api/v2/payment', PaymentRouter);
+app.use('/api/v2/chat', ChatRouter);
+app.use('/api/v2/groupChat', GroupChatRouter);
+app.use('/api/v2/chatMessage', ChatMessageRouter);
+app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
+app.use('/api/v2/interview', interviewRouter);
+
+const port = normalizePort(process.env.PORT || '4000');
+app.set('port', port);
+
+const server = app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
 const io = new Server(server, {
   cors: {
     origin: "*"
   }
 });
-const { userSockets } = require('./userSockets');
-const jwt = require('jsonwebtoken');
+app.set('io', io);
+
+const {userSockets} = require("./userSockets") // Assuming you have a Map for user sockets
+
 io.on('connection', (socket) => {
   try {
     const token = socket?.handshake?.query?.token;
@@ -63,11 +108,7 @@ io.on('connection', (socket) => {
         } else {
           const userId = decoded.user_id;
           userSockets.set(userId, socket);
-
-          console.log('====================================');
-          console.log(userId, 'Contected');
-          console.log('====================================');
-
+          console.log(`${userId} Connected`);
         }
       });
     } else {
@@ -92,66 +133,14 @@ function getUserIdForSocket(socket) {
   }
   return null;
 }
-app.set('io', io);
 
-app.use(async (req, res, next) => {
-  req.io = req.app.get('io');
-  next();
-});
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(cors());
-app.use(express.static(path.resolve(__dirname, 'static')));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(fileUpload({}));
-
-app.use('/', indexRouter);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-app.use('/api/v2/courses', groupCoursesRouter);
-app.use('/api/v2/lessons', LessonsRouter);
-app.use('/api/v2/homework', HomeworkRouter);
-app.use('/api/v2/message', MessageRouter);
-app.use('/api/v2/comments', CommentsRouter);
-app.use('/api/v2/register', RegisterRouter);
-app.use('/api/v2/user', LoginRouter);
-app.use('/api/v2/contactMessage', ContactMessageRouter);
-app.use('/api/v2/upload', UploadFileRouter);
-app.use('/api/v2/calendar', CalendarRouter);
-app.use('/api/v2/group', GroupRouter);
-app.use('/api/v2/certifictaes', CertifictaesRouter);
-app.use('/api/v2/testQuizz', TestQuizz);
-app.use('/api/v2/quizz', QuizzRouter);
-app.use('/api/v2/dashboard', DashboardRouter);
-app.use('/api/v2/skill', SkillRouter);
-app.use('/api/v2/payment', PaymentRouter);
-app.use('/api/v2/chat', ChatRouter);
-app.use('/api/v2/groupChat', GroupChatRouter);
-app.use('/api/v2/chatMessage', ChatMessageRouter);
-app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
-app.use('/api/v2/interview', interviewRouter);
-
-// app.use('/api/v2/presentation', PresentationRouter);
-
-app.use(require('express-status-monitor')());
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-
-
-module.exports = { app, server };
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+  if (isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
+  return false;
+}
