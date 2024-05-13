@@ -7,6 +7,7 @@ const checkAuth = require("../middleware/checkAuth");
 router.post("/createQuizz", checkAuth(["TEACHER", "ADMIN"]), controller.createQuizz);
 router.get("/getAll", checkAuth(["TEACHER", "ADMIN"]), controller.getAll);
 
+router.post("/getUserAnswers/",  checkAuth(["STUDENT","TEACHER"]),controller.getUserAnswers);
 router.get("/getQuizzes/:id",  checkAuth(["STUDENT","TEACHER", "ADMIN"]),controller.getQuizzes);
 router.post("/submitQuizz", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.submitQuizz);
 router.post("/finishQuizz", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.finishQuizz);

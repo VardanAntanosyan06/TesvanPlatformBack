@@ -249,7 +249,8 @@ const finishQuizz = async (req, res) => {
         defaults: {
           quizzId,
           userId,
-          points,
+          correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
+          point,
           isFinal,
           courseId,
         },
@@ -314,6 +315,7 @@ const finishQuizz = async (req, res) => {
         quizzId,
         userId,
         point,
+      correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
         isFinal,
         courseId,
       },
@@ -438,12 +440,36 @@ const updateQuizz = async (req, res) => {
   }
 };
 
+const getUserAnswers = async(req,res)=>{
+  try {
+      const {quizzId,courseId,isFinal} = req.body;
+
+      const {user_id:userId} = req.user;
+
+      const userPoints = await UserPoints.findOne({
+        where: {
+          userId,
+          quizzId,
+          courseId,
+          isFinal,
+        },
+      });
+
+      if(!userPoints) return res.status(404).json({success:false})
+
+      return res.json({success:true,point:userPoints.point,correctAnswers:userPoints.correctAnswers})
+  }  catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+}
 module.exports = {
   createQuizz,
   getQuizzes,
   submitQuizz,
   finishQuizz,
   getAll,
+  getUserAnswers,
   deleteQuizz,
   updateQuizz,
 };

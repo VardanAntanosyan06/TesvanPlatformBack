@@ -18,6 +18,9 @@ module.exports = {
       point:{
         type:Sequelize.INTEGER
       },
+      correctAnswers:{
+        type:Sequelize.INTEGER
+      },
       isFinal:{
         type:Sequelize.BOOLEAN
       },
