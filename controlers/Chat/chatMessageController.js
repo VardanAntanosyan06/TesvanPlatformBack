@@ -138,6 +138,11 @@ const updateChatMessage = async (req, res) => {
                 id: chatId,
                 [Op.or]: [{ secondId: userId }, { firstId: userId }]
             },
+        });
+        if (!chat) return res.status(404).json({ message: 'Chat not found' });
+
+        const message = await ChatMessages.findOne({
+            where: { id: messageId },
             include: [
                 {
                     model: Users,
@@ -154,11 +159,6 @@ const updateChatMessage = async (req, res) => {
                     ],
                 }
             ],
-        });
-        if (!chat) return res.status(404).json({ message: 'Chat not found' });
-
-        const message = await ChatMessages.findOne({
-            where: { id: messageId }
         })
         message.text = text;
         message.isUpdated = true;
