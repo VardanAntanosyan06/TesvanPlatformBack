@@ -27,14 +27,10 @@ const createChatMessage = async (req, res) => {
                 }
             ],
         });
-        let socketSendId
-        if (userId == chat.firstId) {
-            socketSendId = chat.secondId
-        } else {
-            socketSendId = chat.firstId
-        }
-        const userSocket = await userSockets.get(socketSendId)
-        if (userSocket) { io.to(userSocket.id).emit('createChatMessage', message) };
+        const firstIdSocket = await userSockets.get(chat.firstId)
+        if (firstIdSocket) { io.to(firstIdSocket.id).emit('createChatMessage', message) };
+        const secondSocket = await userSockets.get(chat.secondId)
+        if (secondSocket) { io.to(secondSocket.id).emit('createChatMessage', message) };
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -76,14 +72,10 @@ const replyChatMessage = async (req, res) => {
                 }
             ],
         });
-        let socketSendId
-        if (userId == chat.firstId) {
-            socketSendId = chat.secondId
-        } else {
-            socketSendId = chat.firstId
-        }
-        const userSocket = await userSockets.get(socketSendId)
-        if (userSocket) { io.to(userSocket.id).emit('replyChatMessage', message) };
+        const firstIdSocket = await userSockets.get(chat.firstId)
+        if (firstIdSocket) { io.to(firstIdSocket.id).emit('createChatMessage', message) };
+        const secondSocket = await userSockets.get(chat.secondId)
+        if (secondSocket) { io.to(secondSocket.id).emit('createChatMessage', message) };
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -146,6 +138,22 @@ const updateChatMessage = async (req, res) => {
                 id: chatId,
                 [Op.or]: [{ secondId: userId }, { firstId: userId }]
             },
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                },
+                {
+                    model: ChatMessages,
+                    as: "Reply",
+                    include: [
+                        {
+                            model: Users,
+                            attributes: ["id", "firstName", "lastName", "image"],
+                        },
+                    ],
+                }
+            ],
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
 
@@ -155,14 +163,10 @@ const updateChatMessage = async (req, res) => {
         message.text = text;
         message.isUpdated = true;
         await message.save()
-        let socketSendId
-        if (userId == chat.firstId) {
-            socketSendId = chat.secondId
-        } else {
-            socketSendId = chat.firstId
-        }
-        const userSocket = await userSockets.get(socketSendId)
-        if (userSocket) { io.to(userSocket.id).emit('updateChatMessage', message) };
+        const firstIdSocket = await userSockets.get(chat.firstId)
+        if (firstIdSocket) { io.to(firstIdSocket.id).emit('createChatMessage', message) };
+        const secondSocket = await userSockets.get(chat.secondId)
+        if (secondSocket) { io.to(secondSocket.id).emit('createChatMessage', message) };
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -185,14 +189,10 @@ const deleteChatMessage = async (req, res) => {
             where: { id: messageId }
         });
         if (deleteMessage === 0) return res.status(404).json({ message: "Message not found" })
-        let socketSendId
-        if (userId == chat.firstId) {
-            socketSendId = chat.secondId
-        } else {
-            socketSendId = chat.firstId
-        }
-        const userSocket = await userSockets.get(socketSendId)
-        if (userSocket) { io.to(userSocket.id).emit('deleteChatMessage', messageId) };
+        const firstIdSocket = await userSockets.get(chat.firstId)
+        if (firstIdSocket) { io.to(firstIdSocket.id).emit('createChatMessage', messageId ) };
+        const secondSocket = await userSockets.get(chat.secondId)
+        if (secondSocket) { io.to(secondSocket.id).emit('createChatMessage', messageId ) };
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
