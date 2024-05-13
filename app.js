@@ -100,12 +100,10 @@ const {userSockets} = require("./userSockets") // Assuming you have a Map for us
 io.on('connection', (socket) => {
   try {
     const token = socket?.handshake?.query?.token;
-    console.log(token, "==========================");
     if (token) {
       jwt.verify(token, process.env.SECRET, (err, decoded) => {
         if (err) {
           console.error('Token verification error:', err);
-          console.log("decoded", "==========================");
 
           socket.disconnect();
         } else {
@@ -115,18 +113,15 @@ io.on('connection', (socket) => {
         }
       });
     } else {
-      console.log("111111111", "==========================");
       socket.disconnect();
     }
   } catch (e) {
     console.error('Socket connection error:', e);
-    console.log("22222222222222222", "==========================");
     socket.disconnect();
   }
 
   socket.on('disconnect', () => {
     const userId = getUserIdForSocket(socket);
-    console.log("333333333333", "==========================");
     userId && userSockets.delete(userId);
   });
 });

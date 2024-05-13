@@ -181,9 +181,10 @@ const deleteChatMessage = async (req, res) => {
             },
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
-        await ChatMessages.destroy({
+        const deleteMessage = await ChatMessages.destroy({
             where: { id: messageId }
         });
+        if (deleteMessage === 0) return res.status(404).json({ message: "Message not found" })
         let socketSendId
         if (userId == chat.firstId) {
             socketSendId = chat.secondId
