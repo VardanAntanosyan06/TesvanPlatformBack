@@ -189,9 +189,10 @@ const deleteGroupChatMessage = async (req, res) => {
             }
         });
         if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
-        await GroupChatMessages.destroy({
+        const deleteMessage = await GroupChatMessages.destroy({
             where: { id: messageId }
         });
+        if (deleteMessage === 0) return res.status(404).json({ message: "Message not found" })
         io.to(`room_${chatId}`).emit("deleteGroupChatMessage", messageId);
         return res.status(200).json({ success: true });
     } catch (error) {
