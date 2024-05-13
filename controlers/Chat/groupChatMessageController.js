@@ -150,6 +150,16 @@ const updateGroupChatMessage = async (req, res) => {
                 {
                     model: Users,
                     attributes: ["id", "firstName", "lastName", "image"],
+                },
+                {
+                    model: GroupChatMessages,
+                    as: "Reply",
+                    include: [
+                        {
+                            model: Users,
+                            attributes: ["id", "firstName", "lastName", "image"],
+                        },
+                    ],
                 }
             ],
         })
