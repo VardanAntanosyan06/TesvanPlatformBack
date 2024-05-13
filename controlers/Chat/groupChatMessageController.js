@@ -145,7 +145,13 @@ const updateGroupChatMessage = async (req, res) => {
         });
         if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
         const message = await GroupChatMessages.findOne({
-            where: { id: messageId }
+            where: { id: messageId },
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                }
+            ],
         })
         message.text = text;
         message.isUpdated = true
