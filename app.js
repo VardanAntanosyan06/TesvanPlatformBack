@@ -7,6 +7,8 @@ var cors = require('cors');
 var fileUpload = require('express-fileupload');
 require('dotenv').config();
 const swaggerUi = require('swagger-ui-express');
+var http = require('http');
+
 
 var indexRouter = require('./routes/index');
 const swaggerDocument = require('./swagger.json');
@@ -34,12 +36,65 @@ var GroupChatMessageRouter = require('./routes/GroupChatMessage');
 // var PresentationRouter = require('./routes/Presentation');
 var interviewRouter = require('./routes/Interview');
 var app = express();
+var server = http.createServer(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use((req, res, next) => {
+// socket.io Server
+
+const { Server } = require('socket.io');
+const io = new Server(server, {
+  cors: {
+    origin: "*"
+  }
+});
+const { userSockets } = require('./userSockets');
+const jwt = require('jsonwebtoken');
+io.on('connection', (socket) => {
+  try {
+    const token = socket?.handshake?.query?.token;
+    if (token) {
+      jwt.verify(token, process.env.SECRET, (err, decoded) => {
+        if (err) {
+          console.error('Token verification error:', err);
+          socket.disconnect();
+        } else {
+          const userId = decoded.user_id;
+          userSockets.set(userId, socket);
+
+          console.log('====================================');
+          console.log(userId, 'Contected');
+          console.log('====================================');
+
+        }
+      });
+    } else {
+      socket.disconnect();
+    }
+  } catch (e) {
+    console.error('Socket connection error:', e);
+    socket.disconnect();
+  }
+
+  socket.on('disconnect', () => {
+    const userId = getUserIdForSocket(socket);
+    userId && userSockets.delete(userId);
+  });
+});
+
+function getUserIdForSocket(socket) {
+  for (const [userId, userSocket] of userSockets.entries()) {
+    if (userSocket === socket) {
+      return userId;
+    }
+  }
+  return null;
+}
+app.set('io', io);
+
+app.use(async (req, res, next) => {
   req.io = req.app.get('io');
   next();
 });
@@ -97,4 +152,6 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+
+
+module.exports = { app, server };
