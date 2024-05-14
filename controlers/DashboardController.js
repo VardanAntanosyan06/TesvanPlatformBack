@@ -16,6 +16,7 @@ const {
   Quizz,
 } = require("../models");
 const { Op } = require("sequelize");
+const { all } = require("axios");
 
 const getUserStatictis = async (req, res) => {
   try {
@@ -135,7 +136,7 @@ const getUserStatictis = async (req, res) => {
         groupId: id,
       },
     });
-    const students = await GroupsPerUsers.count({ where: { groupId: id } });
+    const students = await GroupsPerUsers.count({ where: { groupId: id,userRole:"STUDENT" } });
 
     let course = await Groups.findByPk(id, {
       include:[
@@ -212,6 +213,7 @@ const getUserStatictis = async (req, res) => {
         GroupCourseId: course.assignCourseId,
       },
     });
+    console.log(all);
     const response = {
       lesson: 0,
       homework: {
@@ -224,16 +226,16 @@ const getUserStatictis = async (req, res) => {
       },
       quizzes: {
         taken: userSubmitedQuizz,
-        all: allQuizz, //final quizz
+        all: allQuizz+1, //final quizz
         percent:
           userSubmitedQuizz == 0
             ? 0
-            : (userSubmitedQuizz / (allQuizz)) * 100,
+            : (userSubmitedQuizz / (allQuizz+1)) * 100,
       },
       totalPoints:
         ((userSubmitedQuizz == 0
           ? 0
-          : (userSubmitedQuizz / (allQuizz)) * 100) +
+          : (userSubmitedQuizz / (allQuizz+1)) * 100) +
           (allHomework < 0 || userSubmitedHomework < 0
             ? 0
             : (userSubmitedHomework / allHomework) * 100)) /

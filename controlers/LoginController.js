@@ -19,13 +19,30 @@ const LoginUsers = async (req, res) => {
 
     const User = await Users.findOne({
       where: { email },
+      include: [
+        {
+          model: UserCourses,
+          attributes: ['id'],
+        },
+      ],
     });
-
+   
     if (User && !User.isVerified) {
       return res.status(200).json({ isVerified: false });
     }
 
     if (User && User.isVerified && (await bcrypt.compare(password, User.password))) {
+      const groupChats = await GroupChats.findAll({
+        where: {
+            members: {
+                [Op.contains]: [User.id]
+            }
+        },
+        attributes: ["id", "name", "image"]
+    })
+      User.setDataValue('groupChats', groupChats);
+      await User.save()
+
       return res.status(200).json({ User });
     }
 
@@ -274,7 +291,7 @@ const authMe = async (req, res) => {
   })
     User.setDataValue('groupChats', groupChats);
     await User.save()
-    res.send(User);
+    res.json({User});
   } catch (e) {
     res.status(500).json({ succes: false });
     console.log(e);

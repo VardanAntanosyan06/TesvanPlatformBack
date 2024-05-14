@@ -1,4 +1,4 @@
-const { Op, where } = require('sequelize');
+const { Op, where } = require("sequelize");
 const {
   Quizz,
   Option,
@@ -11,7 +11,7 @@ const {
   UserCourses,
   UserPoints,
   UserLesson,
-} = require('../models');
+} = require("../models");
 
 const createQuizz = async (req, res) => {
   try {
@@ -72,13 +72,13 @@ const createQuizz = async (req, res) => {
       await CoursesPerQuizz.create({
         quizzId,
         courseId,
-        type: 'Group',
+        type: "Group",
       });
     }
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -90,14 +90,34 @@ const getQuizzes = async (req, res) => {
 
     let quizz = await Quizz.findOne({
       where: { id },
-      attributes: ['id', [`title_${language}`, 'title'],[`description_${language}`, 'description'],'time','title_en','description_en'],
+      attributes: [
+        "id",
+        [`title_${language}`, "title"],
+        [`description_${language}`, "description"],
+        "time",
+        "title_en",
+        "description_en",
+      ],
       include: [
         {
           model: Question,
-          attributes: ['id', 'quizzId', [`title_${language}`, 'title'],'title_ru','title_en','title_am',],
+          attributes: [
+            "id",
+            "quizzId",
+            [`title_${language}`, "title"],
+            "title_ru",
+            "title_en",
+            "title_am",
+          ],
           include: {
             model: Option,
-            attributes: ['id', [`title_${language}`, 'title'],'title_ru','title_en','title_am'],
+            attributes: [
+              "id",
+              [`title_${language}`, "title"],
+              "title_ru",
+              "title_en",
+              "title_am",
+            ],
             required: true,
           },
         },
@@ -161,7 +181,7 @@ const getQuizzes = async (req, res) => {
     return res.status(200).json({ success: true, quizz });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -185,7 +205,7 @@ const submitQuizz = async (req, res) => {
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -198,33 +218,33 @@ const finishQuizz = async (req, res) => {
     });
     if (!lessonId) {
       let correctAnswers = await Quizz.findByPk(quizzId, {
-        attributes: ['id'],
+        attributes: ["id"],
         include: [
           {
             model: Question,
-            attributes: ['id'],
+            attributes: ["id"],
             include: [
               {
                 model: Option,
                 where: { isCorrect: true },
-                attributes: ['id'],
+                attributes: ["id"],
               },
             ],
           },
         ],
       });
 
-      correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
-        (a, b) => a.id - b.id,
-      );
+      correctAnswers = correctAnswers.Questions.map(
+        (e) => e.Options[0].id
+      ).sort((a, b) => a.id - b.id);
 
       const userAnswers = await UserAnswersQuizz.findAll({
         where: {
           testId: quizzId,
           userId,
         },
-        attributes: ['optionId'],
-        order: [['id', 'ASC']],
+        attributes: ["optionId"],
+        order: [["id", "ASC"]],
       });
       userAnswers.map((e) => {
         correctAnswers.push(e.optionId);
@@ -234,7 +254,7 @@ const finishQuizz = async (req, res) => {
         (Math.round(
           ((correctAnswers.length - new Set(correctAnswers).size) /
             Math.ceil(correctAnswers.length / 2)) *
-            100,
+            100
         ) *
           (10 / 2)) /
         100;
@@ -264,16 +284,16 @@ const finishQuizz = async (req, res) => {
     const { maxPoints } = await Lesson.findByPk(lessonId);
 
     let correctAnswers = await Quizz.findByPk(quizzId, {
-      attributes: ['id'],
+      attributes: ["id"],
       include: [
         {
           model: Question,
-          attributes: ['id'],
+          attributes: ["id"],
           include: [
             {
               model: Option,
               where: { isCorrect: true },
-              attributes: ['id'],
+              attributes: ["id"],
             },
           ],
         },
@@ -281,7 +301,7 @@ const finishQuizz = async (req, res) => {
     });
 
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
-      (a, b) => a.id - b.id,
+      (a, b) => a.id - b.id
     );
 
     const userAnswers = await UserAnswersQuizz.findAll({
@@ -289,8 +309,8 @@ const finishQuizz = async (req, res) => {
         testId: quizzId,
         userId,
       },
-      attributes: ['optionId'],
-      order: [['id', 'ASC']],
+      attributes: ["optionId"],
+      order: [["id", "ASC"]],
     });
     userAnswers.map((e) => {
       correctAnswers.push(e.optionId);
@@ -300,7 +320,7 @@ const finishQuizz = async (req, res) => {
       (Math.round(
         ((correctAnswers.length - new Set(correctAnswers).size) /
           Math.ceil(correctAnswers.length / 2)) *
-          100,
+          100
       ) *
         (maxPoints / 2)) /
       100;
@@ -315,33 +335,40 @@ const finishQuizz = async (req, res) => {
         quizzId,
         userId,
         point,
-      correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
+        correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
         isFinal,
         courseId,
       },
     });
     userCourses.totalPoints = Math.ceil(userCourses.totalPoints + point);
     await userCourses.save();
+
+    const userLesson = await UserLesson.findOne({
+      where: {UserId:userId,GroupCourseId:courseId,LessonId:lessonId},
+    });
+    console.log(userLesson);
+    userLesson.points = userLesson.points+point;
+    await userLesson.save()
     return res.json({
       point,
       correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
 const getAll = async (req, res) => {
   try {
     const quizzes = await Quizz.findAll({
-      attributes: ['id', ['title_en', 'title']],
+      attributes: ["id", ["title_en", "title"]],
     });
 
     return res.json(quizzes);
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -363,7 +390,7 @@ const deleteQuizz = async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -398,7 +425,7 @@ const updateQuizz = async (req, res) => {
         time,
         percent,
       },
-      { where: { id } },
+      { where: { id } }
     );
 
     await Question.destroy({
@@ -436,33 +463,37 @@ const updateQuizz = async (req, res) => {
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
-const getUserAnswers = async(req,res)=>{
+const getUserAnswers = async (req, res) => {
   try {
-      const {quizzId,courseId,isFinal} = req.body;
+    const { quizzId, courseId, isFinal } = req.body;
 
-      const {user_id:userId} = req.user;
+    const { user_id: userId } = req.user;
 
-      const userPoints = await UserPoints.findOne({
-        where: {
-          userId,
-          quizzId,
-          courseId,
-          isFinal,
-        },
-      });
+    const userPoints = await UserPoints.findOne({
+      where: {
+        userId,
+        quizzId,
+        courseId,
+        isFinal,
+      },
+    });
 
-      if(!userPoints) return res.status(404).json({success:false})
+    if (!userPoints) return res.status(404).json({ success: false });
 
-      return res.json({success:true,point:userPoints.point,correctAnswers:userPoints.correctAnswers})
-  }  catch (error) {
+    return res.json({
+      success: true,
+      point: userPoints.point,
+      correctAnswers: userPoints.correctAnswers,
+    });
+  } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
-}
+};
 module.exports = {
   createQuizz,
   getQuizzes,

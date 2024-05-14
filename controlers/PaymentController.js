@@ -89,9 +89,17 @@ const buy = async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      await GroupsPerUsers.create({
-        groupId: payment.groupId,
-        userId: payment.userId,
+      const {role} = await Users.findByPk(userId)
+      await GroupsPerUsers.findOrCreate({
+        where:{  
+          groupId: payment.groupId,
+          userId: payment.userId,
+        },
+        defaults:{
+          groupId: payment.groupId,
+          userId: payment.userId,
+          userRole: role,
+        }
       });
 
       await UserCourses.create({

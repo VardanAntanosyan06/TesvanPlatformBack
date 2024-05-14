@@ -71,7 +71,8 @@ const CreateGroup = async (req, res) => {
 
     await Promise.all(
       users.map(async (userId) => {
-        console.log(userId);
+        // console.log(userId);
+        const user = await Users.findByPk(userId)
         await UserCourses.create({
           GroupCourseId: task.assignCourseId,
           UserId: userId,
@@ -88,10 +89,17 @@ const CreateGroup = async (req, res) => {
             });
           })
         );
-        await GroupsPerUsers.create({
-          groupId: task.id,
+        await GroupsPerUsers.findOrCreate({
+          where:{
+            groupId: task.id,
           userId,
-          userRole: users.userRole,
+          userRole: user.role,
+          },
+          defaults:{
+            groupId: task.id,
+          userId,
+          userRole: user.role,
+          }
         });
       })
     );
@@ -342,6 +350,7 @@ const update = async (req, res) => {
     await Promise.all(
       users.map(async (userId) => {
         console.log(userId);
+        const user = await Users.findByPk(userId)
         await UserCourses.create({
           GroupCourseId: assignCourseId,
           UserId: userId,
@@ -358,10 +367,18 @@ const update = async (req, res) => {
             });
           })
         );
-        await GroupsPerUsers.create({
-          groupId,
-          userId,
-          userRole: users.userRole,
+        await GroupsPerUsers.findOrCreate({
+          where:{
+            groupId,
+            userId,
+            userRole: user.role,
+          },
+          defaults:{
+            groupId,
+            userId,
+            userRole: user.role,
+          }
+      
         });
       })
     );
@@ -383,10 +400,18 @@ const addMember = async (req, res) => {
         const user = await Users.findOne({ where: { id: userId } });
         if (user) {
           const userRole = user.role;
-          await GroupsPerUsers.create({
+          await GroupsPerUsers.findOrCreate({
+            where:{
+
+              groupId: groupId,
+            userId: userId,
+            userRole: userRole,
+          },
+          defaults:{
             groupId: groupId,
             userId: userId,
             userRole: userRole,
+          }
           });
         }
 
