@@ -154,6 +154,11 @@ module.exports = (sequelize, DataTypes) => {
     onDelete: 'CASCADE',
   });
 
+  const UserInterview = sequelize.define('UserInterview');
+  Users.hasMany(UserInterview,{
+    foreignKey:"userId"
+  });
+
   const UserHomework = sequelize.define('UserHomework');
   Users.hasMany(UserHomework);
 

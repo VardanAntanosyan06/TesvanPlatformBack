@@ -7,7 +7,7 @@ const create = async (req, res) => {
     let { title, start, end, description, format, link, type, userId, groupId } = req.body;
 
     userId.push(user_id);
-
+    const {assignCourseId} = Groups.findByBk(groupId)
     let calendar = await Calendar.create({
       title,
       start,
@@ -25,6 +25,7 @@ const create = async (req, res) => {
         type,
         points: 0,
         calendarId: calendar.id,
+        courseId: assignCourseId,
       });
     }
 
@@ -139,12 +140,14 @@ const findByMonth = async (req, res) => {
     // const endOfMonth = new Date(
     //   Date.UTC(day.getUTCFullYear(), day.getUTCMonth() + 1, 0, 23, 59, 59, 999)
     // );
+    console.log(userId);
     const tasks = await Calendar.findAll({
       where: {
         start: { [Op.between]: [startOfMonth, endOfMonth] },
         userId: { [Op.contains]: [userId] },
       },
     });
+      console.log(tasks);
     if (tasks.length < 0) {
       return res.status(404).json({ success: false, message: "You don't have any tasks" });
     }

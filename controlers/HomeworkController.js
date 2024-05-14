@@ -10,6 +10,7 @@ const {
   HomeWorkFiles,
   HomeworkPerLesson,
   Groups,
+  UserInterview,
 } = require('../models');
 const { userSockets } = require('../userSockets');
 const { Op } = require('sequelize');
@@ -509,12 +510,26 @@ const getUserHomeworkPoints = async (req, res) => {
               attributes: ['points'],
               order: [['HomeworkId', 'ASC']],
             },
+            {
+              model: UserInterview,
+              attributes: ['points'],
+              order: [['userId', 'ASC']],
+            },
           ],
           attributes: ['firstName', 'lastName'],
           through: { attributes: [] },
         },
       ],
     });
+    // let interview = await UserInterview.findOne({
+    //   where: {
+    //     courseId,
+    //     userId: {
+    //       [Op.contains]: [userId]
+    //     }
+    //   },
+    // });
+
     return res.json({ homework, students });
   } catch (error) {
     console.log(error);

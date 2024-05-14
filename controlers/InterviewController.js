@@ -7,10 +7,9 @@ const createPoints = async (req, res) => {
     const finalInterview = await UserInterview.findOne({
       where: {
         id: interviewId,
-        userId: { [Op.contains]: [userId] },
+        userId,
       },
     });
-    console.log(userId);
 
     if (finalInterview) {
       await UserInterview.update(
@@ -18,7 +17,7 @@ const createPoints = async (req, res) => {
         {
           where: {
             id: interviewId,
-            userId: { [Op.contains]: [userId] },
+            userId,
           },
         },
       );
