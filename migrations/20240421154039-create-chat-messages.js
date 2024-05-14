@@ -7,46 +7,46 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       chatId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       senderId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Users",
-          key: "id"
-        }
+          model: 'Users',
+          key: 'id',
+        },
       },
       text: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       image: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       isUpdated: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
       },
       isReply: {
         type: Sequelize.INTEGER,
         references: {
           model: 'ChatMessages',
-          key: "id"
-        }
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('ChatMessages');
-  }
+  },
 };
