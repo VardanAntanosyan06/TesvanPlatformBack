@@ -43,6 +43,7 @@ const replyChatMessage = async (req, res) => {
         const { user_id: userId } = req.user;
         const { chatId, messageId } = req.params;
         const { text } = req.body;
+        const io = req.io;
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
@@ -133,6 +134,7 @@ const updateChatMessage = async (req, res) => {
         const { user_id: userId } = req.user;
         const { chatId, messageId } = req.params;
         const { text } = req.body;
+        const io = req.io;
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
@@ -178,6 +180,7 @@ const deleteChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { chatId, messageId } = req.params;
+        const io = req.io;
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
