@@ -512,11 +512,11 @@ const getUserHomeworkPoints = async (req, res) => {
             },
             {
               model: UserInterview,
-              attributes: ['points'],
+              attributes: ['points', 'calendarId','userId'],
               order: [['userId', 'ASC']],
             },
           ],
-          attributes: ['firstName', 'lastName'],
+          attributes: ['id', 'firstName', 'lastName'],
           through: { attributes: [] },
         },
       ],
