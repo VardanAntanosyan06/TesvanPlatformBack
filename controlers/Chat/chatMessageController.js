@@ -74,9 +74,9 @@ const replyChatMessage = async (req, res) => {
             ],
         });
         const firstIdSocket = await userSockets.get(chat.firstId)
-        if (firstIdSocket) { io.to(firstIdSocket.id).emit('createChatMessage', message) };
+        if (firstIdSocket) { io.to(firstIdSocket.id).emit('replyChatMessage', message) };
         const secondSocket = await userSockets.get(chat.secondId)
-        if (secondSocket) { io.to(secondSocket.id).emit('createChatMessage', message) };
+        if (secondSocket) { io.to(secondSocket.id).emit('replyChatMessage', message) };
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -166,10 +166,10 @@ const updateChatMessage = async (req, res) => {
         message.isUpdated = true;
         await message.save()
         const firstIdSocket = await userSockets.get(chat.firstId)
-        if (firstIdSocket) { io.to(firstIdSocket.id).emit('createChatMessage', message) };
+        if (firstIdSocket) { io.to(firstIdSocket.id).emit('updateChatMessage', message) };
         const secondSocket = await userSockets.get(chat.secondId)
-        if (secondSocket) { io.to(secondSocket.id).emit('createChatMessage', message) };
-        return res.status(200).json({ success: true });
+        if (secondSocket) { io.to(secondSocket.id).emit('updateChatMessage', message) };
+        return res.status(200).json({ success: true , message});
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
@@ -193,9 +193,9 @@ const deleteChatMessage = async (req, res) => {
         });
         if (deleteMessage === 0) return res.status(404).json({ message: "Message not found" })
         const firstIdSocket = await userSockets.get(chat.firstId)
-        if (firstIdSocket) { io.to(firstIdSocket.id).emit('createChatMessage', messageId ) };
+        if (firstIdSocket) { io.to(firstIdSocket.id).emit('deleteChatMessage', messageId ) };
         const secondSocket = await userSockets.get(chat.secondId)
-        if (secondSocket) { io.to(secondSocket.id).emit('createChatMessage', messageId ) };
+        if (secondSocket) { io.to(secondSocket.id).emit('deleteChatMessage', messageId ) };
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
