@@ -34,7 +34,7 @@ module.exports = {
         },
       },
       points: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         defaultValue: 0,
       },
       attempt: {

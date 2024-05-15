@@ -447,9 +447,8 @@ const homeworkPoints = async (req, res) => {
         },
       },
     );
-    const {lessonId} = HomeworkPerLesson.findOne({where:{homeworkId}})
-
-    const {maxPoints}= Lesson.findByPk(lessonId)
+    const {lessonId} = await HomeworkPerLesson.findOne({where:{homeworkId}})
+    const {maxPoints}= await Lesson.findByPk(lessonId)
 
     // 10*50/100
     const userLesson = await UserLesson.findOne({
@@ -458,7 +457,7 @@ const homeworkPoints = async (req, res) => {
         UserId:userId
       }
     })
-    userLesson.point = userLesson.point +(maxPoints/2*points)/100 
+    userLesson.points = userLesson.points + Math.ceil((maxPoints/2*points)/100 * 10) / 10 
     await userLesson.save()
     if (status === 0) {
       return res.status(403).json({

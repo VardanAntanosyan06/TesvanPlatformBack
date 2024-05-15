@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-      points: DataTypes.INTEGER,
+      points: DataTypes.FLOAT,
       attempt: DataTypes.INTEGER,
     },
     {

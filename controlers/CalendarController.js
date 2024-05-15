@@ -4,10 +4,9 @@ const { Op, where } = require('sequelize');
 const create = async (req, res) => {
   try {
     const { user_id } = req.user;
-    let { title, start, end, description, format, link, type, userId, groupId } = req.body;
+    let { title, start, end, description, format, link, type, userId, assignCourseId } = req.body;
 
     userId.push(user_id);
-    const {assignCourseId} = Groups.findByBk(groupId)
     let calendar = await Calendar.create({
       title,
       start,
@@ -17,7 +16,7 @@ const create = async (req, res) => {
       link,
       type,
       userId,
-      groupId,
+      assignCourseId,
     });
     if (type == 'finalInterview') {
       await UserInterview.create({
