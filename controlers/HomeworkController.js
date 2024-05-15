@@ -155,7 +155,7 @@ const getHomework = async (req, res) => {
     const { language } = req.query;
 
     let homework = await UserHomework.findOne({
-      where: { HomeworkId: id },
+      where: { HomeworkId: id,UserId:userId },
       include: [
         {
           model: Homework,
@@ -494,7 +494,7 @@ const getUserHomeworkPoints = async (req, res) => {
           ],
         },
       ],
-      order: [['id', 'ASC']],
+      order: [['id', 'DESC']],
       attributes: [
         'id',
         [`title_${language}`, 'title'],
@@ -521,7 +521,7 @@ const getUserHomeworkPoints = async (req, res) => {
           include: [
             {
               model: UserHomework,
-              attributes: ['points'],
+              attributes: ['points','HomeworkId'],
               order: [['HomeworkId', 'ASC']],
             },
             {
@@ -534,6 +534,9 @@ const getUserHomeworkPoints = async (req, res) => {
           through: { attributes: [] },
         },
       ],
+    });
+    students.forEach((student) => {
+      student.UserHomeworks.sort((a, b) => b.HomeworkId - a.HomeworkId);
     });
     // let interview = await UserInterview.findOne({
     //   where: {

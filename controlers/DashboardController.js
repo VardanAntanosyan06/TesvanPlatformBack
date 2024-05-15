@@ -171,7 +171,7 @@ const getUserStatictis = async (req, res) => {
     });
     // console.log(course);
     charts = charts.map((e) => e.time);
-    const allQuizz = await CoursesPerLessons.count({
+    let allQuizz = await CoursesPerLessons.findAll({
       where: { courseId: course.assignCourseId },
       include: [
         {
@@ -187,8 +187,8 @@ const getUserStatictis = async (req, res) => {
         },
       ],
     });
-
-    const allHomework = await CoursesPerLessons.count({
+    allQuizz = allQuizz.length
+    let allHomework = await CoursesPerLessons.findAll({
       where: { courseId: course.assignCourseId },
       include: [
         {
@@ -203,6 +203,8 @@ const getUserStatictis = async (req, res) => {
         },
       ],
     });
+    allHomework = allHomework.length;
+    // return res.json({allQuizz,allHomework});
     const userSubmitedQuizz = await UserPoints.count({
       where: { courseId: course.assignCourseId, userId },
     });
@@ -213,7 +215,6 @@ const getUserStatictis = async (req, res) => {
         GroupCourseId: course.assignCourseId,
       },
     });
-    console.log(all);
     const response = {
       lesson: 0,
       homework: {

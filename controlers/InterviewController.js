@@ -13,8 +13,8 @@ const createPoints = async (req, res) => {
     });
 
     if (finalInterview) {
-      UserInterview.points = points
-      await UserInterview.save()
+      finalInterview.points = points
+      await finalInterview.save()
     } else {
       return res.status(400).json({ success: false });
     }
