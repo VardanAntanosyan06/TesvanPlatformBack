@@ -1,10 +1,26 @@
-const { Calendar, Groups, Users, GroupsPerUsers, UserInterview } = require('../models');
-const { Op, where } = require('sequelize');
+const {
+  Calendar,
+  Groups,
+  Users,
+  GroupsPerUsers,
+  UserInterview,
+} = require("../models");
+const { Op, where } = require("sequelize");
 
 const create = async (req, res) => {
   try {
     const { user_id } = req.user;
-    let { title, start, end, description, format, link, type, userId, groupId } = req.body;
+    let {
+      title,
+      start,
+      end,
+      description,
+      format,
+      link,
+      type,
+      userId,
+      groupId,
+    } = req.body;
 
     userId.push(user_id);
     let calendar = await Calendar.create({
@@ -18,23 +34,32 @@ const create = async (req, res) => {
       userId,
       groupId,
     });
-    if (type == 'finalInterview') {
-      userId.map((id)=>{
-        UserInterview.create({
-          userId:id,
+// Assuming type is defined and has a value before this block of code
+
+if (type === "finalInterview") {
+  await Promise.all(
+    userId.map(async (id) => {
+      try {
+        await UserInterview.create({
+          userId: id,
           type,
           points: 0,
           calendarId: calendar.id,
           courseId: groupId,
         });
-      })
-        
+      } catch (error) {
+        console.log(`Error creating user interview for user ID ${id}:`, error);
+        // Handle the error as needed
       }
+    })
+  );
+}
+
 
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -54,7 +79,7 @@ const findOne = async (req, res) => {
     return res.status(200).json({ success: true, task });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -92,12 +117,14 @@ const findByDay = async (req, res) => {
       },
     });
     if (task.length < 0) {
-      return res.status(404).json({ success: false, message: "You don't have any tasks" });
+      return res
+        .status(404)
+        .json({ success: false, message: "You don't have any tasks" });
     }
     return res.status(200).json({ success: true, task });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -121,12 +148,14 @@ const findByYear = async (req, res) => {
       },
     });
     if (tasks.length < 0) {
-      return res.status(404).json({ success: false, message: "You don't have any tasks" });
+      return res
+        .status(404)
+        .json({ success: false, message: "You don't have any tasks" });
     }
     return res.status(200).json({ success: true, tasks });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -149,14 +178,16 @@ const findByMonth = async (req, res) => {
         userId: { [Op.contains]: [userId] },
       },
     });
-      console.log(tasks);
+    console.log(tasks);
     if (tasks.length < 0) {
-      return res.status(404).json({ success: false, message: "You don't have any tasks" });
+      return res
+        .status(404)
+        .json({ success: false, message: "You don't have any tasks" });
     }
     return res.status(200).json({ success: true, tasks });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -180,12 +211,14 @@ const findByWeek = async (req, res) => {
       },
     });
     if (tasks.length < 0) {
-      return res.status(404).json({ success: false, message: "You don't have any tasks" });
+      return res
+        .status(404)
+        .json({ success: false, message: "You don't have any tasks" });
     }
     return res.status(200).json({ success: true, tasks });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -196,12 +229,14 @@ const findAll = async (req, res) => {
       where: { userId: { [Op.contains]: [userId] } },
     });
     if (task.length < 0) {
-      return res.status(404).json({ success: false, message: "You don't have any tasks" });
+      return res
+        .status(404)
+        .json({ success: false, message: "You don't have any tasks" });
     }
     return res.status(200).json({ task });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -210,7 +245,15 @@ const update = async (req, res) => {
     const { id } = req.body;
 
     const updateFields = {};
-    const fields = ['title', 'start', 'end', 'description', 'format', 'link', 'type'];
+    const fields = [
+      "title",
+      "start",
+      "end",
+      "description",
+      "format",
+      "link",
+      "type",
+    ];
 
     fields.forEach((field) => {
       if (req.body[field] !== null && req.body[field] !== undefined) {
@@ -223,13 +266,17 @@ const update = async (req, res) => {
     });
 
     if (updatedRows > 0) {
-      return res.status(200).json({ success: true, message: 'Record updated successfully.' });
+      return res
+        .status(200)
+        .json({ success: true, message: "Record updated successfully." });
     } else {
-      return res.status(404).json({ success: false, message: 'Record not found.' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Record not found." });
     }
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -238,19 +285,21 @@ const remove = async (req, res) => {
     const { id } = req.params;
     let calendar = await Calendar.findOne({ where: { id } });
 
-    if (calendar.type == 'finalInterview') {
+    if (calendar.type == "finalInterview") {
       await UserInterview.destroy({ where: { calendarId: id } });
     }
     const status = await Calendar.destroy({
       where: { id },
     });
     if (status == 0) {
-      return res.status(404).json({ success: false, message: 'task not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "task not found" });
     }
     return res.json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -261,16 +310,16 @@ const getUsers = async (req, res) => {
     let Group = await Groups.findAll({
       include: [
         {
-          attributes: ['id'],
+          attributes: ["id"],
           model: GroupsPerUsers,
           include: {
             model: Users,
-            attributes: ['id', 'firstName', 'lastName'],
+            attributes: ["id", "firstName", "lastName"],
           },
           required: true,
         },
       ],
-      attributes: ['id', [`name_${language}`, 'name']],
+      attributes: ["id", [`name_${language}`, "name"]],
     });
     Group = await Promise.all(
       Group.map(async (grp) => {
@@ -286,19 +335,19 @@ const getUsers = async (req, res) => {
             user.role = user.User?.role;
             delete user.User;
             return user;
-          }),
+          })
         );
 
         return {
           ...grp.dataValues,
           GroupsPerUsers: a,
         };
-      }),
+      })
     );
     return res.json(Group);
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 

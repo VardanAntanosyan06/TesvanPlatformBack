@@ -12,6 +12,7 @@ const {
   IndividualCourses,
   UserPoints,
   Calendar,
+  UserInterview
 } = require('../models');
 
 const { CoursesContents } = require('../models');
@@ -568,6 +569,12 @@ const getUserCourse = async (req, res) => {
           [Op.contains]: [id],
         },
       },
+      include:[{
+        model:UserInterview,
+        attributes:['points','calendarId'],
+        where:{userId:id}
+      }
+      ],
       attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
     });
 
