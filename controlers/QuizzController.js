@@ -299,6 +299,7 @@ const finishQuizz = async (req, res) => {
         },
       ],
     });
+    console.log(correctAnswers);
 
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
       (a, b) => a.id - b.id
@@ -312,9 +313,11 @@ const finishQuizz = async (req, res) => {
       attributes: ["optionId"],
       order: [["id", "ASC"]],
     });
+
     userAnswers.map((e) => {
       correctAnswers.push(e.optionId);
     });
+    // console.log(correctAnswers,correctAnswers.length - new Set(correctAnswers).size);
 
     const point =
       (Math.round(
@@ -324,7 +327,6 @@ const finishQuizz = async (req, res) => {
       ) *
         (maxPoints / 2)) /
       100;
-
     await UserPoints.findOrCreate({
       where: {
         userId,
@@ -334,7 +336,7 @@ const finishQuizz = async (req, res) => {
       defaults: {
         quizzId,
         userId,
-        point,
+        point:Math.round(point),
         correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
         isFinal,
         courseId,
@@ -346,8 +348,7 @@ const finishQuizz = async (req, res) => {
     const userLesson = await UserLesson.findOne({
       where: {UserId:userId,GroupCourseId:courseId,LessonId:lessonId},
     });
-    console.log(userLesson);
-    userLesson.points = userLesson.points+point;
+    userLesson.points = Math.round(userLesson.points+point);
     await userLesson.save()
     return res.json({
       point,
@@ -504,3 +505,5 @@ module.exports = {
   deleteQuizz,
   updateQuizz,
 };
+
+
