@@ -4,7 +4,7 @@ const { Op, where } = require('sequelize');
 const create = async (req, res) => {
   try {
     const { user_id } = req.user;
-    let { title, start, end, description, format, link, type, userId, assignCourseId } = req.body;
+    let { title, start, end, description, format, link, type, userId, groupId } = req.body;
 
     userId.push(user_id);
     let calendar = await Calendar.create({
@@ -16,7 +16,7 @@ const create = async (req, res) => {
       link,
       type,
       userId,
-      assignCourseId,
+      groupId,
     });
     if (type == 'finalInterview') {
       userId.map((id)=>{
@@ -25,7 +25,7 @@ const create = async (req, res) => {
           type,
           points: 0,
           calendarId: calendar.id,
-          courseId: assignCourseId,
+          courseId: groupId,
         });
       })
         
