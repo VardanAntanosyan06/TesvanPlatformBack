@@ -476,6 +476,7 @@ const getUserHomeworkPoints = async (req, res) => {
     const { user_id } = req.user;
     const { courseId } = req.params;
     const { language } = req.query;
+    
     let homework = await Homework.findAll({
       include: [
         {

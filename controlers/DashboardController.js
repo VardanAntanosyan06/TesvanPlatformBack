@@ -136,17 +136,19 @@ const getUserStatictis = async (req, res) => {
         groupId: id,
       },
     });
-    const students = await GroupsPerUsers.count({ where: { groupId: id,userRole:"STUDENT" } });
+    const students = await GroupsPerUsers.count({
+      where: { groupId: id, userRole: "STUDENT" },
+    });
 
     let course = await Groups.findByPk(id, {
-      include:[
+      include: [
         {
-          model:GroupCourses,
+          model: GroupCourses,
           include: {
             model: CoursesContents,
-          }
           },
-      ]
+        },
+      ],
     });
     const lessons = await CoursesPerLessons.count({
       where: {
@@ -187,7 +189,7 @@ const getUserStatictis = async (req, res) => {
         },
       ],
     });
-    allQuizz = allQuizz.length
+    allQuizz = allQuizz.length;
     let allHomework = await CoursesPerLessons.findAll({
       where: { courseId: course.assignCourseId },
       include: [
@@ -227,20 +229,21 @@ const getUserStatictis = async (req, res) => {
       },
       quizzes: {
         taken: userSubmitedQuizz,
-        all: allQuizz+1, //final quizz
-        percent:
+        all: allQuizz + 1, //final quizz
+        percent: Math.round(
           userSubmitedQuizz == 0
             ? 0
-            : (userSubmitedQuizz / (allQuizz+1)) * 100,
+            : (userSubmitedQuizz / (allQuizz + 1)) * 100
+        ),
       },
-      totalPoints:
+      totalPoints:Math.round(
         ((userSubmitedQuizz == 0
           ? 0
-          : (userSubmitedQuizz / (allQuizz+1)) * 100) +
+          : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
           (allHomework < 0 || userSubmitedHomework < 0
             ? 0
             : (userSubmitedHomework / allHomework) * 100)) /
-        2,
+        2),
       mySkils,
       charts,
       course: {

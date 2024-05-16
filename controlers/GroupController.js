@@ -72,7 +72,7 @@ const CreateGroup = async (req, res) => {
     await Promise.all(
       users.map(async (userId) => {
         // console.log(userId);
-        const user = await Users.findByPk(userId)
+        const user = await Users.findByPk(userId);
         await UserCourses.create({
           GroupCourseId: task.assignCourseId,
           UserId: userId,
@@ -90,21 +90,21 @@ const CreateGroup = async (req, res) => {
           })
         );
         await GroupsPerUsers.findOrCreate({
-          where:{
+          where: {
             groupId: task.id,
-          userId,
-          userRole: user.role,
+            userId,
+            userRole: user.role,
           },
-          defaults:{
+          defaults: {
             groupId: task.id,
-          userId,
-          userRole: user.role,
-          }
+            userId,
+            userRole: user.role,
+          },
         });
       })
     );
-    const {img} = await GroupCourses.findOne({
-      where: {id: task.assignCourseId}
+    const { img } = await GroupCourses.findOne({
+      where: { id: task.assignCourseId },
     });
     await GroupChats.create({
       adminId: userId,
@@ -350,7 +350,7 @@ const update = async (req, res) => {
     await Promise.all(
       users.map(async (userId) => {
         console.log(userId);
-        const user = await Users.findByPk(userId)
+        const user = await Users.findByPk(userId);
         await UserCourses.create({
           GroupCourseId: assignCourseId,
           UserId: userId,
@@ -368,17 +368,16 @@ const update = async (req, res) => {
           })
         );
         await GroupsPerUsers.findOrCreate({
-          where:{
+          where: {
             groupId,
             userId,
             userRole: user.role,
           },
-          defaults:{
+          defaults: {
             groupId,
             userId,
             userRole: user.role,
-          }
-      
+          },
         });
       })
     );
@@ -401,17 +400,16 @@ const addMember = async (req, res) => {
         if (user) {
           const userRole = user.role;
           await GroupsPerUsers.findOrCreate({
-            where:{
-
+            where: {
               groupId: groupId,
-            userId: userId,
-            userRole: userRole,
-          },
-          defaults:{
-            groupId: groupId,
-            userId: userId,
-            userRole: userRole,
-          }
+              userId: userId,
+              userRole: userRole,
+            },
+            defaults: {
+              groupId: groupId,
+              userId: userId,
+              userRole: userRole,
+            },
           });
         }
 
