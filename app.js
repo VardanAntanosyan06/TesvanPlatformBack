@@ -95,7 +95,8 @@ const io = new Server(server, {
 });
 app.set('io', io);
 
-const {userSockets} = require("./userSockets") // Assuming you have a Map for user sockets
+const { userSockets } = require("./userSockets") // Assuming you have a Map for user sockets
+const socketController = require("./controlers/Chat/socketController")
 
 io.on('connection', (socket) => {
   try {
@@ -119,6 +120,9 @@ io.on('connection', (socket) => {
     console.error('Socket connection error:', e);
     socket.disconnect();
   }
+
+  socketController.typing(io, socket)
+  socketController.stopTyping(io, socket)
 
   socket.on('disconnect', () => {
     const userId = getUserIdForSocket(socket);

@@ -25,6 +25,9 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
+      file: {
+        type: Sequelize.STRING
+      },
       isUpdated: {
         type: Sequelize.BOOLEAN
       },

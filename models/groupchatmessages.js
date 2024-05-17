@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       GroupChatMessages.belongsTo(models.Users, {foreignKey: "senderId"})
       GroupChatMessages.hasMany(models.GroupChatMessages, { foreignKey: "isReply", as: "ParentMessage" })
       GroupChatMessages.belongsTo(models.GroupChatMessages, { foreignKey: "isReply", as: "Reply" })
+      GroupChatMessages.belongsTo(models.GroupChatReads, {foreignKey: "messageId"})
     }
   }
   GroupChatMessages.init({
@@ -21,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     senderId: DataTypes.INTEGER,
     text: DataTypes.TEXT,
     image: DataTypes.STRING,
+    file: DataTypes.STRING,
     isUpdated: DataTypes.BOOLEAN,
     isReply: DataTypes.INTEGER
   }, {

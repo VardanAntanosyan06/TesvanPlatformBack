@@ -1,12 +1,30 @@
 const { GroupChatMessages, GroupChats, Users } = require('../../models');
 const { Op } = require('sequelize');
+const uuid = require("uuid");
+const path = require("path");
 
 const createGroupChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { chatId } = req.params;
         const { text } = req.body;
+        const image = req.files?.image;
+        const file = req.files?.file;
         const io = req.io;
+        const getFilePath = "api/v2/chatMessage/getMessageFile/"
+
+        let imageName
+        let fileName
+        if (image) {
+            const type = image.mimetype.split("/")[1];
+            imageName = uuid.v4() + "." + type;
+            image.mv(path.resolve(__dirname, "../../", "static", imageName));
+        } else if (file) {
+            const type = file.mimetype.split("/")[1];
+            fileName = uuid.v4() + "." + type;
+            file.mv(path.resolve(__dirname, "../../", "messageFiles", fileName));
+        }
+
         const groupChats = await GroupChats.findOne({
             where: {
                 id: chatId,
@@ -16,7 +34,13 @@ const createGroupChatMessage = async (req, res) => {
             }
         });
         if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
-        const { id } = await GroupChatMessages.create({ groupChatId: chatId, senderId: userId, text })
+        const { id } = await GroupChatMessages.create({ 
+            groupChatId: chatId, 
+            senderId: userId, 
+            text,
+            image: imageName? imageName : null,
+            file: fileName? getFilePath + fileName : null
+        })
         const messages = await GroupChatMessages.findOne({
             where: {
                 id

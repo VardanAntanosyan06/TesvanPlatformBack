@@ -10,6 +10,12 @@ router.post(
   controller.createChatMessage
 );
 
+// router.post(
+//   "/createChatFile/:chatId",
+//   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+//   controller.createChatFile
+// );
+
 router.post(
   "/replyChatMessage/:chatId/:messageId",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
@@ -20,6 +26,12 @@ router.get(
   "/getChatMessages/:chatId",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getChatMessages
+);
+
+router.get(
+  "/getMessageFile/:fileName",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.getMessageFile
 );
 
 router.patch(
