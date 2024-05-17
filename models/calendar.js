@@ -28,5 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Calendar',
     },
   );
+
+  const UserInterview = sequelize.define("UserInterview")
+  Calendar.hasOne(UserInterview,{
+    foreignKey:"calendarId"
+  })
+
   return Calendar;
 };

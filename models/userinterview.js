@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   UserInterview.init(
     {
-      userId: DataTypes.ARRAY(DataTypes.STRING),
+      userId: DataTypes.INTEGER,
       points: DataTypes.INTEGER,
       courseId: DataTypes.INTEGER,
       calendarId: DataTypes.INTEGER,

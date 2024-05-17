@@ -1,27 +1,20 @@
 const { UserInterview } = require('../models');
 const { Op } = require('sequelize');
+const calendar = require('../models/calendar');
 const createPoints = async (req, res) => {
   try {
     const { userId, interviewId, points } = req.body;
 
     const finalInterview = await UserInterview.findOne({
       where: {
-        id: interviewId,
-        userId: { [Op.contains]: [userId] },
+        calendarId: interviewId,
+        userId,
       },
     });
-    console.log(userId);
 
     if (finalInterview) {
-      await UserInterview.update(
-        { points },
-        {
-          where: {
-            id: interviewId,
-            userId: { [Op.contains]: [userId] },
-          },
-        },
-      );
+      finalInterview.points = points
+      await finalInterview.save()
     } else {
       return res.status(400).json({ success: false });
     }

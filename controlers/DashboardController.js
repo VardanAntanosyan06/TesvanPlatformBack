@@ -136,17 +136,19 @@ const getUserStatictis = async (req, res) => {
         groupId: id,
       },
     });
-    const students = await GroupsPerUsers.count({ where: { groupId: id,userRole:"STUDENT" } });
+    const students = await GroupsPerUsers.count({
+      where: { groupId: id, userRole: "STUDENT" },
+    });
 
     let course = await Groups.findByPk(id, {
-      include:[
+      include: [
         {
-          model:GroupCourses,
+          model: GroupCourses,
           include: {
             model: CoursesContents,
-          }
           },
-      ]
+        },
+      ],
     });
     const lessons = await CoursesPerLessons.count({
       where: {
@@ -171,7 +173,7 @@ const getUserStatictis = async (req, res) => {
     });
     // console.log(course);
     charts = charts.map((e) => e.time);
-    const allQuizz = await CoursesPerLessons.count({
+    let allQuizz = await CoursesPerLessons.findAll({
       where: { courseId: course.assignCourseId },
       include: [
         {
@@ -187,8 +189,8 @@ const getUserStatictis = async (req, res) => {
         },
       ],
     });
-
-    const allHomework = await CoursesPerLessons.count({
+    allQuizz = allQuizz.length;
+    let allHomework = await CoursesPerLessons.findAll({
       where: { courseId: course.assignCourseId },
       include: [
         {
@@ -203,6 +205,8 @@ const getUserStatictis = async (req, res) => {
         },
       ],
     });
+    allHomework = allHomework.length;
+    // return res.json({allQuizz,allHomework});
     const userSubmitedQuizz = await UserPoints.count({
       where: { courseId: course.assignCourseId, userId },
     });
@@ -213,7 +217,6 @@ const getUserStatictis = async (req, res) => {
         GroupCourseId: course.assignCourseId,
       },
     });
-    console.log(all);
     const response = {
       lesson: 0,
       homework: {
@@ -226,20 +229,21 @@ const getUserStatictis = async (req, res) => {
       },
       quizzes: {
         taken: userSubmitedQuizz,
-        all: allQuizz+1, //final quizz
-        percent:
+        all: allQuizz + 1, //final quizz
+        percent: Math.round(
           userSubmitedQuizz == 0
             ? 0
-            : (userSubmitedQuizz / (allQuizz+1)) * 100,
+            : (userSubmitedQuizz / (allQuizz + 1)) * 100
+        ),
       },
-      totalPoints:
+      totalPoints:Math.round(
         ((userSubmitedQuizz == 0
           ? 0
-          : (userSubmitedQuizz / (allQuizz+1)) * 100) +
+          : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
           (allHomework < 0 || userSubmitedHomework < 0
             ? 0
             : (userSubmitedHomework / allHomework) * 100)) /
-        2,
+        2),
       mySkils,
       charts,
       course: {

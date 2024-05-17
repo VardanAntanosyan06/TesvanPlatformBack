@@ -1,13 +1,13 @@
-"use strict";
-const { Model } = require("sequelize");
-const groups = require("./groups");
+'use strict';
+const { Model } = require('sequelize');
+const groups = require('./groups');
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
-      Users.hasMany(models.Chats, {foreignKey: "firstId", as: "firstIds"})
-      Users.hasMany(models.Chats, {foreignKey: "secondId", as: "secondIds"})
-      Users.hasMany(models.ChatMessages, {foreignKey: "senderId"})
-      Users.hasMany(models.GroupChatMessages, {foreignKey: "senderId"})
+      Users.hasMany(models.Chats, { foreignKey: "firstId", as: "firstIds" })
+      Users.hasMany(models.Chats, { foreignKey: "secondId", as: "secondIds" })
+      Users.hasMany(models.ChatMessages, { foreignKey: "senderId" })
+      Users.hasMany(models.GroupChatMessages, { foreignKey: "senderId" })
       Users.hasMany(models.GroupChatReads, { foreignKey: 'userId' })
     }
   }
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isEmail: {
             args: true,
-            msg: "Incorrect email format.",
+            msg: 'Incorrect email format.',
           },
         },
       },
@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isIn: {
-            args: [["Male", "Female", "Other"]],
+            args: [['Male', 'Female', 'Other']],
             msg: "gender must be 'Male', 'Female', 'Other'",
           },
         },
@@ -65,7 +65,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         validate: {
           isIn: {
-            args: [["A1", "A2", "B1", "B2", "C1", "C2"]],
+            args: [['A1', 'A2', 'B1', 'B2', 'C1', 'C2']],
             msg: "English Level must be 'A1','A2','B1','B2','C1'or 'C2'",
           },
         },
@@ -91,7 +91,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         validate: {
           isIn: {
-            args: [["TEACHER", "STUDENT"]],
+            args: [['TEACHER', 'STUDENT']],
             msg: "Role must be 'TEACHER' or 'STUDENT'",
           },
         },
@@ -116,35 +116,35 @@ module.exports = (sequelize, DataTypes) => {
 
     {
       sequelize,
-      modelName: "Users",
-    }
+      modelName: 'Users',
+    },
   );
 
-  const userLikes = sequelize.define("UserLikes");
+  const userLikes = sequelize.define('UserLikes');
   Users.hasMany(userLikes, {
-    foreignKey: "id",
-    onDelete: 'CASCADE'
+    foreignKey: 'id',
+    onDelete: 'CASCADE',
   });
 
-  const GroupCourses = sequelize.define("GroupCourses");
-  Users.belongsToMany(GroupCourses, { through: "UserCourses", as: "courses", onDelete: 'CASCADE' });
+  const GroupCourses = sequelize.define('GroupCourses');
+  Users.belongsToMany(GroupCourses, { through: 'UserCourses', as: 'courses', onDelete: 'CASCADE' });
 
   //
   // const UserCourses = sequelize.define("UserCourses");
   // Users.hasMany(UserCourses);
   //
 
-  const Lessons = sequelize.define("Lessons");
-  Users.belongsToMany(Lessons, { through: "UserLesson", onDelete: 'CASCADE' });
+  const Lessons = sequelize.define('Lessons');
+  Users.belongsToMany(Lessons, { through: 'UserLesson', onDelete: 'CASCADE' });
 
-  const Homework = sequelize.define("Homework");
-  Users.belongsToMany(Homework, { through: "UserHomework", onDelete: 'CASCADE' });
+  const Homework = sequelize.define('Homework');
+  Users.belongsToMany(Homework, { through: 'UserHomework', onDelete: 'CASCADE' });
 
-  const Message = sequelize.define("Message");
+  const Message = sequelize.define('Message');
   Users.hasMany(Message, { onDelete: 'CASCADE' });
 
-  const UserCourses = sequelize.define("UserCourses");
-  const Groups = sequelize.define("Groups");
+  const UserCourses = sequelize.define('UserCourses');
+  const Groups = sequelize.define('Groups');
   Users.hasMany(UserCourses, { onDelete: 'CASCADE' });
 
   Users.belongsToMany(Groups, {
@@ -152,10 +152,18 @@ module.exports = (sequelize, DataTypes) => {
     foreignKey: 'userId',
     otherKey: 'groupId',
     as: 'groups',
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   });
 
-  const GroupsPerUsers = sequelize.define("GroupsPerUsers");
-  Users.hasMany(GroupsPerUsers, { onDelete: 'CASCADE', foreignKey: "userId" });
+  const UserInterview = sequelize.define('UserInterview');
+  Users.hasMany(UserInterview, {
+    foreignKey: "userId"
+  });
+
+  const UserHomework = sequelize.define('UserHomework');
+  Users.hasMany(UserHomework);
+
+  const GroupsPerUsers = sequelize.define('GroupsPerUsers');
+  Users.hasMany(GroupsPerUsers, { onDelete: 'CASCADE', foreignKey: 'userId' });
   return Users;
 };
