@@ -21,5 +21,10 @@ router.patch(
   checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
   controller.verifyChangeEmail,
 );
+router.put(
+  '/changePassword',
+  checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
+  controller.changePassword,
+);
 
 module.exports = router;
