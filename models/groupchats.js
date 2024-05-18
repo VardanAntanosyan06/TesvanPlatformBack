@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      GroupChats.hasOne(models.GroupChatMessages, { foreignKey: "groupChatId", as: "isReads", })
+      GroupChats.belongsToMany(models.Users, {
+        through: models.GroupChatReads,
+        foreignKey: "groupChatId",
+        otherKey: "userId"
+      });
     }
   }
   GroupChats.init({

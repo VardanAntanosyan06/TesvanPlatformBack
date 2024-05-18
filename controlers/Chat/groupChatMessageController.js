@@ -1,12 +1,30 @@
-const { GroupChatMessages, GroupChats, Users } = require('../../models');
-const { Op } = require('sequelize');
+const { GroupChatMessages, GroupChats, Users, GroupChatReads, sequelize } = require('../../models');
+const { Op, Sequelize, where } = require('sequelize');
+const uuid = require("uuid");
+const path = require("path");
 
 const createGroupChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { chatId } = req.params;
         const { text } = req.body;
+        const image = req.files?.image;
+        const file = req.files?.file;
         const io = req.io;
+        const getFilePath = "api/v2/chatMessage/getMessageFile/"
+
+        let imageName
+        let fileName
+        if (image) {
+            const type = image.mimetype.split("/")[1];
+            imageName = uuid.v4() + "." + type;
+            image.mv(path.resolve(__dirname, "../../", "static", imageName));
+        } else if (file) {
+            const type = file.mimetype.split("/")[1];
+            fileName = uuid.v4() + "." + type;
+            file.mv(path.resolve(__dirname, "../../", "messageFiles", fileName));
+        }
+
         const groupChats = await GroupChats.findOne({
             where: {
                 id: chatId,
@@ -16,7 +34,13 @@ const createGroupChatMessage = async (req, res) => {
             }
         });
         if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
-        const { id } = await GroupChatMessages.create({ groupChatId: chatId, senderId: userId, text })
+        const { id } = await GroupChatMessages.create({
+            groupChatId: chatId,
+            senderId: userId,
+            text,
+            image: imageName ? imageName : null,
+            file: fileName ? getFilePath + fileName : null
+        })
         const messages = await GroupChatMessages.findOne({
             where: {
                 id
@@ -88,6 +112,11 @@ const getGroupChatMessages = async (req, res) => {
         const { user_id: userId } = req.user;
         const { chatId } = req.params;
         const { limit, page } = req.query;
+
+        if (isNaN(limit) || isNaN(page) || limit <= 0 || page <= 0) {
+            return res.status(400).json({ message: 'Invalid limit or page number' });
+        }
+
         const chat = await GroupChats.findOne({
             where: {
                 id: chatId,
@@ -115,6 +144,26 @@ const getGroupChatMessages = async (req, res) => {
                             attributes: ["id", "firstName", "lastName", "image"],
                         },
                     ],
+                },
+                {
+                    model: GroupChats,
+                    as: "isReads",
+                    include: [
+                        {
+                            model: Users,
+                            through: {
+                                model: GroupChatReads,
+                                where: {
+                                    lastSeen: { [Op.gte]: GroupChatMessages.id }
+                                }
+                            },
+                            attributes: ["id", "firstName", "lastName", "image"],
+                        }
+                    ],
+                    attributes: {
+                        include: [['id', 'groupChatId']],
+                        exclude: ['id', 'name', 'image', 'groupId', 'adminId', 'members']
+                    },
                 }
             ],
             order: [['createdAt', 'DESC']],
@@ -122,6 +171,26 @@ const getGroupChatMessages = async (req, res) => {
             offset: (page - 1) * limit
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
+        // const m = await messages.forEach((element) => {
+        //     const Users2 = []
+        //     const user = Users.findOne({
+        //         through: {
+        //             model: GroupChatReads,
+        //             where: {
+        //                 lastSeen: { [Op.gte]: element.id }
+        //             }
+        //         },
+        //         attributes: ["id", "firstName", "lastName", "image"],
+        //     })
+        //     Users2.push(user);
+
+        //     element.isReads.setDataValue('Users', Users2);
+        //     // console.log(Users2);
+        // });
+        // messages[0].isReads.setDataValue('Users', 111111111111111);
+        // await messages.save()
+        // User.setDataValue('groupChats', groupChats);
+        // await messages.save();
         return res.status(200).json(messages)
     } catch (error) {
         console.log(error);
@@ -201,10 +270,36 @@ const deleteGroupChatMessage = async (req, res) => {
     }
 };
 
+const readGroupChatMessage = async () => {
+    try {
+        const { user_id: userId } = req.user;
+        const { messageId, chatId } = req.params;
+        const read = await GroupChatReads.findOne({
+            where: {
+                userId,
+                chatId
+            }
+        })
+        if (read?.lastSeen < messageId) {
+            read.lastSeen = messageId
+            await read.save()
+        }
+        await GroupChatReads.create({
+            userId,
+            chatId,
+            lastSeen: messageId
+        })
+    } catch (error) {
+        onsole.log(error);
+        return res.status(500).json(error.message)
+    }
+}
+
 module.exports = {
     createGroupChatMessage,
     replyGroupChatMessage,
     updateGroupChatMessage,
     deleteGroupChatMessage,
-    getGroupChatMessages
+    getGroupChatMessages,
+    readGroupChatMessage
 };

@@ -4,10 +4,15 @@ const groups = require('./groups');
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
-      Users.hasMany(models.Chats, { foreignKey: 'firstId', as: 'firstIds' });
-      Users.hasMany(models.Chats, { foreignKey: 'secondId', as: 'secondIds' });
-      Users.hasMany(models.ChatMessages, { foreignKey: 'senderId' });
-      Users.hasMany(models.GroupChatMessages, { foreignKey: 'senderId' });
+      Users.hasMany(models.Chats, { foreignKey: "firstId", as: "firstIds" })
+      Users.hasMany(models.Chats, { foreignKey: "secondId", as: "secondIds" })
+      Users.hasMany(models.ChatMessages, { foreignKey: "senderId" })
+      Users.hasMany(models.GroupChatMessages, { foreignKey: "senderId" })
+      Users.belongsToMany(models.GroupChats, {
+        through: models.GroupChatReads,
+        foreignKey: "userId",
+        otherKey: "groupChatId"
+      });
     }
   }
   Users.init(
@@ -155,8 +160,8 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   const UserInterview = sequelize.define('UserInterview');
-  Users.hasMany(UserInterview,{
-    foreignKey:"userId"
+  Users.hasMany(UserInterview, {
+    foreignKey: "userId"
   });
 
   const UserHomework = sequelize.define('UserHomework');

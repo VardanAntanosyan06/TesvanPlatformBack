@@ -20,6 +20,12 @@ router.get('/getGroupChatMessages/:chatId',
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getGroupChatMessages
 )
+
+router.get('/readGroupChatMessage/:chatId/:messageId',
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.readGroupChatMessage
+)
+
 router.patch(
   "/updateGroupChatMessage/:chatId/:messageId/",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),

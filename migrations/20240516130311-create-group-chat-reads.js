@@ -2,41 +2,29 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('GroupChatMessages', {
+    await queryInterface.createTable('GroupChatReads', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      groupChatId: {
-        type: Sequelize.INTEGER
-      },
-      senderId: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Users",
           key: "id"
         }
       },
-      text: {
-        type: Sequelize.TEXT
-      },
-      image: {
-        type: Sequelize.STRING
-      },
-      file: {
-        type: Sequelize.STRING
-      },
-      isUpdated: {
-        type: Sequelize.BOOLEAN
-      },
-      isReply: {
+      groupChatId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'GroupChatMessages',
+          model: "GroupChats",
           key: "id"
         }
+      },
+      lastSeen: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -49,6 +37,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('GroupChatMessages');
+    await queryInterface.dropTable('GroupChatReads');
   }
 };
