@@ -8,7 +8,11 @@ module.exports = (sequelize, DataTypes) => {
       Users.hasMany(models.Chats, { foreignKey: "secondId", as: "secondIds" })
       Users.hasMany(models.ChatMessages, { foreignKey: "senderId" })
       Users.hasMany(models.GroupChatMessages, { foreignKey: "senderId" })
-      Users.hasMany(models.GroupChatReads, { foreignKey: 'userId' })
+      Users.belongsToMany(models.GroupChats, {
+        through: models.GroupChatReads,
+        foreignKey: "userId",
+        otherKey: "groupChatId"
+      });
     }
   }
   Users.init(

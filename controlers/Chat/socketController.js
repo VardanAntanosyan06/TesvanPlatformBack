@@ -19,8 +19,10 @@ const typing = (io, socket) => {
                     socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers.length} are typing...` })
                 } else if (typingUsers.length == 2) {
                     socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers[0]} and ${typingUsers[1]} are typing...` })
-                } else {
+                } else if (typingUsers.length == 1) {
                     socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers[0]} is typing...` })
+                } else {
+                    socket.to(`room_${data.groupChatId}`).emit('stopTyping')
                 }
             }
             setTimeout(typingOff, 2500)
@@ -28,7 +30,7 @@ const typing = (io, socket) => {
 
         if (data.userId) {
             const userSocket = userSockets.get(data.userId)
-            io.to(userSocket.id).emit('typing', {message: "typing..."})
+            io.to(userSocket.id).emit('typing', { message: "typing..." })
             function typingOff() {
                 io.to(userSocket.id).emit('stopTyping')
             }
@@ -45,8 +47,10 @@ const stopTyping = (io, socket) => {
                 socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers.length} are typing...` })
             } else if (typingUsers.length == 2) {
                 socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers[0]} and ${typingUsers[1]} are typing...` })
-            } else {
+            } else if (typingUsers.length == 1) {
                 socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers[0]} is typing...` })
+            } else {
+                socket.to(`room_${data.groupChatId}`).emit('stopTyping')
             }
         }
 

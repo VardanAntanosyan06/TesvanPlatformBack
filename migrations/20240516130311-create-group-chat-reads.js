@@ -16,10 +16,10 @@ module.exports = {
           key: "id"
         }
       },
-      messageId: {
+      groupChatId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "GroupChatMessages",
+          model: "GroupChats",
           key: "id"
         }
       },

@@ -11,17 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      GroupChatReads.belongsTo(models.Users, { foreignKey: 'userId' })
-      GroupChatReads.belongsTo(models.GroupChatMessages, { foreignKey: 'messageId' })
     }
   }
   GroupChatReads.init({
     userId: DataTypes.INTEGER,
-    messageId: DataTypes.INTEGER,
+    groupChatId: DataTypes.INTEGER,
     lastSeen: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'GroupChatReads',
+    timestamps: false
   });
   return GroupChatReads;
 };
