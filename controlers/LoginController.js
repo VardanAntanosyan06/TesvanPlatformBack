@@ -26,7 +26,7 @@ const LoginUsers = async (req, res) => {
         },
       ],
     });
-   
+
     if (User && !User.isVerified) {
       return res.status(200).json({ isVerified: false });
     }
@@ -34,14 +34,14 @@ const LoginUsers = async (req, res) => {
     if (User && User.isVerified && (await bcrypt.compare(password, User.password))) {
       const groupChats = await GroupChats.findAll({
         where: {
-            members: {
-                [Op.contains]: [User.id]
-            }
+          members: {
+            [Op.contains]: [User.id],
+          },
         },
-        attributes: ["id", "name", "image"]
-    })
+        attributes: ['id', 'name', 'image'],
+      });
       User.setDataValue('groupChats', groupChats);
-      await User.save()
+      await User.save();
 
       return res.status(200).json({ User });
     }
@@ -267,7 +267,6 @@ const changeUserImage = async (req, res) => {
 
 const authMe = async (req, res) => {
   try {
-    
     const { user_id: id } = req.user;
     const User = await Users.findOne({
       where: { id },
@@ -283,16 +282,15 @@ const authMe = async (req, res) => {
     }
     const groupChats = await GroupChats.findAll({
       where: {
-          members: {
-              [Op.contains]: [id]
-          }
+        members: {
+          [Op.contains]: [id],
+        },
       },
       attributes: ["id", "name", "image"]
   })
-  
     User.setDataValue('groupChats', groupChats);
-    await User.save()
-    res.json({User});
+    await User.save();
+    res.json({ User });
   } catch (e) {
     res.status(500).json({ succes: false });
     console.log(e);
@@ -400,16 +398,41 @@ const verifyChangeEmail = async (req, res) => {
 
     const { newEmail } = await Email.findOne({ where: { userId: id } });
 
-    //  await Users.update({
     User.email = newEmail;
     User.save();
     await Email.destroy({ where: { newEmail } });
 
-    // });
     if (User.save()) {
       await Email.destroy({ where: { userId: id } });
-      return res.status(200).json({ success: true,role:User.role });
+      return res.status(200).json({ success: true, role: User.role });
     }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong .' });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const { user_id: id } = req.user;
+    const { password } = req.body;
+    const thisUser = await Users.findOne({ where: { id } });
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*+.-])(?=\S{10,}$).*/;
+
+    if (regex.test(password)) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      thisUser.password = hashedPassword;
+
+      thisUser.token = jwt.sign(
+        { user_id: id, email: thisUser.email, role: thisUser.role },
+        process.env.SECRET,
+      );
+      thisUser.save();
+    } else {
+      return res.status(403).json({ success: false, message: 'Password is uncorrect' });
+    }
+
+    return res.status(200).json({ succes: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something Went Wrong .' });
@@ -424,4 +447,5 @@ module.exports = {
   changeUserData,
   changeUserImage,
   verifyChangeEmail,
+  changePassword,
 };
