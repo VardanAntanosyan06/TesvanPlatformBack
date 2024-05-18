@@ -1,5 +1,5 @@
-const { GroupChatMessages, GroupChats, Users } = require('../../models');
-const { Op } = require('sequelize');
+const { GroupChatMessages, GroupChats, Users, GroupChatReads, sequelize } = require('../../models');
+const { Op, Sequelize, where } = require('sequelize');
 const uuid = require("uuid");
 const path = require("path");
 
@@ -34,12 +34,12 @@ const createGroupChatMessage = async (req, res) => {
             }
         });
         if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
-        const { id } = await GroupChatMessages.create({ 
-            groupChatId: chatId, 
-            senderId: userId, 
+        const { id } = await GroupChatMessages.create({
+            groupChatId: chatId,
+            senderId: userId,
             text,
-            image: imageName? imageName : null,
-            file: fileName? getFilePath + fileName : null
+            image: imageName ? imageName : null,
+            file: fileName ? getFilePath + fileName : null
         })
         const messages = await GroupChatMessages.findOne({
             where: {
@@ -112,6 +112,11 @@ const getGroupChatMessages = async (req, res) => {
         const { user_id: userId } = req.user;
         const { chatId } = req.params;
         const { limit, page } = req.query;
+
+        if (isNaN(limit) || isNaN(page) || limit <= 0 || page <= 0) {
+            return res.status(400).json({ message: 'Invalid limit or page number' });
+        }
+
         const chat = await GroupChats.findOne({
             where: {
                 id: chatId,
@@ -121,6 +126,7 @@ const getGroupChatMessages = async (req, res) => {
             },
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
+        // const Users = await Users.findAll()
         const messages = await GroupChatMessages.findAll({
             where: {
                 groupChatId: chatId,
@@ -139,6 +145,26 @@ const getGroupChatMessages = async (req, res) => {
                             attributes: ["id", "firstName", "lastName", "image"],
                         },
                     ],
+                },
+                {
+                    model: GroupChats,
+                    as: "isReads",
+                    // include: [
+                    //     {
+                    //         model: Users,
+                    //         through: {
+                    //             model: GroupChatReads,
+                    //             where: {
+                    //                 lastSeen: { [Op.gte]: GroupChatMessages.id }
+                    //             }
+                    //         },
+                    //         attributes: ["id", "firstName", "lastName", "image"],
+                    //     }
+                    // ],
+                    attributes: {
+                        include: [['id', 'groupChatId']],
+                        exclude: ['id', 'name', 'image', 'groupId', 'adminId', 'members']
+                    },
                 }
             ],
             order: [['createdAt', 'DESC']],
@@ -146,7 +172,11 @@ const getGroupChatMessages = async (req, res) => {
             offset: (page - 1) * limit
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
-        return res.status(200).json(messages)
+        // messages.forEach(async (element) => {
+            
+        // });
+        
+        return res.status(200).json( Users)
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
@@ -225,10 +255,36 @@ const deleteGroupChatMessage = async (req, res) => {
     }
 };
 
+const readGroupChatMessage = async () => {
+    try {
+        const { user_id: userId } = req.user;
+        const { messageId, chatId } = req.params;
+        const read = await GroupChatReads.findOne({
+            where: {
+                userId,
+                chatId
+            }
+        })
+        if (read?.lastSeen < messageId) {
+            read.lastSeen = messageId
+            await read.save()
+        }
+        await GroupChatReads.create({
+            userId,
+            chatId,
+            lastSeen: messageId
+        })
+    } catch (error) {
+        onsole.log(error);
+        return res.status(500).json(error.message)
+    }
+}
+
 module.exports = {
     createGroupChatMessage,
     replyGroupChatMessage,
     updateGroupChatMessage,
     deleteGroupChatMessage,
-    getGroupChatMessages
+    getGroupChatMessages,
+    readGroupChatMessage
 };
