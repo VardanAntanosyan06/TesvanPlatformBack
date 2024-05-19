@@ -26,6 +26,11 @@ router.get('/readGroupChatMessage/:chatId/:messageId',
   controller.readGroupChatMessage
 )
 
+router.get('/seenGroupChatMessage/:chatId/:messageId',
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.seenGroupChatMessage
+)
+
 router.patch(
   "/updateGroupChatMessage/:chatId/:messageId/",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),

@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         otherKey: "groupChatId"
       });
+      Users.hasOne(models.GroupChatReads, {foreignKey: "userId"})
     }
   }
   Users.init(

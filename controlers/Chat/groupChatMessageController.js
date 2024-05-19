@@ -1,5 +1,5 @@
 const { GroupChatMessages, GroupChats, Users, GroupChatReads, sequelize } = require('../../models');
-const { Op, Sequelize, where } = require('sequelize');
+const { Op } = require('sequelize');
 const uuid = require("uuid");
 const path = require("path");
 
@@ -145,52 +145,12 @@ const getGroupChatMessages = async (req, res) => {
                         },
                     ],
                 },
-                {
-                    model: GroupChats,
-                    as: "isReads",
-                    include: [
-                        {
-                            model: Users,
-                            through: {
-                                model: GroupChatReads,
-                                where: {
-                                    lastSeen: { [Op.gte]: GroupChatMessages.id }
-                                }
-                            },
-                            attributes: ["id", "firstName", "lastName", "image"],
-                        }
-                    ],
-                    attributes: {
-                        include: [['id', 'groupChatId']],
-                        exclude: ['id', 'name', 'image', 'groupId', 'adminId', 'members']
-                    },
-                }
             ],
             order: [['createdAt', 'DESC']],
             limit: limit,
             offset: (page - 1) * limit
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
-        // const m = await messages.forEach((element) => {
-        //     const Users2 = []
-        //     const user = Users.findOne({
-        //         through: {
-        //             model: GroupChatReads,
-        //             where: {
-        //                 lastSeen: { [Op.gte]: element.id }
-        //             }
-        //         },
-        //         attributes: ["id", "firstName", "lastName", "image"],
-        //     })
-        //     Users2.push(user);
-
-        //     element.isReads.setDataValue('Users', Users2);
-        //     // console.log(Users2);
-        // });
-        // messages[0].isReads.setDataValue('Users', 111111111111111);
-        // await messages.save()
-        // User.setDataValue('groupChats', groupChats);
-        // await messages.save();
         return res.status(200).json(messages)
     } catch (error) {
         console.log(error);
@@ -280,17 +240,47 @@ const readGroupChatMessage = async () => {
                 chatId
             }
         })
-        if (read?.lastSeen < messageId) {
+        if (!read) {
+            await GroupChatReads.create({
+                userId,
+                chatId,
+                lastSeen: messageId
+            })
+        } else if (read.lastSeen < messageId) {
             read.lastSeen = messageId
             await read.save()
         }
-        await GroupChatReads.create({
-            userId,
-            chatId,
-            lastSeen: messageId
-        })
     } catch (error) {
-        onsole.log(error);
+        console.log(error);
+        return res.status(500).json(error.message)
+    }
+}
+
+const seenGroupChatMessage = async (req, res) => {
+    try {
+        const { user_id: userId } = req.user;
+        const { messageId, chatId } = req.params;
+        const groupChats = await GroupChats.findOne({
+            where: {
+                id: chatId,
+                members: {
+                    [Op.contains]: [userId]
+                }
+            }
+        });
+        if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
+        const users = await Users.findAll({
+            include: {
+                model: GroupChatReads,
+                where: {
+                    lastSeen: { [Op.gte]: messageId }
+                }
+            },
+            attributes: ["id", "firstName", "lastName", "image"],
+        })
+        return res.status(200).json(users);
+    } catch (error) {
+        console.log(error);
         return res.status(500).json(error.message)
     }
 }
@@ -301,5 +291,6 @@ module.exports = {
     updateGroupChatMessage,
     deleteGroupChatMessage,
     getGroupChatMessages,
-    readGroupChatMessage
+    readGroupChatMessage,
+    seenGroupChatMessage
 };
