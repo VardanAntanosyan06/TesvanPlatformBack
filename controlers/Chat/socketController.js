@@ -5,32 +5,18 @@ const typing = (io, socket) => {
     socket.on('typing', (data) => {
         if (data.groupChatId) {
             users.push(data.userName)
-            if (users.length > 2) {
-                socket.to(`room_${data.groupChatId}`).emit('typing', { message: `${users.length} are typing...` })
-            } else if (users.length == 2) {
-                socket.to(`room_${data.groupChatId}`).emit('typing', { message: `${users[0]} and ${users[1]} are typing...` })
-            } else {
-                socket.to(`room_${data.groupChatId}`).emit('typing', { message: `${users[0]} is typing...` })
-            }
+            socket.to(`room_${data.groupChatId}`).emit('typing', users)
             function typingOff() {
                 const index = users.indexOf(data.userName);
-                const typingUsers = users.splice(index, 1);
-                if (typingUsers.length > 2) {
-                    socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers.length} are typing...` })
-                } else if (typingUsers.length == 2) {
-                    socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers[0]} and ${typingUsers[1]} are typing...` })
-                } else if (typingUsers.length == 1) {
-                    socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers[0]} is typing...` })
-                } else {
-                    socket.to(`room_${data.groupChatId}`).emit('stopTyping')
-                }
+                users.splice(index, 1);
+                socket.to(`room_${data.groupChatId}`).emit('stopTyping', users)
             }
             setTimeout(typingOff, 2500)
         }
 
-        if (data.userId) {
-            const userSocket = userSockets.get(+data.userId)
-            io.to(userSocket.id).emit('typing', { message: "typing..." })
+        if (data.receiverId) {
+            const userSocket = userSockets.get(+data.receiverId)
+            io.to(userSocket.id).emit('typing', data.userName)
             function typingOff() {
                 io.to(userSocket.id).emit('stopTyping')
             }
@@ -41,21 +27,12 @@ const typing = (io, socket) => {
 const stopTyping = (io, socket) => {
     socket.on('stopTyping', (data) => {
         if (data.groupChatId) {
-            const index = users.indexOf(data.userId);
-            const typingUsers = users.splice(index, 1);
-            if (typingUsers.length > 2) {
-                socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers.length} are typing...` })
-            } else if (typingUsers.length == 2) {
-                socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers[0]} and ${typingUsers[1]} are typing...` })
-            } else if (typingUsers.length == 1) {
-                socket.to(`room_${data.groupChatId}`).emit('stopTyping', { message: `${typingUsers[0]} is typing...` })
-            } else {
-                socket.to(`room_${data.groupChatId}`).emit('stopTyping')
-            }
+            const index = users.indexOf(data.userName);
+            users.splice(index, 1);
+            socket.to(`room_${data.groupChatId}`).emit('stopTyping', users)
         }
-
-        if (data.userId) {
-            const userSocket = userSockets.get(+data.userId)
+        if (data.receiverId) {
+            const userSocket = userSockets.get(+data.receiverId)
             io.to(userSocket.id).emit('stopTyping')
         }
     })
