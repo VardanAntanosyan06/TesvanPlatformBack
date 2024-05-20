@@ -3,6 +3,7 @@ const {
   GroupsPerUsers,
   Certificates,
   Calendar,
+  Chats,
   UserTests,
   UserAnswersTests,
   UserAnswersQuizz,
@@ -17,7 +18,9 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const { v4 } = require("uuid");
+const { where } = require("sequelize");
 require("dotenv").config();
+const { Op } = require("sequelize");
 const BCRYPT_HASH_SALT = 10;
 const mailgun = require("mailgun-js")({
   apiKey: process.env.MAILGUN_API_KEY,
@@ -152,12 +155,10 @@ const EmailExist = async (req, res) => {
     const user = await Users.findOne({ where: { email } });
 
     if (user)
-      return res
-        .status(403)
-        .json({
-          success: false,
-          message: "This email address is already used",
-        });
+      return res.status(403).json({
+        success: false,
+        message: "This email address is already used",
+      });
 
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -436,6 +437,47 @@ const deleteMembers = async (req, res) => {
   }
 };
 
+const deleteAccount = async (req, res) => {
+  try {
+    const { user_id: id } = req.user;
+    const { password } = req.query;
+    const User = await Users.findByPk(id);
+    if (
+      User &&
+      User.isVerified &&
+      (await bcrypt.compare(password, User.password))
+    ) {
+      // await
+      // await UserCourses.destroy({
+      //   where: {
+      //     UserId: id,
+      //   },
+      // });
+      // await UserLesson.destroy({
+      //   where: {
+      //     UserId: id,
+      //   },
+      // });
+      await Chats.destroy({
+        where: {
+          [Op.or]: [{ firstId: id }, { secondId: id }],
+        },
+      });
+      await Users.destroy({
+        where: {
+          id,
+        },
+      });
+
+      return res.json({ success: true });
+    }
+    return res.json({ success: false, message: "Password is wrong" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
 const editImage = async (req, res) => {
   try {
     const { user_id: id } = req.user;
@@ -501,10 +543,9 @@ const RegisterTesting = async (req, res) => {
     console.log(error.name);
     if (error.name == "SequelizeValidationError") {
       return res.status(403).json({ message: error.message });
-    }else if (error.name == "SequelizeUniqueConstraintError") {
+    } else if (error.name == "SequelizeUniqueConstraintError") {
       return res.status(403).json({ message: error.message });
-    }
-    else {
+    } else {
       return res.status(500).json({ message: "Something went wrong." });
     }
   }
@@ -518,6 +559,7 @@ module.exports = {
   getMembers,
   getMember,
   editMember,
+  deleteAccount,
   deleteMembers,
   editImage,
   RegisterTesting,

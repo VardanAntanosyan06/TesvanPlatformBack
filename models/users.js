@@ -4,16 +4,17 @@ const groups = require('./groups');
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
-      Users.hasMany(models.Chats, { foreignKey: "firstId", as: "firstIds" })
-      Users.hasMany(models.Chats, { foreignKey: "secondId", as: "secondIds" })
-      Users.hasMany(models.ChatMessages, { foreignKey: "senderId" })
-      Users.hasMany(models.GroupChatMessages, { foreignKey: "senderId" })
+      Users.hasMany(models.Chats, { foreignKey: "firstId", as: "firstIds",onDelete: 'CASCADE' })
+      Users.hasMany(models.Chats, { foreignKey: "secondId", as: "secondIds",onDelete: 'CASCADE' })
+      Users.hasMany(models.ChatMessages, { foreignKey: "senderId",onDelete: 'CASCADE' })
+      Users.hasMany(models.GroupChatMessages, { foreignKey: "senderId",onDelete: 'CASCADE' })
       Users.belongsToMany(models.GroupChats, {
         through: models.GroupChatReads,
         foreignKey: "userId",
-        otherKey: "groupChatId"
+        otherKey: "groupChatId",
+        onDelete: 'CASCADE'
       });
-      Users.hasOne(models.GroupChatReads, {foreignKey: "userId"})
+      Users.hasOne(models.GroupChatReads, {foreignKey: "userId",onDelete: 'CASCADE'})
     }
   }
   Users.init(

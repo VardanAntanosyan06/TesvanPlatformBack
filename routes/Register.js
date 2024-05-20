@@ -14,6 +14,7 @@ router.get('/getMembers', checkAuth(['ADMIN']), controller.getMembers);
 router.get('/getMember/:id', checkAuth(['ADMIN']), controller.getMember);
 
 router.patch('/editMembers/:id', checkAuth(['ADMIN']), controller.editMember);
+router.delete('/deleteAccount/', checkAuth(['ADMIN', 'TEACHER', 'STUDENT']), controller.deleteAccount);
 router.delete('/deleteMembers/:id', checkAuth(['ADMIN']), controller.deleteMembers);
 
 router.patch('/editAvatar/', checkAuth(['ADMIN', 'TEACHER', 'STUDENT']), controller.editImage);

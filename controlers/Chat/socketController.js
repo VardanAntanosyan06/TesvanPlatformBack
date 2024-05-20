@@ -29,7 +29,7 @@ const typing = (io, socket) => {
         }
 
         if (data.userId) {
-            const userSocket = userSockets.get(data.userId)
+            const userSocket = userSockets.get(+data.userId)
             io.to(userSocket.id).emit('typing', { message: "typing..." })
             function typingOff() {
                 io.to(userSocket.id).emit('stopTyping')
@@ -55,7 +55,7 @@ const stopTyping = (io, socket) => {
         }
 
         if (data.userId) {
-            const userSocket = userSockets.get(data.userId)
+            const userSocket = userSockets.get(+data.userId)
             io.to(userSocket.id).emit('stopTyping')
         }
     })
