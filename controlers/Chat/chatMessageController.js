@@ -258,8 +258,8 @@ const deleteChatMessage = async (req, res) => {
             where: { id: messageId }
         });
         if (deleteMessage === 0) return res.status(404).json({ message: "Message not found" })
-        const firstIdSocket = await userSockets.get(chat.firstId)
-        if (firstIdSocket) { io.to(firstIdSocket.id).emit('deleteChatMessage', messageId) };
+        const firstSocket = await userSockets.get(chat.firstId)
+        if (firstSocket) { io.to(firstSocket.id).emit('deleteChatMessage', messageId) };
         const secondSocket = await userSockets.get(chat.secondId)
         if (secondSocket) { io.to(secondSocket.id).emit('deleteChatMessage', messageId) };
         return res.status(200).json({ success: true });
@@ -282,11 +282,39 @@ const getMessageFile = (req, res) => {
     }
 }
 
+const readChatMessage = async () => {
+    try {
+        const { user_id: userId } = req.user;
+        const { messageId, chatId } = req.params;
+        const chat = await Chats.findOne({
+            where: {
+                id: chatId,
+                [Op.or]: [{ secondId: userId }, { firstId: userId }]
+            },
+        });
+        const message = await ChatMessages.findOne({
+            where: {
+                id: messageId,
+            }
+        })
+        read.isReade = true
+        await read.save()
+        const firstSocket = await userSockets.get(chat.firstId)
+        if (firstSocket) { io.to(firstSocket.id).emit('readChatMessage', message) };
+        const secondSocket = await userSockets.get(chat.secondId)
+        if (secondSocket) { io.to(secondSocket.id).emit('readChatMessage', message) };
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error.message)
+    }
+}
+
 module.exports = {
     createChatMessage,
     replyChatMessage,
     getChatMessages,
     updateChatMessage,
     deleteChatMessage,
-    getMessageFile
+    getMessageFile,
+    readChatMessage
 };
