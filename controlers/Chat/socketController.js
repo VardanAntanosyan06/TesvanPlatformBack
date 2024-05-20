@@ -27,7 +27,7 @@ const typing = (io, socket) => {
 const stopTyping = (io, socket) => {
     socket.on('stopTyping', (data) => {
         if (data.groupChatId) {
-            const index = users.indexOf(data.userId);
+            const index = users.indexOf(data.userName);
             users.splice(index, 1);
             socket.to(`room_${data.groupChatId}`).emit('stopTyping', users)
         }
