@@ -11,16 +11,18 @@ const typing = (io, socket) => {
                 users.splice(index, 1);
                 socket.to(`room_${data.groupChatId}`).emit('stopTyping', users)
             }
-            setTimeout(typingOff, 2500)
+            setTimeout(typingOff, 3500)
         }
 
         if (data.receiverId) {
             const userSocket = userSockets.get(+data.receiverId)
-            io.to(userSocket.id).emit('typing', data.userName)
-            function typingOff() {
-                io.to(userSocket.id).emit('stopTyping')
+            if (userSocket) {
+                io.to(userSocket.id).emit('typing', data.userName)
+                function typingOff() {
+                    io.to(userSocket.id).emit('stopTyping')
+                }
+                setTimeout(typingOff, 3500)
             }
-            setTimeout(typingOff, 2500)
         }
     })
 }
@@ -33,7 +35,10 @@ const stopTyping = (io, socket) => {
         }
         if (data.receiverId) {
             const userSocket = userSockets.get(+data.receiverId)
-            io.to(userSocket.id).emit('stopTyping')
+            if (userSocket) {
+                io.to(userSocket.id).emit('stopTyping')
+            }
+
         }
     })
 }
