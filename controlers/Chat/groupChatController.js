@@ -35,6 +35,14 @@ const getGroupChat = async (req, res) => {
             where: { id: groupChat.members },
             attributes: ["id", "firstName", "lastName", "image", "role"]
         })
+        members.forEach((element) => {
+            const onlineUser = userSockets.get(element.id)
+            if(onlineUser){
+                element.setDataValue("online", true)
+            } else {
+                element.setDataValue("online", false)
+            }
+        })
         groupChat.setDataValue('members', members);
         const userSocket = await userSockets.get(userId);
         if (userSocket) { userSocket.join(`room_${groupChatId}`) }
