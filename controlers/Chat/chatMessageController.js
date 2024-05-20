@@ -37,7 +37,7 @@ const createChatMessage = async (req, res) => {
             chatId,
             senderId: userId,
             text,
-            image: imageName ? imageName : null,
+            image: imageName ? getFilePath + imageName : null,
             file: fileName ? getFilePath + fileName : null
         })
         const message = await ChatMessages.findOne({

@@ -38,7 +38,7 @@ const createGroupChatMessage = async (req, res) => {
             groupChatId: chatId,
             senderId: userId,
             text,
-            image: imageName ? imageName : null,
+            image: imageName ? getFilePath + imageName : null,
             file: fileName ? getFilePath + fileName : null
         })
         const messages = await GroupChatMessages.findOne({
