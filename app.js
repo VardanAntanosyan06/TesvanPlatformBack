@@ -123,6 +123,9 @@ io.on('connection', (socket) => {
 
   socketController.typing(io, socket)
   socketController.stopTyping(io, socket)
+  socketController.typingGroup(io, socket)
+  socketController.stopTypingGroup(io, socket)
+
 
   socket.on('disconnect', () => {
     const userId = getUserIdForSocket(socket);
