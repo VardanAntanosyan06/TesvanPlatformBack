@@ -9,25 +9,35 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      fullName: {
+      fullName_en: {
         type: Sequelize.STRING
       },
-      role: {
+      role_en: {
         type: Sequelize.STRING
       },
-      comment: {
+      comment_en: {
+        type: Sequelize.TEXT('long')
+      },
+      fullName_ru: {
+        type: Sequelize.STRING
+      },
+      role_ru: {
+        type: Sequelize.STRING
+      },
+      comment_ru: {
+        type: Sequelize.TEXT('long')
+      },
+      fullName_am: {
+        type: Sequelize.STRING
+      },
+      role_am: {
+        type: Sequelize.STRING
+      },
+      comment_am: {
         type: Sequelize.TEXT('long')
       },
       img: {
         type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
     });
   },

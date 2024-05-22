@@ -14,13 +14,20 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Comments.init({
-    fullName: DataTypes.STRING,
-    role: DataTypes.STRING,
-    comment: DataTypes.TEXT("long"),
+    fullName_en: DataTypes.STRING,
+    role_en: DataTypes.STRING,
+    comment_en: DataTypes.TEXT("long"),
+    fullName_ru: DataTypes.STRING,
+    role_ru: DataTypes.STRING,
+    comment_ru: DataTypes.TEXT("long"),
+    fullName_am: DataTypes.STRING,
+    role_am: DataTypes.STRING,
+    comment_am: DataTypes.TEXT("long"),
     img: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Comments',
+    timestamps:false
   });
   return Comments;
 };

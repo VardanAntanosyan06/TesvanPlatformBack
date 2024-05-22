@@ -2,11 +2,13 @@ const { Comments } = require("../models");
 
 const getAllComments = async (req, res) => {
   try {
+    const {language} = req.query;
+
     let comments = await Comments.findAll({
       order: [
-        ['createdAt', 'DESC'],
+        ['id', 'DESC'],
     ],
-      attributes: { exclude: ["id", "updatedAt"] },
+      attributes: ['id',[`fullName_${language}`,'fullName'],[`role_${language}`,'role'],[`comment_${language}`,'comment'],'img'] ,
     });
     return res.status(200).json({ comments });
   } catch (error) {
