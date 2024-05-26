@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
         Chats.belongsTo(models.Users, {foreignKey: "firstId", as: "firstIds"})
         Chats.belongsTo(models.Users, {foreignKey: "secondId", as: "secondIds"})
+        Chats.hasMany(models.ChatMessages, {foreignKey: "chatId", onDelete: 'CASCADE' })
     }
   }
   Chats.init({

@@ -10,7 +10,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       groupChatId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'GroupChats',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       senderId: {
         type: Sequelize.INTEGER,

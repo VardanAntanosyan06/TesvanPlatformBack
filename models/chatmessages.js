@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       ChatMessages.belongsTo(models.Users, { foreignKey: "senderId" })
       ChatMessages.hasMany(models.ChatMessages, { foreignKey: "isReply", as: "ParentMessage" })
       ChatMessages.belongsTo(models.ChatMessages, { foreignKey: "isReply", as: "Reply" })
+      ChatMessages.belongsTo(models.Chats, {foreignKey: "chatId", onDelete: 'CASCADE'})
     }
   }
   ChatMessages.init({

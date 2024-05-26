@@ -11,12 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      GroupChats.hasMany(models.GroupChatMessages, {as: 'messages', foreignKey: 'groupChatId', onDelete: 'CASCADE'});
       GroupChats.hasOne(models.GroupChatMessages, { foreignKey: "groupChatId", as: "isReads", })
-      GroupChats.belongsToMany(models.Users, {
-        through: models.GroupChatReads,
-        foreignKey: "groupChatId",
-        otherKey: "userId"
-      });
+      GroupChats.hasOne(models.GroupChatReads, {foreignKey: "groupChatId", as: "userLastSeen"})
     }
   }
   GroupChats.init({

@@ -8,12 +8,6 @@ module.exports = (sequelize, DataTypes) => {
       Users.hasMany(models.Chats, { foreignKey: "secondId", as: "secondIds",onDelete: 'CASCADE' })
       Users.hasMany(models.ChatMessages, { foreignKey: "senderId",onDelete: 'CASCADE' })
       Users.hasMany(models.GroupChatMessages, { foreignKey: "senderId",onDelete: 'CASCADE' })
-      Users.belongsToMany(models.GroupChats, {
-        through: models.GroupChatReads,
-        foreignKey: "userId",
-        otherKey: "groupChatId",
-        onDelete: 'CASCADE'
-      });
       Users.hasOne(models.GroupChatReads, {foreignKey: "userId",onDelete: 'CASCADE'})
     }
   }

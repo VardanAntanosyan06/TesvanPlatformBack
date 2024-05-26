@@ -2,6 +2,7 @@ const { GroupChatMessages, GroupChats, Users, GroupChatReads, sequelize } = requ
 const { Op } = require('sequelize');
 const uuid = require("uuid");
 const path = require("path");
+const fs = require("fs");
 
 const createGroupChatMessage = async (req, res) => {
     try {
@@ -18,7 +19,7 @@ const createGroupChatMessage = async (req, res) => {
         if (image) {
             const type = image.mimetype.split("/")[1];
             imageName = uuid.v4() + "." + type;
-            image.mv(path.resolve(__dirname, "../../", "static", imageName));
+            image.mv(path.resolve(__dirname, "../../", "messageFiles", imageName));
         } else if (file) {
             const type = file.mimetype.split("/")[1];
             fileName = uuid.v4() + "." + type;
@@ -218,6 +219,23 @@ const deleteGroupChatMessage = async (req, res) => {
             }
         });
         if (!groupChats) return res.status(404).json({ message: 'Chat not found' });
+        const { file, image } = await GroupChatMessages.findOne({
+            where: { id: messageId }
+        })
+        if (file) {
+            const fileName = file.split("/").pop()
+            fs.unlinkSync(path.resolve(__dirname, "../../", "messageFiles", fileName), (err)=>{
+                console.log(err.message);
+            })
+        }
+        if (image) {
+            const imageName = image.split("/").pop()
+            fs.unlinkSync(path.resolve(__dirname, "../../", "messageFiles", imageName), (err)=>{
+                console.log(err.message);
+            })
+        }
+
+
         const deleteMessage = await GroupChatMessages.destroy({
             where: { id: messageId }
         });

@@ -11,6 +11,12 @@ module.exports = {
       },
       chatId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Chats',
+          key: 'id', 
+        },
+        onDelete: 'CASCADE'
       },
       senderId: {
         type: Sequelize.INTEGER,

@@ -29,6 +29,12 @@ router.get(
 );
 
 router.get(
+  "/getMessageNotifications",
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
+  controller.getMessageNotifications
+);
+
+router.get(
   "/getMessageFile/:fileName",
   checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getMessageFile
