@@ -666,7 +666,7 @@ console.log(price);
           priceTitle: req.body[`priceTitle_${language}`],
           priceDescription: req.body[`priceDescription_${language}`],
           price,
-          sale: discount
+          discount
         });
       }),
     );

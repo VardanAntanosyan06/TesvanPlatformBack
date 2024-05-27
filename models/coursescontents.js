@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       priceDescription: DataTypes.STRING,
       duration: DataTypes.INTEGER,
       price: DataTypes.INTEGER,
-      sale: DataTypes.INTEGER,
+      discount: DataTypes.INTEGER,
       level: DataTypes.STRING,
       levelDescriptions: DataTypes.ARRAY(DataTypes.STRING),
       type:DataTypes.STRING

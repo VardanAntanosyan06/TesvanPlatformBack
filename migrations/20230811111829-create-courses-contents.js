@@ -46,7 +46,7 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER
       },
-      sale: {
+      discount: {
         type: Sequelize.INTEGER
       },
       level: {
