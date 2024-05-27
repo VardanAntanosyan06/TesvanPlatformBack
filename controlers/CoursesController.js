@@ -629,13 +629,17 @@ const createCourse = async (req, res) => {
       quizzId,
       duration,
       price,
-      sale,
-      descriptionPrice,
-      titlePrice
+      discount,
+      priceDescription_am,
+      priceDescription_en,
+      priceDescription_ru,
+      priceTitle_am,
+      priceTitle_en,
+      priceTitle_ru
     } = req.body;
-
+console.log(price);
     let { img, trainersImages } = req.files;
-
+    console.log(price, discount, duration);
     const imgType = img.mimetype.split('/')[1];
     const imgFileName = v4() + '.' + imgType;
     img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
@@ -659,10 +663,10 @@ const createCourse = async (req, res) => {
           whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
           level: req.body[`level_${language}`],
           duration,
-          titlePrice: req.body[`titlePrice_${language}`],
-          descriptionPrice: req.body[`descriptionPrice_${language}`],
+          priceTitle: req.body[`priceTitle_${language}`],
+          priceDescription: req.body[`priceDescription_${language}`],
           price,
-          sale
+          sale: discount
         });
       }),
     );

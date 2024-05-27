@@ -34,10 +34,10 @@ module.exports = {
       whyThisCourse: {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },
-      titlePrice: {
+      priceTitle: {
         type: Sequelize.STRING
       },
-      descriptionPrice: {
+      priceDescription: {
         type: Sequelize.STRING
       },
       duration: {
