@@ -252,7 +252,7 @@ const getOne = async (req, res) => {
           model: Lesson,
           attributes: [
             [`title_${language}`, 'title'],
-            ['description_en', 'description'],
+            [`description_${language}`, 'description'],
           ],
           through: {
             attributes: [],
