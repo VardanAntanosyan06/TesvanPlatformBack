@@ -32,7 +32,7 @@ module.exports = {
       },
 
       whyThisCourse: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.ARRAY(Sequelize.TEXT("long")),
       },
       duration: {
         type: Sequelize.INTEGER,
