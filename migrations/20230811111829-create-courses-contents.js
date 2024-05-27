@@ -34,8 +34,20 @@ module.exports = {
       whyThisCourse: {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },
+      titlePrice: {
+        type: Sequelize.STRING
+      },
+      descriptionPrice: {
+        type: Sequelize.STRING
+      },
       duration: {
         type: Sequelize.INTEGER,
+      },
+      price: {
+        type: Sequelize.INTEGER
+      },
+      sale: {
+        type: Sequelize.INTEGER
       },
       level: {
         type: Sequelize.STRING,

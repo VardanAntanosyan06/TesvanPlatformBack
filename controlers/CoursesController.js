@@ -627,6 +627,11 @@ const createCourse = async (req, res) => {
       trainers,
       type,
       quizzId,
+      duration,
+      price,
+      sale,
+      descriptionPrice,
+      titlePrice
     } = req.body;
 
     let { img, trainersImages } = req.files;
@@ -653,6 +658,11 @@ const createCourse = async (req, res) => {
           lessonType: req.body[`lessonType_${language}`],
           whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
           level: req.body[`level_${language}`],
+          duration,
+          titlePrice: req.body[`titlePrice_${language}`],
+          descriptionPrice: req.body[`descriptionPrice_${language}`],
+          price,
+          sale
         });
       }),
     );
