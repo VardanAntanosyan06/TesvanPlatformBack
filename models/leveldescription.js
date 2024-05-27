@@ -17,9 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     title_en: DataTypes.STRING,
     title_ru: DataTypes.STRING,
     title_am: DataTypes.STRING,
-    description_en: DataTypes.STRING,
-    description_ru: DataTypes.STRING,
-    description_am: DataTypes.STRING,
+    description_en: DataTypes.TEXT('long'),
+    description_ru: DataTypes.TEXT('long'),
+    description_am: DataTypes.TEXT('long'),
     courseId: DataTypes.INTEGER,
     type:DataTypes.STRING,
 
