@@ -19,13 +19,13 @@ module.exports = {
         type: Sequelize.STRING,
       },
       description_en: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT('long'),
       },
       description_ru: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT('long'),
       },
       description_am: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT('long'),
       },
       courseId: {
         type: Sequelize.INTEGER,
