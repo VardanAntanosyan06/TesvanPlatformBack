@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      GroupChatReads.belongsTo(models.Users, {foreignKey: "userId"})
+      GroupChatReads.belongsTo(models.Users, {foreignKey: "userId"}),
+      GroupChatReads.belongsTo(models.GroupChats, { as: 'groupChat', foreignKey: 'groupChatId' });
     }
   }
   GroupChatReads.init({

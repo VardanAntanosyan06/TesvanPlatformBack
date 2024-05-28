@@ -1,8 +1,9 @@
-const { ChatMessages, Chats, Users } = require('../../models');
-const { Op } = require('sequelize');
+const { ChatMessages, Chats, Users, GroupChatMessages, GroupChatReads, GroupChats } = require('../../models');
+const { Op, Sequelize, where } = require('sequelize');
 const { userSockets } = require("../../userSockets");
 const uuid = require("uuid");
 const path = require("path");
+const fs = require("fs")
 
 const createChatMessage = async (req, res) => {
     try {
@@ -19,7 +20,7 @@ const createChatMessage = async (req, res) => {
         if (image) {
             const type = image.mimetype.split("/")[1];
             imageName = uuid.v4() + "." + type;
-            image.mv(path.resolve(__dirname, "../../", "static", imageName));
+            image.mv(path.resolve(__dirname, "../../", "messageFiles", imageName));
         } else if (file) {
             const type = file.mimetype.split("/")[1];
             fileName = uuid.v4() + "." + type;
@@ -47,7 +48,7 @@ const createChatMessage = async (req, res) => {
             include: [
                 {
                     model: Users,
-                    attributes: ["id", "firstName", "lastName", "image"],
+                    attributes: ["id", "firstName", "lastName", "image"]
                 }
             ],
         });
@@ -254,6 +255,23 @@ const deleteChatMessage = async (req, res) => {
             },
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
+
+        const { file, image } = await ChatMessages.findOne({
+            where: { id: messageId }
+        })
+        if (file) {
+            const fileName = file.split("/").pop()
+            fs.unlinkSync(path.resolve(__dirname, "../../", "messageFiles", fileName), (err) => {
+                console.log(err.message);
+            })
+        }
+        if (image) {
+            const imageName = image.split("/").pop()
+            fs.unlinkSync(path.resolve(__dirname, "../../", "messageFiles", imageName), (err) => {
+                console.log(err.message);
+            })
+        }
+
         const deleteMessage = await ChatMessages.destroy({
             where: { id: messageId }
         });
@@ -273,9 +291,97 @@ const getMessageFile = (req, res) => {
     try {
         const { fileName } = req.params;
         const options = {
-            root: path.join(__dirname, "../../" , "messageFiles")
+            root: path.join(__dirname, "../../", "messageFiles")
         };
         res.sendFile(fileName, options);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error.message)
+    }
+}
+
+const getMessageNotifications = async (req, res) => {
+    try {
+        const { user_id: userId } = req.user;
+        const chats = await Chats.findAll({
+            where: {
+                [Op.or]: [{ secondId: userId }, { firstId: userId }]
+            },
+            include: [
+                {
+                    model: Users,
+                    as: "firstIds",
+                    attributes: ["id", "firstName", "lastName", "image"],
+                    where: {
+                        id: { [Op.ne]: userId }
+                    },
+                    required: false
+                },
+                {
+                    model: Users,
+                    as: "secondIds",
+                    attributes: ["id", "firstName", "lastName", "image"],
+                    where: {
+                        id: { [Op.ne]: userId }
+                    },
+                    required: false
+                },
+                {
+                    model: ChatMessages,
+                    where: {
+                        isRead: false
+                    },
+                    attributes: ["id", "text"],
+                    order: [['createdAt', 'DESC']],
+                }
+            ],
+            attributes: ["id", "firstId", "secondId"]
+        })
+
+        const chatNotification = chats.map(chat => {
+            const chatData = chat.toJSON();
+            chatData.notification = chatData.ChatMessages.length
+            chatData.lastMessage = chatData.ChatMessages[0]
+            delete chatData.ChatMessages
+            if (chatData.secondId === userId) {
+                chatData.receiver = chatData.firstIds;
+                delete chatData.firstIds;
+                delete chatData.secondIds;
+            } else {
+                chatData.receiver = chatData.secondIds;
+                delete chatData.secondIds;
+                delete chatData.firstIds;
+            }
+            return chatData;
+        });
+        const groupChatNotification = await GroupChats.findAll({
+            where: {
+                members: {
+                    [Op.contains]: [userId]
+                },
+            },
+            include: {
+                model: GroupChatReads,
+                as: "userLastSeen",
+                where: { userId },
+                attributes: ["lastSeen"],
+                required: false
+            },
+            attributes: ["id", "name", "image"]
+        })
+        for (let element of groupChatNotification) {
+            const results = await GroupChatMessages.findAll({
+                where: {
+                    groupChatId: element.id,
+                    id: { [Op.gt]: element.userLastSeen ? element.userLastSeen.lastSeen : 0 }
+                },
+                order: [['createdAt', 'DESC']],
+                attributes: ["id", "text"]
+            })
+            element.setDataValue('notification', results.length);
+            element.setDataValue('lastMessage', results[0]);
+        }
+        return res.status(200).json({ chatNotification, groupChatNotification });
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
@@ -316,5 +422,6 @@ module.exports = {
     updateChatMessage,
     deleteChatMessage,
     getMessageFile,
-    readChatMessage
+    readChatMessage,
+    getMessageNotifications
 };
