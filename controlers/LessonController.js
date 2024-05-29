@@ -396,6 +396,18 @@ const createLesson = async (req, res) => {
     } = req.body;
 
     if (req.files) {
+      const { file_en, file_ru, file_am } = req.files;
+      const fileEnType = file_en.mimetype.split('/')[1];
+      const fileNameEn = v4() + '.' + fileEnType;
+      file_en.mv(path.resolve(__dirname, '..', 'static', fileNameEn));
+
+      const fileRuType = file_en.mimetype.split('/')[1];
+      const fileNameRu = v4() + '.' + fileRuType;
+      file_ru.mv(path.resolve(__dirname, '..', 'static', fileNameRu));
+
+      const fileAmType = file_en.mimetype.split('/')[1];
+      const fileNameAm = v4() + '.' + fileAmType;
+      file_am.mv(path.resolve(__dirname, '..', 'static', fileNameAm));
 
       const { id: lessonId } = await Lesson.create({
         title_en,
@@ -409,20 +421,7 @@ const createLesson = async (req, res) => {
         htmlContent_ru,
         htmlContent_am,
       });
-
-      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", req.files)
-      const { file_en, file_ru, file_am } = req.files;
-      const fileEnType = file_en.mimetype.split('/')[1];
-      const fileNameEn = v4() + '.' + fileEnType;
-      file_en.mv(path.resolve(__dirname, '..', 'static', fileNameEn));
-
-      const fileRuType = file_en.mimetype.split('/')[1];
-      const fileNameRu = v4() + '.' + fileRuType;
-      file_ru.mv(path.resolve(__dirname, '..', 'static', fileNameRu));
-
-      const fileAmType = file_en.mimetype.split('/')[1];
-      const fileNameAm = v4() + '.' + fileAmType;
-      file_am.mv(path.resolve(__dirname, '..', 'static', fileNameAm));
+      
 
       await Presentations.create({
         title_en: presentationDescription_en,
