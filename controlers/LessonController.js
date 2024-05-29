@@ -395,20 +395,22 @@ const createLesson = async (req, res) => {
       presentationDescription_am,
     } = req.body;
 
-    const { id: lessonId } = await Lesson.create({
-      title_en,
-      title_ru,
-      title_am,
-      description_ru,
-      description_am,
-      description_en,
-      maxPoints,
-      htmlContent_en,
-      htmlContent_ru,
-      htmlContent_am,
-    });
-
     if (req.files) {
+
+      const { id: lessonId } = await Lesson.create({
+        title_en,
+        title_ru,
+        title_am,
+        description_ru,
+        description_am,
+        description_en,
+        maxPoints,
+        htmlContent_en,
+        htmlContent_ru,
+        htmlContent_am,
+      });
+
+      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", req.files)
       const { file_en, file_ru, file_am } = req.files;
       const fileEnType = file_en.mimetype.split('/')[1];
       const fileNameEn = v4() + '.' + fileEnType;
@@ -434,21 +436,23 @@ const createLesson = async (req, res) => {
         description_am: presentationDescription_am,
         lessonId,
       });
-    }
 
-    if (!isNaN(+homeworkId)) {
-      await HomeworkPerLesson.create({
-        homeworkId,
-        lessonId,
-      });
+      if (!isNaN(+homeworkId)) {
+        await HomeworkPerLesson.create({
+          homeworkId,
+          lessonId,
+        });
+      }
+      if (!isNaN(+quizzId)) {
+        await LessonsPerQuizz.create({
+          lessonId,
+          quizzId,
+        });
+      }
+      return res.status(200).json({ success: true });
+    } else {
+      res.status(400).json({ message: "You didn't specify a presentation"});
     }
-    if (!isNaN(+quizzId)) {
-      await LessonsPerQuizz.create({
-        lessonId,
-        quizzId,
-      });
-    }
-    return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
