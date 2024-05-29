@@ -569,10 +569,10 @@ const getUserCourse = async (req, res) => {
           [Op.contains]: [id],
         },
       },
-      include:[{
-        model:UserInterview,
-        attributes:['points','calendarId'],
-        where:{userId:id}
+      include: [{
+        model: UserInterview,
+        attributes: ['points', 'calendarId'],
+        where: { userId: id }
       }
       ],
       attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
@@ -637,7 +637,7 @@ const createCourse = async (req, res) => {
       priceTitle_en,
       priceTitle_ru
     } = req.body;
-console.log(price);
+    console.log(price);
     let { img, trainersImages } = req.files;
     console.log(price, discount, duration);
     const imgType = img.mimetype.split('/')[1];
@@ -1140,9 +1140,13 @@ const updateCourse = async (req, res) => {
     }
 
     const lessonIds = Array.isArray(lessons) ? lessons : [lessons];
+
     await Promise.all(
-      lessonIds.map((lessonId) =>
-        CoursesPerLessons.update({ type }, { where: { courseId, lessonId } }),
+      lessonIds.map((lessonId) => {
+        CoursesPerLessons.destroy({ where: { courseId }});
+        CoursesPerLessons.create({ type, courseId, lessonId });
+
+      }
       ),
     );
 
