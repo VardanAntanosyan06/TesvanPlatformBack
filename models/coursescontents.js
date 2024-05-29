@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   CoursesContents.init(
     {
       courseId: DataTypes.INTEGER,
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
       language: {
         type: DataTypes.STRING,
         isIn: {
@@ -29,13 +29,16 @@ module.exports = (sequelize, DataTypes) => {
       shortDescription: DataTypes.STRING,
       priceTitle: DataTypes.STRING,
       priceDescription: DataTypes.STRING,
-      duration: DataTypes.INTEGER,
-      price: DataTypes.INTEGER,
-      discount: DataTypes.INTEGER,
-      whyThisCourse: DataTypes.ARRAY(DataTypes.TEXT("long")),
+      duration: { type: DataTypes.INTEGER, allowNull: true },
+      price: { type: DataTypes.INTEGER, allowNull: true },
+      discount: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      whyThisCourse: DataTypes.ARRAY(DataTypes.TEXT('long')),
       level: DataTypes.STRING,
       levelDescriptions: DataTypes.ARRAY(DataTypes.STRING),
-      type:DataTypes.STRING
+      type: DataTypes.STRING,
     },
     {
       sequelize,

@@ -12,7 +12,7 @@ const {
   IndividualCourses,
   UserPoints,
   Calendar,
-  UserInterview
+  UserInterview,
 } = require('../models');
 
 const { CoursesContents } = require('../models');
@@ -569,11 +569,12 @@ const getUserCourse = async (req, res) => {
           [Op.contains]: [id],
         },
       },
-      include:[{
-        model:UserInterview,
-        attributes:['points','calendarId'],
-        where:{userId:id}
-      }
+      include: [
+        {
+          model: UserInterview,
+          attributes: ['points', 'calendarId'],
+          where: { userId: id },
+        },
       ],
       attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
     });
@@ -635,9 +636,9 @@ const createCourse = async (req, res) => {
       priceDescription_ru,
       priceTitle_am,
       priceTitle_en,
-      priceTitle_ru
+      priceTitle_ru,
     } = req.body;
-console.log(price);
+    console.log(price);
     let { img, trainersImages } = req.files;
     console.log(price, discount, duration);
     const imgType = img.mimetype.split('/')[1];
@@ -662,11 +663,11 @@ console.log(price);
           lessonType: req.body[`lessonType_${language}`],
           whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
           level: req.body[`level_${language}`],
-          duration,
+          duration: 0,
           priceTitle: req.body[`priceTitle_${language}`],
           priceDescription: req.body[`priceDescription_${language}`],
-          price,
-          discount
+          price: 0,
+          discount: 0,
         });
       }),
     );
