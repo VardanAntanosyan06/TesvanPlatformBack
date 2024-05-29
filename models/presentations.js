@@ -13,15 +13,15 @@ module.exports = (sequelize, DataTypes) => {
   }
   Presentations.init(
     {
-      title_en: DataTypes.STRING,
-      title_ru: DataTypes.STRING,
-      title_am: DataTypes.STRING,
-      url_en: DataTypes.STRING,
-      url_ru: DataTypes.STRING,
-      url_am: DataTypes.STRING,
-      description_en: DataTypes.STRING,
-      description_ru: DataTypes.STRING,
-      description_am: DataTypes.STRING,
+      title_en: DataTypes.TEXT('long'),
+      title_ru: DataTypes.TEXT('long'),
+      title_am: DataTypes.TEXT('long'),
+      url_en: DataTypes.TEXT('long'),
+      url_ru: DataTypes.TEXT('long'),
+      url_am: DataTypes.TEXT('long'),
+      description_en: DataTypes.TEXT('long'),
+      description_ru: DataTypes.TEXT('long'),
+      description_am: DataTypes.TEXT('long'),
       lessonId: DataTypes.INTEGER,
     },
     {

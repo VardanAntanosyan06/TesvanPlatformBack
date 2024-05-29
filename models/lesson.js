@@ -55,8 +55,8 @@ module.exports = (sequelize, DataTypes) => {
 
   Lesson.belongsToMany(Quizz, {
     through: LessonsPerQuizz,
-    foreignKey: 'quizzId',
-    otherKey: 'lessonId',
+    foreignKey: 'lessonId',
+    otherKey: 'quizzId',
     as: 'quizz',
   });
 
