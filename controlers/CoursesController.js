@@ -639,7 +639,7 @@ const createCourse = async (req, res) => {
     } = req.body;
     console.log(price);
     let { img, trainersImages } = req.files;
-    console.log(price, discount, duration);
+    
     const imgType = img.mimetype.split('/')[1];
     const imgFileName = v4() + '.' + imgType;
     img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
@@ -662,15 +662,15 @@ const createCourse = async (req, res) => {
           lessonType: req.body[`lessonType_${language}`],
           whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
           level: req.body[`level_${language}`],
-          duration,
-          priceTitle: req.body[`priceTitle_${language}`],
-          priceDescription: req.body[`priceDescription_${language}`],
-          price,
-          discount
+          duration: duration? duration: null,
+          priceTitle: req.body[`priceTitle_${language}`]? req.body[`priceTitle_${language}`]: null,
+          priceDescription: req.body[`priceDescription_${language}`]? req.body[`priceDescription_${language}`]: null,
+          price: price? price: null,
+          discount: discount? discount: null
         });
       }),
     );
-    if (quizzId !== 'undefined') {
+    if(quizzId !== 'undefined') {
       await CoursesPerQuizz.create({
         quizzId,
         courseId,
