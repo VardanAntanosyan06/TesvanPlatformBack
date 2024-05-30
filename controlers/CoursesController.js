@@ -662,7 +662,7 @@ const createCourse = async (req, res) => {
           lessonType: req.body[`lessonType_${language}`],
           whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
           level: req.body[`level_${language}`],
-          duration: duration? duration: null,
+          duration: req.body[`duration_${language}`]? req.body[`duration_${language}`]: null,
           priceTitle: req.body[`priceTitle_${language}`]? req.body[`priceTitle_${language}`]: null,
           priceDescription: req.body[`priceDescription_${language}`]? req.body[`priceDescription_${language}`]: null,
           price: price? price: null,
