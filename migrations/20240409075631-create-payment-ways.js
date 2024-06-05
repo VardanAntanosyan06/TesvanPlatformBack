@@ -31,7 +31,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       discount: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       groupId: {
         type: Sequelize.INTEGER,

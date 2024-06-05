@@ -38,7 +38,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       sale: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       createdAt: {
         allowNull: false,

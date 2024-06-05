@@ -249,6 +249,45 @@ const buy = async (req, res) => {
     return res.status(500).json({ message: 'Something Went Wrong' });
   }
 };
+
+
+const IdramPayment = async (req, res) => {
+  try {
+    let { authorization: token } = req.headers;
+    if (token) {
+      token = token.replace("Bearer ", "");
+      let User = await Users.findOne({
+        attributes: ["id", "phoneNumber"],
+        where: { token },
+      });
+      if (User) {
+        await SubscribtionPayment.destroy({
+          where: {
+            userId: User.id,
+          },
+        });
+        const { id } = await SubscribtionPayment.create({
+          userId: User.id,
+          endDate: new Date(),
+          paymentWay: "Idram",
+        });
+
+        return res.json({ success: true, id });
+      }
+      return res.status(401).json({ message: "User not found" });
+    }
+    return res
+      .status(401)
+      .json({ success: false, message: "Token cannot be empty" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Something went wrong." });
+  }
+};
+
+
 module.exports = {
   payUrl,
   buy,

@@ -12,6 +12,7 @@ router.post('/testing', checkAuth(['ADMIN']), controller.RegisterTesting);
 router.post('/addUser', checkAuth(['ADMIN']), controller.AddMember);
 router.get('/getMembers', checkAuth(['ADMIN']), controller.getMembers);
 router.get('/getMember/:id', checkAuth(['ADMIN']), controller.getMember);
+router.patch('/changeEmail/', checkAuth(['ADMIN', 'TEACHER', 'STUDENT']), controller.changeEmail);
 
 router.patch('/editMembers/:id', checkAuth(['ADMIN']), controller.editMember);
 router.delete('/deleteAccount/', checkAuth(['ADMIN', 'TEACHER', 'STUDENT']), controller.deleteAccount);
