@@ -141,7 +141,7 @@ const UserRegistartionSendEmail = async (req, res) => {
       });
     })();
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true,token:User.token });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -613,7 +613,7 @@ const changeEmail = async (req, res) => {
       });
     })();
 
-    return res.json({ success: true });
+    return res.json({ success: true,token:User.token });
   } catch (error) {
     if (error.name == "SequelizeValidationError") {
       return res.status(403).json({ message: error.message });
