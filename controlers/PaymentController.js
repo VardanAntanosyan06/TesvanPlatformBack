@@ -287,8 +287,75 @@ const IdramPayment = async (req, res) => {
   }
 };
 
+const ConfirmIdram = async (request, res) => {
+  const SECRET_KEY = process.env.IDRAM_PASSWORD;
+  const EDP_REC_ACCOUNT = process.env.IDRAM_ID;
+  request = request.body;
+
+  if (
+    typeof request.EDP_PRECHECK !== "undefined" &&
+    typeof request.EDP_BILL_NO !== "undefined" &&
+    typeof request.EDP_REC_ACCOUNT !== "undefined" &&
+    typeof request.EDP_AMOUNT !== "undefined"
+  ) {
+    if (request.EDP_PRECHECK === "YES") {
+      if (request.EDP_REC_ACCOUNT === EDP_REC_ACCOUNT) {
+        const bill_no = request.EDP_BILL_NO;
+        return res.send("OK");
+      }
+    }
+  }
+
+  if (
+    typeof request.EDP_PAYER_ACCOUNT !== "undefined" &&
+    typeof request.EDP_BILL_NO !== "undefined" &&
+    typeof request.EDP_REC_ACCOUNT !== "undefined" &&
+    typeof request.EDP_AMOUNT !== "undefined" &&
+    typeof request.EDP_TRANS_ID !== "undefined" &&
+    typeof request.EDP_CHECKSUM !== "undefined"
+  ) {
+    const txtToHash =
+      EDP_REC_ACCOUNT +
+      ":" +
+      request.EDP_AMOUNT +
+      ":" +
+      SECRET_KEY +
+      ":" +
+      request.EDP_BILL_NO +
+      ":" +
+      request.EDP_PAYER_ACCOUNT +
+      ":" +
+      request.EDP_TRANS_ID +
+      ":" +
+      request.EDP_TRANS_DATE;
+
+    if (
+      request.EDP_CHECKSUM.toUpperCase() !==
+      CryptoJS.MD5(txtToHash).toString().toUpperCase()
+    ) {
+      return res.send("Error");
+    } else {
+      const amount = request.EDP_AMOUNT;
+      if (amount > 0) {
+        let currentDate = new Date();
+        currentDate.setFullYear(currentDate.getFullYear() + 1);
+        currentDate = currentDate.toISOString();
+        // let UserSubscribtionPayment = await SubscribtionPayment.findOne({
+        //   where: { id: request.EDP_BILL_NO },
+        // });
+        console.log(currentDate,"ALLLL WAS OKAY",SECRET_KEY,EDP_REC_ACCOUNT,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        // UserSubscribtionPayment.endDate = currentDate;
+        // UserSubscribtionPayment.save();
+        return res.send("OK");
+        // }
+      }
+    }
+  }
+  return res.send("OK");
+};
 
 module.exports = {
   payUrl,
   buy,
+  ConfirmIdram
 };
