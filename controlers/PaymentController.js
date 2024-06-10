@@ -17,6 +17,7 @@ const {
   Users,
   HomeworkPerLesson
 } = require('../models');
+var CryptoJS = require("crypto-js");
 
 const sequelize = require('sequelize');
 const payUrl = async (req, res) => {
@@ -336,6 +337,7 @@ const ConfirmIdram = async (request, res) => {
       return res.send("Error");
     } else {
       const amount = request.EDP_AMOUNT;
+      console.log(amount,"-----------********************************************--------------------------*");
       if (amount > 0) {
         let currentDate = new Date();
         currentDate.setFullYear(currentDate.getFullYear() + 1);
