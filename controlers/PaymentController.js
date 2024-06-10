@@ -292,7 +292,7 @@ const ConfirmIdram = async (request, res) => {
   const SECRET_KEY = process.env.IDRAM_PASSWORD;
   const EDP_REC_ACCOUNT = process.env.IDRAM_ID;
   request = request.body;
-  console.log("start");
+  console.log("start",request);
   if (
     typeof request.EDP_PRECHECK !== "undefined" &&
     typeof request.EDP_BILL_NO !== "undefined" &&
@@ -329,7 +329,7 @@ const ConfirmIdram = async (request, res) => {
       request.EDP_TRANS_ID +
       ":" +
       request.EDP_TRANS_DATE;
-
+    console.log(request.EDP_CHECKSUM,txtToHash,"2222222222222222222222222222222222222222222222");
     if (
       request.EDP_CHECKSUM.toUpperCase() !==
       CryptoJS.MD5(txtToHash).toString().toUpperCase()
