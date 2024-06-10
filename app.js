@@ -84,7 +84,7 @@ app.use('/api/v2/chatMessage', ChatMessageRouter);
 app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
 app.use('/api/v2/interview', interviewRouter);
 
-router.post("/payment/configidram", paymentController.ConfirmIdram);
+app.use(router.post("/payment/configidram", paymentController.ConfirmIdram))
 
 const port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
