@@ -316,11 +316,11 @@ const ConfirmIdram = async (request, res) => {
     typeof request.EDP_CHECKSUM !== "undefined"
   ) {
     const txtToHash =
-      EDP_REC_ACCOUNT +
+      request.EDP_REC_ACCOUNT +
       ":" +
       request.EDP_AMOUNT +
       ":" +
-      SECRET_KEY +
+      "SECRET_KEY" +
       ":" +
       request.EDP_BILL_NO +
       ":" +
@@ -334,6 +334,7 @@ const ConfirmIdram = async (request, res) => {
       request.EDP_CHECKSUM.toUpperCase() !==
       CryptoJS.MD5(txtToHash).toString().toUpperCase()
     ) {
+      console.log("was errored","::::::::::::::::::::::::::::");
       return res.send("Error");
     } else {
       const amount = request.EDP_AMOUNT;
