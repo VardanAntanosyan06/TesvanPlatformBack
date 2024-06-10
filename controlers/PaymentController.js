@@ -299,16 +299,18 @@ const ConfirmIdram = async (request, res) => {
       return res.send("Error");
     } else {
       const amount = request.EDP_AMOUNT;
+      console.log(request.EDP_BILL_NO);
       if (amount > 0) {
         let currentDate = new Date();
         currentDate.setFullYear(currentDate.getFullYear() + 1);
         currentDate = currentDate.toISOString();
         let payment = await Payment.findOne({
-          where: { orderKey: request.EDP_BILL_NO },
+          where: { orderNumber: request.EDP_BILL_NO },
         });
         if (!payment)
           return res.status(400).json({ success: false, message: 'Payment does not exist' });
-        payment.status = paymentResponse.errorMessage;
+
+        payment.status = "Success";
     
         payment.save();
   
@@ -382,7 +384,7 @@ const ConfirmIdram = async (request, res) => {
             UserHomework.create({
               GroupCourseId: group.assignCourseId,
               UserId:payment.userId,
-              HomeworkId: lesson.homework[0].id,
+              HomeworkId: lesson.homework[0].id ? lesson.homework[0].id :null,
               points: 0,
             })
           })
@@ -480,6 +482,7 @@ const ConfirmIdram = async (request, res) => {
   }
   return res.send("OK");
 };
+}
 
 module.exports = {
   payUrl,
