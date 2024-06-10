@@ -10,7 +10,7 @@ router.post(
   controller.payUrl
 );
 
-router.post("/confirmIdram", controller.ConfirmIdram);
+router.post("/configidram", controller.ConfirmIdram);
 router.post("/buy", controller.buy);
 
 module.exports = router;

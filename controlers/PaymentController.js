@@ -291,7 +291,7 @@ const ConfirmIdram = async (request, res) => {
   const SECRET_KEY = process.env.IDRAM_PASSWORD;
   const EDP_REC_ACCOUNT = process.env.IDRAM_ID;
   request = request.body;
-
+  console.log("start");
   if (
     typeof request.EDP_PRECHECK !== "undefined" &&
     typeof request.EDP_BILL_NO !== "undefined" &&
@@ -351,6 +351,7 @@ const ConfirmIdram = async (request, res) => {
       }
     }
   }
+  console.log("end");
   return res.send("OK");
 };
 
