@@ -265,251 +265,252 @@ const buy = async (req, res) => {
   }
 };
 
-const ConfirmIdram = async (request, res) => {
+const ConfirmIdram = async (req, res) => {
   const SECRET_KEY = process.env.IDRAM_PASSWORD;
   const EDP_REC_ACCOUNT = process.env.IDRAM_ID;
-  request = request.body;
-  if (
-    typeof request.EDP_PRECHECK !== "undefined" &&
-    typeof request.EDP_BILL_NO !== "undefined" &&
-    typeof request.EDP_REC_ACCOUNT !== "undefined" &&
-    typeof request.EDP_AMOUNT !== "undefined"
-  ) {
-    if (request.EDP_PRECHECK === "YES") {
-      if (request.EDP_REC_ACCOUNT === EDP_REC_ACCOUNT) {
-        const bill_no = request.EDP_BILL_NO;
-        return res.send("OK");
-      }
-    }
-  }
+  const request = req.body;
 
-  if (
-    typeof request.EDP_PAYER_ACCOUNT !== "undefined" &&
-    typeof request.EDP_BILL_NO !== "undefined" &&
-    typeof request.EDP_REC_ACCOUNT !== "undefined" &&
-    typeof request.EDP_AMOUNT !== "undefined" &&
-    typeof request.EDP_TRANS_ID !== "undefined" &&
-    typeof request.EDP_CHECKSUM !== "undefined"
-  ) {
-    const txtToHash =
-      EDP_REC_ACCOUNT +
-      ":" +
-      request.EDP_AMOUNT +
-      ":" +
-      SECRET_KEY +
-      ":" +
-      request.EDP_BILL_NO +
-      ":" +
-      request.EDP_PAYER_ACCOUNT +
-      ":" +
-      request.EDP_TRANS_ID +
-      ":" +
-      request.EDP_TRANS_DATE;
-
+  try {
     if (
-      request.EDP_CHECKSUM.toUpperCase() !==
-      CryptoJS.MD5(txtToHash).toString().toUpperCase()
+      typeof request.EDP_PRECHECK !== "undefined" &&
+      typeof request.EDP_BILL_NO !== "undefined" &&
+      typeof request.EDP_REC_ACCOUNT !== "undefined" &&
+      typeof request.EDP_AMOUNT !== "undefined"
     ) {
-      return res.send("Error");
-    } else {
-      const amount = request.EDP_AMOUNT;
-      console.log(request.EDP_BILL_NO);
-      if (amount > 0) {
-        let currentDate = new Date();
-        currentDate.setFullYear(currentDate.getFullYear() + 1);
-        currentDate = currentDate.toISOString();
-        let payment = await Payment.findOne({
-          where: { orderNumber: request.EDP_BILL_NO },
-        });
-        if (!payment)
-          return res
-            .status(400)
-            .json({ success: false, message: "Payment does not exist" });
-
-        payment.status = "Success";
-
-        payment.save();
-
-        if (payment.type == "Group") {
-          const user = await Users.findOne({ where: { id: payment.userId } });
-          const group = await Groups.findByPk(payment.groupId);
-          if (!group) {
-            return res.json({ success: false, message: "Group not found" });
-          }
-
-          if (!user) {
-            return res.status(404).json({ message: "User not found" });
-          }
-          const { role } = await Users.findByPk(payment.userId);
-          await GroupsPerUsers.findOrCreate({
-            where: {
-              groupId: payment.groupId,
-              userId: payment.userId,
-            },
-            defaults: {
-              groupId: payment.groupId,
-              userId: payment.userId,
-              userRole: role,
-            },
-          });
-
-          await UserCourses.create({
-            GroupCourseId: group.assignCourseId,
-
-            UserId: payment.userId,
-          });
-          const lessons = await CoursesPerLessons.findAll({
-            where: { courseId: group.assignCourseId },
-          });
-          await UserPoints.findOrCreate({
-            where: {
-              userId: payment.userId,
-            },
-            defaults: {
-              userId: payment.userId,
-              lesson: 0,
-              quizz: 0,
-              finalInterview: 0,
-            },
-          });
-          lessons.map((e) => {
-            UserLesson.create({
-              GroupCourseId: group.assignCourseId,
-              UserId: payment.userId,
-              LessonId: e.lessonId,
-            });
-          });
-
-          const Course = await GroupCourses.findOne({
-            where: { id: group.assignCourseId },
-            include: [
-              {
-                model: Lesson,
-                include: [
-                  {
-                    model: Homework,
-                    as: "homework",
-                  },
-                ],
-                required: true,
-              },
-            ],
-          });
-
-          Course.Lessons.forEach((lesson) => {
-            if (lesson.homework.length > 0) {
-              UserHomework.create({
-                GroupCourseId: group.assignCourseId,
-                UserId: payment.userId,
-                HomeworkId: lesson.homework[0].id,
-                points: 0,
-              });
-            }
-            
-          });
-          const boughtTests = await Tests.findAll({
-            where: {
-              [sequelize.Op.or]: [
-                { courseId: group.assignCourseId },
-                { courseId: null },
-              ],
-            },
-          });
-
-          boughtTests.map((test) => {
-            UserTests.findOrCreate({
-              where: {
-                testId: test.id,
-                userId: payment.userId,
-                courseId: test.courseId,
-                language: test.language,
-                type: "Group",
-              },
-              defaults: {
-                testId: test.id,
-                userId: payment.userId,
-              },
-            });
-          });
-
-          const groupChats = await GroupChats.findOne({
-            where: { groupId: payment.groupId },
-          });
-          const newMembers = [payment.userId, ...groupChats.members];
-          const uniqueUsers = [...new Set(newMembers)];
-          groupChats.members = uniqueUsers;
-
-          await groupChats.save();
-
-          res.send({ success: true });
-        } else if (payment.type == "Individual") {
-          const user = await Users.findOne({ where: { id: payment.userId } });
-          const course = await GroupCourses.findByPk(payment.groupId);
-          if (!course) {
-            return res
-              .status(404)
-              .json({ success: false, message: "Course not found" });
-          }
-
-          if (!user) {
-            return res.status(404).json({ message: "User not found" });
-          }
-          await UserCourses.create({
-            GroupCourseId: payment.groupId,
-            UserId: payment.userId,
-          });
-          const lessons = await CoursesPerLessons.findAll({
-            where: { courseId: payment.groupId },
-          });
-          await UserPoints.findOrCreate({
-            where: {
-              userId: payment.userId,
-            },
-            defaults: {
-              userId: payment.userId,
-              lesson: 0,
-              quizz: 0,
-              finalInterview: 0,
-            },
-          });
-          lessons.map((e) => {
-            UserLesson.create({
-              GroupCourseId: payment.groupId,
-              UserId: payment.userId,
-              LessonId: e.lessonId,
-            });
-          });
-
-          const boughtTests = await Tests.findAll({
-            where: {
-              [sequelize.Op.or]: [
-                { courseId: payment.groupId },
-                { courseId: null },
-              ],
-            },
-          });
-
-          boughtTests.map((test) => {
-            UserTests.findOrCreate({
-              where: {
-                testId: test.id,
-                userId: payment.userId,
-                courseId: test.courseId,
-                language: test.language,
-                type: "Group",
-              },
-              defaults: {
-                testId: test.id,
-                userId: payment.userId,
-              },
-            });
-          });
+      if (request.EDP_PRECHECK === "YES") {
+        if (request.EDP_REC_ACCOUNT === EDP_REC_ACCOUNT) {
+          const bill_no = request.EDP_BILL_NO;
+          res.send("OK");
         }
       }
     }
-    return res.send("OK");
+
+    if (
+      typeof request.EDP_PAYER_ACCOUNT !== "undefined" &&
+      typeof request.EDP_BILL_NO !== "undefined" &&
+      typeof request.EDP_REC_ACCOUNT !== "undefined" &&
+      typeof request.EDP_AMOUNT !== "undefined" &&
+      typeof request.EDP_TRANS_ID !== "undefined" &&
+      typeof request.EDP_CHECKSUM !== "undefined"
+    ) {
+      const txtToHash =
+        EDP_REC_ACCOUNT +
+        ":" +
+        request.EDP_AMOUNT +
+        ":" +
+        SECRET_KEY +
+        ":" +
+        request.EDP_BILL_NO +
+        ":" +
+        request.EDP_PAYER_ACCOUNT +
+        ":" +
+        request.EDP_TRANS_ID +
+        ":" +
+        request.EDP_TRANS_DATE;
+
+      if (
+        request.EDP_CHECKSUM.toUpperCase() !==
+        CryptoJS.MD5(txtToHash).toString().toUpperCase()
+      ) {
+        res.send("Error");
+      } else {
+        const amount = request.EDP_AMOUNT;
+        console.log(request.EDP_BILL_NO);
+        if (amount > 0) {
+          let currentDate = new Date();
+          currentDate.setFullYear(currentDate.getFullYear() + 1);
+          currentDate = currentDate.toISOString();
+          let payment = await Payment.findOne({
+            where: { orderNumber: request.EDP_BILL_NO },
+          });
+          if (!payment) {
+            return res.status(400).json({ success: false, message: "Payment does not exist" });
+          }
+
+          payment.status = "Success";
+          await payment.save();
+
+          if (payment.type === "Group") {
+            const user = await Users.findOne({ where: { id: payment.userId } });
+            const group = await Groups.findByPk(payment.groupId);
+            if (!group) {
+              return res.json({ success: false, message: "Group not found" });
+            }
+
+            if (!user) {
+              return res.status(404).json({ message: "User not found" });
+            }
+            const { role } = await Users.findByPk(payment.userId);
+            await GroupsPerUsers.findOrCreate({
+              where: {
+                groupId: payment.groupId,
+                userId: payment.userId,
+              },
+              defaults: {
+                groupId: payment.groupId,
+                userId: payment.userId,
+                userRole: role,
+              },
+            });
+
+            await UserCourses.create({
+              GroupCourseId: group.assignCourseId,
+              UserId: payment.userId,
+            });
+            const lessons = await CoursesPerLessons.findAll({
+              where: { courseId: group.assignCourseId },
+            });
+            await UserPoints.findOrCreate({
+              where: {
+                userId: payment.userId,
+              },
+              defaults: {
+                userId: payment.userId,
+                lesson: 0,
+                quizz: 0,
+                finalInterview: 0,
+              },
+            });
+            lessons.forEach(async (e) => {
+              await UserLesson.create({
+                GroupCourseId: group.assignCourseId,
+                UserId: payment.userId,
+                LessonId: e.lessonId,
+              });
+            });
+
+            const Course = await GroupCourses.findOne({
+              where: { id: group.assignCourseId },
+              include: [
+                {
+                  model: Lesson,
+                  include: [
+                    {
+                      model: Homework,
+                      as: "homework",
+                    },
+                  ],
+                  required: true,
+                },
+              ],
+            });
+
+            Course.Lessons.forEach(async (lesson) => {
+              if (lesson.homework.length > 0) {
+                await UserHomework.create({
+                  GroupCourseId: group.assignCourseId,
+                  UserId: payment.userId,
+                  HomeworkId: lesson.homework[0].id,
+                  points: 0,
+                });
+              }
+            });
+
+            const boughtTests = await Tests.findAll({
+              where: {
+                [sequelize.Op.or]: [
+                  { courseId: group.assignCourseId },
+                  { courseId: null },
+                ],
+              },
+            });
+
+            boughtTests.forEach(async (test) => {
+              await UserTests.findOrCreate({
+                where: {
+                  testId: test.id,
+                  userId: payment.userId,
+                  courseId: test.courseId,
+                  language: test.language,
+                  type: "Group",
+                },
+                defaults: {
+                  testId: test.id,
+                  userId: payment.userId,
+                },
+              });
+            });
+
+            const groupChats = await GroupChats.findOne({
+              where: { groupId: payment.groupId },
+            });
+            const newMembers = [payment.userId, ...groupChats.members];
+            const uniqueUsers = [...new Set(newMembers)];
+            groupChats.members = uniqueUsers;
+
+            await groupChats.save();
+
+          } else if (payment.type === "Individual") {
+            const user = await Users.findOne({ where: { id: payment.userId } });
+            const course = await GroupCourses.findByPk(payment.groupId);
+            if (!course) {
+              return res.status(404).json({ success: false, message: "Course not found" });
+            }
+
+            if (!user) {
+              return res.status(404).json({ message: "User not found" });
+            }
+            await UserCourses.create({
+              GroupCourseId: payment.groupId,
+              UserId: payment.userId,
+            });
+            const lessons = await CoursesPerLessons.findAll({
+              where: { courseId: payment.groupId },
+            });
+            await UserPoints.findOrCreate({
+              where: {
+                userId: payment.userId,
+              },
+              defaults: {
+                userId: payment.userId,
+                lesson: 0,
+                quizz: 0,
+                finalInterview: 0,
+              },
+            });
+            lessons.forEach(async (e) => {
+              await UserLesson.create({
+                GroupCourseId: payment.groupId,
+                UserId: payment.userId,
+                LessonId: e.lessonId,
+              });
+            });
+
+            const boughtTests = await Tests.findAll({
+              where: {
+                [sequelize.Op.or]: [
+                  { courseId: payment.groupId },
+                  { courseId: null },
+                ],
+              },
+            });
+
+            boughtTests.forEach(async (test) => {
+              await UserTests.findOrCreate({
+                where: {
+                  testId: test.id,
+                  userId: payment.userId,
+                  courseId: test.courseId,
+                  language: test.language,
+                  type: "Group",
+                },
+                defaults: {
+                  testId: test.id,
+                  userId: payment.userId,
+                },
+              });
+            });
+          }
+        }
+      }
+      return res.send("OK");
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Internal Server Error");
   }
 };
+
 
 module.exports = {
   payUrl,
