@@ -316,11 +316,11 @@ const ConfirmIdram = async (request, res) => {
     typeof request.EDP_CHECKSUM !== "undefined"
   ) {
     const txtToHash =
-      request.EDP_REC_ACCOUNT +
+      EDP_REC_ACCOUNT +
       ":" +
       request.EDP_AMOUNT +
       ":" +
-      "SECRET_KEY" +
+      SECRET_KEY +
       ":" +
       request.EDP_BILL_NO +
       ":" +
@@ -330,6 +330,8 @@ const ConfirmIdram = async (request, res) => {
       ":" +
       request.EDP_TRANS_DATE;
     console.log(request.EDP_CHECKSUM,txtToHash,"2222222222222222222222222222222222222222222222");
+    console.log(request.EDP_CHECKSUM.toUpperCase() !==
+    CryptoJS.MD5(txtToHash).toString().toUpperCase());
     if (
       request.EDP_CHECKSUM.toUpperCase() !==
       CryptoJS.MD5(txtToHash).toString().toUpperCase()
