@@ -12,5 +12,5 @@ router.post(
 
 router.post("/configidram", controller.ConfirmIdram);
 router.post("/buy", controller.buy);
-
+  
 module.exports = router;
