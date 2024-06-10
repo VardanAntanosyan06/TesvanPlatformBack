@@ -12,6 +12,7 @@ const jwt = require('jsonwebtoken');
 
 var indexRouter = require('./routes/index');
 const swaggerDocument = require('./swagger.json');
+const paymentController = require("./controlers/PaymentController")
 var groupCoursesRouter = require('./routes/GroupCourses');
 var CommentsRouter = require('./routes/Comments');
 var RegisterRouter = require('./routes/Register');
@@ -35,6 +36,8 @@ var GroupChatRouter = require('./routes/GroupChat');
 var GroupChatMessageRouter = require('./routes/GroupChatMessage');
 var interviewRouter = require('./routes/Interview');
 var app = express();
+var express = require('express');
+var router = express.Router();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -80,6 +83,8 @@ app.use('/api/v2/groupChat', GroupChatRouter);
 app.use('/api/v2/chatMessage', ChatMessageRouter);
 app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
 app.use('/api/v2/interview', interviewRouter);
+
+router.post("/payment/configidram", paymentController.ConfirmIdram);
 
 const port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
