@@ -46,7 +46,7 @@ const payUrl = async (req, res) => {
       type,
     });
     console.log(paymentResponse);
-    return res.json({ success: true, formUrl: paymentResponse.formUrl });
+    return res.json({ success: true, formUrl: paymentResponse.formUrl,id:orderNumber });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something Went Wrong' });
@@ -251,48 +251,10 @@ const buy = async (req, res) => {
   }
 };
 
-
-const IdramPayment = async (req, res) => {
-  try {
-    let { authorization: token } = req.headers;
-    if (token) {
-      token = token.replace("Bearer ", "");
-      let User = await Users.findOne({
-        attributes: ["id", "phoneNumber"],
-        where: { token },
-      });
-      if (User) {
-        await SubscribtionPayment.destroy({
-          where: {
-            userId: User.id,
-          },
-        });
-        const { id } = await SubscribtionPayment.create({
-          userId: User.id,
-          endDate: new Date(),
-          paymentWay: "Idram",
-        });
-
-        return res.json({ success: true, id });
-      }
-      return res.status(401).json({ message: "User not found" });
-    }
-    return res
-      .status(401)
-      .json({ success: false, message: "Token cannot be empty" });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, message: "Something went wrong." });
-  }
-};
-
 const ConfirmIdram = async (request, res) => {
   const SECRET_KEY = process.env.IDRAM_PASSWORD;
   const EDP_REC_ACCOUNT = process.env.IDRAM_ID;
   request = request.body;
-  console.log("start",request);
   if (
     typeof request.EDP_PRECHECK !== "undefined" &&
     typeof request.EDP_BILL_NO !== "undefined" &&
@@ -329,18 +291,14 @@ const ConfirmIdram = async (request, res) => {
       request.EDP_TRANS_ID +
       ":" +
       request.EDP_TRANS_DATE;
-    console.log(request.EDP_CHECKSUM,txtToHash,"2222222222222222222222222222222222222222222222");
-    console.log(request.EDP_CHECKSUM.toUpperCase() !==
-    CryptoJS.MD5(txtToHash).toString().toUpperCase());
+
     if (
       request.EDP_CHECKSUM.toUpperCase() !==
       CryptoJS.MD5(txtToHash).toString().toUpperCase()
     ) {
-      console.log("was errored","::::::::::::::::::::::::::::");
       return res.send("Error");
     } else {
       const amount = request.EDP_AMOUNT;
-      console.log(amount,"-----------********************************************--------------------------*");
       if (amount > 0) {
         let currentDate = new Date();
         currentDate.setFullYear(currentDate.getFullYear() + 1);
@@ -348,15 +306,12 @@ const ConfirmIdram = async (request, res) => {
         // let UserSubscribtionPayment = await SubscribtionPayment.findOne({
         //   where: { id: request.EDP_BILL_NO },
         // });
-        console.log(currentDate,"ALLLL WAS OKAY",SECRET_KEY,EDP_REC_ACCOUNT,"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         // UserSubscribtionPayment.endDate = currentDate;
         // UserSubscribtionPayment.save();
-        return res.send("OK");
         // }
       }
     }
   }
-  console.log("end");
   return res.send("OK");
 };
 
