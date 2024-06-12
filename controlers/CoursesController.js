@@ -1019,8 +1019,9 @@ const getOneGroup = async (req, res) => {
     Courses = Courses.toJSON();
     delete Courses.dataValues;
     // return res.json({Courses})
+    console.log(Courses);
     Courses = {
-      title: Courses.name,
+      title: Courses[`name_${language}`],
       courseType: Courses.GroupCourse.CoursesContents[0].courseType,
       lessonType: Courses.GroupCourse.CoursesContents[0].lessonType,
       level: Courses.GroupCourse.CoursesContents[0].level,
@@ -1037,6 +1038,8 @@ const getOneGroup = async (req, res) => {
       sale: discount,
       saledValue: price > 0 ? price - Math.round(price * discount) / 100 : price,
     };
+
+    
     return res.status(200).json(Courses);
   } catch (error) {
     console.log(error);

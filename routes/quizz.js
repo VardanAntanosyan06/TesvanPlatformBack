@@ -8,6 +8,7 @@ router.post("/createQuizz", checkAuth(["TEACHER", "ADMIN"]), controller.createQu
 router.get("/getAll", checkAuth(["TEACHER", "ADMIN"]), controller.getAll);
 
 router.post("/getUserAnswers/",  checkAuth(["STUDENT","TEACHER"]),controller.getUserAnswers);
+router.get("/getQuizzesAdmin/:id",  checkAuth(["ADMIN"]),controller.getQuizzesAdmin);
 router.get("/getQuizzes/:id",  checkAuth(["STUDENT","TEACHER", "ADMIN"]),controller.getQuizzes);
 router.post("/submitQuizz", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.submitQuizz);
 router.post("/finishQuizz", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.finishQuizz);
