@@ -103,35 +103,39 @@ app.set('io', io);
 const { userSockets } = require("./userSockets") // Assuming you have a Map for user sockets
 const socketController = require("./controlers/Chat/socketController")
 
-// io.on('connection', (socket) => {
-//   try {
-//     const token = socket?.handshake?.query?.token;
-//     if (token) {
-//       const decoded = jwt.verify(token, process.env.SECRET);
-//       console.log(decoded);
-//       if (decoded.role) {
-//         const userId = decoded.user_id;
-//           userSockets.set(userId, socket);
-//           console.log(`${userId} Connected`)
-//       }
-//     }
-//   } catch (e) {
-//     // console.error('Socket connection error:', e);
-//     socket.disconnect();
-//   }
+io.on('connection', (socket) => {
 
-//   socketController.typing(io, socket)
-//   socketController.stopTyping(io, socket)
-//   socketController.typingGroup(io, socket)
-//   socketController.stopTypingGroup(io, socket)
+  const token = socket?.handshake?.query?.token;
+  if (token) {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    if (decoded) {
+      const userId = decoded.user_id;
+      userSockets.set(userId, socket);
+      console.log(`${userId} Connected`)
+    } else {
+      socket.disconnect();
+    }
+  }
 
+  socketController.typing(io, socket)
+  socketController.stopTyping(io, socket)
+  socketController.typingGroup(io, socket)
+  socketController.stopTypingGroup(io, socket)
 
-//   socket.on('disconnect', () => {
-//     const userId = getUserIdForSocket(socket);
-//     userId && userSockets.delete(userId);
-//   });
-// });
+  socket.on('disconnect', () => {
+    const userId = getUserIdForSocket(socket);
+    userId && userSockets.delete(userId);
+  });
+});
 
+function getUserIdForSocket(socket) {
+  for (const [userId, userSocket] of userSockets.entries()) {
+    if (userSocket === socket) {
+      return userId;
+    }
+  }
+  return null;
+}
 function getUserIdForSocket(socket) {
   for (const [userId, userSocket] of userSockets.entries()) {
     if (userSocket === socket) {
