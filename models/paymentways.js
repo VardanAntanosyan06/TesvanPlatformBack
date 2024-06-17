@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     description_am: DataTypes.STRING,
     price: DataTypes.INTEGER,
     groupId: DataTypes.INTEGER,
-    discount:DataTypes.INTEGER
+    discount:DataTypes.FLOAT
   }, {
     sequelize,
     modelName: 'PaymentWays',

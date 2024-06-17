@@ -278,7 +278,104 @@ const getQuizzesAdmin = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+const getQuizzesAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { language } = req.query;
 
+    let quizz = await Quizz.findOne({
+      where: { id },
+      attributes: [
+        'id',
+        'title_am',
+        'title_ru',
+        'description_ru',
+        'description_am',
+
+        'time',
+        'title_en',
+        'description_en',
+      ],
+      include: [
+        {
+          model: Question,
+          attributes: [
+            'id',
+            'quizzId',
+            [`title_${language}`, 'title'],
+            'title_ru',
+            'title_en',
+            'title_am',
+          ],
+          include: {
+            model: Option,
+            attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am','isCorrect'],
+            required: true,
+          },
+        },
+      ],
+    });
+
+    if (!quizz)
+      return res.status(403).json({
+        success: false,
+        message: `with ID ${id} Quizz not found`,
+      });
+
+    const questions_en = [];
+    const questions_ru = [];
+    const questions_am = [];
+
+    quizz.Questions.map((question) => {
+      const options_en = question.Options.map((e) => {
+        return {
+          title_en: e.title_en,
+          isCorrect_en: e.isCorrect,
+        };
+      });
+      questions_en.push({
+        question_en: question.title_en,
+        options_en: options_en,
+      });
+    });
+    quizz.Questions.map((question) => {
+      const options_ru = question.Options.map((e) => {
+        return {
+          title_ru: e.title_ru,
+          isCorrect_ru: e.isCorrect,
+        };
+      });
+      questions_ru.push({
+        question_ru: question.title_ru,
+        options_ru: options_ru,
+      });
+    });
+
+    quizz.Questions.map((question) => {
+      const options_am = question.Options.map((e) => {
+        return {
+          title_am: e.title_am,
+          isCorrect_am: e.isCorrect,
+        };
+      });
+      questions_am.push({
+        question_am: question.title_am,
+        options_am: options_am,
+      });
+    });
+    quizz = {
+      ...quizz.dataValues,
+      questions_en,
+      questions_ru,
+      questions_am,
+    };
+
+    return res.status(200).json({ success: true, quizz });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
 const submitQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
@@ -598,4 +695,5 @@ module.exports = {
   getUserAnswers,
   deleteQuizz,
   updateQuizz,
+  getQuizzesAdmin
 };

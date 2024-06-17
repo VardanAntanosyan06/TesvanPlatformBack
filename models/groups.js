@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       startDate: DataTypes.DATE,
       endDate: DataTypes.DATE,
       price: DataTypes.INTEGER,
-      sale: DataTypes.INTEGER,
+      sale: DataTypes.FLOAT,
     },
     {
       sequelize,
