@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       shortDescription: DataTypes.STRING,
       priceTitle: DataTypes.STRING,
       priceDescription: DataTypes.STRING,
-      duration: DataTypes.INTEGER,
+      duration: DataTypes.STRING,
       price: DataTypes.INTEGER,
       discount: DataTypes.INTEGER,
       whyThisCourse: DataTypes.ARRAY(DataTypes.TEXT("long")),

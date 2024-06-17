@@ -640,7 +640,7 @@ const createCourse = async (req, res) => {
     } = req.body;
     console.log(price);
     let { img, trainersImages } = req.files;
-    console.log(price, discount, duration);
+    
     const imgType = img.mimetype.split('/')[1];
     const imgFileName = v4() + '.' + imgType;
     img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
@@ -663,15 +663,15 @@ const createCourse = async (req, res) => {
           lessonType: req.body[`lessonType_${language}`],
           whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
           level: req.body[`level_${language}`],
-          duration,
-          priceTitle: req.body[`priceTitle_${language}`],
-          priceDescription: req.body[`priceDescription_${language}`],
-          price,
-          discount
+          duration: req.body[`duration_${language}`]? req.body[`duration_${language}`]: null,
+          priceTitle: req.body[`priceTitle_${language}`]? req.body[`priceTitle_${language}`]: null,
+          priceDescription: req.body[`priceDescription_${language}`]? req.body[`priceDescription_${language}`]: null,
+          price: price? price: null,
+          discount: discount? discount: null
         });
       }),
     );
-    if (quizzId !== 'undefined') {
+    if(quizzId !== 'undefined') {
       await CoursesPerQuizz.create({
         quizzId,
         courseId,
@@ -1289,6 +1289,17 @@ const getCourseForAdmin = async (req, res) => {
       shortDescription_ru: course.CoursesContents[2].shortDescription,
       courseType: course.CoursesContents[0].courseType,
       lessonType: course.CoursesContents[0].lessonType,
+      priceTitle_en: course.CoursesContents[0].priceTitle,
+      priceTitle_am: course.CoursesContents[1].priceTitle,
+      priceTitle_ru: course.CoursesContents[2].priceTitle,
+      priceDescription_en: course.CoursesContents[0].priceDescription,
+      priceDescription_am: course.CoursesContents[1].priceDescription,
+      priceDescription_ru: course.CoursesContents[2].priceDescription,
+      duration_en: course.CoursesContents[0].duration,
+      duration_am: course.CoursesContents[1].duration,
+      duration_ru: course.CoursesContents[2].duration,
+      price: course.CoursesContents[0].price,
+      discount: course.CoursesContents[0].discount,
       whyThisCourse_en: course.CoursesContents[0].whyThisCourse,
       level: course.CoursesContents[0].level,
       title_am: course.CoursesContents[1].title,
