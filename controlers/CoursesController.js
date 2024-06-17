@@ -251,11 +251,12 @@ const getOne = async (req, res) => {
         {
           model: Lesson,
           attributes: [
+            'id',
             [`title_${language}`, 'title'],
             [`description_${language}`, 'description'],
           ],
           through: {
-            attributes: [],
+            attributes: ['id'],
           },
         },
       ],
@@ -265,7 +266,7 @@ const getOne = async (req, res) => {
       return res.status(500).json({ message: 'Course not found.' });
       // return res.json(groups)
     }
-
+    course.Lessons = course.Lessons.sort((a,b)=>a.CoursesPerLessons.id-b.CoursesPerLessons.id) 
     const lessonsCount = await CoursesPerLessons.count({
       where: { courseId: id },
     });
@@ -731,6 +732,213 @@ const createCourse = async (req, res) => {
   }
 };
 
+const getCoursesByFilter = async (req, res) => {
+  try {
+    let {
+      level,
+      minPrice = 0,
+      maxPrice = 1000000000000000,
+      format,
+      isDiscount,
+      language,
+      limit = null,
+      order = 'popularity',
+      courseType,
+    } = req.query;
+
+    format = format.split('_');
+    level = level.split('_');
+    if (!['en', 'ru', 'am'].includes(language)) {
+      return res.status(403).json({ message: 'The language must be am, ru, or en.' });
+    }
+    if (!['popularity', 'newest', 'lowToHigh', 'highToLow'].includes(order)) {
+      return res.status(403).json({
+        message: 'The Order must be popularity or newest lowToHigh or highToLow.',
+      });
+    }
+    if (!(level && format && language))
+      return res.status(403).json({
+        message: 'level, format, isDiscount and language is requred values',
+      });
+
+    let type = { [Op.gte]: 0 };
+    if (isDiscount === 'true') {
+      type = { [Op.gt]: 0 };
+    }
+
+    const months = { am: 'ամիս', ru: 'месяц', en: 'months' };
+    const days = { am: 'օր', ru: 'день', en: 'days' };
+    const orderTypes = {
+      popularity: ['bought', 'DESC'],
+      newest: ['createdAt', 'DESC'],
+    };
+
+    const levels = {};
+    const getLevels = await Levels.findAll({
+      attributes: [language, 'slug'],
+    });
+    getLevels.map((e) => {
+      levels[e.slug] = e[language];
+    });
+
+    const formats = {};
+    const getFormats = await Format.findAll({
+      attributes: [language, 'slug'],
+    });
+    getFormats.map((e) => {
+      formats[e.slug] = e[language];
+    });
+
+    const groups = {};
+    const getGroups = await CourseType.findAll({
+      attributes: [language, 'slug'],
+    });
+    getGroups.map((e) => {
+      groups[e.slug] = e[language];
+    });
+    let Courses = await Groups.findAll({
+      where: {
+        sale: type,
+        finished: false,
+      },
+      include: [
+        {
+          model: GroupsPerUsers,
+          where: { userRole: 'STUDENT' },
+          required: false,
+        },
+        {
+          model: GroupCourses,
+          required: true,
+          include: [
+            {
+              model: CoursesContents,
+              required: true,
+
+              where: {
+                language,
+                level: {
+                  [Op.in]: level,
+                },
+                lessonType: {
+                  [Op.in]: format,
+                },
+              },
+              attributes: { exclude: ['id', 'language', 'courseId'] },
+              include: [Levels],
+            },
+          ],
+        },
+      ],
+      // order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
+      limit,
+      attributes: ['id', [`name_${language}`, 'title'], 'startDate', 'endDate', 'price', 'sale'],
+      require: true,
+    });
+    console.log(Courses);
+    let Individual = await CoursesContents.findAll({
+      where: {
+        courseType: 'Individual',
+        courseId: {
+          [Op.not]: null,
+        },
+        language,
+        level: {
+          [Op.in]: level,
+        },
+        lessonType: {
+          [Op.in]: format,
+        },
+      },
+    });
+
+    // return res.json({Individual})
+    const criticalPrices = await Groups.findOne({
+      attributes: [
+        [sequelize.fn('min', sequelize.col('price')), 'minPrice'],
+        [sequelize.fn('max', sequelize.col('price')), 'maxPrice'],
+      ],
+    });
+    Courses = Courses.map((e) => {
+      e = e.toJSON();
+      delete e.dataValues;
+
+      e.img = `https://platform.tesvan.com/server/${e.GroupCourse.img}`;
+      e.description = e.GroupCourse.CoursesContents[0].description;
+      e.courseType = e.GroupCourse.CoursesContents[0].courseType;
+      e.lessonType = e.GroupCourse.CoursesContents[0].lessonType;
+      e.level = e.GroupCourse.CoursesContents[0].level;
+      e.courseStartDate = moment(e.startDate).format('ll');
+      (e.courseDate =
+        moment(new Date(e.endDate)).diff(new Date(e.startDate), 'months') > 0
+          ? moment(e.endDate).diff(new Date(e.startDate), 'months') + ' ' + months[language]
+          : moment(e.endDate).diff(new Date(e.startDate), 'days') + ' ' + days[language]),
+        (e.price = e.price);
+      (e.saledValue = e.price > 0 ? e.price - Math.round(e.price * e.sale) / 100 : e.price),
+        (e.bought = e.GroupsPerUsers.length);
+      delete e.GroupCourse;
+      return e;
+    });
+
+    if (order === 'highToLow') Courses = Courses.sort((a, b) => b.saledValue - a.saledValue);
+    if (order === 'popularity') Courses = Courses.sort((a, b) => b.bought - a.bought);
+    if (order === 'newest') Courses = Courses.sort((a, b) => b.courseStartDate - a.courseStartDate);
+    if (order === 'lowToHigh') Courses = Courses.sort((a, b) => a.saledValue - b.saledValue);
+    Courses = Courses.filter((e) => e.saledValue >= minPrice && e.saledValue <= maxPrice);
+
+    // if (courseType === 'Individual') {
+    //   return res.status(200).send(IndividualCourses);
+    // }
+    // if (courseType === 'Group') {
+    //   return res.status(200).send(GroupCourses);
+    // }
+    // let course = {
+    //   ...IndividualCourses,
+    //   ...GroupCourses,
+    // };
+    // <<<<<<< Updated upstream
+
+    //     return res.status(200).json({ Courses, criticalPrices });
+    // =======
+    //     // return res.json({Individual})
+    Individual = Individual.map((e) => {
+      e = e.toJSON();
+      delete e.dataValues;
+      return {
+        id: e.courseId,
+        title: e.title,
+        // startDate: "2024-04-15T20:00:00.000Z",
+        // endDate: "2024-04-29T20:00:00.000Z",
+        price: 80,
+        sale: 1,
+        // courseStartDate: "Apr 16, 2024",
+        courseDate: '1 month',
+        saledValue: 1,
+        bought: 0,
+        img: `https://platform.tesvan.com/server/${e.img}`,
+        description: e.description,
+        courseType: e.courseType,
+        lessonType: e.lessonType,
+        level: e.level,
+      };
+    });
+
+    if (courseType == 'Group') {
+      return res.status(200).json({ Courses, criticalPrices });
+    } else if (courseType == 'Individual') {
+      console.log('++++');
+      return res.status(200).json({ Courses: Individual, criticalPrices });
+    } else {
+      Courses = [...Courses, ...Individual];
+      return res.status(200).json({ Courses, criticalPrices });
+    }
+    // >>>>>>> Stashed changes
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
 const getOneGroup = async (req, res) => {
   try {
     let { id, priceId, language } = req.query;
@@ -812,8 +1020,9 @@ const getOneGroup = async (req, res) => {
     Courses = Courses.toJSON();
     delete Courses.dataValues;
     // return res.json({Courses})
+    console.log(Courses);
     Courses = {
-      title: Courses.name,
+      title: Courses[`name_${language}`],
       courseType: Courses.GroupCourse.CoursesContents[0].courseType,
       lessonType: Courses.GroupCourse.CoursesContents[0].lessonType,
       level: Courses.GroupCourse.CoursesContents[0].level,
@@ -830,6 +1039,8 @@ const getOneGroup = async (req, res) => {
       sale: discount,
       saledValue: price > 0 ? price - Math.round(price * discount) / 100 : price,
     };
+
+    
     return res.status(200).json(Courses);
   } catch (error) {
     console.log(error);
@@ -957,7 +1168,7 @@ const updateCourse = async (req, res) => {
       await Trainer.create({
         fullName_en: e.fullName_en,
         fullName_ru: e.fullName_ru,
-        fullName_am: e.fullName_en,
+        fullName_am: e.fullName_am,
         img: trainersImages[i],
         profession_en: e.profession_en,
         profession_ru: e.profession_ru,
@@ -1046,6 +1257,9 @@ const getCourseForAdmin = async (req, res) => {
         {
           model: Lesson,
           attributes: ['id', [`title_en`, 'title'], ['description_en', 'description']],
+          through: {
+            attributes: ['id'],
+          },
         },
         {
           model: Quizz,
@@ -1057,16 +1271,13 @@ const getCourseForAdmin = async (req, res) => {
     });
 
     if (!course) return res.json({ success: false, message: 'Course not found' });
-
+    console.log(course.Lessons);
     const trainers = await Trainer.findAll({
       where: { courseId: id },
       // attributes: ['fullName', 'img', 'profession'],
     });
 
-    course.Lesson = course.Lessons.map((e) => {
-      delete e.dataValues.CoursesPerLessons;
-      return e;
-    });
+    course.Lesson = course.Lessons.sort((a,b)=>a.CoursesPerLessons.id-b.CoursesPerLessons.id) 
 
     course = {
       id: course.id,
