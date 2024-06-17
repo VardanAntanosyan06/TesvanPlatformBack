@@ -251,11 +251,12 @@ const getOne = async (req, res) => {
         {
           model: Lesson,
           attributes: [
+            'id',
             [`title_${language}`, 'title'],
             [`description_${language}`, 'description'],
           ],
           through: {
-            attributes: [],
+            attributes: ['id'],
           },
         },
       ],
@@ -265,7 +266,7 @@ const getOne = async (req, res) => {
       return res.status(500).json({ message: 'Course not found.' });
       // return res.json(groups)
     }
-
+    course.Lessons = course.Lessons.sort((a,b)=>a.CoursesPerLessons.id-b.CoursesPerLessons.id) 
     const lessonsCount = await CoursesPerLessons.count({
       where: { courseId: id },
     });
@@ -698,7 +699,7 @@ const createCourse = async (req, res) => {
       await Trainer.create({
         fullName_en: e.fullName_en,
         fullName_ru: e.fullName_en,
-        fullName_am: e.fullName_en,
+        fullName_am: e.fullName_am,
         img: fileName,
         profession_en: e.profession_en,
         profession_ru: e.profession_ru,
@@ -1167,7 +1168,7 @@ const updateCourse = async (req, res) => {
       await Trainer.create({
         fullName_en: e.fullName_en,
         fullName_ru: e.fullName_ru,
-        fullName_am: e.fullName_en,
+        fullName_am: e.fullName_am,
         img: trainersImages[i],
         profession_en: e.profession_en,
         profession_ru: e.profession_ru,
