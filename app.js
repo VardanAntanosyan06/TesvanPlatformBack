@@ -107,17 +107,13 @@ io.on('connection', (socket) => {
   try {
     const token = socket?.handshake?.query?.token;
     if (token) {
-      jwt.verify(token, process.env.SECRET, (err, decoded) => {
-        if (err) {
-          console.error('Token verification error:', err);
-
-          socket.disconnect();
-        } else {
-          const userId = decoded.user_id;
+      const decoded = jwt.verify(token, process.env.SECRET);
+      console.log(decoded);
+      if (decoded.role) {
+        const userId = decoded.user_id;
           userSockets.set(userId, socket);
-          console.log(`${userId} Connected`);
-        }
-      });
+          console.log(`${userId} Connected`)
+      }
     } else {
       socket.disconnect();
     }
