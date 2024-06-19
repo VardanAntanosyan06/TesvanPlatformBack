@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const Question = sequelize.define('Question');
-  Option.belongsTo(Question, { foreignKey: 'id' });
+  Option.belongsTo(Question, { foreignKey: 'id' , onDelete: 'cascade'});
 
   return Option;
 };
