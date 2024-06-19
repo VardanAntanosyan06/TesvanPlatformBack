@@ -15,6 +15,7 @@ const {
 
 const createQuizz = async (req, res) => {
   try {
+
     const {
       title_en,
       title_ru,
@@ -26,10 +27,9 @@ const createQuizz = async (req, res) => {
       courseId,
       time,
       percent,
-      questions_en,
-      questions_ru,
-      questions_am,
+      questions,
     } = req.body;
+
 
     let { id: quizzId } = await Quizz.create({
       title_en,
@@ -42,27 +42,26 @@ const createQuizz = async (req, res) => {
       percent,
     });
 
-    questions_en.map((question, i) => {
+
+    questions.map((question, i) => {
+      console.log(question.title_en, question.title_am);
       Question.create({
-        title_en: question.question_en,
-        title_ru: questions_ru[i].question_ru,
-        title_am: questions_am[i].question_am,
+        title_en: question.title_en,
+        title_ru: question.title_ru,
+        title_am: question.title_am,
         quizzId,
       }).then((data) => {
         question.options.map((option, optionIndex) => {
-          console.log(questions_ru[i].options[optionIndex]);
           Option.create({
-            title_en: option.option_en,
-            title_ru: questions_ru[i].options[optionIndex].option_ru,
-            title_am: questions_am[i].options[optionIndex].option_am,
-            isCorrect: option.isCorrect_en,
+            title_en: option.title_en,
+            title_ru: option.title_ru,
+            title_am: option.title_am,
+            isCorrect: option.isCorrect,
             questionId: data.id,
           });
         });
-        // console.log(question);
       });
     });
-
     if (lessonId) {
       await LessonsPerQuizz.create({
         quizzId,
@@ -72,13 +71,13 @@ const createQuizz = async (req, res) => {
       await CoursesPerQuizz.create({
         quizzId,
         courseId,
-        type: 'Group',
+        type: "Group",
       });
     }
-    res.status(200).json({ success: true });
+    return res.status(200).json({ success: true });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    console.log(error.message);
+    return res.status(500).json({ message: "Something went wrong." });
   }
 };
 
