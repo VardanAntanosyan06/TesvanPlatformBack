@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
   Question.belongsTo(Quizz, { foreignKey: 'id' });
 
   const Option = sequelize.define('Option');
-  Question.hasMany(Option, { foreignKey: 'questionId' });
+  Question.hasMany(Option, { foreignKey: 'questionId', onDelete: 'cascade' });
 
   return Question;
 };
