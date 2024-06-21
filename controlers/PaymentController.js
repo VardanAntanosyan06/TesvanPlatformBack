@@ -265,7 +265,7 @@ const buy = async (req, res) => {
   }
 };
 
-const `ConfirmIdram` = async (req, res) => {
+const ConfirmIdram = async (req, res) => {
   const SECRET_KEY = process.env.IDRAM_PASSWORD;
   const EDP_REC_ACCOUNT = process.env.IDRAM_ID;
   const request = req.body;
