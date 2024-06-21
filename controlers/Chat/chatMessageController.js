@@ -13,7 +13,6 @@ const createChatMessage = async (req, res) => {
         const image = req.files?.image;
         const file = req.files?.file;
         const io = req.io;
-        const getFilePath = path.resolve(__dirname, "../../", "messageFiles")
 
         const chat = await Chats.findOne({
             where: {
@@ -47,14 +46,12 @@ const createChatMessage = async (req, res) => {
             });
         }
 
-        console.log(__dirname);
-
         const { id } = await ChatMessages.create({
             chatId,
             senderId: userId,
             text,
-            image: imageName ? getFilePath + "/" + imageName : null,
-            file: fileName ? getFilePath + "/" + fileName : null
+            image: imageName ? imageName : null,
+            file: fileName ? fileName : null
         })
         const message = await ChatMessages.findOne({
             where: {
