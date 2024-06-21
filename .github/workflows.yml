@@ -20,4 +20,4 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no vardan@164.92.203.21 'cd TesvanPlatformBack && git pull && pm2 restart 1'
+          ssh -o StrictHostKeyChecking=no vardan@164.92.203.21 'cd ~/TesvanPlatformBack && git pull && pm2 restart 1'
