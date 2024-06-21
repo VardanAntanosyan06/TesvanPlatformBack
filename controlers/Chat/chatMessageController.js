@@ -13,19 +13,7 @@ const createChatMessage = async (req, res) => {
         const image = req.files?.image;
         const file = req.files?.file;
         const io = req.io;
-        const getFilePath = "api/v2/chatMessage/getMessageFile/"
-
-        let imageName
-        let fileName
-        if (image) {
-            const type = image.mimetype.split("/")[1];
-            imageName = uuid.v4() + "." + type;
-            image.mv(path.resolve(__dirname, "../../", "messageFiles", imageName));
-        } else if (file) {
-            const type = file.mimetype.split("/")[1];
-            fileName = uuid.v4() + "." + type;
-            file.mv(path.resolve(__dirname, "../../", "messageFiles", fileName));
-        }
+        const getFilePath = path.resolve(__dirname, "../../", "messageFiles")
 
         const chat = await Chats.findOne({
             where: {
@@ -34,12 +22,39 @@ const createChatMessage = async (req, res) => {
             },
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
+
+        let imageName
+        let fileName
+        if (image) {
+            const type = image.mimetype.split("/")[1];
+            imageName = uuid.v4() + "." + type;
+            image.mv(path.resolve(__dirname, "../../", "messageFiles", imageName), (err) => {
+                if (err) {
+                    console.error("Failed to move image:", err.message);
+                } else {
+                    console.log("Image successfully saved");
+                }
+            });
+        } else if (file) {
+            const type = file.mimetype.split("/")[1];
+            fileName = uuid.v4() + "." + type;
+            file.mv(path.resolve(__dirname, "../../", "messageFiles", fileName), (err) => {
+                if (err) {
+                    console.error("Failed to move file:", err.message);
+                } else {
+                    console.log("File successfully saved");
+                }
+            });
+        }
+
+        console.log(__dirname);
+
         const { id } = await ChatMessages.create({
             chatId,
             senderId: userId,
             text,
-            image: imageName ? getFilePath + imageName : null,
-            file: fileName ? getFilePath + fileName : null
+            image: imageName ? getFilePath + "/" + imageName : null,
+            file: fileName ? getFilePath + "/" + fileName : null
         })
         const message = await ChatMessages.findOne({
             where: {
