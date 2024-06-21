@@ -12,7 +12,6 @@ const createGroupChatMessage = async (req, res) => {
         const image = req.files?.image;
         const file = req.files?.file;
         const io = req.io;
-        const getFilePath = path.resolve(__dirname, "../../", "messageFiles")
 
         const groupChats = await GroupChats.findOne({
             where: {
@@ -52,8 +51,8 @@ const createGroupChatMessage = async (req, res) => {
             groupChatId: chatId,
             senderId: userId,
             text,
-            image: imageName ? getFilePath + "/" + imageName : null,
-            file: fileName ? getFilePath + "/" + fileName : null
+            image: imageName ? imageName : null,
+            file: fileName ? fileName : null
         })
         const messages = await GroupChatMessages.findOne({
             where: {
