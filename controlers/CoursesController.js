@@ -251,11 +251,12 @@ const getOne = async (req, res) => {
         {
           model: Lesson,
           attributes: [
+            'id',
             [`title_${language}`, 'title'],
             [`description_${language}`, 'description'],
           ],
           through: {
-            attributes: [],
+            attributes: ['id'],
           },
         },
       ],
@@ -265,7 +266,7 @@ const getOne = async (req, res) => {
       return res.status(500).json({ message: 'Course not found.' });
       // return res.json(groups)
     }
-
+    course.Lessons = course.Lessons.sort((a,b)=>a.CoursesPerLessons.id-b.CoursesPerLessons.id) 
     const lessonsCount = await CoursesPerLessons.count({
       where: { courseId: id },
     });
@@ -569,12 +570,20 @@ const getUserCourse = async (req, res) => {
           [Op.contains]: [id],
         },
       },
+<<<<<<< HEAD
       include: [
         {
           model: UserInterview,
           attributes: ['points', 'calendarId'],
           where: { userId: id },
         },
+=======
+      include: [{
+        model: UserInterview,
+        attributes: ['points', 'calendarId'],
+        where: { userId: id }
+      }
+>>>>>>> b7420bd5a94117a8b5fa81cc8526aa6b8c3c5304
       ],
       attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
     });
@@ -640,7 +649,7 @@ const createCourse = async (req, res) => {
     } = req.body;
     console.log(price);
     let { img, trainersImages } = req.files;
-    console.log(price, discount, duration);
+    
     const imgType = img.mimetype.split('/')[1];
     const imgFileName = v4() + '.' + imgType;
     img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
@@ -663,15 +672,23 @@ const createCourse = async (req, res) => {
           lessonType: req.body[`lessonType_${language}`],
           whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
           level: req.body[`level_${language}`],
+<<<<<<< HEAD
           duration: 0,
           priceTitle: req.body[`priceTitle_${language}`],
           priceDescription: req.body[`priceDescription_${language}`],
           price: 0,
           discount: 0,
+=======
+          duration: req.body[`duration_${language}`]? req.body[`duration_${language}`]: null,
+          priceTitle: req.body[`priceTitle_${language}`]? req.body[`priceTitle_${language}`]: null,
+          priceDescription: req.body[`priceDescription_${language}`]? req.body[`priceDescription_${language}`]: null,
+          price: price? price: null,
+          discount: discount? discount: null
+>>>>>>> b7420bd5a94117a8b5fa81cc8526aa6b8c3c5304
         });
       }),
     );
-    if (quizzId !== 'undefined') {
+    if(quizzId !== 'undefined') {
       await CoursesPerQuizz.create({
         quizzId,
         courseId,
@@ -699,7 +716,7 @@ const createCourse = async (req, res) => {
       await Trainer.create({
         fullName_en: e.fullName_en,
         fullName_ru: e.fullName_en,
-        fullName_am: e.fullName_en,
+        fullName_am: e.fullName_am,
         img: fileName,
         profession_en: e.profession_en,
         profession_ru: e.profession_ru,
@@ -1020,8 +1037,9 @@ const getOneGroup = async (req, res) => {
     Courses = Courses.toJSON();
     delete Courses.dataValues;
     // return res.json({Courses})
+    console.log(Courses);
     Courses = {
-      title: Courses.name,
+      title: Courses[`name_${language}`],
       courseType: Courses.GroupCourse.CoursesContents[0].courseType,
       lessonType: Courses.GroupCourse.CoursesContents[0].lessonType,
       level: Courses.GroupCourse.CoursesContents[0].level,
@@ -1038,6 +1056,8 @@ const getOneGroup = async (req, res) => {
       sale: discount,
       saledValue: price > 0 ? price - Math.round(price * discount) / 100 : price,
     };
+
+    
     return res.status(200).json(Courses);
   } catch (error) {
     console.log(error);
@@ -1141,9 +1161,13 @@ const updateCourse = async (req, res) => {
     }
 
     const lessonIds = Array.isArray(lessons) ? lessons : [lessons];
+
     await Promise.all(
-      lessonIds.map((lessonId) =>
-        CoursesPerLessons.update({ type }, { where: { courseId, lessonId } }),
+      lessonIds.map((lessonId) => {
+        CoursesPerLessons.destroy({ where: { courseId }});
+        CoursesPerLessons.create({ type, courseId, lessonId });
+
+      }
       ),
     );
 
@@ -1161,7 +1185,7 @@ const updateCourse = async (req, res) => {
       await Trainer.create({
         fullName_en: e.fullName_en,
         fullName_ru: e.fullName_ru,
-        fullName_am: e.fullName_en,
+        fullName_am: e.fullName_am,
         img: trainersImages[i],
         profession_en: e.profession_en,
         profession_ru: e.profession_ru,
@@ -1250,6 +1274,9 @@ const getCourseForAdmin = async (req, res) => {
         {
           model: Lesson,
           attributes: ['id', [`title_en`, 'title'], ['description_en', 'description']],
+          through: {
+            attributes: ['id'],
+          },
         },
         {
           model: Quizz,
@@ -1261,16 +1288,13 @@ const getCourseForAdmin = async (req, res) => {
     });
 
     if (!course) return res.json({ success: false, message: 'Course not found' });
-
+    console.log(course.Lessons);
     const trainers = await Trainer.findAll({
       where: { courseId: id },
       // attributes: ['fullName', 'img', 'profession'],
     });
 
-    course.Lesson = course.Lessons.map((e) => {
-      delete e.dataValues.CoursesPerLessons;
-      return e;
-    });
+    course.Lesson = course.Lessons.sort((a,b)=>a.CoursesPerLessons.id-b.CoursesPerLessons.id) 
 
     course = {
       id: course.id,
@@ -1282,6 +1306,17 @@ const getCourseForAdmin = async (req, res) => {
       shortDescription_ru: course.CoursesContents[2].shortDescription,
       courseType: course.CoursesContents[0].courseType,
       lessonType: course.CoursesContents[0].lessonType,
+      priceTitle_en: course.CoursesContents[0].priceTitle,
+      priceTitle_am: course.CoursesContents[1].priceTitle,
+      priceTitle_ru: course.CoursesContents[2].priceTitle,
+      priceDescription_en: course.CoursesContents[0].priceDescription,
+      priceDescription_am: course.CoursesContents[1].priceDescription,
+      priceDescription_ru: course.CoursesContents[2].priceDescription,
+      duration_en: course.CoursesContents[0].duration,
+      duration_am: course.CoursesContents[1].duration,
+      duration_ru: course.CoursesContents[2].duration,
+      price: course.CoursesContents[0].price,
+      discount: course.CoursesContents[0].discount,
       whyThisCourse_en: course.CoursesContents[0].whyThisCourse,
       level: course.CoursesContents[0].level,
       title_am: course.CoursesContents[1].title,

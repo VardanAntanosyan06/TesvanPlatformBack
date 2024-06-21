@@ -12,6 +12,7 @@ const jwt = require('jsonwebtoken');
 
 var indexRouter = require('./routes/index');
 const swaggerDocument = require('./swagger.json');
+const paymentController = require("./controlers/PaymentController")
 var groupCoursesRouter = require('./routes/GroupCourses');
 var CommentsRouter = require('./routes/Comments');
 var RegisterRouter = require('./routes/Register');
@@ -35,6 +36,8 @@ var GroupChatRouter = require('./routes/GroupChat');
 var GroupChatMessageRouter = require('./routes/GroupChatMessage');
 var interviewRouter = require('./routes/Interview');
 var app = express();
+var express = require('express');
+var router = express.Router();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -81,6 +84,8 @@ app.use('/api/v2/chatMessage', ChatMessageRouter);
 app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
 app.use('/api/v2/interview', interviewRouter);
 
+app.use(router.post("/payment/configidram", paymentController.ConfirmIdram))
+
 const port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
@@ -99,26 +104,17 @@ const { userSockets } = require("./userSockets") // Assuming you have a Map for 
 const socketController = require("./controlers/Chat/socketController")
 
 io.on('connection', (socket) => {
-  try {
-    const token = socket?.handshake?.query?.token;
-    if (token) {
-      jwt.verify(token, process.env.SECRET, (err, decoded) => {
-        if (err) {
-          console.error('Token verification error:', err);
 
-          socket.disconnect();
-        } else {
-          const userId = decoded.user_id;
-          userSockets.set(userId, socket);
-          console.log(`${userId} Connected`);
-        }
-      });
+  const token = socket?.handshake?.query?.token;
+  if (token) {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    if (decoded) {
+      const userId = decoded.user_id;
+      userSockets.set(userId, socket);
+      console.log(`${userId} Connected`)
     } else {
       socket.disconnect();
     }
-  } catch (e) {
-    console.error('Socket connection error:', e);
-    socket.disconnect();
   }
 
   socketController.typing(io, socket)
@@ -126,13 +122,20 @@ io.on('connection', (socket) => {
   socketController.typingGroup(io, socket)
   socketController.stopTypingGroup(io, socket)
 
-
   socket.on('disconnect', () => {
     const userId = getUserIdForSocket(socket);
     userId && userSockets.delete(userId);
   });
 });
 
+function getUserIdForSocket(socket) {
+  for (const [userId, userSocket] of userSockets.entries()) {
+    if (userSocket === socket) {
+      return userId;
+    }
+  }
+  return null;
+}
 function getUserIdForSocket(socket) {
   for (const [userId, userSocket] of userSockets.entries()) {
     if (userSocket === socket) {

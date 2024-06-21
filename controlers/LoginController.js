@@ -28,7 +28,7 @@ const LoginUsers = async (req, res) => {
     });
 
     if (User && !User.isVerified) {
-      return res.status(200).json({ isVerified: false });
+      return res.status(401).json({ isVerified: false });
     }
 
     if (User && User.isVerified && (await bcrypt.compare(password, User.password))) {

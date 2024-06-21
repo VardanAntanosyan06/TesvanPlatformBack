@@ -118,7 +118,7 @@ const UserRegistartionSendEmail = async (req, res) => {
               
               <div style="width: 70%">
                 <h1 style="font-style: normal; font-weight: 600; font-size: 32px; line-height: 48px;">Please verify your email address.</h1>
-                <p style="font-style: normal; font-size: 20px; text-align: left;">In order to complete your registration and start preparing for college admissions, you'll need to verify your email address.</p>
+                <p style="font-style: normal; font-size: 20px; text-align: left;">“In order to complete your registration and start your learning journey, please verify your email address.</p>
                 <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email} as the email address for your account. Please verify this email address by clicking the button below.</p>
                 <a href="https://platform.tesvan.com/verify?token=${User.token}" style="text-decoration:none">
                   <div style="width: 130px; height: 40px; background: #FFC038; border-radius: 5px; border:none; font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #143E59; cursor:pointer; padding:7px; box-sizing:border-box;">Verify</div>
@@ -141,7 +141,7 @@ const UserRegistartionSendEmail = async (req, res) => {
       });
     })();
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true,token:User.token });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -471,7 +471,9 @@ const deleteAccount = async (req, res) => {
 
       return res.json({ success: true });
     }
-    return res.json({ success: false, message: "Password is wrong" });
+    return res
+      .status(403)
+      .json({ success: false, message: "Password is wrong" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -550,6 +552,78 @@ const RegisterTesting = async (req, res) => {
     }
   }
 };
+
+const changeEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const { user_id: userId } = req.user;
+
+    const User = await Users.findOne({ where: { id: userId } });
+
+    User.email = email;
+    User.token = jwt.sign(
+      { user_id: User.id, email, role: User.role },
+      process.env.SECRET
+    );
+    User.tokenCreatedAt = moment();
+    await User.save();
+
+    (function () {
+      const data = {
+        from: "verification@tesvan.com",
+        to: email,
+        subject: "Verify your email address",
+        html: `<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Document</title>
+            <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+          </head>
+          <body>
+            <center style="height:1000px;">
+              <h1 style="font-style: normal; font-weight: 600; font-size: 32px; line-height: 48px;">Welcome to Tesvan Platform</h1>
+  
+              <img src='https://platform.tesvan.com/server/messageIcon.png' alt="" style="width:185px;" />
+              
+              <div style="width: 70%">
+                <h1 style="font-style: normal; font-weight: 600; font-size: 32px; line-height: 48px;">Please verify your email address.</h1>
+                <p style="font-style: normal; font-size: 20px; text-align: left;">“In order to complete your registration and start your learning journey, please verify your email address.</p>
+                <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email} as the email address for your account. Please verify this email address by clicking the button below.</p>
+                <a href="https://platform.tesvan.com/verify?token=${User.token}" style="text-decoration:none">
+                  <div style="width: 130px; height: 40px; background: #FFC038; border-radius: 5px; border:none; font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #143E59; cursor:pointer; padding:7px; box-sizing:border-box;">Verify</div>
+                </a>
+              </div>
+              <div style="width: 70%; margin-top: 30px; border-top: 1px solid #d4d4d4; border-bottom: 1px solid #d4d4d4;">
+                <p style="font-size: 20px; line-height: 30px;text-align:left;">If the button is not working, please use the link below:
+                  <a href="https://platform.tesvan.com/verify?token=${User.token}" style="color: #425dac; text-align:left; font-size:18px;">https://platform.tesvan.com/verify?token=${User.token}</a>
+                </p>
+              </div>
+              <div style="width: 70%; margin-top: 25px; margin-bottom: 25px; border-top: 1px solid #d4d4d4; border-bottom: 1px solid #d4d4d4;">
+                <p style="display:flex; font-weight: 500; font-size: 18px; line-height: 27px; color: #646464; text-align: left;">Regards,</p>
+                <div style="display:flex;">
+                  <img src="https://platform.tesvan.com/server/Frame.png" alt="" width="50px" />`,
+      };
+
+      mailgun.messages().send(data, (error, body) => {
+        if (error) console.log(error);
+        else console.log(body);
+      });
+    })();
+
+    return res.json({ success: true,token:User.token });
+  } catch (error) {
+    if (error.name == "SequelizeValidationError") {
+      return res.status(403).json({ message: error.message });
+    } else if (error.name == "SequelizeUniqueConstraintError") {
+      return res.status(403).json({ message: error.message });
+    } else {
+      return res.status(500).json({ message: "Something went wrong." });
+    }
+  }
+};
 module.exports = {
   UserRegistartion,
   UserRegistartionSendEmail,
@@ -563,4 +637,5 @@ module.exports = {
   deleteMembers,
   editImage,
   RegisterTesting,
+  changeEmail,
 };
