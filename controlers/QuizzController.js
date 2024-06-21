@@ -211,7 +211,7 @@ const getQuizzesAdmin = async (req, res) => {
           ],
           include: {
             model: Option,
-            attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am','isCorrect'],
+            attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am', 'isCorrect'],
             required: true,
           },
         },
@@ -347,7 +347,7 @@ const finishQuizz = async (req, res) => {
         (Math.round(
           ((correctAnswers.length - new Set(correctAnswers).size) /
             Math.ceil(correctAnswers.length / 2)) *
-            100,
+          100,
         ) *
           (10 / 2)) /
         100;
@@ -416,7 +416,7 @@ const finishQuizz = async (req, res) => {
       (Math.round(
         ((correctAnswers.length - new Set(correctAnswers).size) /
           Math.ceil(correctAnswers.length / 2)) *
-          100,
+        100,
       ) *
         (maxPoints / 2)) /
       100;
@@ -490,8 +490,8 @@ const deleteQuizz = async (req, res) => {
 
 const updateQuizz = async (req, res) => {
   try {
+    const id = req.params.id
     const {
-      id,
       title_en,
       title_ru,
       title_am,
@@ -499,12 +499,7 @@ const updateQuizz = async (req, res) => {
       description_ru,
       description_am,
       time,
-      percent,
-      questions_en,
-      questions_ru,
-      questions_am,
-      lessonId,
-      courseId,
+      questions,
     } = req.body;
 
     // Update the Quizz details
@@ -517,9 +512,8 @@ const updateQuizz = async (req, res) => {
         description_ru,
         description_am,
         time,
-        percent,
       },
-      { where: { id } },
+      { where: {id: id }},
     );
 
     await Question.destroy({
@@ -528,29 +522,22 @@ const updateQuizz = async (req, res) => {
       },
     });
 
-    questions_en.map((question, i) => {
+    questions.map((question, i) => {
       Question.create({
-        title_en: question.question_en,
-        title_ru: questions_ru[i].question_ru,
-        title_am: questions_am[i].question_am,
+        title_en: question.title_en,
+        title_ru: question.title_ru,
+        title_am: question.title_am,
         quizzId: id,
       }).then((data) => {
-        console.log(question);
-        question.options_en.map((option, optionIndex) => {
-          Option.destroy({
-            where: {
-              questionId: data.id,
-            },
-          });
+        question.options.map((option, optionIndex) => {
           Option.create({
-            title_en: option.option_en,
-            title_ru: questions_ru[i].options_ru[optionIndex].option_ru,
-            title_am: questions_am[i].options_am[optionIndex].option_am,
-            isCorrect: option.isCorrect_en,
+            title_en: option.title_en,
+            title_ru: option.title_ru,
+            title_am: option.title_am,
+            isCorrect: option.isCorrect,
             questionId: data.id,
           });
         });
-        // console.log(question);
       });
     });
 

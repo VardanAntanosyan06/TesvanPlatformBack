@@ -107,13 +107,20 @@ io.on('connection', (socket) => {
 
   const token = socket?.handshake?.query?.token;
   if (token) {
-    const decoded = jwt.verify(token, process.env.SECRET);
+    jwt.verify(token, process.env.SECRET, (err) => {
+      if (err) {
+        console.log("socket disconected");
+        socket.disconnect()
+      }
+    });
+    const decoded = jwt.decode(token)
     if (decoded) {
       const userId = decoded.user_id;
       userSockets.set(userId, socket);
-      console.log(`${userId} Connected`)
+      console.log(`=== ${userId} Connected ===`)
     } else {
-      socket.disconnect();
+      console.log("socket disconected");
+      socket.disconnect()
     }
   }
 
