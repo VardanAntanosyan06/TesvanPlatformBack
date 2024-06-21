@@ -16,4 +16,5 @@ router.post("/finishQuizz", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controlle
 router.delete("/delete/:id", checkAuth(["ADMIN"]), controller.deleteQuizz);
 router.put("/update/:id", checkAuth(["ADMIN"]), controller.updateQuizz);
 
+
 module.exports = router;
