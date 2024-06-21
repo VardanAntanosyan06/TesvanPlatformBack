@@ -421,7 +421,6 @@ const createLesson = async (req, res) => {
         htmlContent_ru,
         htmlContent_am,
       });
-      
 
       await Presentations.create({
         title_en: presentationDescription_en,
@@ -450,7 +449,7 @@ const createLesson = async (req, res) => {
       }
       return res.status(200).json({ success: true });
     } else {
-      res.status(400).json({ message: "You didn't specify a presentation"});
+      res.status(400).json({ message: "You didn't specify a presentation" });
     }
   } catch (error) {
     console.log(error);
@@ -638,3 +637,7 @@ module.exports = {
   getLessonForAdmin,
   createLessonTime,
 };
+
+// ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21ssh vardan@164.92.203.21
+
+//sadfasfsdhkfljdsfgnfasdfkxdfgslkgdxbfdsagdf fa;,d
