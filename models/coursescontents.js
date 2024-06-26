@@ -29,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       shortDescription: DataTypes.STRING,
       priceTitle: DataTypes.STRING,
       priceDescription: DataTypes.STRING,
-<<<<<<< HEAD
       duration: { type: DataTypes.INTEGER, allowNull: true },
       price: { type: DataTypes.INTEGER, allowNull: true },
       discount: {
@@ -37,12 +36,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       whyThisCourse: DataTypes.ARRAY(DataTypes.TEXT('long')),
-=======
-      duration: DataTypes.STRING,
-      price: DataTypes.INTEGER,
-      discount: DataTypes.INTEGER,
-      whyThisCourse: DataTypes.ARRAY(DataTypes.TEXT("long")),
->>>>>>> b7420bd5a94117a8b5fa81cc8526aa6b8c3c5304
       level: DataTypes.STRING,
       levelDescriptions: DataTypes.ARRAY(DataTypes.STRING),
       type: DataTypes.STRING,

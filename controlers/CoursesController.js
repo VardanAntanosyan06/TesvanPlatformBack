@@ -570,20 +570,12 @@ const getUserCourse = async (req, res) => {
           [Op.contains]: [id],
         },
       },
-<<<<<<< HEAD
       include: [
         {
           model: UserInterview,
           attributes: ['points', 'calendarId'],
           where: { userId: id },
         },
-=======
-      include: [{
-        model: UserInterview,
-        attributes: ['points', 'calendarId'],
-        where: { userId: id }
-      }
->>>>>>> b7420bd5a94117a8b5fa81cc8526aa6b8c3c5304
       ],
       attributes: { exclude: ['userId', 'createdAt', 'updatedAt'] },
     });
@@ -672,19 +664,11 @@ const createCourse = async (req, res) => {
           lessonType: req.body[`lessonType_${language}`],
           whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
           level: req.body[`level_${language}`],
-<<<<<<< HEAD
           duration: 0,
           priceTitle: req.body[`priceTitle_${language}`],
           priceDescription: req.body[`priceDescription_${language}`],
           price: 0,
           discount: 0,
-=======
-          duration: req.body[`duration_${language}`]? req.body[`duration_${language}`]: null,
-          priceTitle: req.body[`priceTitle_${language}`]? req.body[`priceTitle_${language}`]: null,
-          priceDescription: req.body[`priceDescription_${language}`]? req.body[`priceDescription_${language}`]: null,
-          price: price? price: null,
-          discount: discount? discount: null
->>>>>>> b7420bd5a94117a8b5fa81cc8526aa6b8c3c5304
         });
       }),
     );

@@ -15,7 +15,9 @@ const {
   Tests,
   PaymentBlocks,
   GroupChats,
+  Homework,
   UserPoints,
+  UserHomework
 } = require('../models');
 const { v4 } = require('uuid');
 const sequelize = require('sequelize');
@@ -380,54 +382,48 @@ const addMember = async (req, res) => {
   try {
     const { groupId, users } = req.body;
 
-<<<<<<< HEAD
-    const group = await Groups.findByPk(groupId); // Added await here
-    if (payment.type == 'Group') {
-      const user = await Users.findOne({ where: { id: payment.userId } });
-      const group = await Groups.findByPk(payment.groupId);
-      if (!group) {
-        return res.json({ success: false, message: 'Group not found' });
-      }
+    await Promise.all(users.map(async (userId) => {
 
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      const { role } = await Users.findByPk(payment.userId);
+      const group = await Groups.findByPk(groupId);
+      const user = await Users.findOne({ where: { id: userId } });
+
       await GroupsPerUsers.findOrCreate({
         where: {
-          groupId: payment.groupId,
-          userId: payment.userId,
+          groupId: group.id,
+          userId: user.id,
         },
         defaults: {
-          groupId: payment.groupId,
-          userId: payment.userId,
-          userRole: role,
+          groupId: group.id,
+          userId: user.id,
+          userRole: user.role,
         },
       });
 
       await UserCourses.create({
         GroupCourseId: group.assignCourseId,
-
-        UserId: payment.userId,
+        UserId: user.id,
       });
+
       const lessons = await CoursesPerLessons.findAll({
         where: { courseId: group.assignCourseId },
       });
+
       await UserPoints.findOrCreate({
         where: {
-          userId: payment.userId,
+          userId: user.id,
         },
         defaults: {
-          userId: payment.userId,
+          userId: user.id,
           lesson: 0,
           quizz: 0,
           finalInterview: 0,
         },
       });
+
       lessons.map((e) => {
         UserLesson.create({
           GroupCourseId: group.assignCourseId,
-          UserId: payment.userId,
+          UserId: user.id,
           LessonId: e.lessonId,
         });
       });
@@ -440,7 +436,7 @@ const addMember = async (req, res) => {
             include: [
               {
                 model: Homework,
-                as: 'homework',
+                as: "homework",
               },
             ],
             required: true,
@@ -448,14 +444,18 @@ const addMember = async (req, res) => {
         ],
       });
 
-      Course.Lessons.map((lesson) => {
-        UserHomework.create({
-          GroupCourseId: group.assignCourseId,
-          UserId: payment.userId,
-          HomeworkId: lesson.homework[0].id,
-          points: 0,
-        });
+      Course.Lessons.forEach(async (lesson) => {
+        if (lesson.homework.length > 0) {
+          await UserHomework.create({
+            GroupCourseId: group.assignCourseId,
+            UserId: user.id,
+            HomeworkId: lesson.homework[0].id,
+            points: 0,
+          });
+        }
       });
+
+
       const boughtTests = await Tests.findAll({
         where: {
           [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
@@ -466,224 +466,30 @@ const addMember = async (req, res) => {
         UserTests.findOrCreate({
           where: {
             testId: test.id,
-            userId: payment.userId,
+            userId: user.id,
             courseId: test.courseId,
             language: test.language,
             type: 'Group',
           },
           defaults: {
             testId: test.id,
-            userId: payment.userId,
+            userId: user.id,
           },
         });
       });
 
       const groupChats = await GroupChats.findOne({
-        where: { groupId: payment.groupId },
+        where: { groupId: group.id },
       });
-      const newMembers = [payment.userId, ...groupChats.members];
+      const newMembers = [user.id, ...groupChats.members];
       const uniqueUsers = [...new Set(newMembers)];
       groupChats.members = uniqueUsers;
 
       await groupChats.save();
 
-      res.send({ success: true });
-    } else if (payment.type == 'Individual') {
-      const user = await Users.findOne({ where: { id: payment.userId } });
-      const course = await GroupCourses.findByPk(payment.groupId);
-      if (!course) {
-        return res.status(404).json({ success: false, message: 'Course not found' });
-      }
-
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      await UserCourses.create({
-        GroupCourseId: payment.groupId,
-        UserId: payment.userId,
-      });
-      const lessons = await CoursesPerLessons.findAll({
-        where: { courseId: payment.groupId },
-      });
-      await UserPoints.findOrCreate({
-        where: {
-          userId: payment.userId,
-        },
-        defaults: {
-          userId: payment.userId,
-          lesson: 0,
-          quizz: 0,
-          finalInterview: 0,
-        },
-      });
-      lessons.map((e) => {
-        UserLesson.create({
-          GroupCourseId: payment.groupId,
-          UserId: payment.userId,
-          LessonId: e.lessonId,
-        });
-      });
-
-      const boughtTests = await Tests.findAll({
-        where: {
-          [sequelize.Op.or]: [{ courseId: payment.groupId }, { courseId: null }],
-        },
-      });
-
-      boughtTests.map((test) => {
-        UserTests.findOrCreate({
-          where: {
-            testId: test.id,
-            userId: payment.userId,
-            courseId: test.courseId,
-            language: test.language,
-            type: 'Group',
-          },
-          defaults: {
-            testId: test.id,
-            userId: payment.userId,
-          },
-        });
-      });
-      res.send({ success: true });
-    }
-=======
-    await Promise.all(
-      users.map(async (userId) => {
-        try {
-          const user = await Users.findOne({ where: { id: userId } });
-          const group = await Groups.findByPk(groupId);
-    
-          if (!group) {
-            throw new Error('Group not found');
-          }
-    
-          if (!user) {
-            throw new Error('User not found');
-          }
-    
-          const { role } = await Users.findByPk(userId);
-    
-          await GroupsPerUsers.findOrCreate({
-            where: {
-              groupId: groupId,
-              userId: userId,
-            },
-            defaults: {
-              groupId: groupId,
-              userId: userId,
-              userRole: role,
-            },
-          });
-    
-          await UserCourses.create({
-            GroupCourseId: group.assignCourseId,
-            UserId: userId,
-          });
-    
-          const lessons = await CoursesPerLessons.findAll({
-            where: { courseId: group.assignCourseId },
-          });
-    
-          await UserPoints.findOrCreate({
-            where: {
-              userId,
-            },
-            defaults: {
-              userId,
-              lesson: 0,
-              quizz: 0,
-              finalInterview: 0,
-            },
-          });
-    
-          await Promise.all(
-            lessons.map(async (lesson) => {
-              await UserLesson.create({
-                GroupCourseId: group.assignCourseId,
-                UserId: userId,
-                LessonId: lesson.lessonId,
-              });
-            })
-          );
-    
-          const course = await GroupCourses.findOne({
-            where: { id: group.assignCourseId },
-            include: [
-              {
-                model: Lesson,
-                include: [
-                  {
-                    model: Homework,
-                    as: 'homework',
-                  },
-                ],
-                required: true,
-              },
-            ],
-          });
-    
-          await Promise.all(
-            course.Lessons.map(async (lesson) => {
-              if (lesson.homework.length > 0) {
-                await UserHomework.create({
-                  GroupCourseId: group.assignCourseId,
-                  UserId: userId,
-                  HomeworkId: lesson.homework[0].id,
-                  points: 0,
-                });
-              }
-            })
-          );
-    
-          const boughtTests = await Tests.findAll({
-            where: {
-              [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
-            },
-          });
-    
-          await Promise.all(
-            boughtTests.map(async (test) => {
-              await UserTests.findOrCreate({
-                where: {
-                  testId: test.id,
-                  userId,
-                  courseId: test.courseId,
-                  language: test.language,
-                  type: 'Group',
-                },
-                defaults: {
-                  testId: test.id,
-                  userId: userId,
-                },
-              });
-            })
-          );
-    
-          const groupChats = await GroupChats.findOne({
-            where: { groupId: groupId },
-          });
-    
-          if (groupChats) {
-            const newMembers = [userId, ...groupChats.members];
-            groupChats.members = [...new Set(newMembers)];
-            await groupChats.save();
-          }
-        } catch (error) {
-          console.error(error.message);
-          throw error;
-        }
-      })
+    })
     )
-      .then(() => {
-        res.send({ success: true });
-      })
-      .catch((error) => {
-        res.status(500).send({ success: false, message: error.message });
-      });
-    
-    res.status(200).json({ success: true });
->>>>>>> b7420bd5a94117a8b5fa81cc8526aa6b8c3c5304
+    res.send({ success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -960,7 +766,7 @@ const deleteMember = async (req, res) => {
   try {
     const { groupId, userId } = req.query;
 
-    const { assignCourseId } = await Groups.findByPk(groupId );
+    const { assignCourseId } = await Groups.findByPk(groupId);
     await GroupsPerUsers.destroy({
       where: {
         groupId,
