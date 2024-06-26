@@ -152,14 +152,17 @@ const buy = async (req, res) => {
         ],
       });
 
-      Course.Lessons.map((lesson) => {
-        UserHomework.create({
-          GroupCourseId: group.assignCourseId,
-          UserId: payment.userId,
-          HomeworkId: lesson.homework[0].id,
-          points: 0,
-        });
+      Course.Lessons.forEach(async (lesson) => {
+        if (lesson.homework.length > 0) {
+          await UserHomework.create({
+            GroupCourseId: group.assignCourseId,
+            UserId: payment.userId,
+            HomeworkId: lesson.homework[0].id,
+            points: 0,
+          });
+        }
       });
+
       const boughtTests = await Tests.findAll({
         where: {
           [sequelize.Op.or]: [
