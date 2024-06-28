@@ -513,7 +513,7 @@ const updateQuizz = async (req, res) => {
         description_am,
         time,
       },
-      { where: {id: id }},
+      { where: { id: id } },
     );
 
     await Question.destroy({
@@ -522,25 +522,25 @@ const updateQuizz = async (req, res) => {
       },
     });
 
-    questions.map((question, i) => {
-      Question.create({
+    Promise.all(questions.map(async (question, i) => {
+      await Question.create({
         title_en: question.title_en,
         title_ru: question.title_ru,
         title_am: question.title_am,
         quizzId: id,
       }).then((data) => {
-        question.options.map((option, optionIndex) => {
-          Option.create({
+        Promise.all(question.options.map(async (option, optionIndex) => {
+          await Option.create({
             title_en: option.title_en,
             title_ru: option.title_ru,
             title_am: option.title_am,
             isCorrect: option.isCorrect,
             questionId: data.id,
-          });
-        });
+          })
+        }))
       });
-    });
-
+    }))
+    
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
