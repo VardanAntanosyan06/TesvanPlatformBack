@@ -581,11 +581,12 @@ const getUserCourse = async (req, res) => {
     });
 
     lessons = lessons.map((e, i) => {
+      // console.log();
       e = e.toJSON();
       delete e.dataValues;
       e['title'] = e.Lesson.title;
       e['description'] = e.Lesson.description;
-      e['number'] = i + 1;
+      e['number'] = e.number;
       e['isOpen'] = true;
       delete e.Lessons;
       return e;
@@ -683,10 +684,11 @@ const createCourse = async (req, res) => {
     lessons = Array.isArray(lessons) ? lessons : [lessons];
     trainers = Array.isArray(trainers) ? trainers : [trainers];
 
-    lessons.map((e) => {
+    lessons.map((e,i) => {
       CoursesPerLessons.create({
         courseId,
         lessonId: e,
+        number:i+1,
         type,
       });
     });
@@ -1145,15 +1147,17 @@ const updateCourse = async (req, res) => {
     }
 
     const lessonIds = Array.isArray(lessons) ? lessons : [lessons];
-
+    console.log("lessonnUpdate","+++++++++++++++++++++++++++++++++++++++");
     await Promise.all(
-      lessonIds.map((lessonId) => {
+      lessonIds.map((lessonId,i) => {
+        console.log(i);
         CoursesPerLessons.destroy({ where: { courseId }});
-        CoursesPerLessons.create({ type, courseId, lessonId });
+        CoursesPerLessons.create({ type, courseId, lessonId,number:i+1 });
 
       }
       ),
     );
+    console.log("lessonnUpdate","+++++++++++++++++++++++++++++++++++++++");
 
     const parsedTrainers = JSON.parse(trainers);
 

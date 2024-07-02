@@ -101,12 +101,14 @@ const getLesson = async (req, res) => {
     const { user_id: userId } = req.user;
     const { language } = req.query;
 
+    console.log(userId,id);
     const lessonTime = await LessonTime.findOne({
       where: {
         lessonId: id,
         userId,
       },
     });
+
     let lesson = await UserLesson.findOne({
       where: { LessonId: id, UserId: userId },
       attributes: ['points', 'attempt'],

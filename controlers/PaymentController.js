@@ -192,8 +192,8 @@ const buy = async (req, res) => {
         where: { groupId: payment.groupId },
       });
       const newMembers = [payment.userId, ...groupChats.members];
-      const uniqueUsers = [...new Set(newMembers)];
-      groupChats.members = uniqueUsers;
+      // const uniqueUsers = [...new Set(newMembers)];
+      groupChats.members = newMembers;
 
       await groupChats.save();
 

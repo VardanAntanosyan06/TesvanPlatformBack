@@ -15,6 +15,9 @@ module.exports = {
       type:{
         type:Sequelize.STRING
       },
+      number:{
+        type:Sequelize.INTEGER
+      },
       lessonId: {
         type: Sequelize.INTEGER
       },
