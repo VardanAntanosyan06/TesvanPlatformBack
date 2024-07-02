@@ -243,17 +243,17 @@ const getLessonForAdmin = async (req, res) => {
       presentation_en: {
         presentationTitle_en: lesson.Presentations[0].title_en,
         url: lesson.Presentations[0].url_en,
-        presentationDescription_en: lesson.Presentations[0].title_en,
+        presentationDescription_en: lesson.Presentations[0].description_en,
       },
       presentation_ru: {
         presentationTitle_ru: lesson.Presentations[0].title_ru,
         url: lesson.Presentations[0].url_ru,
-        presentationDescription_ru: lesson.Presentations[0].title_ru,
+        presentationDescription_ru: lesson.Presentations[0].description_ru,
       },
       presentation_am: {
         presentationTitle_am: lesson.Presentations[0].title_am,
         url: lesson.Presentations[0].url_am,
-        despresentationDescription_amcription: lesson.Presentations[0].title_en,
+        despresentationDescription_amcription: lesson.Presentations[0].description_am,
       },
     };
     delete lesson.Presentations;
@@ -427,13 +427,13 @@ const createLesson = async (req, res) => {
       });
 
       await Presentations.create({
-        title_en: presentationDescription_en,
+        title_en: presentationTitle_en,
         url_en: fileNameEn,
         description_en: presentationDescription_en,
-        title_ru: presentationDescription_ru,
+        title_ru: presentationTitle_ru,
         url_ru: fileNameRu,
         description_ru: presentationDescription_ru,
-        title_am: presentationDescription_am,
+        title_am: presentationTitle_am,
         url_am: fileNameAm,
         description_am: presentationDescription_am,
         lessonId,
@@ -550,13 +550,13 @@ const updateLesson = async (req, res) => {
 
       await Presentations.destroy({ where: { lessonId } });
       await Presentations.create({
-        title_en: presentationDescription_en,
+        title_en: presentationTitle_en,
         url_en: fileNameEn,
         description_en: presentationDescription_en,
-        title_ru: presentationDescription_ru,
+        title_ru: presentationTitle_ru,
         url_ru: fileNameRu,
         description_ru: presentationDescription_ru,
-        title_am: presentationDescription_am,
+        title_am: presentationTitle_am,
         url_am: fileNameAm,
         description_am: presentationDescription_am,
         lessonId,
@@ -564,13 +564,13 @@ const updateLesson = async (req, res) => {
     }
     await Presentations.destroy({ where: { lessonId } });
     await Presentations.create({
-      title_en: presentationDescription_en,
+      title_en: presentationTitle_en,
       url_en: file_en,
       description_en: presentationDescription_en,
-      title_ru: presentationDescription_ru,
+      title_ru: presentationTitle_ru,
       url_ru: file_ru,
       description_ru: presentationDescription_ru,
-      title_am: presentationDescription_am,
+      title_am: presentationTitle_am,
       url_am: file_am,
       description_am: presentationDescription_am,
       lessonId,
