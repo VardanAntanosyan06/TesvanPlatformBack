@@ -36,5 +36,5 @@ router.patch('/finishGroup/:id', checkAuth(['TEACHER', 'ADMIN']), controller.fin
 
 router.delete('/deleteMember', checkAuth(['ADMIN']), controller.deleteMember);
 router.delete('/delete/:id', checkAuth(['ADMIN']), controller.deleteGroup);
-
+router.get('/groupInfo/:id',checkAuth(['TEACHER','ADMIN']),controller.groupInfo)
 module.exports = router;
