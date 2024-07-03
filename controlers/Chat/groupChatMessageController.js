@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 const uuid = require("uuid");
 const path = require("path");
 const fs = require("fs");
+const {getMessageNotifications} = require('./chatMessageController')
 
 const createGroupChatMessage = async (req, res) => {
     try {
@@ -68,6 +69,8 @@ const createGroupChatMessage = async (req, res) => {
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
         io.to(`room_${chatId}`).emit("createGroupChatMessage", messages);
+        const notification = await getMessageNotifications(userId)
+        io.to(`room_${chatId}`).emit('groupChatNotification', notification.groupChatNotification)
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);

@@ -5,6 +5,94 @@ const uuid = require("uuid");
 const path = require("path");
 const fs = require("fs")
 
+const getMessageNotifications = async (userId) => {
+    try {
+        const chats = await Chats.findAll({
+            where: {
+                [Op.or]: [{ secondId: userId }, { firstId: userId }]
+            },
+            include: [
+                {
+                    model: Users,
+                    as: "firstIds",
+                    attributes: ["id", "firstName", "lastName", "image"],
+                    where: {
+                        id: { [Op.ne]: userId }
+                    },
+                    required: false
+                },
+                {
+                    model: Users,
+                    as: "secondIds",
+                    attributes: ["id", "firstName", "lastName", "image"],
+                    where: {
+                        id: { [Op.ne]: userId }
+                    },
+                    required: false
+                },
+                {
+                    model: ChatMessages,
+                    where: {
+                        isRead: null
+                    },
+                    attributes: ["id", "text"],
+                    order: [['createdAt', 'DESC']],
+                }
+            ],
+            attributes: [["id", "chatId"], "firstId", "secondId"]
+        })
+
+        const chatNotification = chats.map(chat => {
+            const chatData = chat.toJSON();
+            console.log(chatData);
+            chatData.notification = chatData.ChatMessages.length
+            chatData.lastMessage = chatData.ChatMessages[0]
+            delete chatData.ChatMessages
+
+            if (chatData.secondId === userId) {
+                chatData.receiver = chatData.firstIds;
+                delete chatData.firstIds;
+                delete chatData.secondIds;
+            } else {
+                chatData.receiver = chatData.secondIds;
+                delete chatData.secondIds;
+                delete chatData.firstIds;
+            }
+            return chatData;
+        });
+        const groupChatNotification = await GroupChats.findAll({
+            where: {
+                members: {
+                    [Op.contains]: [userId]
+                },
+            },
+            include: {
+                model: GroupChatReads,
+                as: "userLastSeen",
+                where: { userId },
+                attributes: ["lastSeen"],
+                required: false
+            },
+            attributes: ["id", "name", "image"]
+        })
+        for (let element of groupChatNotification) {
+            const results = await GroupChatMessages.findAll({
+                where: {
+                    groupChatId: element.id,
+                    id: { [Op.gt]: element.userLastSeen ? element.userLastSeen.lastSeen : 0 }
+                },
+                order: [['createdAt', 'DESC']],
+                attributes: ["id", "text"]
+            })
+            element.setDataValue('notification', results.length);
+            element.setDataValue('lastMessage', results[0]);
+        }
+        return { chatNotification, groupChatNotification };
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const createChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
@@ -64,10 +152,18 @@ const createChatMessage = async (req, res) => {
                 }
             ],
         });
-        const firstIdSocket = await userSockets.get(chat.firstId)
-        if (firstIdSocket) { io.to(firstIdSocket.id).emit('createChatMessage', message) };
+        const firstIdSocket = await userSockets.get(caht.firstId)
+        if (firstIdSocket) {
+            io.to(firstIdSocket.id).emit('createChatMessage', message)
+            const notification = await getMessageNotifications(userId)
+            io.to(firstIdSocket.id).emit('notifications', notification.chatNotification)
+        };
         const secondSocket = await userSockets.get(chat.secondId)
-        if (secondSocket) { io.to(secondSocket.id).emit('createChatMessage', message) };
+        if (secondSocket) {
+            io.to(secondSocket.id).emit('createChatMessage', message)
+            const notification = await getMessageNotifications(userId)
+            io.to(firstIdSocket.id).emit('chatNotifications', notification.chatNotification)
+        };
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -177,7 +273,7 @@ const getChatMessages = async (req, res) => {
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
         const messages = await ChatMessages.findAll({
             where: {
-                chatId: chat.id,
+                chatId: chatId,
             },
             include: [
                 {
@@ -306,94 +402,6 @@ const getMessageFile = (req, res) => {
             root: path.join(__dirname, "../../", "messageFiles")
         };
         res.sendFile(fileName, options);
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json(error.message)
-    }
-}
-
-const getMessageNotifications = async (req, res) => {
-    try {
-        const { user_id: userId } = req.user;
-        const chats = await Chats.findAll({
-            where: {
-                [Op.or]: [{ secondId: userId }, { firstId: userId }]
-            },
-            include: [
-                {
-                    model: Users,
-                    as: "firstIds",
-                    attributes: ["id", "firstName", "lastName", "image"],
-                    where: {
-                        id: { [Op.ne]: userId }
-                    },
-                    required: false
-                },
-                {
-                    model: Users,
-                    as: "secondIds",
-                    attributes: ["id", "firstName", "lastName", "image"],
-                    where: {
-                        id: { [Op.ne]: userId }
-                    },
-                    required: false
-                },
-                {
-                    model: ChatMessages,
-                    where: {
-                        isRead: false
-                    },
-                    attributes: ["id", "text"],
-                    order: [['createdAt', 'DESC']],
-                }
-            ],
-            attributes: ["id", "firstId", "secondId"]
-        })
-
-        const chatNotification = chats.map(chat => {
-            const chatData = chat.toJSON();
-            chatData.notification = chatData.ChatMessages.length
-            chatData.lastMessage = chatData.ChatMessages[0]
-            delete chatData.ChatMessages
-            if (chatData.secondId === userId) {
-                chatData.receiver = chatData.firstIds;
-                delete chatData.firstIds;
-                delete chatData.secondIds;
-            } else {
-                chatData.receiver = chatData.secondIds;
-                delete chatData.secondIds;
-                delete chatData.firstIds;
-            }
-            return chatData;
-        });
-        const groupChatNotification = await GroupChats.findAll({
-            where: {
-                members: {
-                    [Op.contains]: [userId]
-                },
-            },
-            include: {
-                model: GroupChatReads,
-                as: "userLastSeen",
-                where: { userId },
-                attributes: ["lastSeen"],
-                required: false
-            },
-            attributes: ["id", "name", "image"]
-        })
-        for (let element of groupChatNotification) {
-            const results = await GroupChatMessages.findAll({
-                where: {
-                    groupChatId: element.id,
-                    id: { [Op.gt]: element.userLastSeen ? element.userLastSeen.lastSeen : 0 }
-                },
-                order: [['createdAt', 'DESC']],
-                attributes: ["id", "text"]
-            })
-            element.setDataValue('notification', results.length);
-            element.setDataValue('lastMessage', results[0]);
-        }
-        return res.status(200).json({ chatNotification, groupChatNotification });
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
