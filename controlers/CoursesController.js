@@ -266,7 +266,7 @@ const getOne = async (req, res) => {
       return res.status(500).json({ message: 'Course not found.' });
       // return res.json(groups)
     }
-    course.Lessons = course.Lessons.sort((a,b)=>a.CoursesPerLessons.id-b.CoursesPerLessons.id) 
+    course.Lessons = course.Lessons.sort((a, b) => a.CoursesPerLessons.id - b.CoursesPerLessons.id);
     const lessonsCount = await CoursesPerLessons.count({
       where: { courseId: id },
     });
@@ -505,6 +505,7 @@ const getUserCourse = async (req, res) => {
     }
     let lessons = await CoursesPerLessons.findAll({
       where: { courseId },
+      order: [['number', 'ASC']],
       include: [
         {
           model: Lesson,
@@ -642,7 +643,7 @@ const createCourse = async (req, res) => {
     } = req.body;
     console.log(price);
     let { img, trainersImages } = req.files;
-    
+
     const imgType = img.mimetype.split('/')[1];
     const imgFileName = v4() + '.' + imgType;
     img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
@@ -673,7 +674,7 @@ const createCourse = async (req, res) => {
         });
       }),
     );
-    if(quizzId !== 'undefined') {
+    if (quizzId !== 'undefined') {
       await CoursesPerQuizz.create({
         quizzId,
         courseId,
@@ -684,11 +685,11 @@ const createCourse = async (req, res) => {
     lessons = Array.isArray(lessons) ? lessons : [lessons];
     trainers = Array.isArray(trainers) ? trainers : [trainers];
 
-    lessons.map((e,i) => {
+    lessons.map((e, i) => {
       CoursesPerLessons.create({
         courseId,
         lessonId: e,
-        number:i+1,
+        number: i + 1,
         type,
       });
     });
@@ -1043,7 +1044,6 @@ const getOneGroup = async (req, res) => {
       saledValue: price > 0 ? price - Math.round(price * discount) / 100 : price,
     };
 
-    
     return res.status(200).json(Courses);
   } catch (error) {
     console.log(error);
@@ -1147,17 +1147,15 @@ const updateCourse = async (req, res) => {
     }
 
     const lessonIds = Array.isArray(lessons) ? lessons : [lessons];
-    console.log("lessonnUpdate","+++++++++++++++++++++++++++++++++++++++");
+    console.log('lessonnUpdate', '+++++++++++++++++++++++++++++++++++++++');
     await Promise.all(
-      lessonIds.map((lessonId,i) => {
+      lessonIds.map((lessonId, i) => {
         console.log(i);
-        CoursesPerLessons.destroy({ where: { courseId }});
-        CoursesPerLessons.create({ type, courseId, lessonId,number:i+1 });
-
-      }
-      ),
+        CoursesPerLessons.destroy({ where: { courseId } });
+        CoursesPerLessons.create({ type, courseId, lessonId, number: i + 1 });
+      }),
     );
-    console.log("lessonnUpdate","+++++++++++++++++++++++++++++++++++++++");
+    console.log('lessonnUpdate', '+++++++++++++++++++++++++++++++++++++++');
 
     const parsedTrainers = JSON.parse(trainers);
 
@@ -1282,7 +1280,7 @@ const getCourseForAdmin = async (req, res) => {
       // attributes: ['fullName', 'img', 'profession'],
     });
 
-    course.Lesson = course.Lessons.sort((a,b)=>a.CoursesPerLessons.id-b.CoursesPerLessons.id) 
+    course.Lesson = course.Lessons.sort((a, b) => a.CoursesPerLessons.id - b.CoursesPerLessons.id);
 
     course = {
       id: course.id,
