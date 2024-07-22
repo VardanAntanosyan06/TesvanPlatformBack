@@ -1141,20 +1141,39 @@ const updateCourse = async (req, res) => {
       }),
     );
 
-    if (quizzId !== 'undefined') {
-      await CoursesPerQuizz.destroy({ where: { courseId } });
-      await await CoursesPerQuizz.create({ quizzId, courseId });
+    if (quizzId) {
+      await CoursesPerQuizz.update({ quizzId }, { where: { courseId } });
     }
-
+    const usersHaveACourse = await UserCourses.findAll({ where: { GroupCourseId: courseId } });
+    const userIds = [...new Set(usersHaveACourse.map((user) => user.UserId))];
     const lessonIds = Array.isArray(lessons) ? lessons : [lessons];
-    console.log('lessonnUpdate', '+++++++++++++++++++++++++++++++++++++++');
+
+    await CoursesPerLessons.destroy({ where: { courseId } });
     await Promise.all(
-      lessonIds.map((lessonId, i) => {
-        console.log(i);
-        CoursesPerLessons.destroy({ where: { courseId } });
-        CoursesPerLessons.create({ type, courseId, lessonId, number: i + 1 });
-      }),
+      lessonIds.flatMap((lessonId, i) =>
+        userIds.map(async (userId) => {
+          console.log(`Processing lesson ${lessonId} for user ${userId} (index ${i})`);
+
+          await CoursesPerLessons.create({ type, courseId, lessonId, number: i + 1 });
+
+          await UserLesson.findOrCreate({
+            where: {
+              GroupCourseId: courseId,
+              LessonId: lessonId,
+              UserId: userId,
+            },
+            defaults: {
+              GroupCourseId: courseId,
+              LessonId: lessonId,
+              points: 0,
+              attempt: 1,
+              UserId: userId,
+            },
+          });
+        }),
+      ),
     );
+
     console.log('lessonnUpdate', '+++++++++++++++++++++++++++++++++++++++');
 
     const parsedTrainers = JSON.parse(trainers);
