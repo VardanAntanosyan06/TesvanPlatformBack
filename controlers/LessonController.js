@@ -101,7 +101,7 @@ const getLesson = async (req, res) => {
     const { user_id: userId } = req.user;
     const { language } = req.query;
 
-    console.log(userId,id);
+    console.log(userId, id);
     const lessonTime = await LessonTime.findOne({
       where: {
         lessonId: id,
@@ -562,19 +562,19 @@ const updateLesson = async (req, res) => {
         lessonId,
       });
     }
-    await Presentations.destroy({ where: { lessonId } });
-    await Presentations.create({
-      title_en: presentationTitle_en,
-      url_en: file_en,
-      description_en: presentationDescription_en,
-      title_ru: presentationTitle_ru,
-      url_ru: file_ru,
-      description_ru: presentationDescription_ru,
-      title_am: presentationTitle_am,
-      url_am: file_am,
-      description_am: presentationDescription_am,
-      lessonId,
-    });
+    // await Presentations.destroy({ where: { lessonId } });
+    // await Presentations.create({
+    //   title_en: presentationTitle_en,
+    //   url_en: file_en,
+    //   description_en: presentationDescription_en,
+    //   title_ru: presentationTitle_ru,
+    //   url_ru: file_ru,
+    //   description_ru: presentationDescription_ru,
+    //   title_am: presentationTitle_am,
+    //   url_am: file_am,
+    //   description_am: presentationDescription_am,
+    //   lessonId,
+    // });
     if (!isNaN(+homeworkId)) {
       await HomeworkPerLesson.upsert({
         homeworkId,
