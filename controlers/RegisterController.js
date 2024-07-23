@@ -11,18 +11,18 @@ const {
   UserCourses,
   UserHomework,
   UserLesson,
-} = require("../models");
-const moment = require("moment");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
-const path = require("path");
-const { v4 } = require("uuid");
-const { where } = require("sequelize");
-require("dotenv").config();
-const { Op } = require("sequelize");
+} = require('../models');
+const moment = require('moment');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const path = require('path');
+const { v4 } = require('uuid');
+const { where } = require('sequelize');
+require('dotenv').config();
+const { Op } = require('sequelize');
 const BCRYPT_HASH_SALT = 10;
-const mailgun = require("mailgun-js")({
+const mailgun = require('mailgun-js')({
   apiKey: process.env.MAILGUN_API_KEY,
   domain: process.env.MAILGUN_DOMAIN,
 });
@@ -45,8 +45,7 @@ const UserRegistartion = async (req, res) => {
       role,
     } = req.body;
     const isUser = await Users.findOne({ where: { email } });
-    if (isUser)
-      return res.status(403).json({ message: "Email must be unique." });
+    if (isUser) return res.status(403).json({ message: 'Email must be unique.' });
     const hashedPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT);
     const User = await Users.create({
       firstName,
@@ -64,18 +63,15 @@ const UserRegistartion = async (req, res) => {
       tokenCreatedAt: moment(),
       role,
     });
-    User.token = jwt.sign(
-      { user_id: User.id, email, role },
-      process.env.SECRET
-    );
+    User.token = jwt.sign({ user_id: User.id, email, role }, process.env.SECRET);
     await User.save();
     return res.status(200).json({ succes: true, token: User.token });
   } catch (error) {
     console.log(error.message);
-    if (error.name == "SequelizeValidationError") {
+    if (error.name == 'SequelizeValidationError') {
       return res.status(403).json({ message: error.message });
     } else {
-      return res.status(500).json({ message: "Something went wrong." });
+      return res.status(500).json({ message: 'Something went wrong.' });
     }
   }
 };
@@ -88,19 +84,16 @@ const UserRegistartionSendEmail = async (req, res) => {
       where: { email },
     });
     if (!User || User.isVerified)
-      return res.status(404).json({ message: "There is not unverified user!" });
-    User.token = jwt.sign(
-      { user_id: User.id, email, role: User.role },
-      process.env.SECRET
-    );
+      return res.status(404).json({ message: 'There is not unverified user!' });
+    User.token = jwt.sign({ user_id: User.id, email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
     (function () {
       const data = {
-        from: "verification@tesvan.com",
+        from: 'verification@tesvan.com',
         to: email,
-        subject: "Verify your email address",
+        subject: 'Verify your email address',
         html: `<!DOCTYPE html>
         <html lang="en">
           <head>
@@ -141,10 +134,10 @@ const UserRegistartionSendEmail = async (req, res) => {
       });
     })();
 
-    return res.status(200).json({ success: true,token:User.token });
+    return res.status(200).json({ success: true, token: User.token });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -157,13 +150,13 @@ const EmailExist = async (req, res) => {
     if (user)
       return res.status(403).json({
         success: false,
-        message: "This email address is already used",
+        message: 'This email address is already used',
       });
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -175,37 +168,28 @@ const UserRegistartionVerification = async (req, res) => {
     const User = await Users.findOne({
       where: { token },
     });
-    if (!User) return res.status(404).json({ message: "User not found!" });
-    if (moment().diff(User.tokenCreatedAt, "hours") <= 24) {
+    if (!User) return res.status(404).json({ message: 'User not found!' });
+    if (moment().diff(User.tokenCreatedAt, 'hours') <= 24) {
       User.isVerified = true;
       User.token = jwt.sign(
         { user_id: User.id, email: User.email, role: User.role },
-        process.env.SECRET
+        process.env.SECRET,
       );
       User.tokenCreatedAt = moment();
       await User.save();
 
       return res.status(200).json({ success: true });
     }
-    return res.status(403).json({ message: "token timeout!" });
+    return res.status(403).json({ message: 'token timeout!' });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 const AddMember = async (req, res) => {
   try {
-    const {
-      role,
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      birthday,
-      gender,
-      city,
-      country,
-    } = req.body;
+    const { role, firstName, lastName, email, phoneNumber, birthday, gender, city, country } =
+      req.body;
     const hashPassword = await bcrypt.hash(v4(), BCRYPT_HASH_SALT);
 
     const User = await Users.create({
@@ -220,24 +204,21 @@ const AddMember = async (req, res) => {
       isVerified: true,
       country,
       city,
-      education: "",
-      backgroundInQA: "true",
+      education: '',
+      backgroundInQA: 'true',
       tokenCreatedAt: new Date().toISOString(),
     });
 
-    User.token = jwt.sign(
-      { user_id: User.id, email, role: User.role },
-      process.env.SECRET
-    );
+    User.token = jwt.sign({ user_id: User.id, email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
     // Initialize Mailgun client
 
     const data = {
-      from: "verification@tesvan.com",
+      from: 'verification@tesvan.com',
       to: email,
-      subject: "Forgot Password Tesvan Platform",
+      subject: 'Forgot Password Tesvan Platform',
       html: `<!DOCTYPE html>
       <html lang="en">
         <head>
@@ -289,22 +270,22 @@ const AddMember = async (req, res) => {
 
     mailgun.messages().send(data, (error, body) => {
       if (error) {
-        console.error("Error:", error);
-        return res.status(500).json({ message: "Failed to send email" });
+        console.error('Error:', error);
+        return res.status(500).json({ message: 'Failed to send email' });
       }
-      console.log("Email sent:", body);
+      console.log('Email sent:', body);
       return res.status(200).json({ success: true });
     });
   } catch (error) {
     console.error(error);
     if (
-      error.name === "SequelizeValidationError" ||
-      error.name === "RangeError" ||
-      error.name == "SequelizeUniqueConstraintError"
+      error.name === 'SequelizeValidationError' ||
+      error.name === 'RangeError' ||
+      error.name == 'SequelizeUniqueConstraintError'
     ) {
       return res.status(403).json({ message: error.message });
     } else {
-      return res.status(500).json({ message: "Something went wrong." });
+      return res.status(500).json({ message: 'Something went wrong.' });
     }
   }
 };
@@ -313,15 +294,15 @@ const getMembers = async (req, res) => {
   try {
     const teachers = await Users.findAll({
       where: {
-        role: "TEACHER",
+        role: 'TEACHER',
       },
-      order: [["id", "DESC"]],
+      order: [['id', 'DESC']],
     });
     const students = await Users.findAll({
       where: {
-        role: "STUDENT",
+        role: 'STUDENT',
       },
-      order: [["id", "DESC"]],
+      order: [['id', 'DESC']],
     });
     const members = {
       teachers,
@@ -330,7 +311,7 @@ const getMembers = async (req, res) => {
     res.send(members);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -343,14 +324,7 @@ const getMember = async (req, res) => {
         id,
       },
       attributes: {
-        exclude: [
-          "token",
-          "tokenCreatedAt",
-          "likedCourses",
-          "createdAt",
-          "updatedAt",
-          "password",
-        ],
+        exclude: ['token', 'tokenCreatedAt', 'likedCourses', 'createdAt', 'updatedAt', 'password'],
       },
     });
 
@@ -362,7 +336,7 @@ const getMember = async (req, res) => {
     return res.json(user);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 const editMember = async (req, res) => {
@@ -370,9 +344,7 @@ const editMember = async (req, res) => {
     const { id } = req.params;
     const member = await Users.findByPk(id);
     if (!member) {
-      res
-        .status(404)
-        .json({ success: false, message: "No User Whith this Id" });
+      res.status(404).json({ success: false, message: 'No User Whith this Id' });
     }
     const {
       role,
@@ -405,7 +377,7 @@ const editMember = async (req, res) => {
     res.send(member);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -433,7 +405,7 @@ const deleteMembers = async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -442,11 +414,7 @@ const deleteAccount = async (req, res) => {
     const { user_id: id } = req.user;
     const { password } = req.query;
     const User = await Users.findByPk(id);
-    if (
-      User &&
-      User.isVerified &&
-      (await bcrypt.compare(password, User.password))
-    ) {
+    if (User && User.isVerified && (await bcrypt.compare(password, User.password))) {
       // await
       // await UserCourses.destroy({
       //   where: {
@@ -471,12 +439,10 @@ const deleteAccount = async (req, res) => {
 
       return res.json({ success: true });
     }
-    return res
-      .status(403)
-      .json({ success: false, message: "Password is wrong" });
+    return res.status(403).json({ success: false, message: 'Password is wrong' });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -484,16 +450,20 @@ const editImage = async (req, res) => {
   try {
     const { user_id: id } = req.user;
     const { image } = req.files;
+
     const user = await Users.findByPk(id);
-    const imgType = image.mimetype.split("/")[1];
-    const imageUrl = v4() + "." + imgType;
-    await image.mv(path.resolve(__dirname, "..", "static", imageUrl));
+
+    const imgType = image.mimetype.split('/')[1];
+    const imageUrl = v4() + '.' + imgType;
+    await image.mv(path.resolve(__dirname, '..', 'static', imageUrl));
+
     user.image = imageUrl;
     await user.save();
+
     return res.json({ success: true });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -533,22 +503,19 @@ const RegisterTesting = async (req, res) => {
       tokenCreatedAt: new Date().toISOString(),
     });
 
-    User.token = jwt.sign(
-      { user_id: User.id, email, role: User.role },
-      process.env.SECRET
-    );
+    User.token = jwt.sign({ user_id: User.id, email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.name);
-    if (error.name == "SequelizeValidationError") {
+    if (error.name == 'SequelizeValidationError') {
       return res.status(403).json({ message: error.message });
-    } else if (error.name == "SequelizeUniqueConstraintError") {
+    } else if (error.name == 'SequelizeUniqueConstraintError') {
       return res.status(403).json({ message: error.message });
     } else {
-      return res.status(500).json({ message: "Something went wrong." });
+      return res.status(500).json({ message: 'Something went wrong.' });
     }
   }
 };
@@ -561,18 +528,15 @@ const changeEmail = async (req, res) => {
     const User = await Users.findOne({ where: { id: userId } });
 
     User.email = email;
-    User.token = jwt.sign(
-      { user_id: User.id, email, role: User.role },
-      process.env.SECRET
-    );
+    User.token = jwt.sign({ user_id: User.id, email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
     (function () {
       const data = {
-        from: "verification@tesvan.com",
+        from: 'verification@tesvan.com',
         to: email,
-        subject: "Verify your email address",
+        subject: 'Verify your email address',
         html: `<!DOCTYPE html>
         <html lang="en">
           <head>
@@ -613,14 +577,14 @@ const changeEmail = async (req, res) => {
       });
     })();
 
-    return res.json({ success: true,token:User.token });
+    return res.json({ success: true, token: User.token });
   } catch (error) {
-    if (error.name == "SequelizeValidationError") {
+    if (error.name == 'SequelizeValidationError') {
       return res.status(403).json({ message: error.message });
-    } else if (error.name == "SequelizeUniqueConstraintError") {
+    } else if (error.name == 'SequelizeUniqueConstraintError') {
       return res.status(403).json({ message: error.message });
     } else {
-      return res.status(500).json({ message: "Something went wrong." });
+      return res.status(500).json({ message: 'Something went wrong.' });
     }
   }
 };
