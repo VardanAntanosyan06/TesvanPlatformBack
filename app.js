@@ -163,6 +163,7 @@ io.on('connection', (socket) => {
       setTimeout(typingOff, 3500)
     }
   })
+
   socket.on('stopTypingGroup', (data) => {
     if (data.groupChatId) {
       const index = users.indexOf(data.userName);
@@ -170,6 +171,7 @@ io.on('connection', (socket) => {
       socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', users)
     }
   })
+
   // socketController.typing(io, socket)
   // socketController.stopTyping(io, socket)
   // socketController.typingGroup(io, socket)

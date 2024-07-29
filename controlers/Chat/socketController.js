@@ -3,6 +3,7 @@ const { userSockets } = require("../../userSockets") // Assuming you have a Map 
 
 const typing = (io, socket) => {
     socket.on('typing', (data) => {
+
         if (data.receiverId) {
             const userSocket = userSockets.get(+data.receiverId)
             if (userSocket) {
