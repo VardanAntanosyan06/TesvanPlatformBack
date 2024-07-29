@@ -43,7 +43,6 @@ const stopTyping = (io, socket) => {
     })
 }
 
-
 const users = [] // group chat typing users
 const typingGroup = (io, socket) => {
     socket.on('typingGroup', (data) => {
@@ -69,9 +68,24 @@ const stopTypingGroup = (io, socket) => {
         }
     })
 }
+
+const { getMessageNotifications } = require("../Chat/chatMessageController")
+const notifications = (io, socket) => {
+    socket.on("getNotifications", (data) => {
+        if (data.userId) {
+            const userSocket = userSockets.get(+data.userId)
+            if (userSocket) {
+                io.to(userSocket.id).emit('chatNotifications', getMessageNotifications(data.userId).chatNotification)
+                io.to(userSocket.id).emit('groupChatNotifications', getMessageNotifications(data.userId).groupChatNotification)
+            }
+
+        }
+    })
+}
 module.exports = {
     typing,
     stopTyping,
     typingGroup,
-    stopTypingGroup
+    stopTypingGroup,
+    notifications
 }
