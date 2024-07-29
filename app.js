@@ -127,7 +127,6 @@ io.on('connection', (socket) => {
     }
   }
 
-
   socket.on('typing', (data) => {
     if (data.receiverId) {
       const userSocket = userSockets.get(+data.receiverId)
