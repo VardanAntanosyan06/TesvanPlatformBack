@@ -4,19 +4,23 @@ const { Op } = require("sequelize");
 const findAllStudents = async (req, res) => {
   try {
     let certificates = await Certificates.findAll({
-      include: { model: Users, attributes: ["firstName", "lastName"] },
+      include: { model: Users, attributes: ["firstName", "lastName","image"] },
       attributes: ["id", "userId", "status", "giveDate"],
     });
 
     certificates = certificates.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-      e["firstName"] = e.User.firstName;
-      e["lastName"] = e.User.lastName;
+      e["name"] = e.User.firstName+" "+e.User.lastName;
+      e["image"] = e.User.image;
+      e["points"] =100
+      e["type"] = "excellence"
+    
+
       delete e.User;
       return e;
     });
-    return res.status(200).json({ success: true, certificates });
+    return res.status(200).json( certificates );
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });

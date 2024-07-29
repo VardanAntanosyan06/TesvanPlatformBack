@@ -7,7 +7,7 @@ const checkAuth = require("../middleware/checkAuth");
 
 router.get(
   "/getAllStudents",
-  checkAuth(["TEACHER", "ADMIN"]),
+  // checkAuth(["TEACHER", "ADMIN"]),
   controller.findAllStudents
 );
 router.get(

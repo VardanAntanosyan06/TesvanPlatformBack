@@ -127,11 +127,55 @@ io.on('connection', (socket) => {
     }
   }
 
-  socketController.typing(io, socket)
-  socketController.stopTyping(io, socket)
-  socketController.typingGroup(io, socket)
-  socketController.stopTypingGroup(io, socket)
-  socketController.notifications(io, socket)
+
+  socket.on('typing', (data) => {
+    if (data.receiverId) {
+      const userSocket = userSockets.get(+data.receiverId)
+      if (userSocket) {
+        io.to(userSocket.id).emit('typing', data.userName)
+        function typingOff() {
+          io.to(userSocket.id).emit('stopTyping')
+        }
+        setTimeout(typingOff, 3500)
+      }
+    }
+  })
+
+  socket.on('stopTyping', (data) => {
+    if (data.receiverId) {
+      const userSocket = userSockets.get(+data.receiverId)
+      if (userSocket) {
+        io.to(userSocket.id).emit('stopTyping')
+      }
+
+    }
+  })
+
+  const users = [] // group chat typing users
+  socket.on('typingGroup', (data) => {
+    if (data.groupChatId) {
+      users.push(data.userName)
+      socket.to(`room_${data.groupChatId}`).emit('typingGroup', users)
+      function typingOff() {
+        const index = users.indexOf(data.userName);
+        users.splice(index, 1);
+        socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', users)
+      }
+      setTimeout(typingOff, 3500)
+    }
+  })
+  socket.on('stopTypingGroup', (data) => {
+    if (data.groupChatId) {
+      const index = users.indexOf(data.userName);
+      users.splice(index, 1);
+      socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', users)
+    }
+  })
+  // socketController.typing(io, socket)
+  // socketController.stopTyping(io, socket)
+  // socketController.typingGroup(io, socket)
+  // socketController.stopTypingGroup(io, socket)
+  // socketController.notifications(io, socket)
 
   socket.on('disconnect', () => {
     const userId = getUserIdForSocket(socket);
