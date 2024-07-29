@@ -3,7 +3,7 @@ const { userSockets } = require("../../userSockets") // Assuming you have a Map 
 
 const typing = (io, socket) => {
     socket.on('typing', (data) => {
-
+console.log(data);
         if (data.receiverId) {
             const userSocket = userSockets.get(+data.receiverId)
             if (userSocket) {
@@ -18,12 +18,12 @@ const typing = (io, socket) => {
 }
 const stopTyping = (io, socket) => {
     socket.on('stopTyping', (data) => {
+        console.log(data);
         if (data.receiverId) {
             const userSocket = userSockets.get(+data.receiverId)
             if (userSocket) {
                 io.to(userSocket.id).emit('stopTyping')
             }
-
         }
     })
 }
@@ -31,6 +31,7 @@ const stopTyping = (io, socket) => {
 const users = [] // group chat typing users
 const typingGroup = (io, socket) => {
     socket.on('typingGroup', (data) => {
+        console.log(data);
         if (data.groupChatId) {
             users.push(data.userName)
             socket.to(`room_${data.groupChatId}`).emit('typingGroup', users)
@@ -45,7 +46,9 @@ const typingGroup = (io, socket) => {
 }
 
 const stopTypingGroup = (io, socket) => {
+    
     socket.on('stopTypingGroup', (data) => {
+        console.log(data);
         if (data.groupChatId) {
             const index = users.indexOf(data.userName);
             users.splice(index, 1);
@@ -57,6 +60,7 @@ const stopTypingGroup = (io, socket) => {
 const { getMessageNotifications } = require("../Chat/chatMessageController")
 const notifications = (io, socket) => {
     socket.on("getNotifications", (data) => {
+        console.log(data);
         if (data.userId) {
             const userSocket = userSockets.get(+data.userId)
             if (userSocket) {
