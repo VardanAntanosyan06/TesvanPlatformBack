@@ -44,7 +44,6 @@ const getMessageNotifications = async (userId) => {
 
         const chatNotification = chats.map(chat => {
             const chatData = chat.toJSON();
-            console.log(chatData);
             chatData.notification = chatData.ChatMessages.length
             chatData.lastMessage = chatData.ChatMessages[0]
             delete chatData.ChatMessages
