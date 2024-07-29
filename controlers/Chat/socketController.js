@@ -3,6 +3,16 @@ const { userSockets } = require("../../userSockets") // Assuming you have a Map 
 
 const typing = (io, socket) => {
     socket.on('typing', (data) => {
+        // if (data.groupChatId) {
+        //     users.push(data.userName)
+        //     socket.to(`room_${data.groupChatId}`).emit('typing', users)
+        //     function typingOff() {
+        //         const index = users.indexOf(data.userName);
+        //         users.splice(index, 1);
+        //         socket.to(`room_${data.groupChatId}`).emit('stopTyping', users)
+        //     }
+        //     setTimeout(typingOff, 3500)
+        // }
 
         if (data.receiverId) {
             const userSocket = userSockets.get(+data.receiverId)
@@ -18,6 +28,11 @@ const typing = (io, socket) => {
 }
 const stopTyping = (io, socket) => {
     socket.on('stopTyping', (data) => {
+        // if (data.groupChatId) {
+        //     const index = users.indexOf(data.userName);
+        //     users.splice(index, 1);
+        //     socket.to(`room_${data.groupChatId}`).emit('stopTyping', users)
+        // }
         if (data.receiverId) {
             const userSocket = userSockets.get(+data.receiverId)
             if (userSocket) {

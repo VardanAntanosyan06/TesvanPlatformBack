@@ -52,9 +52,4 @@ router.delete(
   controller.deleteChatMessage
 );
 
-router.get('/readChatMessage/:chatId/:messageId',
-  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
-  controller.readChatMessage
-)
-
 module.exports = router;
