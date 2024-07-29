@@ -109,11 +109,13 @@ const socketController = require("./controlers/Chat/socketController")
 io.on('connection', (socket) => {
 
   const token = socket?.handshake?.query?.token;
+
   if (token) {
     jwt.verify(token, process.env.SECRET, (err) => {
       if (err) {
-        console.log("socket disconected");
-        socket.disconnect()
+        console.log("Invalid token, socket disconnected");
+        socket.disconnect();
+        return;
       }
     });
     const decoded = jwt.decode(token)
@@ -121,10 +123,17 @@ io.on('connection', (socket) => {
       const userId = decoded.user_id;
       userSockets.set(userId, socket);
       console.log(`=== ${userId} Connected ===`)
+      socket.on('disconnect', () => {
+        userSockets.delete(userId);
+        console.log(`=== ${userId} Disconnected ===`);
+      });
     } else {
-      console.log("socket disconected");
-      socket.disconnect()
+      console.log("Failed to decode token, socket disconnected");
+      socket.disconnect();
     }
+  } else {
+    console.log("No token provided, socket disconnected");
+    socket.disconnect();
   }
 
   // socket.on('typing', (data) => {
@@ -172,10 +181,10 @@ io.on('connection', (socket) => {
   //   }
   // })
 
-  socketController.typing(io, socket)
-  socketController.stopTyping(io, socket)
-  socketController.typingGroup(io, socket)
-  socketController.stopTypingGroup(io, socket)
+  // socketController.typing(io, socket)
+  // socketController.stopTyping(io, socket)
+  // socketController.typingGroup(io, socket)
+  // socketController.stopTypingGroup(io, socket)
   socketController.notifications(io, socket)
 
   socket.on('disconnect', () => {

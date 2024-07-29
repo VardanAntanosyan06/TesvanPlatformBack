@@ -148,7 +148,6 @@ const findOne = async (req, res) => {
       return res
         .status(404)
         .json({ success: false, message: "Group not found" });
-    console.log(group);
     const course = await CoursesContents.findOne({
       where: { courseId: group.assignCourseId },
       attributes: [["courseId", "id"], "title"],
