@@ -12,7 +12,7 @@ const jwt = require('jsonwebtoken');
 
 var indexRouter = require('./routes/index');
 const swaggerDocument = require('./swagger.json');
-const paymentController = require("./controlers/PaymentController")
+const paymentController = require('./controlers/PaymentController');
 var groupCoursesRouter = require('./routes/GroupCourses');
 var CommentsRouter = require('./routes/Comments');
 var RegisterRouter = require('./routes/Register');
@@ -35,6 +35,7 @@ var ChatMessageRouter = require('./routes/ChatMessage');
 var GroupChatRouter = require('./routes/GroupChat');
 var GroupChatMessageRouter = require('./routes/GroupChatMessage');
 var interviewRouter = require('./routes/Interview');
+var UserRouter = require('./routes/User');
 var app = express();
 var express = require('express');
 var router = express.Router();
@@ -70,6 +71,8 @@ app.use('/api/v2/homework', HomeworkRouter);
 app.use('/api/v2/message', MessageRouter);
 app.use('/api/v2/comments', CommentsRouter);
 app.use('/api/v2/register', RegisterRouter);
+app.use('/api/v2/users', UserRouter);
+
 app.use('/api/v2/user', LoginRouter);
 app.use('/api/v2/contactMessage', ContactMessageRouter);
 app.use('/api/v2/upload', UploadFileRouter);
@@ -87,7 +90,7 @@ app.use('/api/v2/chatMessage', ChatMessageRouter);
 app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
 app.use('/api/v2/interview', interviewRouter);
 
-app.use(router.post("/payment/configidram", paymentController.ConfirmIdram))
+app.use(router.post('/payment/configidram', paymentController.ConfirmIdram));
 
 const port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
@@ -98,41 +101,41 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: "*"
-  }
+    origin: '*',
+  },
 });
 app.set('io', io);
 
-const { userSockets } = require("./userSockets") // Assuming you have a Map for user sockets
-const socketController = require("./controlers/Chat/socketController")
+const { userSockets } = require('./userSockets'); // Assuming you have a Map for user sockets
+const socketController = require('./controlers/Chat/socketController');
 
 io.on('connection', (socket) => {
-
   const token = socket?.handshake?.query?.token;
   if (token) {
     jwt.verify(token, process.env.SECRET, (err) => {
       if (err) {
-        console.log("socket disconected");
-        socket.disconnect()
+        console.log('socket disconected');
+        socket.disconnect();
       }
     });
-    const decoded = jwt.decode(token)
+    const decoded = jwt.decode(token);
     if (decoded) {
       const userId = decoded.user_id;
       userSockets.set(userId, socket);
-      console.log(`=== ${userId} Connected ===`)
+      console.log(`=== ${userId} Connected ===`);
     } else {
-      console.log("socket disconected");
-      socket.disconnect()
+      console.log('socket disconected');
+      socket.disconnect();
     }
   }
+
 
   socketController.typing(io, socket)
   socketController.stopTyping(io, socket)
   socketController.typingGroup(io, socket)
   socketController.stopTypingGroup(io, socket)
   socketController.notifications(io, socket)
-
+  
   socket.on('disconnect', () => {
     const userId = getUserIdForSocket(socket);
     userId && userSockets.delete(userId);
