@@ -8,6 +8,10 @@ const typing = (io, socket) => {
             const userSocket = userSockets.get(+data.receiverId)
             if (userSocket) {
                 io.to(userSocket.id).emit('typing', data.userName)
+                function typingOff() {
+                    io.to(userSocket.id).emit('stopTyping')
+                }
+                setTimeout(typingOff, 3500)
             }
         }
     })
@@ -27,10 +31,16 @@ const stopTyping = (io, socket) => {
 const users = [] // group chat typing users
 const typingGroup = (io, socket) => {
     socket.on('typingGroup', (data) => {
-        console.log('typingGroup',data);
+        console.log('typingGroup', data);
         if (data.groupChatId) {
             users.push(data.userName)
             socket.to(`room_${data.groupChatId}`).emit('typingGroup', users)
+            function typingOff() {
+                const index = users.indexOf(data.userName);
+                users.splice(index, 1);
+                socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', users)
+            }
+            setTimeout(typingOff, 3500)
         }
     })
 }
@@ -61,10 +71,25 @@ const notifications = (io, socket) => {
         }
     })
 }
+
+const online = (io, socket) => {
+    socket.on('online', (data) => {
+        const userSocket = userSockets.get(data.userId);
+        if (userSocket) {
+            data.groupChats.map((id) => {
+                userSocket.join(`room_${id}`)
+                userSocket.useRooms = []
+                userSocket.useRooms.push(`room_${id}`)
+                socket.to(`room_${id}`).emit('online', { userId: data.userId })
+            })
+        }
+    });
+}
 module.exports = {
     typing,
     stopTyping,
     typingGroup,
     stopTypingGroup,
-    notifications
+    notifications,
+    online
 }

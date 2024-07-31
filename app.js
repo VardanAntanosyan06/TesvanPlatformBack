@@ -107,7 +107,7 @@ const { userSockets } = require("./userSockets") // Assuming you have a Map for 
 const socketController = require("./controlers/Chat/socketController")
 
 io.on('connection', (socket) => {
-
+  console.log("+++ connection request +++");
   const token = socket?.handshake?.query?.token;
 
   if (token) {
@@ -124,6 +124,11 @@ io.on('connection', (socket) => {
       userSockets.set(userId, socket);
       console.log(`=== ${userId} Connected ===`)
       socket.on('disconnect', () => {
+        // const userSocket = userSockets.get(userId)
+        // console.log(userSocket.room);
+        // userSocket.room.forEach(element => {
+          
+        // });
         userSockets.delete(userId);
         console.log(`=== ${userId} Disconnected ===`);
       });
@@ -135,80 +140,20 @@ io.on('connection', (socket) => {
     console.log("No token provided, socket disconnected");
     socket.disconnect();
   }
-
-  // socket.on('typing', (data) => {
-  //   if (data.receiverId) {
-  //     const userSocket = userSockets.get(+data.receiverId)
-  //     if (userSocket) {
-  //       io.to(userSocket.id).emit('typing', data.userName)
-  //       function typingOff() {
-  //         io.to(userSocket.id).emit('stopTyping')
-  //       }
-  //       setTimeout(typingOff, 3500)
-  //     }
-  //   }
-  // })
-
-  // socket.on('stopTyping', (data) => {
-  //   if (data.receiverId) {
-  //     const userSocket = userSockets.get(+data.receiverId)
-  //     if (userSocket) {
-  //       io.to(userSocket.id).emit('stopTyping')
-  //     }
-
-  //   }
-  // })
-
-  // const users = [] // group chat typing users
-  // socket.on('typingGroup', (data) => {
-  //   if (data.groupChatId) {
-  //     users.push(data.userName)
-  //     socket.to(`room_${data.groupChatId}`).emit('typingGroup', users)
-  //     function typingOff() {
-  //       const index = users.indexOf(data.userName);
-  //       users.splice(index, 1);
-  //       socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', users)
-  //     }
-  //     setTimeout(typingOff, 3500)
-  //   }
-  // })
-
-  // socket.on('stopTypingGroup', (data) => {
-  //   if (data.groupChatId) {
-  //     const index = users.indexOf(data.userName);
-  //     users.splice(index, 1);
-  //     socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', users)
-  //   }
-  // })
-
-  // socketController.typing(io, socket)
-  // socketController.stopTyping(io, socket)
-  // socketController.typingGroup(io, socket)
-  // socketController.stopTypingGroup(io, socket)
-  socketController.notifications(io, socket)
-
-  socket.on('disconnect', () => {
-    const userId = getUserIdForSocket(socket);
-    userId && userSockets.delete(userId);
+  socket.on('join', (username) => {
+    socket.username = username;
+    onlineUsers[username] = socket.id;
+    io.emit('updateUserList', Object.keys(onlineUsers));
   });
-});
 
-function getUserIdForSocket(socket) {
-  for (const [userId, userSocket] of userSockets.entries()) {
-    if (userSocket === socket) {
-      return userId;
-    }
-  }
-  return null;
-}
-function getUserIdForSocket(socket) {
-  for (const [userId, userSocket] of userSockets.entries()) {
-    if (userSocket === socket) {
-      return userId;
-    }
-  }
-  return null;
-}
+  socketController.typing(io, socket)
+  socketController.stopTyping(io, socket)
+  socketController.typingGroup(io, socket)
+  socketController.stopTypingGroup(io, socket)
+  socketController.notifications(io, socket)
+  socketController.online(io, socket)
+
+});
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
