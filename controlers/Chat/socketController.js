@@ -76,11 +76,11 @@ const online = (io, socket) => {
     socket.on('online', (data) => {
         const userSocket = userSockets.get(data.userId);
         if (userSocket) {
-            data.groupChats.map((id) => {
-                userSocket.join(`room_${id}`)
-                userSocket.useRooms = []
-                userSocket.useRooms.push(`room_${id}`)
-                socket.to(`room_${id}`).emit('online', { userId: data.userId })
+            data.groupChats.map((groupChatId) => {
+                userSocket.join(`room_${groupChatId}`)
+                userSocket.userRooms = [...userSocket.userRooms, ...[`room_${groupChatId}`]]
+                userSocket.userRooms = [...new Set(userSocket.userRooms)]
+                socket.to(`room_${groupChatId}`).emit('online', { userId: data.userId })
             })
         }
     });
