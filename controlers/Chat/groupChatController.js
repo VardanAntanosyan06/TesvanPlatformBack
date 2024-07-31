@@ -37,7 +37,7 @@ const getGroupChat = async (req, res) => {
         })
         members.forEach((element) => {
             const onlineUser = userSockets.get(element.id)
-            if(onlineUser){
+            if (onlineUser) {
                 element.setDataValue("online", true)
             } else {
                 element.setDataValue("online", false)
@@ -45,7 +45,11 @@ const getGroupChat = async (req, res) => {
         })
         groupChat.setDataValue('members', members);
         const userSocket = await userSockets.get(userId);
-        if (userSocket) { userSocket.join(`room_${groupChatId}`) }
+        if (userSocket) {
+            userSocket.join(`room_${groupChatId}`)
+            userSocket.room = []
+            userSocket.room.push(`room_${groupChatId}`)
+        }
         return res.status(200).json(groupChat)
     } catch (error) {
         console.log(error);
@@ -76,7 +80,7 @@ const getGroupChats = async (req, res) => {
         return res.status(500).json(error.message)
     }
 };
-const getGroupChatMembers = async (req, res)=> {
+const getGroupChatMembers = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { groupChatId } = req.params;
@@ -91,7 +95,7 @@ const getGroupChatMembers = async (req, res)=> {
         })
         const members = await Users.findAll({
             where: groupChat.members,
-            attributes: ["id","firstName", "lastName", "image", "role"]
+            attributes: ["id", "firstName", "lastName", "image", "role"]
         })
         return res.status(200).json(members)
     } catch (error) {
