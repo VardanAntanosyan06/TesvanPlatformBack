@@ -152,7 +152,7 @@ io.on('connection', (socket) => {
   socketController.typingGroup(io, socket)
   socketController.stopTypingGroup(io, socket)
   socketController.notifications(io, socket)
-  socketController.online(io, socket)
+  socketController.join(io, socket)
 
 });
 

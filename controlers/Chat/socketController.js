@@ -72,8 +72,8 @@ const notifications = (io, socket) => {
     })
 }
 
-const online = (io, socket) => {
-    socket.on('online', (data) => {
+const join = (io, socket) => {
+    socket.on('join', (data) => {
         const userSocket = userSockets.get(data.userId);
         if (userSocket) {
             data.groupChats.map((groupChatId) => {
@@ -91,5 +91,5 @@ module.exports = {
     typingGroup,
     stopTypingGroup,
     notifications,
-    online
+    join
 }
