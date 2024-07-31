@@ -121,14 +121,15 @@ io.on('connection', (socket) => {
     const decoded = jwt.decode(token)
     if (decoded) {
       const userId = decoded.user_id;
+      socket.userRooms = [] //user rooms: for offline emit 
       userSockets.set(userId, socket);
       console.log(`=== ${userId} Connected ===`)
       socket.on('disconnect', () => {
-        // const userSocket = userSockets.get(userId)
-        // console.log(userSocket.room);
-        // userSocket.room.forEach(element => {
-          
-        // });
+        const userSocket = userSockets.get(userId)
+        console.log(userSocket.userRooms);
+        userSocket.userRooms.forEach(room => {
+          socket.to(room).emit('offline', { userId })
+        });
         userSockets.delete(userId);
         console.log(`=== ${userId} Disconnected ===`);
       });

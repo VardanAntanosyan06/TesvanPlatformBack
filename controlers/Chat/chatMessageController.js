@@ -108,7 +108,6 @@ const createChatMessage = async (req, res) => {
             },
         });
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
-
         let imageName
         let fileName
         if (image) {
@@ -132,7 +131,6 @@ const createChatMessage = async (req, res) => {
                 }
             });
         }
-
         const { id } = await ChatMessages.create({
             chatId,
             senderId: userId,
@@ -151,7 +149,7 @@ const createChatMessage = async (req, res) => {
                 }
             ],
         });
-        const firstIdSocket = await userSockets.get(caht.firstId)
+        const firstIdSocket = await userSockets.get(chat.firstId)
         if (firstIdSocket) {
             io.to(firstIdSocket.id).emit('createChatMessage', message)
             const notification = await getMessageNotifications(userId)

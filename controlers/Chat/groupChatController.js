@@ -44,11 +44,11 @@ const getGroupChat = async (req, res) => {
             }
         })
         groupChat.setDataValue('members', members);
-        const userSocket = await userSockets.get(userId);
+        const userSocket = await userSockets.get(userId); 
         if (userSocket) {
             userSocket.join(`room_${groupChatId}`)
-            userSocket.room = []
-            userSocket.room.push(`room_${groupChatId}`)
+            userSocket.userRooms = [...userSocket.userRooms,...[`room_${groupChatId}`]]
+            userSocket.userRooms = [...new Set(userSocket.userRooms)]
         }
         return res.status(200).json(groupChat)
     } catch (error) {
