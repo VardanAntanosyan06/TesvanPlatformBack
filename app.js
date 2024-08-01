@@ -128,14 +128,9 @@ io.on('connection', (socket) => {
       socketController(io, socket) //all socket listenigs
 
       socket.on('disconnect', () => {
-        const userSocket = userSockets.get(userId)
-        const rooms = socket.userRooms
-        if (rooms.length) {
-          rooms.forEach(room => {
-            console.log("offline room", room);
-            socket.to(room).emit('offline', { userId })
-          });
-        }
+        socket?.userRooms?.forEach(room => {
+          socket.to(room).emit('offline', { userId })
+        });
         userSockets.delete(userId);
         console.log(`=== ${userId} Disconnected ===`);
       });
