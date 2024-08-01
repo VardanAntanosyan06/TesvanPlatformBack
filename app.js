@@ -104,7 +104,7 @@ const io = new Server(server, {
 app.set('io', io);
 
 const { userSockets } = require("./userSockets") // Assuming you have a Map for user sockets
-const {socketController} = require("./controlers/Chat/socketController")
+const { socketController } = require("./controlers/Chat/socketController")
 
 io.on('connection', (socket) => {
   console.log("+++ connection request +++");
@@ -129,9 +129,13 @@ io.on('connection', (socket) => {
 
       socket.on('disconnect', () => {
         const userSocket = userSockets.get(userId)
-        // userSocket.userRooms.forEach(room => {
-        //   socket.to(room).emit('offline', { userId })
-        // });
+        const rooms = socket.userRooms
+        if (rooms.length) {
+          rooms.forEach(room => {
+            console.log("offline room", room);
+            socket.to(room).emit('offline', { userId })
+          });
+        }
         userSockets.delete(userId);
         console.log(`=== ${userId} Disconnected ===`);
       });

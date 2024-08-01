@@ -11,6 +11,7 @@ const socketController = (io, socket) => {
             if (userSocket) {
                 io.to(userSocket.id).emit('typing', data.userName)
                 function typingOff() {
+                    console.log('my stoptyping', data);
                     io.to(userSocket.id).emit('stopTyping')
                 }
                 setTimeout(typingOff, 3500)
@@ -34,6 +35,7 @@ const socketController = (io, socket) => {
             users.push(data.userName)
             socket.to(`room_${data.groupChatId}`).emit('typingGroup', users)
             function typingOff() {
+                console.log('my stopTypingGroup', data);
                 const index = users.indexOf(data.userName);
                 users.splice(index, 1);
                 socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', users)
