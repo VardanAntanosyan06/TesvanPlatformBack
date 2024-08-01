@@ -126,7 +126,6 @@ io.on('connection', (socket) => {
       console.log(`=== ${userId} Connected ===`)
       socket.on('disconnect', () => {
         const userSocket = userSockets.get(userId)
-        console.log(userSocket.userRooms);
         userSocket.userRooms.forEach(room => {
           socket.to(room).emit('offline', { userId })
         });
@@ -141,11 +140,6 @@ io.on('connection', (socket) => {
     console.log("No token provided, socket disconnected");
     socket.disconnect();
   }
-  socket.on('join', (username) => {
-    socket.username = username;
-    onlineUsers[username] = socket.id;
-    io.emit('updateUserList', Object.keys(onlineUsers));
-  });
 
   socketController.typing(io, socket)
   socketController.stopTyping(io, socket)
