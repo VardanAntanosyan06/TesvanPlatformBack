@@ -106,7 +106,7 @@ app.set('io', io);
 const { userSockets } = require("./userSockets") // Assuming you have a Map for user sockets
 const { socketController } = require("./controlers/Chat/socketController")
 
-io.on('connection', (socket) => {
+io.use((socket, next) => {
   console.log("+++ connection request +++");
   const token = socket?.handshake?.query?.token;
 
@@ -115,7 +115,6 @@ io.on('connection', (socket) => {
       if (err) {
         console.log("Invalid token, socket disconnected");
         socket.disconnect();
-        return;
       }
     });
     const decoded = jwt.decode(token)
@@ -124,25 +123,40 @@ io.on('connection', (socket) => {
       socket.userRooms = [] //user rooms: for offline emit 
       userSockets.set(userId, socket);
       console.log(`=== ${userId} Connected ===`)
-
-      socketController(io, socket) //all socket listenigs
-
-      socket.on('disconnect', () => {
-        socket?.userRooms?.forEach(room => {
-          socket.to(room).emit('offline', { userId })
-        });
-        userSockets.delete(userId);
-        console.log(`=== ${userId} Disconnected ===`);
-      });
+      next()
     } else {
       console.log("Failed to decode token, socket disconnected");
-      socket.disconnect();
+      socket.disconnect(); 
     }
   } else {
     console.log("No token provided, socket disconnected");
     socket.disconnect();
   }
+})
+
+io.on('connection', (socket) => {
+
+  socketController(io, socket) //all socket listenigs
+
+  socket.on('disconnect', () => {
+    const userId = getUserIdForSocket(socket)
+    userId && socket?.userRooms?.forEach(room => {
+      console.log("offline", room);
+      socket.to(room).emit('offline', { userId })
+    });
+    userSockets.delete(userId);
+    console.log(`=== ${userId} Disconnected ===`);
+  });
 });
+
+function getUserIdForSocket(socket) {
+  for (const [userId, userSocket] of userSockets.entries()) {
+    if (userSocket === socket) {
+      return userId; 
+    }
+  }
+  return null;
+}
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
