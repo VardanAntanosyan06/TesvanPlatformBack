@@ -68,8 +68,10 @@ const createGroupChatMessage = async (req, res) => {
             order: [['createdAt', 'DESC']],
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
+        console.log("createGroupChatMessage", messages);
         io.to(`room_${chatId}`).emit("createGroupChatMessage", messages);
         const notification = await getMessageNotifications(userId)
+        console.log('groupChatNotification', notification.groupChatNotification);
         io.to(`room_${chatId}`).emit('groupChatNotification', notification.groupChatNotification)
         return res.status(200).json({ success: true });
     } catch (error) {
