@@ -1,7 +1,9 @@
 const { userSockets } = require("../../userSockets") // Assuming you have a Map for user sockets
+const { getMessageNotifications } = require("../Chat/chatMessageController")
+const users = [] // group chat typing users
 
+const socketController = (io, socket) => {
 
-const typing = (io, socket) => {
     socket.on('typing', (data) => {
         console.log('typing', data);
         if (data.receiverId) {
@@ -15,8 +17,7 @@ const typing = (io, socket) => {
             }
         }
     })
-}
-const stopTyping = (io, socket) => {
+
     socket.on('stopTyping', (data) => {
         console.log('stopTyping', data);
         if (data.receiverId) {
@@ -26,10 +27,7 @@ const stopTyping = (io, socket) => {
             }
         }
     })
-}
 
-const users = [] // group chat typing users
-const typingGroup = (io, socket) => {
     socket.on('typingGroup', (data) => {
         console.log('typingGroup', data);
         if (data.groupChatId) {
@@ -43,9 +41,6 @@ const typingGroup = (io, socket) => {
             setTimeout(typingOff, 3500)
         }
     })
-}
-
-const stopTypingGroup = (io, socket) => {
 
     socket.on('stopTypingGroup', (data) => {
         console.log('stopTypingGroup', data);
@@ -55,10 +50,7 @@ const stopTypingGroup = (io, socket) => {
             socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', users)
         }
     })
-}
 
-const { getMessageNotifications } = require("../Chat/chatMessageController")
-const notifications = (io, socket) => {
     socket.on("getNotifications", (data) => {
         console.log(data);
         if (data.userId) {
@@ -70,11 +62,9 @@ const notifications = (io, socket) => {
 
         }
     })
-}
 
-const join = (io, socket) => {
     socket.on('join', (data) => {
-        const userSocket = userSockets.get(data.userId);
+        const userSocket = userSockets.get(+data.userId);
         if (userSocket) {
             data.groupChats.map((groupChatId) => {
                 userSocket.join(`room_${groupChatId}`)
@@ -84,12 +74,8 @@ const join = (io, socket) => {
             })
         }
     });
+
 }
 module.exports = {
-    typing,
-    stopTyping,
-    typingGroup,
-    stopTypingGroup,
-    notifications,
-    join
+    socketController
 }
