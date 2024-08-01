@@ -104,7 +104,7 @@ const io = new Server(server, {
 app.set('io', io);
 
 const { userSockets } = require("./userSockets") // Assuming you have a Map for user sockets
-const socketController = require("./controlers/Chat/socketController")
+const {socketController} = require("./controlers/Chat/socketController")
 
 io.on('connection', (socket) => {
   console.log("+++ connection request +++");
@@ -124,6 +124,9 @@ io.on('connection', (socket) => {
       socket.userRooms = [] //user rooms: for offline emit 
       userSockets.set(userId, socket);
       console.log(`=== ${userId} Connected ===`)
+
+      socketController(io, socket) //all socket listenigs
+
       socket.on('disconnect', () => {
         const userSocket = userSockets.get(userId)
         userSocket.userRooms.forEach(room => {
@@ -140,14 +143,6 @@ io.on('connection', (socket) => {
     console.log("No token provided, socket disconnected");
     socket.disconnect();
   }
-
-  socketController.typing(io, socket)
-  socketController.stopTyping(io, socket)
-  socketController.typingGroup(io, socket)
-  socketController.stopTypingGroup(io, socket)
-  socketController.notifications(io, socket)
-  socketController.join(io, socket)
-
 });
 
 function normalizePort(val) {
