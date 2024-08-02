@@ -1151,11 +1151,8 @@ const updateCourse = async (req, res) => {
     await CoursesPerLessons.destroy({ where: { courseId } });
     await Promise.all(
       lessonIds.flatMap((lessonId, i) =>
+        CoursesPerLessons.create({ type, courseId, lessonId, number: i + 1 }),
         userIds.map(async (userId) => {
-          console.log(`Processing lesson ${lessonId} for user ${userId} (index ${i})`);
-
-          await CoursesPerLessons.create({ type, courseId, lessonId, number: i + 1 });
-
           await UserLesson.findOrCreate({
             where: {
               GroupCourseId: courseId,
