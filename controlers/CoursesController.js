@@ -1287,6 +1287,9 @@ const getCourseForAdmin = async (req, res) => {
         },
       ],
       attributes: ['id', 'img'],
+      order: [
+        [CoursesContents, 'id', 'ASC']
+      ]
     });
 
     if (!course) return res.json({ success: false, message: 'Course not found' });
