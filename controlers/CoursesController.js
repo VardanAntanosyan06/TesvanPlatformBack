@@ -1335,9 +1335,7 @@ const getCourseForAdmin = async (req, res) => {
         const formattedLesson = {
           id: lesson.dataValues.id,
           title: lesson.dataValues.title,
-          description: lesson.dataValues.description
-            ? lesson.dataValues.description.match(/\b(\w+\b\s*){1,16}/)[0]
-            : lesson.dataValues.description,
+          description: lesson.dataValues.description,
           number: index + 1,
           isOpen: true,
         };
