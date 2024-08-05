@@ -9,7 +9,7 @@ const socketController = (io, socket) => {
         if (data.receiverId) {
             const userSocket = userSockets.get(+data.receiverId)
             if (userSocket) {
-                io.to(userSocket.id).emit('typing', data.userName)
+                io.to(userSocket.id).emit('typing', data)
                 function typingOff() {
                     console.log('my stoptyping', data);
                     io.to(userSocket.id).emit('stopTyping')
