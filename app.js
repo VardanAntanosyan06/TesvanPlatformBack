@@ -115,6 +115,7 @@ io.on('connection', (socket) => {
       if (err) {
         console.log("Invalid token, socket disconnected");
         socket.disconnect();
+        return;
       }
     });
     const decoded = jwt.decode(token)
@@ -123,6 +124,15 @@ io.on('connection', (socket) => {
       socket.userRooms = [] //user rooms: for offline emit 
       userSockets.set(userId, socket);
       console.log(`=== ${userId} Connected ===`)
+      
+      socket.on('disconnect', () => {
+        userId && socket?.userRooms?.forEach(room => {
+          console.log("offline", room);
+          socket.to(room).emit('offline', { userId })
+        });
+        userSockets.delete(userId);
+        console.log(`=== ${userId} Disconnected ===`);
+      });
     } else {
       console.log("Failed to decode token, socket disconnected");
       socket.disconnect(); 
@@ -134,25 +144,8 @@ io.on('connection', (socket) => {
 
   socketController(io, socket) //all socket listenigs
 
-  socket.on('disconnect', () => {
-    const userId = getUserIdForSocket(socket)
-    userId && socket?.userRooms?.forEach(room => {
-      console.log("offline", room);
-      socket.to(room).emit('offline', { userId })
-    });
-    userSockets.delete(userId);
-    console.log(`=== ${userId} Disconnected ===`);
-  });
-});
 
-function getUserIdForSocket(socket) {
-  for (const [userId, userSocket] of userSockets.entries()) {
-    if (userSocket === socket) {
-      return userId; 
-    }
-  }
-  return null;
-}
+});
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
