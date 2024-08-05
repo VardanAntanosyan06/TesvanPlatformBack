@@ -106,7 +106,7 @@ app.set('io', io);
 const { userSockets } = require("./userSockets") // Assuming you have a Map for user sockets
 const { socketController } = require("./controlers/Chat/socketController")
 
-io.use((socket, next) => {
+io.on('connection', (socket) => {
   console.log("+++ connection request +++");
   const token = socket?.handshake?.query?.token;
 
@@ -123,7 +123,6 @@ io.use((socket, next) => {
       socket.userRooms = [] //user rooms: for offline emit 
       userSockets.set(userId, socket);
       console.log(`=== ${userId} Connected ===`)
-      next()
     } else {
       console.log("Failed to decode token, socket disconnected");
       socket.disconnect(); 
@@ -132,9 +131,6 @@ io.use((socket, next) => {
     console.log("No token provided, socket disconnected");
     socket.disconnect();
   }
-})
-
-io.on('connection', (socket) => {
 
   socketController(io, socket) //all socket listenigs
 
