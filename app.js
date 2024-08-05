@@ -118,15 +118,17 @@ io.on('connection', (socket) => {
         return;
       }
     });
+
     const decoded = jwt.decode(token)
     if (decoded) {
       const userId = decoded.user_id;
       socket.userRooms = [] //user rooms: for offline emit 
       userSockets.set(userId, socket);
       console.log(`=== ${userId} Connected ===`)
-      
+
       socket.on('disconnect', () => {
-        userId && socket?.userRooms?.forEach(room => {
+        const userSocket = userSockets.get(userId)
+        userSocket?.userRooms?.forEach(room => {
           console.log("offline", room);
           socket.to(room).emit('offline', { userId })
         });
@@ -136,14 +138,14 @@ io.on('connection', (socket) => {
     } else {
       console.log("Failed to decode token, socket disconnected");
       socket.disconnect(); 
-    }
+    };
+
   } else {
     console.log("No token provided, socket disconnected");
     socket.disconnect();
   }
 
   socketController(io, socket) //all socket listenigs
-
 
 });
 
