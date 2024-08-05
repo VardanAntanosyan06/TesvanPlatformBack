@@ -33,12 +33,12 @@ const socketController = (io, socket) => {
         console.log('typingGroup', data);
         if (data.groupChatId) {
             users.push(data.userName)
-            socket.to(`room_${data.groupChatId}`).emit('typingGroup', users)
+            socket.to(`room_${data.groupChatId}`).emit('typingGroup', {userNames: users, chatId: data.groupChatId})
             function typingOff() {
                 console.log('my stopTypingGroup', data);
                 const index = users.indexOf(data.userName);
                 users.splice(index, 1);
-                socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', users)
+                socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', {userNames: users, chatId: data.groupChatId})
             }
             setTimeout(typingOff, 3500)
         }
@@ -49,7 +49,7 @@ const socketController = (io, socket) => {
         if (data.groupChatId) {
             const index = users.indexOf(data.userName);
             users.splice(index, 1);
-            socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', users)
+            socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', {userNames: users, chatId: data.groupChatId})
         }
     })
 
