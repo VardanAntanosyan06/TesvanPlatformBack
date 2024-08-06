@@ -273,16 +273,25 @@ const readGroupChatMessage = async (req, res) => {
                 groupChatId: chatId
             }
         })
+        console.log(read);
+        
         if (!read) {
             await GroupChatReads.create({
                 userId,
                 groupChatId: chatId,
                 lastSeen: messageId
             })
+            console.log(22222);
+            
+            return res.status(200).json({ success: true });
         } else if (read.lastSeen < messageId) {
             read.lastSeen = messageId
             await read.save()
+            console.log(333);
+            
+            return res.status(200).json({ success: true });
         }
+        return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
