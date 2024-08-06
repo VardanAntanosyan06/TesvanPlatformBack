@@ -575,12 +575,24 @@ const updateLesson = async (req, res) => {
     //   description_am: presentationDescription_am,
     //   lessonId,
     // });
+
+
     if (!isNaN(+homeworkId)) {
       await HomeworkPerLesson.upsert({
         homeworkId,
         lessonId,
       });
     }
+
+    // if (!isNaN(+homeworkId)) {
+    //   const homeworkPerLesson = await HomeworkPerLesson.findOne({
+    //     where: {
+    //       lessonId
+    //     }
+    //   });
+    //   homeworkPerLesson.homeworkId = homeworkId
+    //   await homeworkPerLesson.save()
+    // }
 
     if (!isNaN(+quizzId)) {
       await LessonsPerQuizz.destroy({
