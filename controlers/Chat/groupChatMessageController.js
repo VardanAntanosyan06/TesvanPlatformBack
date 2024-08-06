@@ -263,20 +263,20 @@ const deleteGroupChatMessage = async (req, res) => {
     }
 };
 
-const readGroupChatMessage = async () => {
+const readGroupChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { messageId, chatId } = req.params;
         const read = await GroupChatReads.findOne({
             where: {
                 userId,
-                chatId
+                groupChatId: chatId
             }
         })
         if (!read) {
             await GroupChatReads.create({
                 userId,
-                chatId,
+                groupChatId: chatId,
                 lastSeen: messageId
             })
         } else if (read.lastSeen < messageId) {

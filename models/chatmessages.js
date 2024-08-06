@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     text: DataTypes.TEXT,
     image: DataTypes.STRING,
     file: DataTypes.STRING,
-    isRead: DataTypes.BOOLEAN,
+    isRead: DataTypes.STRING,
     isUpdated: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
