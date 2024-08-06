@@ -12,7 +12,7 @@ const socketController = (io, socket) => {
                 io.to(userSocket.id).emit('typing', data)
                 function typingOff() {
                     console.log('my stoptyping', data);
-                    io.to(userSocket.id).emit('stopTyping')
+                    io.to(userSocket.id).emit('stopTyping', data)
                 }
                 setTimeout(typingOff, 3500)
             }
@@ -24,7 +24,7 @@ const socketController = (io, socket) => {
         if (data.receiverId) {
             const userSocket = userSockets.get(+data.receiverId)
             if (userSocket) {
-                io.to(userSocket.id).emit('stopTyping')
+                io.to(userSocket.id).emit('stopTyping', data)
             }
         }
     })

@@ -35,7 +35,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       isRead: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.STRING
       },
       isUpdated: {
         type: Sequelize.BOOLEAN,
