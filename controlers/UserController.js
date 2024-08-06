@@ -4,7 +4,7 @@ const removeAvatar = async (req, res) => {
   try {
     const { user_id } = req.user;
 
-    await Users.update({ image: null }, { where: { id: user_id } });
+    await Users.update({ image: 'defaultIcon.png' }, { where: { id: user_id } });
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
