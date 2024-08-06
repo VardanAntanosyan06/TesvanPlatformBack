@@ -161,14 +161,14 @@ const createChatMessage = async (req, res) => {
         const firstIdSocket = await userSockets.get(chat.firstId)
         if (firstIdSocket) {
             io.to(firstIdSocket.id).emit('createChatMessage', message)
-            const notification = await getMessageNotifications(userId)
-            io.to(firstIdSocket.id).emit('notifications', notification.chatNotification)
+            // const notification = await getMessageNotifications(userId)
+            // io.to(firstIdSocket.id).emit('notifications', notification.chatNotification)
         };
         const secondSocket = await userSockets.get(chat.secondId)
         if (secondSocket) {
             io.to(secondSocket.id).emit('createChatMessage', message)
-            const notification = await getMessageNotifications(userId)
-            io.to(firstIdSocket.id).emit('chatNotifications', notification.chatNotification)
+            // const notification = await getMessageNotifications(userId)
+            // io.to(firstIdSocket.id).emit('chatNotifications', notification.chatNotification)
         };
         return res.status(200).json({ success: true });
     } catch (error) {
@@ -423,23 +423,32 @@ const readChatMessage = async () => {
                 id: chatId,
                 [Op.or]: [{ secondId: userId }, { firstId: userId }]
             },
-        });
-        const message = await ChatMessages.findOne({
-            where: {
-                id: {
-                    [Op.lte]: messageId
-                },
-                isRead: userId
+            include: {
+                model: ChatMessages,
+                where: {
+                    id: messageId
+                }
             }
-        })
-        if (message.senderId !== userId) {
-            read.isReade = "true"
-            await read.save()
-            const firstSocket = await userSockets.get(chat.firstId)
-            if (firstSocket) { io.to(firstSocket.id).emit('readChatMessage', message) };
-            const secondSocket = await userSockets.get(chat.secondId)
-            if (secondSocket) { io.to(secondSocket.id).emit('readChatMessage', message) };
-        }
+        });
+        const read = await ChatMessages.update(
+            {
+                isRead: "true"
+            },
+            {
+                where: {
+                    id: {
+                        [Op.lte]: messageId
+                    },
+                    isRead: userId
+                }
+            }
+        )
+        const message = chat.ChatMessages;
+        const firstSocket = await userSockets.get(chat.firstId)
+        if (firstSocket) { io.to(firstSocket.id).emit('readChatMessage', message) };
+        const secondSocket = await userSockets.get(chat.secondId)
+        if (secondSocket) { io.to(secondSocket.id).emit('readChatMessage', message) };
+
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
