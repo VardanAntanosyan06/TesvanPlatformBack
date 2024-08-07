@@ -25,6 +25,9 @@ module.exports = {
           key: 'id',
         },
       },
+      receiverId: {
+        type: Sequelize.INTEGER
+      },
       text: {
         type: Sequelize.TEXT,
       },
@@ -35,7 +38,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       isRead: {
-        type: Sequelize.STRING
+        type: Sequelize.BOOLEAN
       },
       isUpdated: {
         type: Sequelize.BOOLEAN,

@@ -20,10 +20,11 @@ module.exports = (sequelize, DataTypes) => {
   ChatMessages.init({
     chatId: DataTypes.INTEGER,
     senderId: DataTypes.INTEGER,
+    receiverId: DataTypes.INTEGER,
     text: DataTypes.TEXT,
     image: DataTypes.STRING,
     file: DataTypes.STRING,
-    isRead: DataTypes.STRING,
+    isRead: DataTypes.BOOLEAN,
     isUpdated: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
