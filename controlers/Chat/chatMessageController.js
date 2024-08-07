@@ -449,7 +449,7 @@ const readChatMessage = async (req, res) => {
         if (firstSocket) { io.to(firstSocket.id).emit('readChatMessage', message) };
         const secondSocket = await userSockets.get(chat.secondId)
         if (secondSocket) { io.to(secondSocket.id).emit('readChatMessage', message) };
-
+        return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
