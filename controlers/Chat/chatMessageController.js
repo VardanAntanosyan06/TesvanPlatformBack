@@ -142,8 +142,9 @@ const createChatMessage = async (req, res) => {
         const { id } = await ChatMessages.create({
             chatId,
             senderId: userId,
+            receiverId: whoWillRead,
             text,
-            isRead: whoWillRead,
+            isRead: false,
             image: imageName ? imageName : null,
             file: fileName ? fileName : null
         })
@@ -433,14 +434,14 @@ const readChatMessage = async (req, res) => {
         });
         const read = await ChatMessages.update(
             {
-                isRead: "true"
+                isRead: true
             },
             {
                 where: {
                     id: {
                         [Op.lte]: messageId
                     },
-                    isRead: userId
+                    receiverId: userId
                 }
             }
         )
