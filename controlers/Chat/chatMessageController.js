@@ -414,7 +414,7 @@ const getMessageFile = (req, res) => {
     }
 }
 
-const readChatMessage = async () => {
+const readChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { messageId, chatId } = req.params;
