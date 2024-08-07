@@ -418,6 +418,7 @@ const readChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { messageId, chatId } = req.params;
+        const io = req.io;
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
