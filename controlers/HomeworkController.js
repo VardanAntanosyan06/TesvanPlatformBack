@@ -154,19 +154,29 @@ const getHomework = async (req, res) => {
     const { user_id: userId, role } = req.user;
     const { language } = req.query;
 
-    let homework = await UserHomework.findOne({
-      where: { HomeworkId: id,UserId:userId },
-      include: [
-        {
-          model: Homework,
-          attributes: [
-            'id',
-            [`title_${language}`, 'title'],
-            [`description_${language}`, 'description'],
-          ],
-        },
+    // let homework = await UserHomework.findOne({
+    //   where: { UserId:userId },
+    //   include: [
+    //     {
+    //       model: Homework,
+    //       attributes: [
+    //         'id',
+    //         [`title_${language}`, 'title'],
+    //         [`description_${language}`, 'description'],
+    //       ],
+    //     },
+    //   ],
+    // });
+    let homework = await Homework.findOne({
+      where: {
+        id: id
+      },
+      attributes: [
+        'id',
+        [`title_${language}`, 'title'],
+        [`description_${language}`, 'description'],
       ],
-    });
+    })
 
     if (!homework) {
       return res.status(403).json({
@@ -447,17 +457,17 @@ const homeworkPoints = async (req, res) => {
         },
       },
     );
-    const {lessonId} = await HomeworkPerLesson.findOne({where:{homeworkId}})
-    const {maxPoints}= await Lesson.findByPk(lessonId)
+    const { lessonId } = await HomeworkPerLesson.findOne({ where: { homeworkId } })
+    const { maxPoints } = await Lesson.findByPk(lessonId)
 
     // 10*50/100
     const userLesson = await UserLesson.findOne({
-      where:{
-        LessonId:lessonId,
-        UserId:userId
+      where: {
+        LessonId: lessonId,
+        UserId: userId
       }
     })
-    userLesson.points = userLesson.points + Math.ceil((maxPoints/2*points)/100 * 10) / 10 
+    userLesson.points = userLesson.points + Math.ceil((maxPoints / 2 * points) / 100 * 10) / 10
     await userLesson.save()
     if (status === 0) {
       return res.status(403).json({
@@ -476,7 +486,7 @@ const getUserHomeworkPoints = async (req, res) => {
     const { user_id } = req.user;
     const { courseId } = req.params;
     const { language } = req.query;
-    
+
     let homework = await Homework.findAll({
       include: [
         {
@@ -522,12 +532,12 @@ const getUserHomeworkPoints = async (req, res) => {
           include: [
             {
               model: UserHomework,
-              attributes: ['points','HomeworkId'],
+              attributes: ['points', 'HomeworkId'],
               order: [['HomeworkId', 'ASC']],
             },
             {
               model: UserInterview,
-              attributes: ['points', 'calendarId','userId'],
+              attributes: ['points', 'calendarId', 'userId'],
               order: [['userId', 'ASC']],
             },
           ],
