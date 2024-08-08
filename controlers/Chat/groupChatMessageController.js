@@ -1,5 +1,5 @@
 const { GroupChatMessages, GroupChats, Users, GroupChatReads, sequelize } = require('../../models');
-const { Op } = require('sequelize');
+const { Op, where } = require('sequelize');
 const uuid = require("uuid");
 const path = require("path");
 const fs = require("fs");
@@ -267,6 +267,25 @@ const readGroupChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { messageId, chatId } = req.params;
+
+        const groupChats = await GroupChats.findOne({
+            where: {
+                id: chatId,
+                members: {
+                    [Op.contains]: [userId]
+                }
+            },
+            include: {
+                module: GroupChatMessages,
+                as: "messages",
+                where: {
+                    id: messageId
+                },
+                required: true
+            }
+        });
+        if (!groupChats) return res.status(404).json({ message: 'Chat or message not found' });
+
         const read = await GroupChatReads.findOne({
             where: {
                 userId,
