@@ -159,9 +159,6 @@ const getHomework = async (req, res) => {
       include: [
         {
           model: Homework,
-          where: {
-            id: id
-          },
           attributes: [
             'id',
             [`title_${language}`, 'title'],
