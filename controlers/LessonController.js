@@ -603,8 +603,10 @@ const updateLesson = async (req, res) => {
         }
       })
       if (courses.length>0) {
+        
         await Promise.all(
           courses.map(async (cours) => {
+            console.log("\\\\\\\\\\\\\\\\\\\\", homeworkId, cours.courseId, "\\\\\\\\\\\\\\\\\\\\\\");
             await UserHomework.update(
               {
                 HomeworkId: homeworkId
