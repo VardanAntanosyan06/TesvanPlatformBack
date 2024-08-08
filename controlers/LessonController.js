@@ -577,22 +577,22 @@ const updateLesson = async (req, res) => {
     // });
 
 
-    if (!isNaN(+homeworkId)) {
-      await HomeworkPerLesson.upsert({
-        homeworkId,
-        lessonId,
-      });
-    }
-
     // if (!isNaN(+homeworkId)) {
-    //   const homeworkPerLesson = await HomeworkPerLesson.findOne({
-    //     where: {
-    //       lessonId
-    //     }
+    //   await HomeworkPerLesson.upsert({
+    //     homeworkId,
+    //     lessonId,
     //   });
-    //   homeworkPerLesson.homeworkId = homeworkId
-    //   await homeworkPerLesson.save()
     // }
+
+    if (!isNaN(+homeworkId)) {
+      const homeworkPerLesson = await HomeworkPerLesson.findOne({
+        where: {
+          lessonId
+        }
+      });
+      homeworkPerLesson.homeworkId = homeworkId
+      await homeworkPerLesson.save()
+    }
 
     if (!isNaN(+quizzId)) {
       await LessonsPerQuizz.destroy({
