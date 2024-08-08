@@ -167,7 +167,9 @@ const getHomework = async (req, res) => {
     //     },
     //   ],
     // });
-    let homework = await Homework.findOne({
+
+ 
+    let data = await Homework.findOne({
       where: {
         id: id
       },
@@ -177,6 +179,11 @@ const getHomework = async (req, res) => {
         [`description_${language}`, 'description'],
       ],
     })
+    const homework = {
+      Homework: []
+    }
+    homework.Homework[0] = data
+
 
     if (!homework) {
       return res.status(403).json({
