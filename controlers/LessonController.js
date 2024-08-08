@@ -16,6 +16,8 @@ const {
   Presentations,
   UserPoints,
   LessonTime,
+  UserHomework,
+  CoursesPerLessons
 } = require('../models');
 const { v4 } = require('uuid');
 const path = require('path');
@@ -592,6 +594,27 @@ const updateLesson = async (req, res) => {
       });
       homeworkPerLesson.homeworkId = homeworkId
       await homeworkPerLesson.save()
+      const courses = await CoursesPerLessons.findAll({
+        where: {
+          lessonId
+        }
+      })
+      await Promise.all(
+        courses.map(async (cours) => {
+          await UserHomework.update(
+            {
+              HomeworkId: homeworkId
+            },
+            {
+              where: {
+                GroupCourseId: cours.courseId
+              }
+            }
+          )
+        })
+      )
+
+
     }
 
     if (!isNaN(+quizzId)) {
