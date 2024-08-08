@@ -33,7 +33,8 @@ const getMessageNotifications = async (userId) => {
                 {
                     model: ChatMessages,
                     where: {
-                        isRead: userId
+                        receiverId: userId,
+                        isRead: false
                     },
                     attributes: ["id", "text"],
                     order: [['createdAt', 'DESC']],
@@ -429,9 +430,12 @@ const readChatMessage = async (req, res) => {
                 model: ChatMessages,
                 where: {
                     id: messageId
-                }
+                },
+                required: true
             }
         });
+        if (!chat) return res.status(404).json({ message: 'Chat or message not found' });
+
         const read = await ChatMessages.update(
             {
                 isRead: true
@@ -441,11 +445,16 @@ const readChatMessage = async (req, res) => {
                     id: {
                         [Op.lte]: messageId
                     },
-                    receiverId: userId
+                    receiverId: userId,
+                    isRead: false
                 }
             }
-        )
-        const message = chat.ChatMessages;
+        );
+
+        const parser = chat.toJSON()
+        parser.ChatMessages[0].isRead = true
+        const message = parser.ChatMessages[0]
+  
         const firstSocket = await userSockets.get(chat.firstId)
         if (firstSocket) { io.to(firstSocket.id).emit('readChatMessage', message) };
         const secondSocket = await userSockets.get(chat.secondId)
