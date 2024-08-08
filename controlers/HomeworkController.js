@@ -154,35 +154,35 @@ const getHomework = async (req, res) => {
     const { user_id: userId, role } = req.user;
     const { language } = req.query;
 
-    // let homework = await UserHomework.findOne({
-    //   where: { UserId:userId },
-    //   include: [
-    //     {
-    //       model: Homework,
-    //       attributes: [
-    //         'id',
-    //         [`title_${language}`, 'title'],
-    //         [`description_${language}`, 'description'],
-    //       ],
-    //     },
-    //   ],
-    // });
+    let homework = await UserHomework.findOne({
+      where: { UserId:userId },
+      include: [
+        {
+          model: Homework,
+          where: {
+            id: id
+          },
+          attributes: [
+            'id',
+            [`title_${language}`, 'title'],
+            [`description_${language}`, 'description'],
+          ],
+        },
+      ],
+    });
 
  
-    let data = await Homework.findOne({
-      where: {
-        id: id
-      },
-      attributes: [
-        'id',
-        [`title_${language}`, 'title'],
-        [`description_${language}`, 'description'],
-      ],
-    })
-    const homework = {
-      Homework: []
-    }
-    homework.Homework[0] = data
+    // let homework = await Homework.findOne({
+    //   where: {
+    //     id: id
+    //   },
+    //   attributes: [
+    //     'id',
+    //     [`title_${language}`, 'title'],
+    //     [`description_${language}`, 'description'],
+    //   ],
+    // })
+
 
 
     if (!homework) {
