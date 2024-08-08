@@ -33,7 +33,8 @@ const getMessageNotifications = async (userId) => {
                 {
                     model: ChatMessages,
                     where: {
-                        isRead: null
+                        receiverId: userId,
+                        isRead: false
                     },
                     attributes: ["id", "text"],
                     order: [['createdAt', 'DESC']],
@@ -107,6 +108,14 @@ const createChatMessage = async (req, res) => {
                 [Op.or]: [{ secondId: userId }, { firstId: userId }]
             },
         });
+
+        let whoWillRead
+        if (chat.firstId === userId) {
+            whoWillRead = chat.secondId
+        } else {
+            whoWillRead = chat.firstId
+        }
+
         if (!chat) return res.status(404).json({ message: 'Chat not found' });
         let imageName
         let fileName
@@ -134,7 +143,9 @@ const createChatMessage = async (req, res) => {
         const { id } = await ChatMessages.create({
             chatId,
             senderId: userId,
+            receiverId: whoWillRead,
             text,
+            isRead: false,
             image: imageName ? imageName : null,
             file: fileName ? fileName : null
         })
@@ -152,14 +163,14 @@ const createChatMessage = async (req, res) => {
         const firstIdSocket = await userSockets.get(chat.firstId)
         if (firstIdSocket) {
             io.to(firstIdSocket.id).emit('createChatMessage', message)
-            const notification = await getMessageNotifications(userId)
-            io.to(firstIdSocket.id).emit('notifications', notification.chatNotification)
+            // const notification = await getMessageNotifications(userId)
+            // io.to(firstIdSocket.id).emit('notifications', notification.chatNotification)
         };
         const secondSocket = await userSockets.get(chat.secondId)
         if (secondSocket) {
             io.to(secondSocket.id).emit('createChatMessage', message)
-            const notification = await getMessageNotifications(userId)
-            io.to(firstIdSocket.id).emit('chatNotifications', notification.chatNotification)
+            // const notification = await getMessageNotifications(userId)
+            // io.to(firstIdSocket.id).emit('chatNotifications', notification.chatNotification)
         };
         return res.status(200).json({ success: true });
     } catch (error) {
@@ -405,27 +416,50 @@ const getMessageFile = (req, res) => {
     }
 }
 
-const readChatMessage = async () => {
+const readChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { messageId, chatId } = req.params;
+        const io = req.io;
         const chat = await Chats.findOne({
             where: {
                 id: chatId,
                 [Op.or]: [{ secondId: userId }, { firstId: userId }]
             },
-        });
-        const message = await ChatMessages.findOne({
-            where: {
-                id: messageId,
+            include: {
+                model: ChatMessages,
+                where: {
+                    id: messageId
+                },
+                required: true
             }
-        })
-        read.isReade = true
-        await read.save()
+        });
+        if (!chat) return res.status(404).json({ message: 'Chat or message not found' });
+
+        const read = await ChatMessages.update(
+            {
+                isRead: true
+            },
+            {
+                where: {
+                    id: {
+                        [Op.lte]: messageId
+                    },
+                    receiverId: userId,
+                    isRead: false
+                }
+            }
+        );
+
+        const parser = chat.toJSON()
+        parser.ChatMessages[0].isRead = true
+        const message = parser.ChatMessages[0]
+  
         const firstSocket = await userSockets.get(chat.firstId)
         if (firstSocket) { io.to(firstSocket.id).emit('readChatMessage', message) };
         const secondSocket = await userSockets.get(chat.secondId)
         if (secondSocket) { io.to(secondSocket.id).emit('readChatMessage', message) };
+        return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)

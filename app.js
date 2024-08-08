@@ -35,6 +35,7 @@ var ChatMessageRouter = require('./routes/ChatMessage');
 var GroupChatRouter = require('./routes/GroupChat');
 var GroupChatMessageRouter = require('./routes/GroupChatMessage');
 var interviewRouter = require('./routes/Interview');
+var UserRouter = require('./routes/User');
 var app = express();
 var express = require('express');
 var router = express.Router();
@@ -86,6 +87,7 @@ app.use('/api/v2/groupChat', GroupChatRouter);
 app.use('/api/v2/chatMessage', ChatMessageRouter);
 app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
 app.use('/api/v2/interview', interviewRouter);
+app.use('/api/v2/user', UserRouter)
 
 app.use(router.post("/payment/configidram", paymentController.ConfirmIdram))
 

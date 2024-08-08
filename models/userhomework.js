@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const Homework = sequelize.define("Homework");
-  UserHomework.belongsTo(Homework);
+  UserHomework.belongsTo(Homework, { foreignKey: 'HomeworkId' });
 
   const Users = sequelize.define("Users");
   UserHomework.belongsTo(Users);

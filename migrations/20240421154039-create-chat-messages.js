@@ -25,6 +25,9 @@ module.exports = {
           key: 'id',
         },
       },
+      receiverId: {
+        type: Sequelize.INTEGER
+      },
       text: {
         type: Sequelize.TEXT,
       },

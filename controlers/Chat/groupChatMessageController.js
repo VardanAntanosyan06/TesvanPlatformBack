@@ -1,5 +1,5 @@
 const { GroupChatMessages, GroupChats, Users, GroupChatReads, sequelize } = require('../../models');
-const { Op } = require('sequelize');
+const { Op, where } = require('sequelize');
 const uuid = require("uuid");
 const path = require("path");
 const fs = require("fs");
@@ -69,8 +69,8 @@ const createGroupChatMessage = async (req, res) => {
         });
         if (!messages) return res.status(404).json({ message: 'Message not found' });
         io.to(`room_${chatId}`).emit("createGroupChatMessage", messages);
-        const notification = await getMessageNotifications(userId)
-        io.to(`room_${chatId}`).emit('groupChatNotification', notification.groupChatNotification)
+        // const notification = await getMessageNotifications(userId)
+        // io.to(`room_${chatId}`).emit('groupChatNotification', notification.groupChatNotification)
         return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
@@ -263,26 +263,51 @@ const deleteGroupChatMessage = async (req, res) => {
     }
 };
 
-const readGroupChatMessage = async () => {
+const readGroupChatMessage = async (req, res) => {
     try {
         const { user_id: userId } = req.user;
         const { messageId, chatId } = req.params;
+
+        const groupChats = await GroupChats.findOne({
+            where: {
+                id: chatId,
+                members: {
+                    [Op.contains]: [userId]
+                }
+            },
+            include: {
+                module: GroupChatMessages,
+                as: "messages",
+                where: {
+                    id: messageId
+                },
+                required: true
+            }
+        });
+        if (!groupChats) return res.status(404).json({ message: 'Chat or message not found' });
+
         const read = await GroupChatReads.findOne({
             where: {
                 userId,
-                chatId
+                groupChatId: chatId
             }
         })
+        
         if (!read) {
             await GroupChatReads.create({
                 userId,
-                chatId,
+                groupChatId: chatId,
                 lastSeen: messageId
             })
+            return res.status(200).json({ success: true });
+            
         } else if (read.lastSeen < messageId) {
             read.lastSeen = messageId
-            await read.save()
+            await read.save() 
+            return res.status(200).json({ success: true });
         }
+
+        return res.status(200).json({ success: true });
     } catch (error) {
         console.log(error);
         return res.status(500).json(error.message)
