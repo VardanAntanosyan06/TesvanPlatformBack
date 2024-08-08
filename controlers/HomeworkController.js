@@ -155,7 +155,7 @@ const getHomework = async (req, res) => {
     const { language } = req.query;
 
     let homework = await UserHomework.findOne({
-      where: { UserId:userId },
+      where: {HomeworkId: id, UserId:userId },
       include: [
         {
           model: Homework,
