@@ -609,8 +609,9 @@ const updateLesson = async (req, res) => {
             console.log("\\\\\\\\\\\\\\\\\\\\", homeworkId, cours.courseId, "\\\\\\\\\\\\\\\\\\\\\\");
             await UserHomework.update(
               {
-                HomeworkId: homeworkId
+                HomeworkId: homeworkId,
               },
+              
               {
                 where: {
                   GroupCourseId: cours.courseId
