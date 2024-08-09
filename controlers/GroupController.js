@@ -443,6 +443,7 @@ const addMember = async (req, res) => {
           ],
         });
 
+        console.log(Course.Lessons);
         Course.Lessons.forEach(async (lesson) => {
           if (lesson.homework.length > 0) {
             await UserHomework.create({
