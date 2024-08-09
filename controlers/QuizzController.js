@@ -43,29 +43,25 @@ const createQuizz = async (req, res) => {
     });
 
 
-    await Promise.all(
-      questions.map(async (question, i) => {
-        console.log(question.title_en, question.title_am);
-        await Question.create({
-          title_en: question.title_en,
-          title_ru: question.title_ru,
-          title_am: question.title_am,
-          quizzId,
-        }).then(async (data) => {
-          await Promise.all(
-            question.options.map(async (option, optionIndex) => {
-              Option.create({
-                title_en: option.title_en,
-                title_ru: option.title_ru,
-                title_am: option.title_am,
-                isCorrect: option.isCorrect,
-                questionId: data.id,
-              });
-            })
-          )
+    questions.map((question, i) => {
+      console.log(question.title_en, question.title_am);
+      Question.create({
+        title_en: question.title_en,
+        title_ru: question.title_ru,
+        title_am: question.title_am,
+        quizzId,
+      }).then((data) => {
+        question.options.map((option, optionIndex) => {
+          Option.create({
+            title_en: option.title_en,
+            title_ru: option.title_ru,
+            title_am: option.title_am,
+            isCorrect: option.isCorrect,
+            questionId: data.id,
+          });
         });
-      })
-    )
+      });
+    });
     if (lessonId) {
       await LessonsPerQuizz.create({
         quizzId,
@@ -189,44 +185,6 @@ const getQuizzesAdmin = async (req, res) => {
     const { id } = req.params;
     const { language } = req.query;
 
-    // let quizz = await Quizz.findOne({
-    //   where: { id },
-    //   attributes: [
-    //     'id',
-    //     'title_am',
-    //     'title_ru',
-    //     'description_ru',
-    //     'description_am',
-
-    //     'time',
-    //     'title_en',
-    //     'description_en',
-    //   ],
-    //   include: [
-    //     {
-    //       model: Question,
-    //       attributes: [
-    //         'id',
-    //         'quizzId',
-    //         [`title_${language}`, 'title'],
-    //         'title_ru',
-    //         'title_en',
-    //         'title_am',
-    //       ],
-    //       include: {
-    //         model: Option,
-    //         attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am', 'isCorrect'],
-    //         required: true,
-    //       },
-    //       order: [
-    //         [Option, 'id', 'ASC']
-    //       ]
-    //     },
-    //   ],
-    //   order: [
-    //     [Question, 'id', 'ASC']
-    //   ]
-    // });
     let quizz = await Quizz.findOne({
       where: { id },
       attributes: [
@@ -250,15 +208,18 @@ const getQuizzesAdmin = async (req, res) => {
             'title_en',
             'title_am',
           ],
-          include: [
-            {
-              model: Option,
-              attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am', 'isCorrect'],
-              required: true,
-              order: [['id', 'ASC']] 
-            },
-          ],
-          order: [['id', 'ASC']], 
+          include: {
+            model: Option,
+            attributes: [
+              'id',
+              [`title_${language}`, 'title'],
+              'title_ru',
+              'title_en',
+              'title_am',
+              'isCorrect',
+            ],
+            required: true,
+          },
         },
       ],
     });
@@ -274,7 +235,7 @@ const getQuizzesAdmin = async (req, res) => {
     const questions_am = [];
 
     quizz.Questions.map((question) => {
-      const options_en = question.Options.map((e) => {
+      const options_en = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
           title_en: e.title_en,
           isCorrect_en: e.isCorrect,
@@ -284,10 +245,10 @@ const getQuizzesAdmin = async (req, res) => {
         question_en: question.title_en,
         options_en: options_en,
       });
-    })
+    });
 
     quizz.Questions.map((question) => {
-      const options_ru = question.Options.map((e) => {
+      const options_ru = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
           title_ru: e.title_ru,
           isCorrect_ru: e.isCorrect,
@@ -297,10 +258,10 @@ const getQuizzesAdmin = async (req, res) => {
         question_ru: question.title_ru,
         options_ru: options_ru,
       });
-    })
+    });
 
     quizz.Questions.map((question) => {
-      const options_am = question.Options.map((e) => {
+      const options_am = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
           title_am: e.title_am,
           isCorrect_am: e.isCorrect,
@@ -310,14 +271,15 @@ const getQuizzesAdmin = async (req, res) => {
         question_am: question.title_am,
         options_am: options_am,
       });
-    }),
+    });
 
-      quizz = {
-        ...quizz.dataValues,
-        questions_en,
-        questions_ru,
-        questions_am,
-      }
+    quizz = {
+      ...quizz.dataValues,
+      questions_en,
+      questions_ru,
+      questions_am,
+    };
+
     return res.status(200).json({ success: true, quizz });
   } catch (error) {
     console.log(error.message);
@@ -586,7 +548,7 @@ const updateQuizz = async (req, res) => {
         }))
       });
     }))
-
+    
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
