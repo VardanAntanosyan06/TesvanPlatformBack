@@ -626,10 +626,11 @@ const updateLesson = async (req, res) => {
                     UserId: userCours.UserId,
                   },
                   {
-                    where: {
-                      GroupCourseId: cours.courseId,
-                      LessonId: lessonId,
-                    },
+                    // where: {
+                    //   GroupCourseId: cours.courseId,
+                    //   LessonId: lessonId,
+                    // },
+                    conflictFields: ['GroupCourseId', 'LessonId', 'UserId']
                   },
                 );
               }),
