@@ -43,25 +43,29 @@ const createQuizz = async (req, res) => {
     });
 
 
-    questions.map((question, i) => {
-      console.log(question.title_en, question.title_am);
-      Question.create({
-        title_en: question.title_en,
-        title_ru: question.title_ru,
-        title_am: question.title_am,
-        quizzId,
-      }).then((data) => {
-        question.options.map((option, optionIndex) => {
-          Option.create({
-            title_en: option.title_en,
-            title_ru: option.title_ru,
-            title_am: option.title_am,
-            isCorrect: option.isCorrect,
-            questionId: data.id,
-          });
+    await PromiseAll(
+      questions.map(async (question, i) => {
+        console.log(question.title_en, question.title_am);
+        await Question.create({
+          title_en: question.title_en,
+          title_ru: question.title_ru,
+          title_am: question.title_am,
+          quizzId,
+        }).then(async (data) => {
+          await PromiseAll(
+            question.options.map(async (option, optionIndex) => {
+              Option.create({
+                title_en: option.title_en,
+                title_ru: option.title_ru,
+                title_am: option.title_am,
+                isCorrect: option.isCorrect,
+                questionId: data.id,
+              });
+            })
+          )
         });
-      });
-    });
+      })
+    )
     if (lessonId) {
       await LessonsPerQuizz.create({
         quizzId,
@@ -540,7 +544,7 @@ const updateQuizz = async (req, res) => {
         }))
       });
     }))
-    
+
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
