@@ -255,10 +255,10 @@ const getQuizzesAdmin = async (req, res) => {
               model: Option,
               attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am', 'isCorrect'],
               required: true,
-              order: [['id', 'ASC']] // Order options by `id` in ascending order
+              order: [['id', 'ASC']] 
             },
           ],
-          order: [['id', 'ASC']], // Order questions by `id` in ascending order
+          order: [['id', 'ASC']], 
         },
       ],
     });
@@ -273,7 +273,7 @@ const getQuizzesAdmin = async (req, res) => {
     const questions_ru = [];
     const questions_am = [];
 
-    quizz.Questions.map(async (question) => {
+    quizz.Questions.map((question) => {
       const options_en = question.Options.map((e) => {
         return {
           title_en: e.title_en,
@@ -286,7 +286,7 @@ const getQuizzesAdmin = async (req, res) => {
       });
     })
 
-    quizz.Questions.map(async (question) => {
+    quizz.Questions.map((question) => {
       const options_ru = question.Options.map((e) => {
         return {
           title_ru: e.title_ru,
