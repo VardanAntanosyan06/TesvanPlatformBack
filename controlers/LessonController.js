@@ -591,6 +591,7 @@ const updateLesson = async (req, res) => {
           lessonId,
         },
       });
+
       if (homeworkPerLesson) {
         homeworkPerLesson.homeworkId = homeworkId;
         await homeworkPerLesson.save();
@@ -610,21 +611,43 @@ const updateLesson = async (req, res) => {
               cours.courseId,
               '\\\\\\\\\\\\\\\\\\\\\\',
             );
-            await UserHomework.update(
-              {
-                HomeworkId: homeworkId,
+            const userCourses = await UserCourses.findAll({
+              where: {
+                GroupCourseId: cours.id,
               },
-
-              {
-                where: {
-                  GroupCourseId: cours.courseId,
-                  LessonId: lessonId,
-                },
-              },
+            });
+            await Promise.all(
+              userCourses.map(async (userCours) => {
+                await UserHomework.upsert(
+                  {
+                    HomeworkId: homeworkId,
+                    GroupCourseId: cours.courseId,
+                    LessonId: lessonId,
+                    UserId: userCours.UserId,
+                  },
+                  {
+                    where: {
+                      GroupCourseId: cours.courseId,
+                      LessonId: lessonId,
+                    },
+                  },
+                );
+              }),
             );
           }),
         );
       }
+
+      // await UserHomework.findOrCreate({
+      //   where: {
+      //     HomeworkId: homeworkId,
+      //     LessonId: lessonId,
+      //   },
+      //   defaults: {
+      //     HomeworkId: homeworkId,
+      //     LessonId: lessonId,
+      //   },
+      // });
     }
 
     if (!isNaN(+quizzId)) {
