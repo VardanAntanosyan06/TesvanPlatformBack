@@ -46,7 +46,10 @@ const open = async (req, res) => {
       where: { GroupCourseId: courseId },
     });
 
-    const homeWork = await Homework.findOne({ where: { id: homeworkId } });
+    const homeWork = await Homework.findOne({
+      where: { id: homeworkId },
+      include: [{ model: HomeworkPerLesson, attributes: ['lessonId'] }],
+    });
     if (!homeWork) {
       return res.status(404).json('HomeWork not found');
     }
@@ -63,6 +66,7 @@ const open = async (req, res) => {
               UserId: user.UserId,
               GroupCourseId: courseId,
               HomeworkId: homeworkId,
+              LessonId: homeWork.HomeworkPerLesson.lessonId,
             },
           });
           Message.create({
@@ -91,6 +95,7 @@ const open = async (req, res) => {
                 UserId: user.UserId,
                 GroupCourseId: courseId,
                 HomeworkId: homeworkId,
+                LessonId: homeWork.HomeworkPerLesson.lessonId,
               },
             });
           } catch (error) {
@@ -155,7 +160,8 @@ const getHomework = async (req, res) => {
     const { language } = req.query;
 
     let homework = await UserHomework.findOne({
-      where: { UserId:userId },
+      where: { HomeworkId: id, UserId: userId },
+
       include: [
         {
           model: Homework,
@@ -168,7 +174,6 @@ const getHomework = async (req, res) => {
       ],
     });
 
- 
     // let homework = await Homework.findOne({
     //   where: {
     //     id: id
@@ -179,8 +184,6 @@ const getHomework = async (req, res) => {
     //     [`description_${language}`, 'description'],
     //   ],
     // })
-
-
 
     if (!homework) {
       return res.status(403).json({
@@ -448,6 +451,8 @@ const getHomeworkTitles = async (req, res) => {
 const homeworkPoints = async (req, res) => {
   try {
     const { userId, homeworkId, points, feedback } = req.body;
+    const { lessonId } = await HomeworkPerLesson.findOne({ where: { homeworkId } });
+    const { maxPoints } = await Lesson.findByPk(lessonId);
 
     const [status] = await UserHomework.update(
       {
@@ -458,21 +463,20 @@ const homeworkPoints = async (req, res) => {
         where: {
           UserId: userId,
           HomeworkId: homeworkId,
+          LessonId: lessonId,
         },
       },
     );
-    const { lessonId } = await HomeworkPerLesson.findOne({ where: { homeworkId } })
-    const { maxPoints } = await Lesson.findByPk(lessonId)
 
     // 10*50/100
     const userLesson = await UserLesson.findOne({
       where: {
         LessonId: lessonId,
-        UserId: userId
-      }
-    })
-    userLesson.points = userLesson.points + Math.ceil((maxPoints / 2 * points) / 100 * 10) / 10
-    await userLesson.save()
+        UserId: userId,
+      },
+    });
+    userLesson.points = userLesson.points + Math.ceil((((maxPoints / 2) * points) / 100) * 10) / 10;
+    await userLesson.save();
     if (status === 0) {
       return res.status(403).json({
         message: 'Homework not found',

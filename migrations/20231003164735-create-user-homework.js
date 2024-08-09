@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("UserHomeworks", {
+    await queryInterface.createTable('UserHomeworks', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,39 +13,43 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "GroupCourses",
-          key: "id",
+          model: 'GroupCourses',
+          key: 'id',
         },
       },
       UserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: 'Users',
+          key: 'id',
         },
       },
-      startDate:{
-        type:Sequelize.DATE
+      startDate: {
+        type: Sequelize.DATE,
       },
-      feedback:{
-        type:Sequelize.TEXT('long')
+      feedback: {
+        type: Sequelize.TEXT('long'),
       },
       HomeworkId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Homework",
-          key: "id",
+          model: 'Homework',
+          key: 'id',
         },
+      },
+      LessonId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       points: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
       answer: {
-        type: Sequelize.TEXT("long"),
-        defaultValue: "",
+        type: Sequelize.TEXT('long'),
+        defaultValue: '',
       },
       status: {
         type: Sequelize.INTEGER,
@@ -62,6 +66,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("UserHomeworks");
+    await queryInterface.dropTable('UserHomeworks');
   },
 };

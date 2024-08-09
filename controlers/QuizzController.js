@@ -15,7 +15,6 @@ const {
 
 const createQuizz = async (req, res) => {
   try {
-
     const {
       title_en,
       title_ru,
@@ -30,7 +29,6 @@ const createQuizz = async (req, res) => {
       questions,
     } = req.body;
 
-
     let { id: quizzId } = await Quizz.create({
       title_en,
       title_ru,
@@ -41,7 +39,6 @@ const createQuizz = async (req, res) => {
       time,
       percent,
     });
-
 
     questions.map((question, i) => {
       console.log(question.title_en, question.title_am);
@@ -71,13 +68,13 @@ const createQuizz = async (req, res) => {
       await CoursesPerQuizz.create({
         quizzId,
         courseId,
-        type: "Group",
+        type: 'Group',
       });
     }
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message: "Something went wrong." });
+    return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
 
@@ -193,7 +190,6 @@ const getQuizzesAdmin = async (req, res) => {
         'title_ru',
         'description_ru',
         'description_am',
-
         'time',
         'title_en',
         'description_en',
@@ -211,7 +207,14 @@ const getQuizzesAdmin = async (req, res) => {
           ],
           include: {
             model: Option,
-            attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am', 'isCorrect'],
+            attributes: [
+              'id',
+              [`title_${language}`, 'title'],
+              'title_ru',
+              'title_en',
+              'title_am',
+              'isCorrect',
+            ],
             required: true,
           },
         },
@@ -229,7 +232,7 @@ const getQuizzesAdmin = async (req, res) => {
     const questions_am = [];
 
     quizz.Questions.map((question) => {
-      const options_en = question.Options.map((e) => {
+      const options_en = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
           title_en: e.title_en,
           isCorrect_en: e.isCorrect,
@@ -240,8 +243,9 @@ const getQuizzesAdmin = async (req, res) => {
         options_en: options_en,
       });
     });
+
     quizz.Questions.map((question) => {
-      const options_ru = question.Options.map((e) => {
+      const options_ru = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
           title_ru: e.title_ru,
           isCorrect_ru: e.isCorrect,
@@ -254,7 +258,7 @@ const getQuizzesAdmin = async (req, res) => {
     });
 
     quizz.Questions.map((question) => {
-      const options_am = question.Options.map((e) => {
+      const options_am = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
           title_am: e.title_am,
           isCorrect_am: e.isCorrect,
@@ -265,6 +269,7 @@ const getQuizzesAdmin = async (req, res) => {
         options_am: options_am,
       });
     });
+
     quizz = {
       ...quizz.dataValues,
       questions_en,
@@ -278,6 +283,7 @@ const getQuizzesAdmin = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
 const submitQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
@@ -347,7 +353,7 @@ const finishQuizz = async (req, res) => {
         (Math.round(
           ((correctAnswers.length - new Set(correctAnswers).size) /
             Math.ceil(correctAnswers.length / 2)) *
-          100,
+            100,
         ) *
           (10 / 2)) /
         100;
@@ -416,7 +422,7 @@ const finishQuizz = async (req, res) => {
       (Math.round(
         ((correctAnswers.length - new Set(correctAnswers).size) /
           Math.ceil(correctAnswers.length / 2)) *
-        100,
+          100,
       ) *
         (maxPoints / 2)) /
       100;
@@ -478,7 +484,6 @@ const deleteQuizz = async (req, res) => {
 
     Question.destroy({ where: { quizzId: id } });
 
-    // Delete the quiz itself
     Quizz.destroy({ where: { id } });
 
     res.status(200).json({ success: true });
@@ -490,7 +495,7 @@ const deleteQuizz = async (req, res) => {
 
 const updateQuizz = async (req, res) => {
   try {
-    const id = req.params.id
+    const id = req.params.id;
     const {
       title_en,
       title_ru,
@@ -522,25 +527,29 @@ const updateQuizz = async (req, res) => {
       },
     });
 
-    Promise.all(questions.map(async (question, i) => {
-      await Question.create({
-        title_en: question.title_en,
-        title_ru: question.title_ru,
-        title_am: question.title_am,
-        quizzId: id,
-      }).then((data) => {
-        Promise.all(question.options.map(async (option, optionIndex) => {
-          await Option.create({
-            title_en: option.title_en,
-            title_ru: option.title_ru,
-            title_am: option.title_am,
-            isCorrect: option.isCorrect,
-            questionId: data.id,
-          })
-        }))
-      });
-    }))
-    
+    Promise.all(
+      questions.map(async (question, i) => {
+        await Question.create({
+          title_en: question.title_en,
+          title_ru: question.title_ru,
+          title_am: question.title_am,
+          quizzId: id,
+        }).then((data) => {
+          Promise.all(
+            question.options.map(async (option, optionIndex) => {
+              await Option.create({
+                title_en: option.title_en,
+                title_ru: option.title_ru,
+                title_am: option.title_am,
+                isCorrect: option.isCorrect,
+                questionId: data.id,
+              });
+            }),
+          );
+        });
+      }),
+    );
+
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
@@ -584,5 +593,5 @@ module.exports = {
   getUserAnswers,
   deleteQuizz,
   updateQuizz,
-  getQuizzesAdmin
+  getQuizzesAdmin,
 };

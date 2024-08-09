@@ -16,6 +16,8 @@ const {
   Presentations,
   UserPoints,
   LessonTime,
+  UserHomework,
+  CoursesPerLessons,
 } = require('../models');
 const { v4 } = require('uuid');
 const path = require('path');
@@ -576,7 +578,6 @@ const updateLesson = async (req, res) => {
     //   lessonId,
     // });
 
-
     // if (!isNaN(+homeworkId)) {
     //   await HomeworkPerLesson.upsert({
     //     homeworkId,
@@ -587,11 +588,43 @@ const updateLesson = async (req, res) => {
     if (!isNaN(+homeworkId)) {
       const homeworkPerLesson = await HomeworkPerLesson.findOne({
         where: {
-          lessonId
-        }
+          lessonId,
+        },
       });
-      homeworkPerLesson.homeworkId = homeworkId
-      await homeworkPerLesson.save()
+      if (homeworkPerLesson) {
+        homeworkPerLesson.homeworkId = homeworkId;
+        await homeworkPerLesson.save();
+      }
+
+      const courses = await CoursesPerLessons.findAll({
+        where: {
+          lessonId,
+        },
+      });
+      if (courses.length > 0) {
+        await Promise.all(
+          courses.map(async (cours) => {
+            console.log(
+              '\\\\\\\\\\\\\\\\\\\\',
+              homeworkId,
+              cours.courseId,
+              '\\\\\\\\\\\\\\\\\\\\\\',
+            );
+            await UserHomework.update(
+              {
+                HomeworkId: homeworkId,
+              },
+
+              {
+                where: {
+                  GroupCourseId: cours.courseId,
+                  LessonId: lessonId,
+                },
+              },
+            );
+          }),
+        );
+      }
     }
 
     if (!isNaN(+quizzId)) {
