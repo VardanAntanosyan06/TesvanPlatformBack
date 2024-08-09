@@ -217,7 +217,9 @@ const getQuizzesAdmin = async (req, res) => {
             model: Option,
             attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am', 'isCorrect'],
             required: true,
+            order: [['id', 'ASC']],
           },
+          order: [['id', 'ASC']],
         },
       ],
     });
