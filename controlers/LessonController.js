@@ -618,21 +618,40 @@ const updateLesson = async (req, res) => {
             });
             await Promise.all(
               userCourses.map(async (userCours) => {
-                await UserHomework.upsert(
-                  {
-                    HomeworkId: homeworkId,
+                // await UserHomework.upsert(
+                //   {
+                //     HomeworkId: homeworkId,
+                //     GroupCourseId: cours.courseId,
+                //     LessonId: lessonId,
+                //     UserId: userCours.UserId,
+                //   },
+                //   {
+                //     // where: {
+                //     //   GroupCourseId: cours.courseId,
+                //     //   LessonId: lessonId,
+                //     // },
+                //     conflictFields: ['GroupCourseId', 'LessonId', 'UserId']
+                //   },
+                // );
+                const data = await UserHomework.findOne({
+                  where: {
                     GroupCourseId: cours.courseId,
                     LessonId: lessonId,
                     UserId: userCours.UserId,
                   },
-                  {
-                    // where: {
-                    //   GroupCourseId: cours.courseId,
-                    //   LessonId: lessonId,
-                    // },
-                    conflictFields: ['GroupCourseId', 'LessonId', 'UserId']
-                  },
-                );
+                });
+            
+                if (!data) {
+                  await UserHomework.create({
+                    HomeworkId: homeworkId,
+                    GroupCourseId: cours.courseId,
+                    LessonId: lessonId,
+                    UserId: userCours.UserId,
+                  });
+                } else {
+                  data.HomeworkId = homeworkId
+                  await data.save()
+                }
               }),
             );
           }),
