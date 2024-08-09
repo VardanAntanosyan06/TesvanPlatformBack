@@ -43,7 +43,7 @@ const createQuizz = async (req, res) => {
     });
 
 
-    await PromiseAll(
+    await Promise.all(
       questions.map(async (question, i) => {
         console.log(question.title_en, question.title_am);
         await Question.create({
@@ -52,7 +52,7 @@ const createQuizz = async (req, res) => {
           title_am: question.title_am,
           quizzId,
         }).then(async (data) => {
-          await PromiseAll(
+          await Promise.all(
             question.options.map(async (option, optionIndex) => {
               Option.create({
                 title_en: option.title_en,
