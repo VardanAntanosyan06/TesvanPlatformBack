@@ -448,15 +448,15 @@ const addMember = async (req, res) => {
           '=========================================================================================test',
         );
         Course.Lessons.forEach(async (lesson) => {
-          if (lesson.homework.length > 0) {
+          // if (lesson.homework.length > 0) {
             await UserHomework.create({
               GroupCourseId: group.assignCourseId,
               UserId: user.id,
-              HomeworkId: lesson.homework[0].id,
+              HomeworkId: lesson.homework[0].id? lesson.homework[0].id : 0,
               points: 0,
               LessonId: lesson.id,
             });
-          }
+          // }
         });
 
         const boughtTests = await Tests.findAll({
