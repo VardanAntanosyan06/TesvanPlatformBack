@@ -602,72 +602,29 @@ const updateLesson = async (req, res) => {
           lessonId,
         },
       });
-      if (courses.length > 0) {
+      const uniqueCourses = Array.from(
+        courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values()
+      );
+      console.log("///////////////", uniqueCourses);
+      
+      if (uniqueCourses.length > 0) {
         await Promise.all(
-          courses.map(async (cours) => {
-            console.log(
-              '\\\\\\\\\\\\\\\\\\\\',
-              homeworkId,
-              cours.courseId,
-              '\\\\\\\\\\\\\\\\\\\\\\',
-            );
-            const userCourses = await UserCourses.findAll({
-              where: {
-                GroupCourseId: cours.id,
+          uniqueCourses.map(async (cours) => {
+
+            await UserHomework.update(
+              {
+                HomeworkId: homeworkId,
               },
-            });
-            await Promise.all(
-              userCourses.map(async (userCours) => {
-                // await UserHomework.upsert(
-                //   {
-                //     HomeworkId: homeworkId,
-                //     GroupCourseId: cours.courseId,
-                //     LessonId: lessonId,
-                //     UserId: userCours.UserId,
-                //   },
-                //   {
-                //     // where: {
-                //     //   GroupCourseId: cours.courseId,
-                //     //   LessonId: lessonId,
-                //     // },
-                //     conflictFields: ['GroupCourseId', 'LessonId', 'UserId']
-                //   },
-                // );
-                const data = await UserHomework.findOne({
-                  where: {
-                    GroupCourseId: cours.courseId,
-                    LessonId: lessonId,
-                    UserId: userCours.UserId,
-                  },
-                });
-            
-                if (!data) {
-                  await UserHomework.create({
-                    HomeworkId: homeworkId,
-                    GroupCourseId: cours.courseId,
-                    LessonId: lessonId,
-                    UserId: userCours.UserId,
-                  });
-                } else {
-                  data.HomeworkId = homeworkId
-                  await data.save()
-                }
-              }),
+              {
+                where: {
+                  GroupCourseId: cours.courseId,
+                  LessonId: lessonId,
+                },
+              },
             );
           }),
         );
       }
-
-      // await UserHomework.findOrCreate({
-      //   where: {
-      //     HomeworkId: homeworkId,
-      //     LessonId: lessonId,
-      //   },
-      //   defaults: {
-      //     HomeworkId: homeworkId,
-      //     LessonId: lessonId,
-      //   },
-      // });
     }
 
     if (!isNaN(+quizzId)) {
