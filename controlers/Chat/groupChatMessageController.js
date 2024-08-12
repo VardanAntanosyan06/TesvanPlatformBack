@@ -274,14 +274,6 @@ const readGroupChatMessage = async (req, res) => {
                 members: {
                     [Op.contains]: [userId]
                 }
-            },
-            include: {
-                module: GroupChatMessages,
-                as: "messages",
-                where: {
-                    id: messageId
-                },
-                required: true
             }
         });
         if (!groupChats) return res.status(404).json({ message: 'Chat or message not found' });
