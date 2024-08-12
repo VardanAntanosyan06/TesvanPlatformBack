@@ -196,25 +196,13 @@ const getQuizzesAdmin = async (req, res) => {
       include: [
         {
           model: Question,
-          attributes: [
-            'id',
-            'quizzId',
-            [`title_${language}`, 'title'],
-            'title_ru',
-            'title_en',
-            'title_am',
-          ],
+          attributes: ['id', 'quizzId', 'title_ru', 'title_en', 'title_am'],
+          order: [['id', 'ASC']],
           include: [
             {
               model: Option,
-              attributes: [
-                'id',
-                [`title_${language}`, 'title'],
-                'title_ru',
-                'title_en',
-                'title_am',
-                'isCorrect',
-              ],
+              attributes: ['id', 'title_ru', 'title_en', 'title_am', 'isCorrect'],
+              order: [['id', 'ASC']],
             },
           ],
         },
@@ -232,38 +220,35 @@ const getQuizzesAdmin = async (req, res) => {
     const questions_am = [];
 
     quizz.Questions.map((question) => {
-      // const options_en = question.Options.map((e) => {
-      //   return {
-      //     title_en: e.title_en,
-      //     isCorrect_en: e.isCorrect,
-      //   };
-      // });
-      // const options_am = question.Options.map((e) => {
-      //   return {
-      //     title_am: e.title_am,
-      //     isCorrect_am: e.isCorrect,
-      //   };
-      // });
-      // const options_ru = question.Options.map((e) => {
-      //   return {
-      //     title_ru: e.title_ru,
-      //     isCorrect_ru: e.isCorrect,
-      //   };
-      // });
+      const options_en = question.Options.map((e) => {
+        return {
+          title_en: e.title_en,
+          isCorrect_en: e.isCorrect,
+        };
+      });
+      const options_am = question.Options.map((e) => {
+        return {
+          title_am: e.title_am,
+          isCorrect_am: e.isCorrect,
+        };
+      });
+      const options_ru = question.Options.map((e) => {
+        return {
+          title_ru: e.title_ru,
+          isCorrect_ru: e.isCorrect,
+        };
+      });
       questions_en.push({
         question_en: question.title_en,
-        // options_en: options_en,
-        options_en: [],
+        options_en: options_en,
       });
       questions_am.push({
         question_am: question.title_am,
-        // options_am: options_am,
-        options_am: [],
+        options_am: options_am,
       });
       questions_ru.push({
         question_ru: question.title_ru,
-        // options_ru: options_ru,
-        options_ru: [],
+        options_ru: options_ru,
       });
     });
 
