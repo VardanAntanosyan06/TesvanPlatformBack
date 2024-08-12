@@ -537,7 +537,7 @@ const updateQuizz = async (req, res) => {
         question.title_en = question.title_en,
         question.title_am = question.title_am,
         question.title_ru = question.title_ru,
-        await question.save()
+        await questionOne.save()
         Promise.all(
           question.options.map(async (option, optionIndex) => {
             await Option.update(
