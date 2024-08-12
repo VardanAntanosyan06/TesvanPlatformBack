@@ -174,17 +174,6 @@ const getHomework = async (req, res) => {
       ],
     });
 
-    // let homework = await Homework.findOne({
-    //   where: {
-    //     id: id
-    //   },
-    //   attributes: [
-    //     'id',
-    //     [`title_${language}`, 'title'],
-    //     [`description_${language}`, 'description'],
-    //   ],
-    // })
-
     if (!homework) {
       return res.status(403).json({
         message: "Homework not found or User doesn't have a homework",

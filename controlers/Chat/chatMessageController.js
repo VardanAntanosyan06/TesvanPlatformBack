@@ -5,7 +5,8 @@ const uuid = require("uuid");
 const path = require("path");
 const fs = require("fs")
 
-const getMessageNotifications = async (userId) => {
+const getMessageNotifications = async (req, res) => {
+    const { user_id: userId } = req.user;
     try {
         const chats = await Chats.findAll({
             where: {
@@ -87,9 +88,10 @@ const getMessageNotifications = async (userId) => {
             element.setDataValue('notification', results.length);
             element.setDataValue('lastMessage', results[0]);
         }
-        return { chatNotification, groupChatNotification };
+        return res.status(200).json({ chatNotification, groupChatNotification });
     } catch (error) {
         console.log(error);
+        return res.status(500).json(error.message)
     }
 }
 
@@ -454,7 +456,7 @@ const readChatMessage = async (req, res) => {
         const parser = chat.toJSON()
         parser.ChatMessages[0].isRead = true
         const message = parser.ChatMessages[0]
-  
+
         const firstSocket = await userSockets.get(chat.firstId)
         if (firstSocket) { io.to(firstSocket.id).emit('readChatMessage', message) };
         const secondSocket = await userSockets.get(chat.secondId)
