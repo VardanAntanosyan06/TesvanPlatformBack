@@ -108,6 +108,7 @@ const getQuizzes = async (req, res) => {
             'title_en',
             'title_am',
           ],
+          order: [['id', 'ASC']],
           include: {
             model: Option,
             attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am'],
@@ -528,32 +529,23 @@ const updateQuizz = async (req, res) => {
     });
 
     await Promise.all(
-      questions.map(async (question) => {
-        // Создание вопросов
-        const createdQuestions = await Question.bulkCreate(
-          [
-            {
-              title_en: question.title_en,
-              title_am: question.title_am,
-              title_ru: question.title_ru,
-              quizzId: id,
-            },
-          ],
-          { returning: true }, // Вернуть созданные записи для последующего использования
-        );
-
-        // Создание опций для каждого вопроса
-        const options = question.options.map((option) => {
-          return {
-            title_en: option.title_en,
-            title_ru: option.title_ru,
-            title_am: option.title_am,
-            isCorrect: option.isCorrect,
-            questionId: createdQuestions[0].id, // Связь опций с вопросом
-          };
+      questions.map(async (question, i) => {
+        const createdQuestion = await Question.create({
+          title_en: question.title_en,
+          title_am: question.title_am,
+          title_ru: question.title_ru,
+          quizzId: id,
         });
 
-        await Option.bulkCreate(options); // Массовое создание опций
+        const options = question.options.map((option) => ({
+          title_en: option.title_en,
+          title_ru: option.title_ru,
+          title_am: option.title_am,
+          isCorrect: option.isCorrect,
+          questionId: createdQuestion.id,
+        }));
+
+        await Option.bulkCreate(options);
       }),
     );
 
