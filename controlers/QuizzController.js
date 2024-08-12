@@ -245,19 +245,6 @@ const getQuizzesAdmin = async (req, res) => {
     });
 
     quizz.Questions.map((question) => {
-      const options_am = question.Options.sort((a, b) => a.id - b.id).map((e) => {
-        return {
-          title_am: e.title_am,
-          isCorrect_am: e.isCorrect,
-        };
-      });
-      questions_am.push({
-        question_am: question.title_am,
-        options_am: options_am,
-      });
-    });
-
-    quizz.Questions.map((question) => {
       const options_ru = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
           title_ru: e.title_ru,
@@ -267,6 +254,19 @@ const getQuizzesAdmin = async (req, res) => {
       questions_ru.push({
         question_ru: question.title_ru,
         options_ru: options_ru,
+      });
+    });
+
+    quizz.Questions.map((question) => {
+      const options_am = question.Options.sort((a, b) => a.id - b.id).map((e) => {
+        return {
+          title_am: e.title_am,
+          isCorrect_am: e.isCorrect,
+        };
+      });
+      questions_am.push({
+        question_am: question.title_am,
+        options_am: options_am,
       });
     });
 
@@ -521,7 +521,7 @@ const updateQuizz = async (req, res) => {
       { where: { id: id } },
     );
 
-    const question = await Question.destroy({
+    await Question.destroy({
       where: {
         quizzId: id,
       },
