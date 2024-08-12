@@ -543,10 +543,9 @@ const updateQuizz = async (req, res) => {
             await Option.update(
               {
                 title_en: option.title_en,
-                title_ru: option.title_ru,
                 title_am: option.title_am,
+                title_ru: option.title_ru,
                 isCorrect: option.isCorrect,
-                questionId: data.id,
               },
               {
                 where: {
