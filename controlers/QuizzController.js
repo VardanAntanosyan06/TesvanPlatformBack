@@ -521,69 +521,34 @@ const updateQuizz = async (req, res) => {
       { where: { id: id } },
     );
 
-    // await Question.destroy({
-    //   where: {
-    //     quizzId: id,
-    //   },
-    // });
+    await Question.destroy({
+      where: {
+        quizzId: id,
+      },
+    });
 
-    Promise.all(
+    await Promise.all(
       questions.map(async (question, i) => {
-        const questionOne = await Question.findOne({
-          where: {
-            quizzId: id,
-          }
-        })
-        question.title_en = question.title_en,
-        question.title_am = question.title_am,
-        question.title_ru = question.title_ru,
-        await questionOne.save()
-        Promise.all(
-          question.options.map(async (option, optionIndex) => {
-            await Option.update(
-              {
-                title_en: option.title_en,
-                title_am: option.title_am,
-                title_ru: option.title_ru,
-                isCorrect: option.isCorrect,
-              },
-              {
-                where: {
-                  questionId: questionOne.id
-                }
-              }
-            );
-          }),
-        );
-
-
-
-
-        // await Question.create({
-        //   title_en: question.title_en,
-        //   title_ru: question.title_ru,
-        //   title_am: question.title_am,
-        //   quizzId: id,
-        // }).then((data) => {
-        //   Promise.all(
-        //     question.options.map(async (option, optionIndex) => {
-        //       await Option.update(
-        //         {
-        //           title_en: option.title_en,
-        //           title_ru: option.title_ru,
-        //           title_am: option.title_am,
-        //           isCorrect: option.isCorrect,
-        //           questionId: data.id,
-        //         },
-        //         {
-        //           where: {
-        //             id: 2
-        //           }
-        //         }
-        //       );
-        //     }),
-        //   );
-        // });
+        await Question.create({
+          title_en: question.title_en,
+          title_am: question.title_am,
+          title_ru: question.title_ru,
+          quizzId: id,
+        }).then(async (data) => {
+          await Promise.all(
+            question.options.map(async (option) => {
+              await Option.create(
+                {
+                  title_en: option.title_en,
+                  title_ru: option.title_ru,
+                  title_am: option.title_am,
+                  isCorrect: option.isCorrect,
+                  questionId: data.id,
+                },
+              );
+            }),
+          );
+        });
       }),
     );
 
