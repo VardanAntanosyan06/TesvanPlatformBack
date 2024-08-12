@@ -245,19 +245,6 @@ const getQuizzesAdmin = async (req, res) => {
     });
 
     quizz.Questions.map((question) => {
-      const options_ru = question.Options.sort((a, b) => a.id - b.id).map((e) => {
-        return {
-          title_ru: e.title_ru,
-          isCorrect_ru: e.isCorrect,
-        };
-      });
-      questions_ru.push({
-        question_ru: question.title_ru,
-        options_ru: options_ru,
-      });
-    });
-
-    quizz.Questions.map((question) => {
       const options_am = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
           title_am: e.title_am,
@@ -267,6 +254,19 @@ const getQuizzesAdmin = async (req, res) => {
       questions_am.push({
         question_am: question.title_am,
         options_am: options_am,
+      });
+    });
+
+    quizz.Questions.map((question) => {
+      const options_ru = question.Options.sort((a, b) => a.id - b.id).map((e) => {
+        return {
+          title_ru: e.title_ru,
+          isCorrect_ru: e.isCorrect,
+        };
+      });
+      questions_ru.push({
+        question_ru: question.title_ru,
+        options_ru: options_ru,
       });
     });
 
@@ -353,7 +353,7 @@ const finishQuizz = async (req, res) => {
         (Math.round(
           ((correctAnswers.length - new Set(correctAnswers).size) /
             Math.ceil(correctAnswers.length / 2)) *
-            100,
+          100,
         ) *
           (10 / 2)) /
         100;
@@ -422,7 +422,7 @@ const finishQuizz = async (req, res) => {
       (Math.round(
         ((correctAnswers.length - new Set(correctAnswers).size) /
           Math.ceil(correctAnswers.length / 2)) *
-          100,
+        100,
       ) *
         (maxPoints / 2)) /
       100;
@@ -521,32 +521,70 @@ const updateQuizz = async (req, res) => {
       { where: { id: id } },
     );
 
-    await Question.destroy({
-      where: {
-        quizzId: id,
-      },
-    });
+    // await Question.destroy({
+    //   where: {
+    //     quizzId: id,
+    //   },
+    // });
 
     Promise.all(
       questions.map(async (question, i) => {
-        await Question.create({
-          title_en: question.title_en,
-          title_ru: question.title_ru,
-          title_am: question.title_am,
-          quizzId: id,
-        }).then((data) => {
-          Promise.all(
-            question.options.map(async (option, optionIndex) => {
-              await Option.create({
+        const questionOne = await Question.findOne({
+          where: {
+            quizzId: id,
+          }
+        })
+        question.title_en = question.title_en,
+        question.title_am = question.title_am,
+        question.title_ru = question.title_ru,
+        await question.save()
+        Promise.all(
+          question.options.map(async (option, optionIndex) => {
+            await Option.update(
+              {
                 title_en: option.title_en,
                 title_ru: option.title_ru,
                 title_am: option.title_am,
                 isCorrect: option.isCorrect,
                 questionId: data.id,
-              });
-            }),
-          );
-        });
+              },
+              {
+                where: {
+                  questionId: questionOne.id
+                }
+              }
+            );
+          }),
+        );
+
+
+
+
+        // await Question.create({
+        //   title_en: question.title_en,
+        //   title_ru: question.title_ru,
+        //   title_am: question.title_am,
+        //   quizzId: id,
+        // }).then((data) => {
+        //   Promise.all(
+        //     question.options.map(async (option, optionIndex) => {
+        //       await Option.update(
+        //         {
+        //           title_en: option.title_en,
+        //           title_ru: option.title_ru,
+        //           title_am: option.title_am,
+        //           isCorrect: option.isCorrect,
+        //           questionId: data.id,
+        //         },
+        //         {
+        //           where: {
+        //             id: 2
+        //           }
+        //         }
+        //       );
+        //     }),
+        //   );
+        // });
       }),
     );
 
