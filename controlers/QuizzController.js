@@ -230,35 +230,38 @@ const getQuizzesAdmin = async (req, res) => {
     const questions_am = [];
 
     quizz.Questions.map((question) => {
-      const options_en = question.Options.map((e) => {
-        return {
-          title_en: e.title_en,
-          isCorrect_en: e.isCorrect,
-        };
-      });
-      const options_am = question.Options.map((e) => {
-        return {
-          title_am: e.title_am,
-          isCorrect_am: e.isCorrect,
-        };
-      });
-      const options_ru = question.Options.map((e) => {
-        return {
-          title_ru: e.title_ru,
-          isCorrect_ru: e.isCorrect,
-        };
-      });
+      // const options_en = question.Options.map((e) => {
+      //   return {
+      //     title_en: e.title_en,
+      //     isCorrect_en: e.isCorrect,
+      //   };
+      // });
+      // const options_am = question.Options.map((e) => {
+      //   return {
+      //     title_am: e.title_am,
+      //     isCorrect_am: e.isCorrect,
+      //   };
+      // });
+      // const options_ru = question.Options.map((e) => {
+      //   return {
+      //     title_ru: e.title_ru,
+      //     isCorrect_ru: e.isCorrect,
+      //   };
+      // });
       questions_en.push({
         question_en: question.title_en,
-        options_en: options_en,
+        // options_en: options_en,
+        options_en: [],
       });
       questions_am.push({
         question_am: question.title_am,
-        options_am: options_am,
+        // options_am: options_am,
+        options_am: [],
       });
       questions_ru.push({
         question_ru: question.title_ru,
-        options_ru: options_ru,
+        // options_ru: options_ru,
+        options_ru: [],
       });
     });
 
