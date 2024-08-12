@@ -92,7 +92,6 @@ const getQuizzes = async (req, res) => {
         'title_ru',
         'description_ru',
         'description_am',
-
         'time',
         'title_en',
         'description_en',
@@ -205,6 +204,7 @@ const getQuizzesAdmin = async (req, res) => {
             'title_en',
             'title_am',
           ],
+          order: [['id', 'ASC']],
           include: {
             model: Option,
             attributes: [
@@ -221,7 +221,7 @@ const getQuizzesAdmin = async (req, res) => {
     });
 
     if (!quizz)
-      return res.status(403).json({
+      return res.status(404).json({
         success: false,
         message: `with ID ${id} Quizz not found`,
       });
@@ -231,7 +231,7 @@ const getQuizzesAdmin = async (req, res) => {
     const questions_am = [];
 
     quizz.Questions.map((question) => {
-      const options_en = question.Options.sort((a, b) => a.id - b.id).map((e) => {
+      const options_en = question.Options.map((e) => {
         return {
           title_en: e.title_en,
           isCorrect_en: e.isCorrect,
@@ -244,7 +244,7 @@ const getQuizzesAdmin = async (req, res) => {
     });
 
     quizz.Questions.map((question) => {
-      const options_am = question.Options.sort((a, b) => a.id - b.id).map((e) => {
+      const options_am = question.Options.map((e) => {
         return {
           title_am: e.title_am,
           isCorrect_am: e.isCorrect,
@@ -257,7 +257,7 @@ const getQuizzesAdmin = async (req, res) => {
     });
 
     quizz.Questions.map((question) => {
-      const options_ru = question.Options.sort((a, b) => a.id - b.id).map((e) => {
+      const options_ru = question.Options.map((e) => {
         return {
           title_ru: e.title_ru,
           isCorrect_ru: e.isCorrect,
