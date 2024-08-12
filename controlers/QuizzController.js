@@ -112,7 +112,6 @@ const getQuizzes = async (req, res) => {
           include: {
             model: Option,
             attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am'],
-            required: true,
           },
         },
       ],
@@ -216,7 +215,6 @@ const getQuizzesAdmin = async (req, res) => {
               'title_am',
               'isCorrect',
             ],
-            required: true,
           },
         },
       ],
