@@ -522,12 +522,16 @@ const updateQuizz = async (req, res) => {
       { where: { id: id } },
     );
 
-    await Question.destroy({
+    const question = await Question.destroy({
       where: {
         quizzId: id,
       },
     });
-
+    await Option.delete({
+      where: {
+        questionId: question.id,
+      },
+    });
     Promise.all(
       questions.map(async (question, i) => {
         await Question.create({
