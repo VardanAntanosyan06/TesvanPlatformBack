@@ -219,7 +219,7 @@ const getQuizzesAdmin = async (req, res) => {
     const questions_ru = [];
     const questions_am = [];
 
-    quizz.Questions.map((question) => {
+    quizz.Questions.sort((a, b) => a.id - b.id).map((question) => {
       const options_en = question.Options.map((e) => {
         return {
           title_en: e.title_en,
