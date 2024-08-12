@@ -353,7 +353,7 @@ const finishQuizz = async (req, res) => {
         (Math.round(
           ((correctAnswers.length - new Set(correctAnswers).size) /
             Math.ceil(correctAnswers.length / 2)) *
-          100,
+            100,
         ) *
           (10 / 2)) /
         100;
@@ -422,7 +422,7 @@ const finishQuizz = async (req, res) => {
       (Math.round(
         ((correctAnswers.length - new Set(correctAnswers).size) /
           Math.ceil(correctAnswers.length / 2)) *
-        100,
+          100,
       ) *
         (maxPoints / 2)) /
       100;
@@ -529,26 +529,22 @@ const updateQuizz = async (req, res) => {
 
     await Promise.all(
       questions.map(async (question, i) => {
-        await Question.create({
+        const createdQuestion = await Question.create({
           title_en: question.title_en,
           title_am: question.title_am,
           title_ru: question.title_ru,
           quizzId: id,
-        }).then(async (data) => {
-          await Promise.all(
-            question.options.map(async (option) => {
-              await Option.create(
-                {
-                  title_en: option.title_en,
-                  title_ru: option.title_ru,
-                  title_am: option.title_am,
-                  isCorrect: option.isCorrect,
-                  questionId: data.id,
-                },
-              );
-            }),
-          );
         });
+
+        const options = question.options.map((option) => ({
+          title_en: option.title_en,
+          title_ru: option.title_ru,
+          title_am: option.title_am,
+          isCorrect: option.isCorrect,
+          questionId: createdQuestion.id,
+        }));
+
+        await Option.bulkCreate(options);
       }),
     );
 
