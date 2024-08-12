@@ -53,17 +53,17 @@ const socketController = (io, socket) => {
         }
     })
 
-    socket.on("getNotifications", (data) => {
-        console.log(data);
-        if (data.userId) {
-            const userSocket = userSockets.get(+data.userId)
-            if (userSocket) {
-                io.to(userSocket.id).emit('chatNotifications', getMessageNotifications(data.userId).chatNotification)
-                io.to(userSocket.id).emit('groupChatNotifications', getMessageNotifications(data.userId).groupChatNotification)
-            }
+    // socket.on("getNotifications", (data) => {
+    //     console.log(data);
+    //     if (data.userId) {
+    //         const userSocket = userSockets.get(+data.userId)
+    //         if (userSocket) {
+    //             io.to(userSocket.id).emit('chatNotifications', getMessageNotifications(data.userId).chatNotification)
+    //             io.to(userSocket.id).emit('groupChatNotifications', getMessageNotifications(data.userId).groupChatNotification)
+    //         }
 
-        }
-    })
+    //     }
+    // })
 
     socket.on('join', (data) => {
         const userSocket = userSockets.get(+data.userId);
