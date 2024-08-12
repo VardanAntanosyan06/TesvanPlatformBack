@@ -244,19 +244,7 @@ const getQuizzesAdmin = async (req, res) => {
       });
     });
 
-    quizz.Questions.map((question) => {
-      const options_ru = question.Options.sort((a, b) => a.id - b.id).map((e) => {
-        return {
-          title_ru: e.title_ru,
-          isCorrect_ru: e.isCorrect,
-        };
-      });
-      questions_ru.push({
-        question_ru: question.title_ru,
-        options_ru: options_ru,
-      });
-    });
-
+    
     quizz.Questions.map((question) => {
       const options_am = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
@@ -269,7 +257,20 @@ const getQuizzesAdmin = async (req, res) => {
         options_am: options_am,
       });
     });
-
+    
+    quizz.Questions.map((question) => {
+      const options_ru = question.Options.sort((a, b) => a.id - b.id).map((e) => {
+        return {
+          title_ru: e.title_ru,
+          isCorrect_ru: e.isCorrect,
+        };
+      });
+      questions_ru.push({
+        question_ru: question.title_ru,
+        options_ru: options_ru,
+      });
+    });
+    
     quizz = {
       ...quizz.dataValues,
       questions_en,
