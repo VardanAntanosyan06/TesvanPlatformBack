@@ -204,17 +204,17 @@ const getQuizzesAdmin = async (req, res) => {
             'title_en',
             'title_am',
           ],
-          // include: {
-          //   model: Option,
-          //   attributes: [
-          //     'id',
-          //     [`title_${language}`, 'title'],
-          //     'title_ru',
-          //     'title_en',
-          //     'title_am',
-          //     'isCorrect',
-          //   ],
-          // },
+          include: {
+            model: Option,
+            attributes: [
+              'id',
+              [`title_${language}`, 'title'],
+              'title_ru',
+              'title_en',
+              'title_am',
+              'isCorrect',
+            ],
+          },
         },
       ],
     });
