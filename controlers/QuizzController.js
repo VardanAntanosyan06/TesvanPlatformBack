@@ -244,7 +244,6 @@ const getQuizzesAdmin = async (req, res) => {
       });
     });
 
-    
     quizz.Questions.map((question) => {
       const options_am = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
@@ -257,7 +256,7 @@ const getQuizzesAdmin = async (req, res) => {
         options_am: options_am,
       });
     });
-    
+
     quizz.Questions.map((question) => {
       const options_ru = question.Options.sort((a, b) => a.id - b.id).map((e) => {
         return {
@@ -270,7 +269,7 @@ const getQuizzesAdmin = async (req, res) => {
         options_ru: options_ru,
       });
     });
-    
+
     quizz = {
       ...quizz.dataValues,
       questions_en,
@@ -527,11 +526,7 @@ const updateQuizz = async (req, res) => {
         quizzId: id,
       },
     });
-    await Option.delete({
-      where: {
-        questionId: question.id,
-      },
-    });
+
     Promise.all(
       questions.map(async (question, i) => {
         await Question.create({
