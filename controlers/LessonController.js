@@ -143,6 +143,10 @@ const getLesson = async (req, res) => {
               through: {
                 attributes: [],
               },
+              include: {
+                model: Question,
+                attributes: ['id', 'points'],
+              }
             },
             {
               model: Homework,
@@ -177,16 +181,18 @@ const getLesson = async (req, res) => {
         },
       });
     }
-
+    const maxQuizzPoints = lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length
     lesson = {
       points: lesson.points,
       pointsOfPercent: Math.round((lesson.points * 100) / lesson.Lesson.maxPoints),
       quizzPoint: userPoint ? userPoint.point : null,
-      maxQuizzPoints: lesson.Lesson.maxPoints / 2,
+      maxQuizzPoints: maxQuizzPoints,
       attempt: lesson.attempt,
       time: lessonTime ? lessonTime.time : null,
       ...lesson.dataValues.Lesson.dataValues,
     };
+    
+    
 
     res.send(lesson);
   } catch (error) {
@@ -606,7 +612,7 @@ const updateLesson = async (req, res) => {
         courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values()
       );
       console.log("///////////////", uniqueCourses);
-      
+
       if (uniqueCourses.length > 0) {
         await Promise.all(
           uniqueCourses.map(async (cours) => {
