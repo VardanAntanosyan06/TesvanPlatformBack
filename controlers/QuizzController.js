@@ -27,12 +27,13 @@ const createQuizz = async (req, res) => {
       time,
       percent,
       questions,
-      quizzPoints
+
     } = req.body;
 
     //////////////////////////////
-    quizzPoints? quizzPoints : 4
-    const questionPoints = quizzPoints/questions.length
+    const quizzPoints = 1
+    const questionPoints = quizzPoints / questions.length
+
     /////////////////////////////
 
     let { id: quizzId } = await Quizz.create({
@@ -283,6 +284,26 @@ const submitQuizz = async (req, res) => {
       questionId,
       optionId,
     });
+    /*
+    const userAnswer = await UserAnswersQuizz.findOne({
+      where: {
+        userId,
+        courseId,
+        quizzId,
+      }
+    })
+    if (userAnswer) {
+        ///ci kara ancni
+    }
+      await UserAnswersQuizz.create({
+        userId,
+        courseId,
+        quizzId,
+        questionId,
+        optionId
+      })
+
+    //*/
 
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -291,7 +312,7 @@ const submitQuizz = async (req, res) => {
   }
 };
 
-const finishQuizz = async (req, res) => {
+const finishQuizz = async (req, res) => { //hashvel point@ 
   try {
     const { user_id: userId } = req.user;
     const { quizzId, isFinal, lessonId, courseId } = req.body;
@@ -304,7 +325,7 @@ const finishQuizz = async (req, res) => {
         include: [
           {
             model: Question,
-            attributes: ['id'],
+            attributes: ['id', 'points'],
             include: [
               {
                 model: Option,
@@ -332,14 +353,16 @@ const finishQuizz = async (req, res) => {
         correctAnswers.push(e.optionId);
       });
 
-      const point =
-        (Math.round(
-          ((correctAnswers.length - new Set(correctAnswers).size) /
-            Math.ceil(correctAnswers.length / 2)) *
-          100,
-        ) *
-          (10 / 2)) /
-        100;
+      // const point =
+      //   (Math.round(
+      //     ((correctAnswers.length - new Set(correctAnswers).size) /
+      //       Math.ceil(correctAnswers.length / 2)) *
+      //     100,
+      //   ) *
+      //     (10 / 2)) /
+      //   100;
+
+      const point = (correctAnswers.length - new Set(correctAnswers).size) * +correctAnswers.Questions.points
 
       await UserPoints.findOrCreate({
         where: {
@@ -358,7 +381,7 @@ const finishQuizz = async (req, res) => {
         },
       });
 
-      userCourses.totalPoints = Math.ceil(userCourses.totalPoints + point);
+      userCourses.totalPoints = userCourses.totalPoints + point;
       await userCourses.save();
 
       return res.json({ success: true });
@@ -401,14 +424,17 @@ const finishQuizz = async (req, res) => {
     });
     // console.log(correctAnswers,correctAnswers.length - new Set(correctAnswers).size);
 
-    const point =
-      (Math.round(
-        ((correctAnswers.length - new Set(correctAnswers).size) /
-          Math.ceil(correctAnswers.length / 2)) *
-        100,
-      ) *
-        (maxPoints / 2)) /
-      100;
+    // const point =
+    //   (Math.round(
+    //     ((correctAnswers.length - new Set(correctAnswers).size) /
+    //       Math.ceil(correctAnswers.length / 2)) *
+    //     100,
+    //   ) *
+    //     (maxPoints / 2)) /
+    //   100;
+
+    const point = (correctAnswers.length - new Set(correctAnswers).size) * +correctAnswers.Questions.points
+
     await UserPoints.findOrCreate({
       where: {
         userId,
@@ -418,7 +444,7 @@ const finishQuizz = async (req, res) => {
       defaults: {
         quizzId,
         userId,
-        point: Math.round(point),
+        point: point,
         correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
         isFinal,
         courseId,
@@ -430,7 +456,7 @@ const finishQuizz = async (req, res) => {
     const userLesson = await UserLesson.findOne({
       where: { UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
     });
-    userLesson.points = Math.round(userLesson.points + point);
+    userLesson.points = userLesson.points + point;
     await userLesson.save();
     return res.json({
       point,
@@ -488,13 +514,12 @@ const updateQuizz = async (req, res) => {
       description_am,
       time,
       questions,
-      quizzPoints
     } = req.body;
 
-///////////////////////////////////
-    quizzPoints? quizzPoints : 4
-    const questionPoints = quizzPoints/questions.length
-///////////////////////////////////
+    ///////////////////////////////////
+    const quizzPoints = 0.0005
+    const questionPoints = quizzPoints / questions.length
+    ///////////////////////////////////
 
     // Update the Quizz details
     await Quizz.update(

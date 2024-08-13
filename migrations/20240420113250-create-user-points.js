@@ -16,7 +16,7 @@ module.exports = {
         type:Sequelize.INTEGER
       },
       point:{
-        type:Sequelize.INTEGER
+        type:Sequelize.DECIMAL
       },
       correctAnswers:{
         type:Sequelize.INTEGER

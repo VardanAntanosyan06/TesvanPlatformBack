@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       title_en: DataTypes.TEXT('long'),
       title_ru: DataTypes.TEXT('long'),
       title_am: DataTypes.TEXT('long'),
-      points: DataTypes.INTEGER,
+      points: DataTypes.DECIMAL,
     },
     {
       sequelize,
