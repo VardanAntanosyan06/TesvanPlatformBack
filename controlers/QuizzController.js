@@ -450,7 +450,7 @@ const finishQuizz = async (req, res) => { //hashvel point@
         courseId,
       },
     });
-    userCourses.totalPoints = Math.ceil(userCourses.totalPoints + point);
+    userCourses.totalPoints = userCourses.totalPoints + point;
     await userCourses.save();
 
     const userLesson = await UserLesson.findOne({

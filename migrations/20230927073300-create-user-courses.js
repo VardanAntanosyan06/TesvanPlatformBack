@@ -26,7 +26,7 @@ module.exports = {
         },
       },
       totalPoints: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         defaultValue: 0,
       },
       takenQuizzes: {

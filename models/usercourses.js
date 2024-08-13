@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      totalPoints: DataTypes.INTEGER,
+      totalPoints: DataTypes.DECIMAL,
       takenQuizzes: DataTypes.INTEGER,
       certification: DataTypes.STRING,
     },
