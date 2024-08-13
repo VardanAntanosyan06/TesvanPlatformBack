@@ -362,7 +362,7 @@ const finishQuizz = async (req, res) => { //hashvel point@
       //     (10 / 2)) /
       //   100;
 
-      const point = (correctAnswers.length - new Set(correctAnswers).size) * +correctAnswers.Questions[0].points
+      const point = (correctAnswers.length - new Set(correctAnswers).size) * correctAnswers.Questions[0].points
 
       await UserPoints.findOrCreate({
         where: {
@@ -393,7 +393,7 @@ const finishQuizz = async (req, res) => { //hashvel point@
       include: [
         {
           model: Question,
-          attributes: ['id'],
+          attributes: ['id', 'points'],
           include: [
             {
               model: Option,
@@ -404,7 +404,6 @@ const finishQuizz = async (req, res) => { //hashvel point@
         },
       ],
     });
-    console.log(correctAnswers);
 
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
       (a, b) => a.id - b.id,
@@ -433,7 +432,7 @@ const finishQuizz = async (req, res) => { //hashvel point@
     //     (maxPoints / 2)) /
     //   100;
 
-    const point = (correctAnswers.length - new Set(correctAnswers).size) * +correctAnswers.Questions.points
+    const point = (correctAnswers.length - new Set(correctAnswers).size) * correctAnswers.Questions[0].points
 
     await UserPoints.findOrCreate({
       where: {
