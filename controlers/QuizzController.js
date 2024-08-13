@@ -362,7 +362,7 @@ const finishQuizz = async (req, res) => { //hashvel point@
       //     (10 / 2)) /
       //   100;
 
-      const point = (correctAnswers.length - new Set(correctAnswers).size) * +correctAnswers.Questions.points
+      const point = (correctAnswers.length - new Set(correctAnswers).size) * +correctAnswers.Questions[0].points
 
       await UserPoints.findOrCreate({
         where: {
