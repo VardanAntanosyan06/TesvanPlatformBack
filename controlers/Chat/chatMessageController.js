@@ -37,7 +37,7 @@ const getMessageNotifications = async (req, res) => {
                         receiverId: userId,
                         isRead: false
                     },
-                    attributes: ["id", "text"],
+                    attributes: ["id", "text","createdAt"],
                     order: [['createdAt', 'DESC']],
                 }
             ],
@@ -83,7 +83,7 @@ const getMessageNotifications = async (req, res) => {
                     id: { [Op.gt]: element.userLastSeen ? element.userLastSeen.lastSeen : 0 }
                 },
                 order: [['createdAt', 'DESC']],
-                attributes: ["id", "text"]
+                attributes: ["id", "text", "createdAt"]
             })
             element.setDataValue('notification', results.length);
             element.setDataValue('lastMessage', results[0]);
