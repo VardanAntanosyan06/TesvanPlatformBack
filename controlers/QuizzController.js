@@ -336,7 +336,7 @@ const finishQuizz = async (req, res) => { //hashvel point@
           },
         ],
       });
-
+      const quizzPoints = correctAnswers.Questions[0].points
       correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
         (a, b) => a.id - b.id,
       );
@@ -362,7 +362,7 @@ const finishQuizz = async (req, res) => { //hashvel point@
       //     (10 / 2)) /
       //   100;
 
-      const point = (correctAnswers.length - new Set(correctAnswers).size) * correctAnswers.Questions[0].points
+      const point = (correctAnswers.length - new Set(correctAnswers).size) * quizzPoints
 
       await UserPoints.findOrCreate({
         where: {
@@ -404,7 +404,7 @@ const finishQuizz = async (req, res) => { //hashvel point@
         },
       ],
     });
-
+    const quizzPoints = correctAnswers.Questions[0].points
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
       (a, b) => a.id - b.id,
     );
@@ -431,8 +431,8 @@ const finishQuizz = async (req, res) => { //hashvel point@
     //   ) *
     //     (maxPoints / 2)) /
     //   100;
-
-    const point = (correctAnswers.length - new Set(correctAnswers).size) * 2
+  
+    const point = (correctAnswers.length - new Set(correctAnswers).size) * quizzPoints
 
     await UserPoints.findOrCreate({
       where: {
