@@ -563,6 +563,39 @@ const getUserAnswers = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+// course y avelacnelu enq der ***
+const getUserQuizzAnswers = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { quizzId } = req.params;
+    const quizz = await UserAnswersQuizz.findAll({
+      where: {
+        testId: quizzId,
+        userId,
+      },
+      include: [
+        {
+          model: Quizz,
+          as: 'quizz',
+          include: [
+            {
+              model: Question,
+              include: [
+                {
+                  model: Option,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    return res.status(200).json({ quizz });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: 'Something Went Wrong. ' });
+  }
+};
 
 module.exports = {
   createQuizz,
@@ -574,4 +607,5 @@ module.exports = {
   deleteQuizz,
   updateQuizz,
   getQuizzesAdmin,
+  getUserQuizzAnswers,
 };

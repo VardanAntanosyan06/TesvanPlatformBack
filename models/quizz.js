@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Quizz extends Model {
     /**
@@ -9,30 +9,31 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Quizz.hasMany(models.UserAnswersQuizz, { foreignKey: 'testId' });
     }
   }
   Quizz.init(
     {
       title_en: DataTypes.STRING,
-      description_en: DataTypes.TEXT("long"),
+      description_en: DataTypes.TEXT('long'),
       title_ru: DataTypes.STRING,
-      description_ru: DataTypes.TEXT("long"),
+      description_ru: DataTypes.TEXT('long'),
       title_am: DataTypes.STRING,
-      description_am: DataTypes.TEXT("long"),
-      time:DataTypes.INTEGER
+      description_am: DataTypes.TEXT('long'),
+      time: DataTypes.INTEGER,
     },
     {
       sequelize,
-      modelName: "Quizz",
-    }
+      modelName: 'Quizz',
+    },
   );
 
-  const Lesson = sequelize.define("Lesson");
+  const Lesson = sequelize.define('Lesson');
   // HasMany
-  Quizz.belongsTo(Lesson, { foreignKey: "id" });
+  Quizz.belongsTo(Lesson, { foreignKey: 'id' });
 
-  const Question = sequelize.define("Question");
-  Quizz.hasMany(Question, { foreignKey: "quizzId" });
+  const Question = sequelize.define('Question');
+  Quizz.hasMany(Question, { foreignKey: 'quizzId' });
 
   return Quizz;
 };
