@@ -334,7 +334,7 @@ const finishQuizz = async (req, res) => {
         (Math.round(
           ((correctAnswers.length - new Set(correctAnswers).size) /
             Math.ceil(correctAnswers.length / 2)) *
-            100,
+          100,
         ) *
           (10 / 2)) /
         100;
@@ -403,7 +403,7 @@ const finishQuizz = async (req, res) => {
       (Math.round(
         ((correctAnswers.length - new Set(correctAnswers).size) /
           Math.ceil(correctAnswers.length / 2)) *
-          100,
+        100,
       ) *
         (maxPoints / 2)) /
       100;
@@ -567,30 +567,29 @@ const getUserAnswers = async (req, res) => {
 const getUserQuizzAnswers = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { quizzId } = req.params;
+    const { quizzId, courseId } = req.params;
+    /////////////////////
+    ////////////////////
     const quizz = await UserAnswersQuizz.findAll({
       where: {
         testId: quizzId,
         userId,
+        courseId
       },
       include: [
         {
-          model: Quizz,
-          as: 'quizz',
+          model: Question,
+          as: "question",
           include: [
             {
-              model: Question,
-              include: [
-                {
-                  model: Option,
-                },
-              ],
+              model: Option,
             },
           ],
         },
       ],
+      attributes: ['questionId', ['userAnswerId','optionId']]
     });
-    return res.status(200).json({ quizz });
+    return res.status(200).json( quizz );
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, message: 'Something Went Wrong. ' });

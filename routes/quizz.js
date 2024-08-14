@@ -16,7 +16,7 @@ router.post('/finishQuizz', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controll
 router.delete('/delete/:id', checkAuth(['ADMIN']), controller.deleteQuizz);
 router.put('/update/:id', checkAuth(['ADMIN']), controller.updateQuizz);
 router.get(
-  '/userQuizz/:quizzId',
+  '/userQuizz/:courseId/:quizzId',
   checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
   controller.getUserQuizzAnswers,
 );
