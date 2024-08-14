@@ -264,11 +264,13 @@ const submitQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
-    const { quizzId, questionId, optionId } = req.body;
+    const { quizzId, questionId, optionId, courseId } = req.body;
 
     const userQuizzes = await UserAnswersQuizz.findOne({
       where: {
         userId: userId,
+        courseId,
+        testId: quizzId,
       },
     });
     if (userQuizzes) {
@@ -279,6 +281,7 @@ const submitQuizz = async (req, res) => {
         testId: quizzId,
         questionId,
         optionId,
+        courseId
       });
 
       return res.status(200).json({ success: true });
