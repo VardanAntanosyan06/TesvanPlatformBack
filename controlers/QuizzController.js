@@ -87,13 +87,26 @@ const createQuizz = async (req, res) => {
 };
 
 // add time in models
-const getQuizzes = async (req, res) => {
+const getQuizzes = async (req, res) => { // error
   try {
-    const { id } = req.params;
+    const { quizzId, courseId } = req.params;
     const { language } = req.query;
 
+    return res.status(403).json({ success: false, message: 'already passed' });
+
+    const userQuizzes = await UserAnswersQuizz.findOne({
+      where: {
+        userId: userId,
+        courseId,
+        testId: quizzId,
+      },
+    });
+    if (userQuizzes) {
+      return res.status(403).json({ success: false, message: 'already passed' });
+    }
+
     let quizz = await Quizz.findOne({
-      where: { id },
+      where: { id: quizzId },
       attributes: [
         'id',
         'title_am',
@@ -272,40 +285,28 @@ const submitQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
-    const { quizzId, questionId, optionId } = req.body;
+    const { quizzId, questionId, optionId, courseId } = req.body;
 
-    await UserAnswersQuizz.destroy({
-      where: { userId, testId: quizzId, questionId },
-    });
-
-    await UserAnswersQuizz.create({
-      userId,
-      testId: quizzId,
-      questionId,
-      optionId,
-    });
-    /*
-    const userAnswer = await UserAnswersQuizz.findOne({
+    const userQuizzes = await UserAnswersQuizz.findOne({
       where: {
-        userId,
+        userId: userId,
         courseId,
-        quizzId,
-      }
-    })
-    if (userAnswer) {
-        ///ci kara ancni
-    }
+        testId: quizzId,
+      },
+    });
+    if (userQuizzes) {
+      return res.status(403).json({ success: false, message: 'already passed' });
+    } else {
       await UserAnswersQuizz.create({
         userId,
-        courseId,
-        quizzId,
+        testId: quizzId,
         questionId,
-        optionId
-      })
+        optionId,
+        courseId
+      });
 
-    //*/
-
-    return res.status(200).json({ success: true });
+      return res.status(200).json({ success: true });
+    }
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -431,7 +432,7 @@ const finishQuizz = async (req, res) => { //hashvel point@
     //   ) *
     //     (maxPoints / 2)) /
     //   100;
-  
+
     const point = (correctAnswers.length - new Set(correctAnswers).size) * quizzPoints
 
     await UserPoints.findOrCreate({
@@ -596,6 +597,39 @@ const getUserAnswers = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
+const getUserQuizzAnswers = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { quizzId, courseId } = req.params;
+    /////////////////////
+    ////////////////////
+    const quizz = await UserAnswersQuizz.findAll({
+      where: {
+        testId: quizzId,
+        userId,
+        courseId
+      },
+      include: [
+        {
+          model: Question,
+          as: "question",
+          include: [
+            {
+              model: Option,
+            },
+          ],
+        },
+      ],
+      attributes: ['questionId', ['userAnswerId', 'optionId']]
+    });
+    return res.status(200).json(quizz);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: 'Something Went Wrong. ' });
+  }
+};
+
 module.exports = {
   createQuizz,
   getQuizzes,
@@ -606,4 +640,5 @@ module.exports = {
   deleteQuizz,
   updateQuizz,
   getQuizzesAdmin,
+  getUserQuizzAnswers
 };

@@ -9,12 +9,14 @@ router.get("/getAll", checkAuth(["TEACHER", "ADMIN"]), controller.getAll);
 
 router.post("/getUserAnswers/",  checkAuth(["STUDENT","TEACHER"]),controller.getUserAnswers);
 router.get("/getQuizzesAdmin/:id",  checkAuth(["ADMIN"]),controller.getQuizzesAdmin);
-router.get("/getQuizzes/:id",  checkAuth(["STUDENT","TEACHER", "ADMIN"]),controller.getQuizzes);
+router.get("/getQuizzes/:courseId/:quizzId",  checkAuth(["STUDENT","TEACHER", "ADMIN"]),controller.getQuizzes);
 router.post("/submitQuizz", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.submitQuizz);
 router.post("/finishQuizz", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.finishQuizz);
 
 router.delete("/delete/:id", checkAuth(["ADMIN"]), controller.deleteQuizz);
 router.put("/update/:id", checkAuth(["ADMIN"]), controller.updateQuizz);
+
+router.get('/userQuizz/:courseId/:quizzId', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getUserQuizzAnswers);
 
 
 module.exports = router;

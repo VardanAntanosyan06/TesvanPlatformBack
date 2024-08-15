@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     testId: DataTypes.INTEGER,
     questionId: DataTypes.INTEGER,
-    optionId: DataTypes.INTEGER
+    optionId: DataTypes.INTEGER,
+    courseId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'UserAnswersQuizz',
