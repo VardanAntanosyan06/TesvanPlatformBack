@@ -27,6 +27,7 @@ const createQuizz = async (req, res) => {
       time,
       percent,
       questions,
+      point
     } = req.body;
 
     let { id: quizzId } = await Quizz.create({
@@ -47,6 +48,7 @@ const createQuizz = async (req, res) => {
         title_ru: question.title_ru,
         title_am: question.title_am,
         quizzId,
+        points: +point/questions.length
       }).then((data) => {
         question.options.map((option, optionIndex) => {
           Option.create({
@@ -504,6 +506,7 @@ const updateQuizz = async (req, res) => {
       description_am,
       time,
       questions,
+      point
     } = req.body;
 
     // Update the Quizz details
@@ -533,6 +536,7 @@ const updateQuizz = async (req, res) => {
           title_am: question.title_am,
           title_ru: question.title_ru,
           quizzId: id,
+          points: +point/questions.length
         });
 
         const options = question.options.map((option) => ({

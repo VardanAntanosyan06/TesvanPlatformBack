@@ -192,7 +192,7 @@ const getLesson = async (req, res) => {//// avelacnel coursId lessonum ev userHo
       });
     }
     const maxQuizzPoints = lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length
-    const maxHomeworkPoints = lesson.Lesson.homework[0].point
+    const maxHomeworkPoints = +lesson.Lesson.homework[0].point
     const lessonPoints = +maxHomeworkPoints + +maxQuizzPoints
     lesson = {
       points: lessonPoints,

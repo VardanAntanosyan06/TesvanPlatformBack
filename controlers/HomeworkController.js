@@ -20,9 +20,8 @@ const { assign } = require('nodemailer/lib/shared');
 
 const create = async (req, res) => {  /////body mej avelacnel point
   try {
-    const { title_en, title_ru, title_am, description_en, description_ru, description_am } = req.body;
+    const { title_en, title_ru, title_am, description_en, description_ru, description_am, point } = req.body;
     /////////////////////////
-    const point = 10
     ////////////////////////////
 
     await Homework.create({
