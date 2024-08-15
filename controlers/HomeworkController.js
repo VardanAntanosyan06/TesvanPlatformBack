@@ -139,6 +139,7 @@ const getHomeworks = async (req, res) => {
                 'id',
                 [`title_${language}`, 'title'],
                 [`description_${language}`, 'description'],
+                'point'
               ],
               through: { attributes: [] },
             },
@@ -171,6 +172,7 @@ const getHomework = async (req, res) => {
             'id',
             [`title_${language}`, 'title'],
             [`description_${language}`, 'description'],
+            'point'
           ],
         },
       ],
@@ -337,6 +339,7 @@ const getHomeWorkForTeacher = async (req, res) => {
         'id',
         [`title_${language}`, 'title'],
         [`description_${language}`, 'description'],
+        'point'
       ],
     });
 
@@ -374,6 +377,7 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
         'id',
         [`title_${language}`, 'title'],
         [`description_${language}`, 'description'],
+        'point'
       ],
     });
 
@@ -509,6 +513,7 @@ const getUserHomeworkPoints = async (req, res) => {
         'id',
         [`title_${language}`, 'title'],
         [`description_${language}`, 'description'],
+        'point'
       ],
     });
     // homework = homework.map((e) => {delete e.Lesson);
