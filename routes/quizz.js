@@ -1,11 +1,11 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
 
-const controller = require("../controlers/QuizzController");
-const checkAuth = require("../middleware/checkAuth");
+const controller = require('../controlers/QuizzController');
+const checkAuth = require('../middleware/checkAuth');
 
-router.post("/createQuizz", checkAuth(["TEACHER", "ADMIN"]), controller.createQuizz);
-router.get("/getAll", checkAuth(["TEACHER", "ADMIN"]), controller.getAll);
+router.post('/createQuizz', checkAuth(['TEACHER', 'ADMIN']), controller.createQuizz);
+router.get('/getAll', checkAuth(['TEACHER', 'ADMIN']), controller.getAll);
 
 router.post("/getUserAnswers/",  checkAuth(["STUDENT","TEACHER"]),controller.getUserAnswers);
 router.get("/getQuizzesAdmin/:id",  checkAuth(["ADMIN"]),controller.getQuizzesAdmin);
@@ -17,6 +17,7 @@ router.delete("/delete/:id", checkAuth(["ADMIN"]), controller.deleteQuizz);
 router.put("/update/:id", checkAuth(["ADMIN"]), controller.updateQuizz);
 
 router.get('/userQuizz/:courseId/:quizzId', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getUserQuizzAnswers);
+
 
 
 module.exports = router;
