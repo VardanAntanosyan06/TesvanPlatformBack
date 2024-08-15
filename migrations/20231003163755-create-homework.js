@@ -27,6 +27,9 @@ module.exports = {
       description_am: {
         type: Sequelize.TEXT('long'),
       },
+      point: {
+        type: Sequelize.DECIMAL,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

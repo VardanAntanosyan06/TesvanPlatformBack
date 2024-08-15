@@ -18,10 +18,12 @@ const { Op } = require('sequelize');
 const Sequelize = require('sequelize');
 const { assign } = require('nodemailer/lib/shared');
 
-const create = async (req, res) => {
+const create = async (req, res) => {  /////body mej avelacnel point
   try {
-    const { title_en, title_ru, title_am, description_en, description_ru, description_am } =
-      req.body;
+    const { title_en, title_ru, title_am, description_en, description_ru, description_am } = req.body;
+    /////////////////////////
+    const point = 10
+    ////////////////////////////
 
     await Homework.create({
       title_en,
@@ -30,6 +32,7 @@ const create = async (req, res) => {
       description_en,
       description_ru,
       description_am,
+      point
     });
     return res.send({ success: true });
   } catch (error) {

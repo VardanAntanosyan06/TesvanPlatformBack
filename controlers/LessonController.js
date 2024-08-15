@@ -97,7 +97,7 @@ const getLessonTitles = async (req, res) => {
   }
 };
 
-const getLesson = async (req, res) => {
+const getLesson = async (req, res) => {//// avelacnel coursId lessonum ev userHomworkum
   try {
     const { id } = req.params;
     const { user_id: userId } = req.user;
@@ -110,7 +110,7 @@ const getLesson = async (req, res) => {
         userId,
       },
     });
-
+////////////////////
     let lesson = await UserLesson.findOne({
       where: { LessonId: id, UserId: userId },
       attributes: ['points', 'attempt'],
@@ -155,6 +155,7 @@ const getLesson = async (req, res) => {
                 'id',
                 [`title_${language}`, 'title'],
                 [`description_${language}`, 'description'],
+                'point'
               ],
               through: {
                 attributes: [],
@@ -170,6 +171,13 @@ const getLesson = async (req, res) => {
         message: "Lessons not found or User doesn't have the lessons",
       });
     }
+/////////////////////////////
+    const homeworkPoint = UserHomework.findOne({
+      where: {
+        LessonId: id, UserId: userId
+      }
+    })
+
     let userPoint = null;
 
     if (lesson.Lesson.quizz.length > 0) {
@@ -182,11 +190,15 @@ const getLesson = async (req, res) => {
       });
     }
     const maxQuizzPoints = lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length
+    const maxHomeworkPoints = lesson.Lesson.homework[0].point
+    const lessonPoints = maxHomeworkPoints + maxQuizzPoints
     lesson = {
-      points: lesson.points,
+      points: lessonPoints,
       pointsOfPercent: Math.round((lesson.points * 100) / lesson.Lesson.maxPoints),
       quizzPoint: userPoint ? userPoint.point : null,
       maxQuizzPoints: maxQuizzPoints,
+      homeworkPoint: homeworkPoint,
+      maxHomeworkPoints : maxHomeworkPoints,
       attempt: lesson.attempt,
       time: lessonTime ? lessonTime.time : null,
       ...lesson.dataValues.Lesson.dataValues,
