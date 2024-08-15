@@ -260,14 +260,13 @@ const getQuizzesAdmin = async (req, res) => {
         options_ru: options_ru,
       });
     });
-console.log(quizz.Question, "//////////////////////////////////");
 
     quizz = {
       ...quizz.dataValues,
       questions_en,
       questions_ru,
       questions_am,
-      // point: +quizz.Question[0].points * quizz.Question.length
+      // point: +quizz.Questions[0].points * quizz.Question.length
     };
 
     return res.status(200).json({ success: true, quizz });
