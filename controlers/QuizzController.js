@@ -81,8 +81,8 @@ const createQuizz = async (req, res) => {
 // add time in models
 const getQuizzes = async (req, res) => { // error
   try {
-    const { quizzId, courseId } = req.params;
-    const { language } = req.query;
+    const { quizzId} = req.params;
+    const { language, courseId } = req.query;
 
     return res.status(403).json({ success: false, message: 'already passed' });
 
@@ -585,7 +585,8 @@ const getUserAnswers = async (req, res) => {
 const getUserQuizzAnswers = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { quizzId, courseId } = req.params;
+    const { quizzId } = req.params;
+    const { courseId } = req.query;
     /////////////////////
     ////////////////////
     const quizz = await UserAnswersQuizz.findAll({
