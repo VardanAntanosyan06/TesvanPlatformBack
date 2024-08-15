@@ -205,7 +205,7 @@ const getQuizzesAdmin = async (req, res) => {
       include: [
         {
           model: Question,
-          attributes: ['id', 'quizzId', 'title_ru', 'title_en', 'title_am'],
+          attributes: ['id', 'quizzId', 'title_ru', 'title_en', 'title_am', 'points'],
           order: [['id', 'ASC']],
           include: [
             {
