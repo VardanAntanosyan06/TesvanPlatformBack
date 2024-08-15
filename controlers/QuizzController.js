@@ -266,6 +266,7 @@ const getQuizzesAdmin = async (req, res) => {
       questions_en,
       questions_ru,
       questions_am,
+      point: +quizz.Question[0].points * quizz.Question.length
     };
 
     return res.status(200).json({ success: true, quizz });
