@@ -805,6 +805,13 @@ const deleteMember = async (req, res) => {
       },
     });
 
+    await UserHomework.destroy({
+      where: {
+        UserId: userId,
+        GroupCourseId: assignCourseId
+      }
+    })
+
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);

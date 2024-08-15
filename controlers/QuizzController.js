@@ -121,6 +121,7 @@ const getQuizzes = async (req, res) => { // error
             'title_ru',
             'title_en',
             'title_am',
+            'points'
           ],
           order: [['id', 'ASC']],
           include: {
@@ -178,6 +179,7 @@ const getQuizzes = async (req, res) => { // error
       questions_en,
       questions_ru,
       questions_am,
+      point: +quizz.Questions[0].points * quizz.Questions.length
     };
 
     return res.status(200).json({ success: true, quizz });
@@ -266,7 +268,7 @@ const getQuizzesAdmin = async (req, res) => {
       questions_en,
       questions_ru,
       questions_am,
-      // point: +quizz.Questions[0].points * quizz.Question.length
+      point: +quizz.Questions[0].points * quizz.Questions.length
     };
 
     return res.status(200).json({ success: true, quizz });
