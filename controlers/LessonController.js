@@ -172,14 +172,14 @@ const getLesson = async (req, res) => {//// avelacnel coursId lessonum ev userHo
       });
     }
 /////////////////////////////
-    const homeworkPoint = UserHomework.findOne({
+    const homeworkPoint = await UserHomework.findOne({
       where: {
         LessonId: id, 
         UserId: userId,
         HomeworkId: lesson.Lesson.homework[0].id
       }
     })
-
+    
     let userPoint = null;
 
     if (lesson.Lesson.quizz.length > 0) {
@@ -199,7 +199,7 @@ const getLesson = async (req, res) => {//// avelacnel coursId lessonum ev userHo
       pointsOfPercent: Math.round((lesson.points * 100) / lesson.Lesson.maxPoints),
       quizzPoint: userPoint ? userPoint.point : null,
       maxQuizzPoints: maxQuizzPoints,
-      homeworkPoint: homeworkPoint?.point,
+      homeworkPoint: homeworkPoint.points,
       maxHomeworkPoints : maxHomeworkPoints,
       attempt: lesson.attempt,
       time: lessonTime ? lessonTime.time : null,

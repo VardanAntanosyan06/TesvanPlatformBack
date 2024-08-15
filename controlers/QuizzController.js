@@ -86,8 +86,6 @@ const getQuizzes = async (req, res) => { // error
     const { quizzId} = req.params;
     const { language, courseId } = req.query;
 
-    return res.status(403).json({ success: false, message: 'already passed' });
-
     const userQuizzes = await UserAnswersQuizz.findOne({
       where: {
         userId: userId,
