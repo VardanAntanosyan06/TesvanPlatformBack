@@ -48,7 +48,7 @@ const createQuizz = async (req, res) => {
         title_ru: question.title_ru,
         title_am: question.title_am,
         quizzId,
-        points: +point/questions.length
+        points: +point / questions.length
       }).then((data) => {
         question.options.map((option, optionIndex) => {
           Option.create({
@@ -83,7 +83,7 @@ const createQuizz = async (req, res) => {
 // add time in models
 const getQuizzes = async (req, res) => { // error
   try {
-    const { quizzId} = req.params;
+    const { quizzId } = req.params;
     const { language, courseId } = req.query;
 
     const userQuizzes = await UserAnswersQuizz.findOne({
@@ -537,7 +537,7 @@ const updateQuizz = async (req, res) => {
           title_am: question.title_am,
           title_ru: question.title_ru,
           quizzId: id,
-          points: +point/questions.length
+          points: +point / questions.length
         });
 
         const options = question.options.map((option) => ({
@@ -612,7 +612,7 @@ const getUserQuizzAnswers = async (req, res) => {
         },
       ],
 
-      attributes: ['questionId', ['userAnswerId', 'optionId']]
+      attributes: ['questionId', ['optionId', 'userAnswerId']]
     });
     return res.status(200).json(quizz);
 
