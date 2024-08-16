@@ -281,17 +281,18 @@ const submitQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
-    const { quizzId, questionId, optionId, courseId } = req.body;
+    const { quizzId, questionId, optionId } = req.body;
+    const { courseId } = req.query
 
-      await UserAnswersQuizz.create({
-        userId,
-        testId: quizzId,
-        questionId,
-        optionId,
-        courseId
-      });
+    await UserAnswersQuizz.create({
+      userId,
+      testId: quizzId,
+      questionId,
+      optionId,
+      courseId
+    });
 
-      return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true });
 
   } catch (error) {
     console.log(error.message);
