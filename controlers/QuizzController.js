@@ -305,6 +305,7 @@ const finishQuizz = async (req, res) => {
     const { user_id: userId } = req.user;
     const { quizzId, isFinal, lessonId } = req.body;
     const { courseId } = req.query
+   
     const userCourses = await UserCourses.findOne({
       where: { UserId: userId, GroupCourseId: courseId },
     });
@@ -314,7 +315,7 @@ const finishQuizz = async (req, res) => {
         include: [
           {
             model: Question,
-            attributes: ['id'],
+            attributes: ['id', 'points'],
             include: [
               {
                 model: Option,
@@ -326,10 +327,12 @@ const finishQuizz = async (req, res) => {
         ],
       });
 
+      const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length
+
       correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
         (a, b) => a.id - b.id,
       );
-
+      
       const userAnswers = await UserAnswersQuizz.findAll({
         where: {
           testId: quizzId,
@@ -342,14 +345,16 @@ const finishQuizz = async (req, res) => {
         correctAnswers.push(e.optionId);
       });
 
-      const point =
-        (Math.round(
-          ((correctAnswers.length - new Set(correctAnswers).size) /
-            Math.ceil(correctAnswers.length / 2)) *
-          100,
-        ) *
-          (10 / 2)) /
-        100;
+      // const point =
+      //   (Math.round(
+      //     ((correctAnswers.length - new Set(correctAnswers).size) /
+      //       Math.ceil(correctAnswers.length / 2)) *
+      //     100,
+      //   ) *
+      //     (10 / 2)) /
+      //   100;
+
+      const point = (correctAnswers.length - new Set(correctAnswers).size) * quizzPoints
 
       await UserPoints.findOrCreate({
         where: {
@@ -368,19 +373,19 @@ const finishQuizz = async (req, res) => {
         },
       });
 
-      userCourses.totalPoints = Math.ceil(userCourses.totalPoints + point);
+      userCourses.totalPoints = userCourses.totalPoints + point;
       await userCourses.save();
 
       return res.json({ success: true });
     }
     const { maxPoints } = await Lesson.findByPk(lessonId);
-
+    
     let correctAnswers = await Quizz.findByPk(quizzId, {
       attributes: ['id'],
       include: [
         {
           model: Question,
-          attributes: ['id'],
+          attributes: ['id', 'points'],
           include: [
             {
               model: Option,
@@ -390,13 +395,14 @@ const finishQuizz = async (req, res) => {
           ],
         },
       ],
-    });
-    console.log(correctAnswers);
+    });    
+    
+    const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length
 
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
       (a, b) => a.id - b.id,
     );
-
+    
     const userAnswers = await UserAnswersQuizz.findAll({
       where: {
         testId: quizzId,
@@ -430,19 +436,21 @@ const finishQuizz = async (req, res) => {
       defaults: {
         quizzId,
         userId,
-        point: Math.round(point),
+        point: point,
         correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
         isFinal,
         courseId,
       },
     });
-    userCourses.totalPoints = Math.ceil(userCourses.totalPoints + point);
+    
+    userCourses.totalPoints = userCourses.totalPoints + point;
     await userCourses.save();
 
     const userLesson = await UserLesson.findOne({
       where: { UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
     });
-    userLesson.points = Math.round(userLesson.points + point);
+    
+    userLesson.points = userLesson.points + point;
     await userLesson.save();
     return res.json({
       point,
@@ -554,9 +562,20 @@ const updateQuizz = async (req, res) => {
 
 const getUserAnswers = async (req, res) => {
   try {
-    const { quizzId, courseId, isFinal } = req.body;
-
+    const { quizzId, isFinal } = req.body;
+    const { courseId } = req.query
     const { user_id: userId } = req.user;
+
+    // const userQuizzes = await UserAnswersQuizz.findOne({
+    //   where: {
+    //     userId,
+    //     courseId,
+    //     testId: quizzId,
+    //   },
+    // });
+    // if (userQuizzes) {
+    //   return res.status(403).json({ success: false, message: 'already passed' });
+    // }
 
     const userPoints = await UserPoints.findOne({
       where: {
