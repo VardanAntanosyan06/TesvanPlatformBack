@@ -283,16 +283,6 @@ const submitQuizz = async (req, res) => {
 
     const { quizzId, questionId, optionId, courseId } = req.body;
 
-    const userQuizzes = await UserAnswersQuizz.findOne({
-      where: {
-        userId: userId,
-        courseId,
-        testId: quizzId,
-      },
-    });
-    if (userQuizzes) {
-      return res.status(403).json({ success: false, message: 'already passed' });
-    } else {
       await UserAnswersQuizz.create({
         userId,
         testId: quizzId,
@@ -302,7 +292,7 @@ const submitQuizz = async (req, res) => {
       });
 
       return res.status(200).json({ success: true });
-    }
+
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Something went wrong.' });
