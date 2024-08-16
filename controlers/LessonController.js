@@ -97,7 +97,8 @@ const getLessonTitles = async (req, res) => {
   }
 };
 
-const getLesson = async (req, res) => {//// avelacnel coursId lessonum ev userHomworkum
+const getLesson = async (req, res) => {
+  //// avelacnel coursId lessonum ev userHomworkum
   try {
     const { id } = req.params;
     const { user_id: userId } = req.user;
@@ -110,7 +111,7 @@ const getLesson = async (req, res) => {//// avelacnel coursId lessonum ev userHo
         userId,
       },
     });
-////////////////////
+    ////////////////////
     let lesson = await UserLesson.findOne({
       where: { LessonId: id, UserId: userId },
       attributes: ['points', 'attempt'],
@@ -146,7 +147,7 @@ const getLesson = async (req, res) => {//// avelacnel coursId lessonum ev userHo
               include: {
                 model: Question,
                 attributes: ['id', 'points'],
-              }
+              },
             },
             {
               model: Homework,
@@ -155,7 +156,7 @@ const getLesson = async (req, res) => {//// avelacnel coursId lessonum ev userHo
                 'id',
                 [`title_${language}`, 'title'],
                 [`description_${language}`, 'description'],
-                'point'
+                'point',
               ],
               through: {
                 attributes: [],
@@ -171,15 +172,15 @@ const getLesson = async (req, res) => {//// avelacnel coursId lessonum ev userHo
         message: "Lessons not found or User doesn't have the lessons",
       });
     }
-/////////////////////////////
+    /////////////////////////////
     const homeworkPoint = await UserHomework.findOne({
       where: {
-        LessonId: id, 
+        LessonId: id,
         UserId: userId,
-        HomeworkId: lesson.Lesson.homework[0].id
-      }
-    })
-    
+        HomeworkId: lesson.Lesson.homework[0].id,
+      },
+    });
+
     let userPoint = null;
 
     if (lesson.Lesson.quizz.length > 0) {
@@ -191,22 +192,21 @@ const getLesson = async (req, res) => {//// avelacnel coursId lessonum ev userHo
         },
       });
     }
-    const maxQuizzPoints = lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length
-    const maxHomeworkPoints = +lesson.Lesson.homework[0].point
-    const lessonPoints = +maxHomeworkPoints + +maxQuizzPoints
+    const maxQuizzPoints =
+      lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length;
+    const maxHomeworkPoints = +lesson.Lesson.homework[0].point;
+    const lessonPoints = +maxHomeworkPoints + +maxQuizzPoints;
     lesson = {
       points: lessonPoints,
       pointsOfPercent: Math.round((lesson.points * 100) / lesson.Lesson.maxPoints),
       quizzPoint: userPoint ? userPoint.point : null,
       maxQuizzPoints: maxQuizzPoints,
       homeworkPoint: homeworkPoint.points,
-      maxHomeworkPoints : maxHomeworkPoints,
+      maxHomeworkPoints: maxHomeworkPoints,
       attempt: lesson.attempt,
       time: lessonTime ? lessonTime.time : null,
       ...lesson.dataValues.Lesson.dataValues,
     };
-    
-    
 
     res.send(lesson);
   } catch (error) {
@@ -538,6 +538,10 @@ const updateLesson = async (req, res) => {
       file_am,
     } = req.body;
 
+    if (!homeworkId) {
+      await HomeworkPerLesson.destroy({ where: { lessonId } });
+    }
+
     // Update Lesson
     await Lesson.update(
       {
@@ -623,14 +627,13 @@ const updateLesson = async (req, res) => {
         },
       });
       const uniqueCourses = Array.from(
-        courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values()
+        courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values(),
       );
-      console.log("///////////////", uniqueCourses);
+      console.log('///////////////', uniqueCourses);
 
       if (uniqueCourses.length > 0) {
         await Promise.all(
           uniqueCourses.map(async (cours) => {
-
             await UserHomework.update(
               {
                 HomeworkId: homeworkId,
