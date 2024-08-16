@@ -303,7 +303,8 @@ const submitQuizz = async (req, res) => {
 const finishQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { quizzId, isFinal, lessonId, courseId } = req.body;
+    const { quizzId, isFinal, lessonId } = req.body;
+    const { courseId } = req.query
     const userCourses = await UserCourses.findOne({
       where: { UserId: userId, GroupCourseId: courseId },
     });
