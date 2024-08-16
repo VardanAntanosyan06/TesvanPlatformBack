@@ -83,12 +83,13 @@ const createQuizz = async (req, res) => {
 // add time in models
 const getQuizzes = async (req, res) => { // error
   try {
+    const { user_id: userId } = req.user;
     const { quizzId } = req.params;
     const { language, courseId } = req.query;
 
     const userQuizzes = await UserAnswersQuizz.findOne({
       where: {
-        userId: userId,
+        userId,
         courseId,
         testId: quizzId,
       },
