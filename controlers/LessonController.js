@@ -195,14 +195,15 @@ const getLesson = async (req, res) => {
       lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length;
     const maxHomeworkPoints = +lesson.Lesson.homework[0].point;
     const maxPoints = +maxHomeworkPoints + +maxQuizzPoints;
-    const lessonPoints = +(homeworkPoint? homeworkPoint.points: 0) + +(userPoint ? userPoint.point : 0)
+    const lessonPoints =
+      +(homeworkPoint ? homeworkPoint.points : 0) + +(userPoint ? userPoint.point : 0);
     lesson = {
-      points: lessonPoints,
+      points: parseFloat(lessonPoints.toFixed(2)),
       maxPoints: maxPoints,
       pointsOfPercent: Math.round((lessonPoints * 100) / maxPoints),
-      quizzPoint: userPoint ? userPoint.point : null,
+      quizzPoint: userPoint ? parseFloat(userPoint.point.toFixed(2)) : null,
       maxQuizzPoints: maxQuizzPoints,
-      homeworkPoint: homeworkPoint? homeworkPoint.points: 0,
+      homeworkPoint: homeworkPoint ? homeworkPoint.points : 0,
       maxHomeworkPoints: maxHomeworkPoints,
       attempt: lesson.attempt,
       time: lessonTime ? lessonTime.time : null,
@@ -512,8 +513,6 @@ const deleteLesson = async (req, res) => {
 
 const updateLesson = async (req, res) => {
   try {
-    // const {  } = req.params;
-
     const {
       lessonId,
       title_en,
@@ -534,16 +533,12 @@ const updateLesson = async (req, res) => {
       presentationDescription_ru,
       presentationTitle_am,
       presentationDescription_am,
-      file_en,
-      file_ru,
-      file_am,
     } = req.body;
 
     if (!homeworkId) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });
     }
 
-    // Update Lesson
     await Lesson.update(
       {
         title_en,
@@ -561,7 +556,6 @@ const updateLesson = async (req, res) => {
     );
 
     if (req.files) {
-      // if(!file_en)
       const { file_en, file_ru, file_am } = req.files;
       const fileEnType = file_en.mimetype.split('/')[1];
       const fileNameEn = v4() + '.' + fileEnType;
@@ -630,7 +624,7 @@ const updateLesson = async (req, res) => {
       const uniqueCourses = Array.from(
         courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values(),
       );
-      console.log('///////////////', uniqueCourses);
+      // console.log('///////////////', uniqueCourses);
 
       if (uniqueCourses.length > 0) {
         await Promise.all(
