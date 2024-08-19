@@ -444,7 +444,7 @@ const finishQuizz = async (req, res) => {
       where: { UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
     });
 
-    userCourses.totalPoints = userLesson.points + point
+    userCourses.totalPoints = point
     await userCourses.save();
 
     userLesson.points = userLesson.points + point
