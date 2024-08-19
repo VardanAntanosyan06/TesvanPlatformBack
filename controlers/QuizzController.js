@@ -421,7 +421,7 @@ const finishQuizz = async (req, res) => {
     });
 
     let point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint;
-    point = +point.toFixed(2); // Приведение к числу через унарный плюс
+    point = parseFloat(point.toFixed(2));
 
     await UserPoints.findOrCreate({
       where: {
