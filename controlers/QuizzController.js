@@ -419,18 +419,9 @@ const finishQuizz = async (req, res) => {
     userAnswers.map((e) => {
       correctAnswers.push(e.optionId);
     });
-    // console.log(correctAnswers,correctAnswers.length - new Set(correctAnswers).size);
-    // const point =
-    //   (Math.round(
-    //     ((correctAnswers.length - new Set(correctAnswers).size) /
-    //       Math.ceil(correctAnswers.length / 2)) *
-    //     100,
-    //   ) *
-    //     (maxPoints / 2)) /
-    //   100;
 
     let point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint;
-    point = parseFloat(point.toFixed(2)); // 1.3
+    point = +point.toFixed(2); // Приведение к числу через унарный плюс
 
     await UserPoints.findOrCreate({
       where: {
