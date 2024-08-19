@@ -1,4 +1,4 @@
-const { where } = require("sequelize");
+const { where } = require('sequelize');
 const {
   Users,
   Groups,
@@ -14,9 +14,9 @@ const {
   Homework,
   UserHomework,
   Quizz,
-} = require("../models");
-const { Op } = require("sequelize");
-const { all } = require("axios");
+} = require('../models');
+const { Op } = require('sequelize');
+const { all } = require('axios');
 
 const getUserStatictis = async (req, res) => {
   try {
@@ -40,7 +40,7 @@ const getUserStatictis = async (req, res) => {
     if (
       isIndividual &&
       isIndividual.CoursesContent &&
-      isIndividual.CoursesContent.courseType == "Individual"
+      isIndividual.CoursesContent.courseType == 'Individual'
     ) {
       const students = await UserCourses.count({
         where: { GroupCourseId: id },
@@ -75,7 +75,7 @@ const getUserStatictis = async (req, res) => {
             include: [
               {
                 model: Quizz,
-                as: "quizz",
+                as: 'quizz',
                 required: true,
               },
             ],
@@ -92,14 +92,14 @@ const getUserStatictis = async (req, res) => {
             include: [
               {
                 model: Homework,
-                as: "homework",
+                as: 'homework',
                 through: {
                   attributes: [],
                 },
                 attributes: [
-                  "id",
-                  [`title_${language}`, "title"],
-                  [`description_${language}`, "description"],
+                  'id',
+                  [`title_${language}`, 'title'],
+                  [`description_${language}`, 'description'],
                 ],
               },
             ],
@@ -142,7 +142,7 @@ const getUserStatictis = async (req, res) => {
       },
     });
     const students = await GroupsPerUsers.count({
-      where: { groupId: id, userRole: "STUDENT" },
+      where: { groupId: id, userRole: 'STUDENT' },
     });
 
     let course = await Groups.findByPk(id, {
@@ -186,7 +186,7 @@ const getUserStatictis = async (req, res) => {
           include: [
             {
               model: Quizz,
-              as: "quizz",
+              as: 'quizz',
               required: true,
             },
           ],
@@ -203,7 +203,7 @@ const getUserStatictis = async (req, res) => {
           include: [
             {
               model: Homework,
-              as: "homework",
+              as: 'homework',
             },
           ],
           required: true,
@@ -236,9 +236,7 @@ const getUserStatictis = async (req, res) => {
         taken: userSubmitedQuizz,
         all: allQuizz + 1, //final quizz
         percent: Math.round(
-          userSubmitedQuizz == 0
-            ? 0
-            : (userSubmitedQuizz / (allQuizz + 1)) * 100
+          userSubmitedQuizz == 0 ? 0 : (userSubmitedQuizz / (allQuizz + 1)) * 100,
         ),
       },
       // totalPoints:Math.round(
@@ -261,9 +259,7 @@ const getUserStatictis = async (req, res) => {
     return res.json(response);
   } catch (error) {
     console.log(error);
-    return res
-      .status(500)
-      .json({ success: false, message: "Something Went Wrong" });
+    return res.status(500).json({ success: false, message: 'Something Went Wrong' });
   }
 };
 
@@ -275,7 +271,7 @@ const getInvidualCourseStatics = async (req, res) => {
     const courses = await CoursesContents.findOne({
       where: {
         userId,
-        courseType: "Individual",
+        courseType: 'Individual',
       },
     });
     const courseType = courses.courseType;
@@ -314,7 +310,7 @@ const getInvidualCourseStatics = async (req, res) => {
     return res.json(response);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Something went wrong ." });
+    return res.status(500).json({ message: 'Something went wrong .' });
   }
 };
 

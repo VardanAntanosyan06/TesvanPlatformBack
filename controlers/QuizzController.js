@@ -27,7 +27,7 @@ const createQuizz = async (req, res) => {
       time,
       percent,
       questions,
-      point
+      point,
     } = req.body;
 
     let { id: quizzId } = await Quizz.create({
@@ -48,7 +48,7 @@ const createQuizz = async (req, res) => {
         title_ru: question.title_ru,
         title_am: question.title_am,
         quizzId,
-        points: +point / questions.length
+        points: +point / questions.length,
       }).then((data) => {
         question.options.map((option, optionIndex) => {
           Option.create({
@@ -81,7 +81,8 @@ const createQuizz = async (req, res) => {
 };
 
 // add time in models
-const getQuizzes = async (req, res) => { // error
+const getQuizzes = async (req, res) => {
+  // error
   try {
     const { user_id: userId } = req.user;
     const { quizzId } = req.params;
@@ -120,7 +121,7 @@ const getQuizzes = async (req, res) => { // error
             'title_ru',
             'title_en',
             'title_am',
-            'points'
+            'points',
           ],
           order: [['id', 'ASC']],
           include: {
@@ -178,7 +179,7 @@ const getQuizzes = async (req, res) => { // error
       questions_en,
       questions_ru,
       questions_am,
-      point: +quizz.Questions[0].points * quizz.Questions.length
+      point: +quizz.Questions[0].points * quizz.Questions.length,
     };
 
     return res.status(200).json({ success: true, quizz });
@@ -267,7 +268,7 @@ const getQuizzesAdmin = async (req, res) => {
       questions_en,
       questions_ru,
       questions_am,
-      point: +quizz.Questions[0].points * quizz.Questions.length
+      point: +quizz.Questions[0].points * quizz.Questions.length,
     };
 
     return res.status(200).json({ success: true, quizz });
@@ -282,18 +283,17 @@ const submitQuizz = async (req, res) => {
     const { user_id: userId } = req.user;
 
     const { quizzId, questionId, optionId } = req.body;
-    const { courseId } = req.query
+    const { courseId } = req.query;
 
     await UserAnswersQuizz.create({
       userId,
       testId: quizzId,
       questionId,
       optionId,
-      courseId
+      courseId,
     });
 
     return res.status(200).json({ success: true });
-
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -305,6 +305,7 @@ const finishQuizz = async (req, res) => {
     const { user_id: userId } = req.user;
     const { quizzId, isFinal, lessonId } = req.body;
     const { courseId } = req.query
+
 
     const userCourses = await UserCourses.findOne({
       where: { UserId: userId, GroupCourseId: courseId },
@@ -327,8 +328,8 @@ const finishQuizz = async (req, res) => {
         ],
       });
 
-      const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length
-      const oneQuizzPoint = correctAnswers.Questions[0].points
+      const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length;
+      const oneQuizzPoint = correctAnswers.Questions[0].points;
 
       correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
         (a, b) => a.id - b.id,
@@ -355,7 +356,9 @@ const finishQuizz = async (req, res) => {
       //     (10 / 2)) /
       //   100;
 
-      const point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint
+      let point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint;
+
+      point = parseFloat(point.toFixed(2));
 
       await UserPoints.findOrCreate({
         where: {
@@ -417,17 +420,9 @@ const finishQuizz = async (req, res) => {
     userAnswers.map((e) => {
       correctAnswers.push(e.optionId);
     });
-    // console.log(correctAnswers,correctAnswers.length - new Set(correctAnswers).size);
-    // const point =
-    //   (Math.round(
-    //     ((correctAnswers.length - new Set(correctAnswers).size) /
-    //       Math.ceil(correctAnswers.length / 2)) *
-    //     100,
-    //   ) *
-    //     (maxPoints / 2)) /
-    //   100;
 
-    const point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint
+    let point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint;
+    point = parseFloat(point.toFixed(2));
 
     await UserPoints.findOrCreate({
       where: {
@@ -511,7 +506,7 @@ const updateQuizz = async (req, res) => {
       description_am,
       time,
       questions,
-      point
+      point,
     } = req.body;
 
     // Update the Quizz details
@@ -541,7 +536,7 @@ const updateQuizz = async (req, res) => {
           title_am: question.title_am,
           title_ru: question.title_ru,
           quizzId: id,
-          points: +point / questions.length
+          points: +point / questions.length,
         });
 
         const options = question.options.map((option) => ({
@@ -566,7 +561,7 @@ const updateQuizz = async (req, res) => {
 const getUserAnswers = async (req, res) => {
   try {
     const { quizzId, isFinal } = req.body;
-    const { courseId } = req.query
+    const { courseId } = req.query;
     const { user_id: userId } = req.user;
 
     // const userQuizzes = await UserAnswersQuizz.findOne({
@@ -613,12 +608,12 @@ const getUserQuizzAnswers = async (req, res) => {
       where: {
         testId: quizzId,
         userId,
-        courseId
+        courseId,
       },
       include: [
         {
           model: Question,
-          as: "question",
+          as: 'question',
           include: [
             {
               model: Option,
@@ -627,10 +622,9 @@ const getUserQuizzAnswers = async (req, res) => {
         },
       ],
 
-      attributes: ['questionId', ['optionId', 'userAnswerId']]
+      attributes: ['questionId', ['optionId', 'userAnswerId']],
     });
     return res.status(200).json(quizz);
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, message: 'Something Went Wrong. ' });
@@ -647,5 +641,5 @@ module.exports = {
   deleteQuizz,
   updateQuizz,
   getQuizzesAdmin,
-  getUserQuizzAnswers
+  getUserQuizzAnswers,
 };
