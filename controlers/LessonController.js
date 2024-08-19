@@ -198,7 +198,7 @@ const getLesson = async (req, res) => {
     const lessonPoints =
       +(homeworkPoint ? homeworkPoint.points : 0) + +(userPoint ? userPoint.point : 0);
 
-    const quizPoints = userPoint.point;
+    const quizPoints = +userPoint.point;
     // parseFloat(+quizPoints.toFixed(2));
 
     lesson = {
