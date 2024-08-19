@@ -197,23 +197,23 @@ const getLesson = async (req, res) => {
     const maxPoints = +maxHomeworkPoints + +maxQuizzPoints;
     const lessonPoints =
       +(homeworkPoint ? homeworkPoint.points : 0) + +(userPoint ? userPoint.point : 0);
+
     let quizPoints;
-    if (userPoint.point) {
-      quizPoints = +userPoint.point;
+    userPoint ? (quizPoints = +userPoint.point) : false,
       // parseFloat(+quizPoints.toFixed(2));
-    }
-    lesson = {
-      points: parseFloat(lessonPoints.toFixed(2)),
-      maxPoints: maxPoints,
-      pointsOfPercent: Math.round((lessonPoints * 100) / maxPoints),
-      quizzPoint: userPoint ? parseFloat(quizPoints.toFixed(2)) : null,
-      maxQuizzPoints: maxQuizzPoints,
-      homeworkPoint: homeworkPoint ? homeworkPoint.points : 0,
-      maxHomeworkPoints: maxHomeworkPoints,
-      attempt: lesson.attempt,
-      time: lessonTime ? lessonTime.time : null,
-      ...lesson.dataValues.Lesson.dataValues,
-    };
+
+      (lesson = {
+        points: parseFloat(lessonPoints.toFixed(2)),
+        maxPoints: maxPoints,
+        pointsOfPercent: Math.round((lessonPoints * 100) / maxPoints),
+        quizzPoint: userPoint ? parseFloat(quizPoints.toFixed(2)) : null,
+        maxQuizzPoints: maxQuizzPoints,
+        homeworkPoint: homeworkPoint ? homeworkPoint.points : 0,
+        maxHomeworkPoints: maxHomeworkPoints,
+        attempt: lesson.attempt,
+        time: lessonTime ? lessonTime.time : null,
+        ...lesson.dataValues.Lesson.dataValues,
+      });
 
     res.send(lesson);
   } catch (error) {
