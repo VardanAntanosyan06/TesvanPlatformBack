@@ -218,20 +218,25 @@ const getUserStatictis = async (req, res) => {
       },
     });
 
-    const homeworkPoints = await UserHomework.sum('points', {
+    const homeworkPoints = await UserHomework.findAll({
       where: {
         GroupCourseId: id,
         UserId: userId,
       },
     });
 
-    // const userQuizzPoints
+    let totalPoints = 0;
+
+    homeworkPoints.forEach((homework) => {
+      totalPoints += homework.points;
+    });
+
     const response = {
       lesson: 0,
       homework: {
         taken: userSubmitedHomework,
         all: allHomework,
-        percent: 10,
+        percent: totalPoints,
       },
       quizzes: {
         taken: userSubmitedQuizz,
