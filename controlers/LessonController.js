@@ -121,7 +121,6 @@ const getLesson = async (req, res) => {
           attributes: [
             [`title_${language}`, 'title'],
             [`description_${language}`, 'description'],
-            'maxPoints',
             [`htmlContent_${language}`, 'htmlContent'],
           ],
           include: [
@@ -195,11 +194,12 @@ const getLesson = async (req, res) => {
     const maxQuizzPoints =
       lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length;
     const maxHomeworkPoints = +lesson.Lesson.homework[0].point;
-    // const MaxPoints = +maxHomeworkPoints + +maxQuizzPoints;
+    const maxPoints = +maxHomeworkPoints + +maxQuizzPoints;
     const lessonPoints = +(homeworkPoint? homeworkPoint.points: 0) + +(userPoint ? userPoint.point : 0)
     lesson = {
       points: lessonPoints,
-      pointsOfPercent: Math.round((lesson.points * 100) / lesson.Lesson.maxPoints),
+      maxPoints: maxPoints,
+      pointsOfPercent: Math.round((lessonPoints * 100) / maxPoints),
       quizzPoint: userPoint ? userPoint.point : null,
       maxQuizzPoints: maxQuizzPoints,
       homeworkPoint: homeworkPoint? homeworkPoint.points: 0,
