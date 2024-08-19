@@ -227,9 +227,9 @@ const getUserStatictis = async (req, res) => {
 
     let totalPoints = 0;
 
-    homeworkPoints.forEach((homework) => {
+    for (const homework of homeworkPoints) {
       totalPoints += homework.points;
-    });
+    }
 
     console.log(totalPoints, '-----------------------------------------------------');
 
