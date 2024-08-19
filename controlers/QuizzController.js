@@ -328,6 +328,7 @@ const finishQuizz = async (req, res) => {
       });
 
       const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length
+      const oneQuizzPoint = correctAnswers.Questions[0].points
 
       correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
         (a, b) => a.id - b.id,
@@ -354,7 +355,7 @@ const finishQuizz = async (req, res) => {
       //     (10 / 2)) /
       //   100;
 
-      const point = (correctAnswers.length - new Set(correctAnswers).size) * quizzPoints
+      const point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint
 
       await UserPoints.findOrCreate({
         where: {
@@ -367,7 +368,7 @@ const finishQuizz = async (req, res) => {
           quizzId,
           userId,
           correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
-          point,
+          point: point,
           isFinal,
           courseId,
         },
@@ -398,6 +399,7 @@ const finishQuizz = async (req, res) => {
     });    
     
     const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length
+    const oneQuizzPoint = correctAnswers.Questions[0].points
 
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
       (a, b) => a.id - b.id,
@@ -425,7 +427,7 @@ const finishQuizz = async (req, res) => {
     //     (maxPoints / 2)) /
     //   100;
 
-    const point = (correctAnswers.length - new Set(correctAnswers).size) * quizzPoints
+    const point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint
 
     await UserPoints.findOrCreate({
       where: {
