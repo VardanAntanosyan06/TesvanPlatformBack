@@ -231,6 +231,8 @@ const getUserStatictis = async (req, res) => {
       totalPoints += homework.points;
     });
 
+    console.log(totalPoints, '-----------------------------------------------------');
+
     const response = {
       lesson: 0,
       homework: {
