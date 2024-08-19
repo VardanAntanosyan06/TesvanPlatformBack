@@ -225,15 +225,13 @@ const getUserStatictis = async (req, res) => {
       },
     });
 
-    console.log(`Total homework count: ${homeworkCount}`);
-
     // const userQuizzPoints
     const response = {
       lesson: 0,
       homework: {
         taken: userSubmitedHomework,
         all: allHomework,
-        percent: homeworkTotalPoints,
+        percent: homeworkCount,
       },
       quizzes: {
         taken: userSubmitedQuizz,
