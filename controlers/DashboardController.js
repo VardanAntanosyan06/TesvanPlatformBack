@@ -218,12 +218,15 @@ const getUserStatictis = async (req, res) => {
       },
     });
 
-    const homeworkTotalPoints = await UserHomework.sum('points', {
+    const homeworkCount = await UserHomework.count({
       where: {
         GroupCourseId: id,
         UserId: userId,
       },
     });
+
+    console.log(`Total homework count: ${homeworkCount}`);
+
     // const userQuizzPoints
     const response = {
       lesson: 0,
