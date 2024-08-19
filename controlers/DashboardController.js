@@ -230,7 +230,7 @@ const getUserStatictis = async (req, res) => {
         percent: null,
       },
       totalPoints: Math.round(
-        ((userSubmitedQuizz == 0 ? 0 : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
+        ((userSubmitedQuizz == 0 ? 0 : userSubmitedQuizz / (allQuizz + 1)) +
           (allHomework < 0 || userSubmitedHomework < 0
             ? 0
             : (userSubmitedHomework / allHomework) * 100)) /
