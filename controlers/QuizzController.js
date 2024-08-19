@@ -305,7 +305,7 @@ const finishQuizz = async (req, res) => {
     const { user_id: userId } = req.user;
     const { quizzId, isFinal, lessonId } = req.body;
     const { courseId } = req.query
-   
+
     const userCourses = await UserCourses.findOne({
       where: { UserId: userId, GroupCourseId: courseId },
     });
@@ -333,7 +333,7 @@ const finishQuizz = async (req, res) => {
       correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
         (a, b) => a.id - b.id,
       );
-      
+
       const userAnswers = await UserAnswersQuizz.findAll({
         where: {
           testId: quizzId,
@@ -380,7 +380,7 @@ const finishQuizz = async (req, res) => {
       return res.json({ success: true });
     }
     const { maxPoints } = await Lesson.findByPk(lessonId);
-    
+
     let correctAnswers = await Quizz.findByPk(quizzId, {
       attributes: ['id'],
       include: [
@@ -396,15 +396,15 @@ const finishQuizz = async (req, res) => {
           ],
         },
       ],
-    });    
-    
+    });
+
     const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length
     const oneQuizzPoint = correctAnswers.Questions[0].points
 
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
       (a, b) => a.id - b.id,
     );
-    
+
     const userAnswers = await UserAnswersQuizz.findAll({
       where: {
         testId: quizzId,
@@ -444,16 +444,17 @@ const finishQuizz = async (req, res) => {
         courseId,
       },
     });
-    
-    userCourses.totalPoints = userCourses.totalPoints + point;
-    await userCourses.save();
 
     const userLesson = await UserLesson.findOne({
       where: { UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
     });
-    
-    userLesson.points = userLesson.points + point;
+
+    userCourses.totalPoints = parseFloat((userLesson.points + point).toFixed(2))
+    await userCourses.save();
+
+    userLesson.points = parseFloat((userLesson.points + point).toFixed(2))
     await userLesson.save();
+
     return res.json({
       point,
       correctAnswers: correctAnswers.length - new Set(correctAnswers).size,

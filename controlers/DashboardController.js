@@ -24,13 +24,18 @@ const getUserStatictis = async (req, res) => {
     const { language } = req.query;
     const { user_id: userId } = req.user;
 
+    const {assignCourseId} =  await Groups.findOne({
+      id: id
+    })
+
     const isIndividual = await UserCourses.findOne({
       where: {
         UserId: userId,
-        GroupCourseId: id,
+        GroupCourseId: assignCourseId,
       },
       include: [CoursesContents],
     });
+    const userCoursPoints = isIndividual.totalPoints
 
     if (
       isIndividual &&
@@ -236,14 +241,15 @@ const getUserStatictis = async (req, res) => {
             : (userSubmitedQuizz / (allQuizz + 1)) * 100
         ),
       },
-      totalPoints:Math.round(
-        ((userSubmitedQuizz == 0
-          ? 0
-          : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
-          (allHomework < 0 || userSubmitedHomework < 0
-            ? 0
-            : (userSubmitedHomework / allHomework) * 100)) /
-        2),
+      // totalPoints:Math.round(
+      //   ((userSubmitedQuizz == 0
+      //     ? 0
+      //     : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
+      //     (allHomework < 0 || userSubmitedHomework < 0
+      //       ? 0
+      //       : (userSubmitedHomework / allHomework) * 100)) /
+      //   2),
+      totalPoints: userCoursPoints,
       mySkils,
       charts,
       course: {
