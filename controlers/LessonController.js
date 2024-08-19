@@ -197,11 +197,12 @@ const getLesson = async (req, res) => {
     const maxPoints = +maxHomeworkPoints + +maxQuizzPoints;
     const lessonPoints =
       +(homeworkPoint ? homeworkPoint.points : 0) + +(userPoint ? userPoint.point : 0);
+
     lesson = {
       points: parseFloat(lessonPoints.toFixed(2)),
       maxPoints: maxPoints,
       pointsOfPercent: Math.round((lessonPoints * 100) / maxPoints),
-      quizzPoint: userPoint ? parseFloat(userPoint.point.toFixed(2)) : null,
+      quizzPoint: userPoint ? parseFloat(+userPoint.point.toFixed(2)) : null,
       maxQuizzPoints: maxQuizzPoints,
       homeworkPoint: homeworkPoint ? homeworkPoint.points : 0,
       maxHomeworkPoints: maxHomeworkPoints,
