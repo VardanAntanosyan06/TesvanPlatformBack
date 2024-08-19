@@ -218,7 +218,7 @@ const getUserStatictis = async (req, res) => {
       },
     });
 
-    const homeworkCount = await UserHomework.count({
+    const homeworkPoints = await UserHomework.sum('points', {
       where: {
         GroupCourseId: id,
         UserId: userId,
@@ -231,7 +231,7 @@ const getUserStatictis = async (req, res) => {
       homework: {
         taken: userSubmitedHomework,
         all: allHomework,
-        percent: homeworkCount,
+        percent: homeworkPoints,
       },
       quizzes: {
         taken: userSubmitedQuizz,
