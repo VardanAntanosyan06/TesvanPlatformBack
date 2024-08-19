@@ -217,36 +217,25 @@ const getUserStatictis = async (req, res) => {
         GroupCourseId: course.assignCourseId,
       },
     });
-
-    const homeworkPoints = await UserHomework.findAll({
-      where: {
-        GroupCourseId: id,
-        UserId: userId,
-      },
-    });
-
-    let totalPoints = 0;
-
-    for (const homework of homeworkPoints) {
-      totalPoints += homework.points;
-    }
-
-    console.log(totalPoints, '-----------------------------------------------------');
-
     const response = {
       lesson: 0,
       homework: {
         taken: userSubmitedHomework,
         all: allHomework,
-        percent: totalPoints,
+        percent:
+          allHomework < 0 || userSubmitedHomework < 0
+            ? 0
+            : (userSubmitedHomework / allHomework) * 100,
       },
       quizzes: {
         taken: userSubmitedQuizz,
         all: allQuizz + 1, //final quizz
-        percent: 2,
+        percent: Math.round(
+          userSubmitedQuizz == 0 ? 0 : (userSubmitedQuizz / (allQuizz + 1)) * 100,
+        ),
       },
       totalPoints: Math.round(
-        ((userSubmitedQuizz == 0 ? 0 : userSubmitedQuizz / (allQuizz + 1)) +
+        ((userSubmitedQuizz == 0 ? 0 : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
           (allHomework < 0 || userSubmitedHomework < 0
             ? 0
             : (userSubmitedHomework / allHomework) * 100)) /
