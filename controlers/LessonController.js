@@ -195,9 +195,10 @@ const getLesson = async (req, res) => {
         },
       });
     }
+    
     const maxQuizzPoints =
       lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length;
-    const maxHomeworkPoints = +lesson.Lesson.homework > 0? +lesson.Lesson.homework[0].point : 0
+    const maxHomeworkPoints = +lesson.Lesson.homework.length > 0? +lesson.Lesson.homework[0].point : 0
     const maxPoints = +maxHomeworkPoints + +maxQuizzPoints;
     const lessonPoints =
       +(homeworkPoint ? homeworkPoint.points : 0) + +(userPoint ? userPoint.point : 0);
