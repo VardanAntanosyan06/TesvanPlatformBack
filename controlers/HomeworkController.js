@@ -316,7 +316,7 @@ const getHomeWorkForTeacher = async (req, res) => {
     let users = await UserHomework.findAll({
       where: { HomeworkId: id },
       attributes: ['startDate', 'points', 'status'],
-      include: [{ model: Users, attributes: ['firstName', 'lastName', 'id'] }],
+      include: [{ model: Users, attributes: ['firstName', 'lastName', 'id', 'image'] }],
     });
     if (!users) {
       return res.status(403).json({
@@ -329,6 +329,7 @@ const getHomeWorkForTeacher = async (req, res) => {
       e['firstName'] = e.User.firstName;
       e['lastName'] = e.User.lastName;
       e['userId'] = e.User.id;
+      e['image'] = e.User.image
 
       delete e.User;
       return e;
@@ -357,7 +358,7 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
     let user = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
       attributes: ['startDate', 'points', 'status', 'answer', 'feedback'],
-      include: [{ model: Users, attributes: ['firstName', 'lastName', 'id'] }],
+      include: [{ model: Users, attributes: ['firstName', 'lastName', 'id', 'image'] }],
     });
     if (!user) return res.status(403).json({ success: false, message: 'Invalid userId' });
     const Files = await HomeWorkFiles.findAll({
@@ -368,6 +369,7 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
     user['firstName'] = user.User.firstName;
     user['lastName'] = user.User.lastName;
     user['userId'] = user.User.id;
+    user['image'] = user.User.image
     user['files'] = Files;
     delete user.User;
 
