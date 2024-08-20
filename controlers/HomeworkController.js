@@ -204,7 +204,7 @@ const getHomework = async (req, res) => {
       ...homework.dataValues,
       points: homework.points,
       status: homework.status,
-      answer: homework.answer,
+      answer: homework.answer !== " "? homework.answer: "",
       feedback: homework.feedback,
       Files,
       // UserStartDate: homework.startDate,
@@ -415,9 +415,11 @@ const deleteFile = async (req, res) => {
 const priceHomeWork = async (req, res) => {
   try {
     const { points, id, userId } = req.body;
+    const {courseId} = req.query
+
     let [status] = await UserHomework.update(
       { points },
-      { where: { HomeworkId: id, UserId: userId } },
+      { where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId } },
     );
 
     if (status === 0) {
