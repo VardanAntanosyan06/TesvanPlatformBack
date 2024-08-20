@@ -285,6 +285,10 @@ const submitQuizz = async (req, res) => {
     const { quizzId, questionId, optionId } = req.body;
     const { courseId } = req.query;
 
+    await UserAnswersQuizz.destroy({
+      where: { userId, testId: quizzId, questionId, courseId },
+    });
+
     await UserAnswersQuizz.create({
       userId,
       testId: quizzId,
@@ -299,6 +303,7 @@ const submitQuizz = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
 
 const finishQuizz = async (req, res) => {
   try {
