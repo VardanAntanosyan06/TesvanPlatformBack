@@ -102,7 +102,7 @@ const getLesson = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id: userId } = req.user;
-    const { language } = req.query;
+    const { language, courseId } = req.query;
 
     console.log(userId, id);
     const lessonTime = await LessonTime.findOne({
@@ -113,7 +113,7 @@ const getLesson = async (req, res) => {
     });
     ////////////////////
     let lesson = await UserLesson.findOne({
-      where: { LessonId: id, UserId: userId },
+      where: { LessonId: id, UserId: userId, GroupCourseId: courseId },
       attributes: ['points', 'attempt'],
       include: [
         {
@@ -172,7 +172,7 @@ const getLesson = async (req, res) => {
       });
     }
     /////////////////////////////
-    
+
     let homeworkPoint
     if (lesson.Lesson.homework.length > 0) {
       homeworkPoint = await UserHomework.findOne({
@@ -180,6 +180,7 @@ const getLesson = async (req, res) => {
           LessonId: id,
           UserId: userId,
           HomeworkId: lesson.Lesson.homework[0].id,
+          GroupCourseId: courseId
         },
       });
     }
@@ -195,10 +196,10 @@ const getLesson = async (req, res) => {
         },
       });
     }
-    
+
     const maxQuizzPoints =
       lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length;
-    const maxHomeworkPoints = +lesson.Lesson.homework.length > 0? +lesson.Lesson.homework[0].point : 0
+    const maxHomeworkPoints = +lesson.Lesson.homework.length > 0 ? +lesson.Lesson.homework[0].point : 0
     const maxPoints = +maxHomeworkPoints + +maxQuizzPoints;
     const lessonPoints =
       +(homeworkPoint ? homeworkPoint.points : 0) + +(userPoint ? userPoint.point : 0);
@@ -213,7 +214,7 @@ const getLesson = async (req, res) => {
         pointsOfPercent: Math.round((lessonPoints * 100) / maxPoints),
         quizzPoint: userPoint ? parseFloat(quizPoints.toFixed(2)) : null,
         maxQuizzPoints: maxQuizzPoints,
-        homeworkPoint: homeworkPoint ? homeworkPoint.points : 0,
+        homeworkPoint: homeworkPoint ? (+homeworkPoint.points !== 0 ? homeworkPoint.points : null) : null,
         maxHomeworkPoints: maxHomeworkPoints,
         attempt: lesson.attempt,
         time: lessonTime ? lessonTime.time : null,

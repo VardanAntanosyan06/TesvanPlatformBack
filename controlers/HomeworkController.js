@@ -160,10 +160,10 @@ const getHomework = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id: userId, role } = req.user;
-    const { language } = req.query;
+    const { language, courseId } = req.query;
 
     let homework = await UserHomework.findOne({
-      where: { HomeworkId: id, UserId: userId },
+      where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId },
 
       include: [
         {
