@@ -162,8 +162,6 @@ const getHomework = async (req, res) => {
     const { user_id: userId, role } = req.user;
     const { language } = req.query;
 
-    return res.status(200).json({ message: 'Something went wrong.' });
-
     let homework = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId },
 

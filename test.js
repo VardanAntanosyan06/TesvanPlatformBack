@@ -5,12 +5,12 @@ async function add() {
 
 
     await Promise.all(
-        lessons.map(async (id) => {
+        users.map(async (id) => {
             await UserHomework.create({
                 GroupCourseId: 12,
-                UserId: 163,
+                UserId: id,
                 HomeworkId: 26,
-                LessonId: id
+                LessonId: 21
             })
         })
     )

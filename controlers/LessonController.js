@@ -172,13 +172,17 @@ const getLesson = async (req, res) => {
       });
     }
     /////////////////////////////
-    const homeworkPoint = await UserHomework.findOne({
-      where: {
-        LessonId: id,
-        UserId: userId,
-        HomeworkId: lesson.Lesson.homework[0].id,
-      },
-    });
+    
+    let homeworkPoint
+    if (lesson.Lesson.homework.length > 0) {
+      homeworkPoint = await UserHomework.findOne({
+        where: {
+          LessonId: id,
+          UserId: userId,
+          HomeworkId: lesson.Lesson.homework[0].id,
+        },
+      });
+    }
 
     let userPoint = null;
 
@@ -193,7 +197,7 @@ const getLesson = async (req, res) => {
     }
     const maxQuizzPoints =
       lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length;
-    const maxHomeworkPoints = +lesson.Lesson.homework[0].point;
+    const maxHomeworkPoints = +lesson.Lesson.homework > 0? +lesson.Lesson.homework[0].point : 0
     const maxPoints = +maxHomeworkPoints + +maxQuizzPoints;
     const lessonPoints =
       +(homeworkPoint ? homeworkPoint.points : 0) + +(userPoint ? userPoint.point : 0);
@@ -474,6 +478,16 @@ const createLesson = async (req, res) => {
           lessonId,
         });
       }
+      // else {
+      //   const courses = await CoursesPerLessons.findAll({
+      //     where: {
+      //       lessonId,
+      //     },
+      //   });
+      //   const uniqueCourses = Array.from(
+      //     courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values(),
+      //   );
+      // }
       if (!isNaN(+quizzId)) {
         await LessonsPerQuizz.create({
           lessonId,
@@ -540,8 +554,24 @@ const updateLesson = async (req, res) => {
       presentationDescription_am,
     } = req.body;
 
-    if (!homeworkId) {
+    if (!isNaN(+homeworkId)) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });
+      await UserHomework.update(
+        {
+          HomeworkId: 0
+        },
+        {
+          where: {
+            LessonId: lessonId
+          }
+        }
+      )
+    }
+    if (homeworkId) {
+      await HomeworkPerLesson.create({
+        lessonId,
+        homeworkId
+      });
     }
 
     await Lesson.update(
@@ -631,22 +661,24 @@ const updateLesson = async (req, res) => {
       );
       // console.log('///////////////', uniqueCourses);
 
-      if (uniqueCourses.length > 0) {
-        await Promise.all(
-          uniqueCourses.map(async (cours) => {
-            await UserHomework.update(
-              {
-                HomeworkId: homeworkId,
-              },
-              {
-                where: {
-                  GroupCourseId: cours.courseId,
-                  LessonId: lessonId,
+      if (homeworkId) {
+        if (uniqueCourses.length > 0) {
+          await Promise.all(
+            uniqueCourses.map(async (cours) => {
+              await UserHomework.update(
+                {
+                  HomeworkId: homeworkId,
                 },
-              },
-            );
-          }),
-        );
+                {
+                  where: {
+                    GroupCourseId: cours.courseId,
+                    LessonId: lessonId,
+                  },
+                },
+              );
+            }),
+          );
+        }
       }
     }
 

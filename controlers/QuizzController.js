@@ -443,8 +443,8 @@ const finishQuizz = async (req, res) => {
     const userLesson = await UserLesson.findOne({
       where: { UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
     });
-
-    userCourses.totalPoints = point
+    
+    userCourses.totalPoints = +userCourses.totalPoints + point;
     await userCourses.save();
 
     userLesson.points = userLesson.points + point

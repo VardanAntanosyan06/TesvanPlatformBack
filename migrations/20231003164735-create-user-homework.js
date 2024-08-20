@@ -34,10 +34,6 @@ module.exports = {
       HomeworkId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
-          model: 'Homework',
-          key: 'id',
-        },
       },
       LessonId: {
         type: Sequelize.INTEGER,

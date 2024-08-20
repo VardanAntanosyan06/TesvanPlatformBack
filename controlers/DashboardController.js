@@ -35,7 +35,7 @@ const getUserStatictis = async (req, res) => {
       },
       include: [CoursesContents],
     });
-    const userCoursPoints = isIndividual.totalPoints
+    const userCoursPoints = +isIndividual.totalPoints
 
     if (
       isIndividual &&
@@ -247,7 +247,7 @@ const getUserStatictis = async (req, res) => {
       //       ? 0
       //       : (userSubmitedHomework / allHomework) * 100)) /
       //   2),
-      totalPoints: userCoursPoints,
+      totalPoints:  parseFloat(userCoursPoints.toFixed(2)),
       mySkils,
       charts,
       course: {
