@@ -18,6 +18,7 @@ const {
   Homework,
   UserPoints,
   UserHomework,
+  HomeworkPerLesson
 } = require('../models');
 const { v4 } = require('uuid');
 const sequelize = require('sequelize');
@@ -379,7 +380,7 @@ const update = async (req, res) => {
 
 const addMember = async (req, res) => {
   try {
-    const { groupId, users } = req.body;
+    const { groupId, users } = req.body;    
 
     await Promise.all(
       users.map(async (userId) => {
@@ -405,6 +406,15 @@ const addMember = async (req, res) => {
 
         const lessons = await CoursesPerLessons.findAll({
           where: { courseId: group.assignCourseId },
+          include: {
+            model: Lesson,
+            include: {
+              model: Homework,
+              as: 'homework',
+              attributes: ['id']
+            },
+            required: false,
+          }
         });
 
         await UserPoints.findOrCreate({
@@ -418,45 +428,22 @@ const addMember = async (req, res) => {
             finalInterview: 0,
           },
         });
-
-        lessons.map((e) => {
+ 
+        lessons.map((lesson) => {
+          
           UserLesson.create({
             GroupCourseId: group.assignCourseId,
             UserId: user.id,
-            LessonId: e.lessonId,
+            LessonId: lesson.lessonId,
           });
-        });
-
-        const Course = await GroupCourses.findOne({
-          where: { id: group.assignCourseId },
-          include: [
-            {
-              model: Lesson,
-              include: [
-                {
-                  model: Homework,
-                  as: 'homework',
-                },
-              ],
-              required: true,
-            },
-          ],
-        });
-
-        console.log(
-          Course.Lessons,
-          '=========================================================================================test',
-        );
-        Course.Lessons.forEach(async (lesson) => {
-          // if (lesson.homework.length > 0) {
-            await UserHomework.create({
-              GroupCourseId: group.assignCourseId,
-              UserId: user.id,
-              HomeworkId: lesson.homework[0].id? lesson.homework[0].id : 0,
-              points: 0,
-              LessonId: lesson.id,
-            });
-          // }
+          UserHomework.create({
+            GroupCourseId: group.assignCourseId,
+            UserId: user.id,
+            HomeworkId: lesson.Lesson.homework.length > 0? lesson.Lesson.homework[0].id : 0,
+            points: 0,
+            LessonId: lesson.lessonId,
+          });
+          
         });
 
         const boughtTests = await Tests.findAll({
