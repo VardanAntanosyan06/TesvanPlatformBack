@@ -30,11 +30,14 @@ module.exports = {
         defaultValue: 0,
       },
       takenQuizzes: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         defaultValue: 0,
       },
       certification: {
         type: Sequelize.STRING,
+      },
+      takenHomework: {
+        type: Sequelize.DECIMAL,
       },
       createdAt: {
         allowNull: false,

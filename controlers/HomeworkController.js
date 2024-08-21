@@ -18,9 +18,11 @@ const { Op } = require('sequelize');
 const Sequelize = require('sequelize');
 const { assign } = require('nodemailer/lib/shared');
 
-const create = async (req, res) => {  /////body mej avelacnel point
+const create = async (req, res) => {
+  /////body mej avelacnel point
   try {
-    const { title_en, title_ru, title_am, description_en, description_ru, description_am, point } = req.body;
+    const { title_en, title_ru, title_am, description_en, description_ru, description_am, point } =
+      req.body;
     /////////////////////////
     ////////////////////////////
 
@@ -31,7 +33,7 @@ const create = async (req, res) => {  /////body mej avelacnel point
       description_en,
       description_ru,
       description_am,
-      point
+      point,
     });
     return res.send({ success: true });
   } catch (error) {
@@ -139,7 +141,7 @@ const getHomeworks = async (req, res) => {
                 'id',
                 [`title_${language}`, 'title'],
                 [`description_${language}`, 'description'],
-                'point'
+                'point',
               ],
               through: { attributes: [] },
             },
@@ -172,7 +174,7 @@ const getHomework = async (req, res) => {
             'id',
             [`title_${language}`, 'title'],
             [`description_${language}`, 'description'],
-            'point'
+            'point',
           ],
         },
       ],
@@ -204,7 +206,7 @@ const getHomework = async (req, res) => {
       ...homework.dataValues,
       points: homework.points,
       status: homework.status,
-      answer: homework.answer !== " "? homework.answer: "",
+      answer: homework.answer !== ' ' ? homework.answer : '',
       feedback: homework.feedback,
       Files,
       // UserStartDate: homework.startDate,
@@ -329,7 +331,7 @@ const getHomeWorkForTeacher = async (req, res) => {
       e['firstName'] = e.User.firstName;
       e['lastName'] = e.User.lastName;
       e['userId'] = e.User.id;
-      e['image'] = e.User.image
+      e['image'] = e.User.image;
 
       delete e.User;
       return e;
@@ -340,7 +342,7 @@ const getHomeWorkForTeacher = async (req, res) => {
         'id',
         [`title_${language}`, 'title'],
         [`description_${language}`, 'description'],
-        'point'
+        'point',
       ],
     });
 
@@ -369,7 +371,7 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
     user['firstName'] = user.User.firstName;
     user['lastName'] = user.User.lastName;
     user['userId'] = user.User.id;
-    user['image'] = user.User.image
+    user['image'] = user.User.image;
     user['files'] = Files;
     delete user.User;
 
@@ -379,7 +381,7 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
         'id',
         [`title_${language}`, 'title'],
         [`description_${language}`, 'description'],
-        'point'
+        'point',
       ],
     });
 
@@ -415,13 +417,17 @@ const deleteFile = async (req, res) => {
 const priceHomeWork = async (req, res) => {
   try {
     const { points, id, userId } = req.body;
-    const {courseId} = req.query
+    const { courseId } = req.query;
 
     let [status] = await UserHomework.update(
       { points },
       { where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId } },
     );
-
+    const userCourse = await UserCourses.findOne({
+      where: { UserId: userId, GroupCourseId: courseId },
+    });
+    userCourse.takenHomework += points;
+    await UserCourses.save();
     if (status === 0) {
       return res.status(403).json({
         message: 'Homework not found',
@@ -517,7 +523,7 @@ const getUserHomeworkPoints = async (req, res) => {
         'id',
         [`title_${language}`, 'title'],
         [`description_${language}`, 'description'],
-        'point'
+        'point',
       ],
     });
     // homework = homework.map((e) => {delete e.Lesson);

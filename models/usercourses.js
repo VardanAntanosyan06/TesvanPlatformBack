@@ -22,8 +22,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       totalPoints: DataTypes.DECIMAL,
-      takenQuizzes: DataTypes.INTEGER,
+      takenQuizzes: DataTypes.DECIMAL,
       certification: DataTypes.STRING,
+      takenHomework: DataTypes.DECIMAL,
     },
     {
       sequelize,
