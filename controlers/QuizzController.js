@@ -333,7 +333,7 @@ const finishQuizz = async (req, res) => {
         ],
       });
 
-      const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length;
+      // const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length;
       const oneQuizzPoint = correctAnswers.Questions[0].points;
 
       correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
@@ -383,11 +383,12 @@ const finishQuizz = async (req, res) => {
       });
 
       userCourses.totalPoints = userCourses.totalPoints + point;
+      userCourses.takenQuizzes = userCourses.takenQuizzes + point
       await userCourses.save();
 
       return res.json({ success: true });
     }
-    const { maxPoints } = await Lesson.findByPk(lessonId);
+    // const { maxPoints } = await Lesson.findByPk(lessonId);
 
     let correctAnswers = await Quizz.findByPk(quizzId, {
       attributes: ['id'],
@@ -406,7 +407,7 @@ const finishQuizz = async (req, res) => {
       ],
     });
 
-    const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length
+    // const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length
     const oneQuizzPoint = correctAnswers.Questions[0].points
 
     correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
@@ -449,6 +450,7 @@ const finishQuizz = async (req, res) => {
       where: { UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
     });
     
+    userCourses.totalPoints = userCourses.totalPoints + point;
     userCourses.totalPoints = +userCourses.totalPoints + point;
     await userCourses.save();
 
