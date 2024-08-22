@@ -14,9 +14,11 @@ const {
   Homework,
   UserHomework,
   Quizz,
+  Question
 } = require('../models');
 const { Op } = require('sequelize');
 const { all } = require('axios');
+const lesson = require('../models/lesson');
 
 const getUserStatictis = async (req, res) => {
   try {
@@ -35,7 +37,7 @@ const getUserStatictis = async (req, res) => {
         },
       ],
     });
-    
+
     const isIndividual = await UserCourses.findOne({
       where: {
         UserId: userId,
@@ -52,23 +54,25 @@ const getUserStatictis = async (req, res) => {
       isIndividual.CoursesContent &&
       isIndividual.CoursesContent.courseType == 'Individual'
     ) {
-      const students = await UserCourses.count({
-        where: { GroupCourseId: id },
-      });
 
       let course = await GroupCourses.findByPk(id, {
         include: {
           model: CoursesContents,
         },
       });
+      const students = await UserCourses.count({
+        where: { GroupCourseId: course.assignCourseId },
+      });
+
       const lessons = await CoursesPerLessons.count({
         where: {
-          courseId: id,
+          courseId: course.assignCourseId,
         },
       });
+
       const mySkils = await Skills.findAll({
         where: { userId },
-      });
+      })
 
       let charts = await LessonTime.findAll({
         where: {
@@ -78,7 +82,7 @@ const getUserStatictis = async (req, res) => {
 
       charts = charts.map((e) => e.time);
       const allQuizz = await CoursesPerLessons.count({
-        where: { courseId: id },
+        where: { courseId: course.assignCourseId },
         include: [
           {
             model: Lesson,
@@ -95,7 +99,7 @@ const getUserStatictis = async (req, res) => {
       });
       //const language = "am";
       const allHomework = await CoursesPerLessons.count({
-        where: { courseId: id },
+        where: { courseId: course.assignCourseId },
         include: [
           {
             model: Lesson,
@@ -156,11 +160,38 @@ const getUserStatictis = async (req, res) => {
     });
 
 
-    const lessons = await CoursesPerLessons.count({
+    const lessons = await CoursesPerLessons.findAll({
       where: {
         courseId: course.assignCourseId ? course.assignCourseId : 1,
       },
+      include: {
+        model: Lesson,
+        include: [
+          {
+            model: Homework,
+            as: 'homework',
+          },
+          {
+            model: Quizz,
+            as: 'quizz',
+            include: [
+              {
+                model: Question,
+                order: [['id', 'ASC']],
+              },
+            ],
+          }
+        ],
+      }
     });
+
+    const maxPoint = lessons.reduce((aggr, value, index) => {
+
+      aggr.maxQuizzPoint = +aggr.maxQuizzPoint + +(value.Lesson.quizz.length > 0 ? value.Lesson.quizz[0].Questions.length * +value.Lesson.quizz[0].Questions[0].points : 0)
+      aggr.maxHomeworkPoint = +aggr.maxHomeworkPoint + +(value.Lesson.homework.length > 0 ? +value.Lesson.homework[0].point : 0)
+      return aggr
+    }, { maxQuizzPoint: 0, maxHomeworkPoint: 0 })
+
 
     if (!group) {
       return res.status(403).json({
@@ -183,18 +214,20 @@ const getUserStatictis = async (req, res) => {
     const response = {
       lesson: 0,
       homework: {
+        maxHomevorkPoint: maxPoint.maxHomeworkPoint,
         userCoursHomeworkPoints: parseFloat(userCoursHomeworkPoints.toFixed(2)),
       },
       quizzes: {
+        maxQuizzPoint: maxPoint.maxQuizzPoint,
         userCoursQuizzPoints: parseFloat(userCoursQuizzPoints.toFixed(2)),
       },
 
-      totalPoints:  parseFloat(userCoursPoints.toFixed(2)),
+      totalPoints: parseFloat(userCoursPoints.toFixed(2)),
       mySkils,
       charts,
       course: {
         students,
-        lessons,
+        lessons: lessons.length,
         lessonType: course.GroupCourse.CoursesContents[0].level,
       },
     };

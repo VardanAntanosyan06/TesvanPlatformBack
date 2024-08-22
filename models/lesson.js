@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
   const CoursesPerLessons = sequelize.define('CoursesPerLessons');
 
   Lesson.belongsToMany(GroupCourses, {
-    through: 'CoursesPerLessons',
+    through: CoursesPerLessons,
     foreignKey: 'courseId', // Specify lowercase column name
     otherKey: 'lessonId', // Assuming the column name in GroupCourse is 'id'
   });
