@@ -24,14 +24,22 @@ const getUserStatictis = async (req, res) => {
     const { language } = req.query;
     const { user_id: userId } = req.user;
 
-    const {assignCourseId} =  await Groups.findOne({
-      id: id
-    })
 
+    let course = await Groups.findByPk(id, {
+      include: [
+        {
+          model: GroupCourses,
+          include: {
+            model: CoursesContents,
+          },
+        },
+      ],
+    });
+    
     const isIndividual = await UserCourses.findOne({
       where: {
         UserId: userId,
-        GroupCourseId: 12,
+        GroupCourseId: course.assignCourseId,
       },
       include: [CoursesContents],
     });
@@ -147,16 +155,7 @@ const getUserStatictis = async (req, res) => {
       where: { groupId: id, userRole: 'STUDENT' },
     });
 
-    let course = await Groups.findByPk(id, {
-      include: [
-        {
-          model: GroupCourses,
-          include: {
-            model: CoursesContents,
-          },
-        },
-      ],
-    });
+
     const lessons = await CoursesPerLessons.count({
       where: {
         courseId: course.assignCourseId ? course.assignCourseId : 1,
