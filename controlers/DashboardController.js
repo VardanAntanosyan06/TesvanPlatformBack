@@ -180,14 +180,14 @@ const getUserStatictis = async (req, res) => {
     });
     // console.log(course);
     charts = charts.map((e) => e.time);
-    
+
     const response = {
       lesson: 0,
       homework: {
-        percent: parseFloat(userCoursHomeworkPoints.toFixed(2)),
+        userCoursHomeworkPoints: parseFloat(userCoursHomeworkPoints.toFixed(2)),
       },
       quizzes: {
-        percent: parseFloat(userCoursQuizzPoints.toFixed(2)),
+        userCoursQuizzPoints: parseFloat(userCoursQuizzPoints.toFixed(2)),
       },
 
       totalPoints:  parseFloat(userCoursPoints.toFixed(2)),
