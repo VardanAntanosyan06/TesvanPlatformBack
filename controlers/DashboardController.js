@@ -36,6 +36,8 @@ const getUserStatictis = async (req, res) => {
       include: [CoursesContents],
     });
     const userCoursPoints = +isIndividual.totalPoints
+    const userCoursQuizzPoints = +isIndividual.takenQuizzes
+    const userCoursHomeworkPoints = +isIndividual.takenHomework
 
     if (
       isIndividual &&
@@ -178,75 +180,16 @@ const getUserStatictis = async (req, res) => {
     });
     // console.log(course);
     charts = charts.map((e) => e.time);
-    let allQuizz = await CoursesPerLessons.findAll({
-      where: { courseId: course.assignCourseId },
-      include: [
-        {
-          model: Lesson,
-          include: [
-            {
-              model: Quizz,
-              as: 'quizz',
-              required: true,
-            },
-          ],
-          required: true,
-        },
-      ],
-    });
-    allQuizz = allQuizz.length;
-    let allHomework = await CoursesPerLessons.findAll({
-      where: { courseId: course.assignCourseId },
-      include: [
-        {
-          model: Lesson,
-          include: [
-            {
-              model: Homework,
-              as: 'homework',
-            },
-          ],
-          required: true,
-        },
-      ],
-    });
-    allHomework = allHomework.length;
-    // return res.json({allQuizz,allHomework});
-    const userSubmitedQuizz = await UserPoints.count({
-      where: { courseId: course.assignCourseId, userId },
-    });
-    const userSubmitedHomework = await UserHomework.count({
-      where: {
-        UserId: userId,
-        points: { [Op.gt]: 0 },
-        GroupCourseId: course.assignCourseId,
-      },
-    });
+    
     const response = {
       lesson: 0,
       homework: {
-        taken: userSubmitedHomework,
-        all: allHomework,
-        percent:
-          allHomework < 0 || userSubmitedHomework < 0
-            ? 0
-            : (userSubmitedHomework / allHomework) * 100,
+        percent: parseFloat(userCoursHomeworkPoints.toFixed(2)),
       },
       quizzes: {
-        taken: userSubmitedQuizz,
-        all: allQuizz + 1, //final quizz
-        percent: Math.round(
-          userSubmitedQuizz == 0 ? 0 : (userSubmitedQuizz / (allQuizz + 1)) * 100,
-        ),
+        percent: parseFloat(userCoursQuizzPoints.toFixed(2)),
       },
-      // totalPoints:Math.round(
-      //   ((userSubmitedQuizz == 0
-      //     ? 0
-      //     : (userSubmitedQuizz / (allQuizz + 1)) * 100) +
-      //     (allHomework < 0 || userSubmitedHomework < 0
-      //       ? 0
-      //       : (userSubmitedHomework / allHomework) * 100)) /
-      //   2),
+
       totalPoints:  parseFloat(userCoursPoints.toFixed(2)),
       mySkils,
       charts,

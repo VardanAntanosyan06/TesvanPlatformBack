@@ -1,5 +1,5 @@
 const { UserHomework } = require('./models')
-const users = [11, 3, 12, 13, 870, 755, 754, 871, 759, 163]
+const users = [ 3, 163, 754, 900, 907, 890, 879]
 const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
 async function add() {
 

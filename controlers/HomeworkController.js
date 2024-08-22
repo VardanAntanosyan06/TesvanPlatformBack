@@ -423,11 +423,15 @@ const priceHomeWork = async (req, res) => {
       { points },
       { where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId } },
     );
-    const userCourse = await UserCourses.findOne({
-      where: { UserId: userId, GroupCourseId: courseId },
-    });
-    userCourse.takenHomework += points;
-    await UserCourses.save();
+    // const userCourse = await UserCourses.findOne({
+    //   where: { UserId: +userId, GroupCourseId: 12 },
+    // });
+
+    // console.log(userCourse, 1);
+
+    // userCourse.totalPoints = +userCourse.totalPoints + +points;
+    // userCourse.takenHomework = +userCourse.takenHomework + +points;
+    // await UserCourses.save();
     if (status === 0) {
       return res.status(403).json({
         message: 'Homework not found',
@@ -456,8 +460,9 @@ const getHomeworkTitles = async (req, res) => {
 const homeworkPoints = async (req, res) => {
   try {
     const { userId, homeworkId, points, feedback } = req.body;
+    const { courseId } = req.query;
     const { lessonId } = await HomeworkPerLesson.findOne({ where: { homeworkId } });
-    const { maxPoints } = await Lesson.findByPk(lessonId);
+    // const { maxPoints } = await Lesson.findByPk(lessonId);
 
     const [status] = await UserHomework.update(
       {
@@ -466,6 +471,7 @@ const homeworkPoints = async (req, res) => {
       },
       {
         where: {
+          GroupCourseId: courseId,
           UserId: userId,
           HomeworkId: homeworkId,
           LessonId: lessonId,
@@ -473,15 +479,25 @@ const homeworkPoints = async (req, res) => {
       },
     );
 
-    // 10*50/100
-    const userLesson = await UserLesson.findOne({
-      where: {
-        LessonId: lessonId,
-        UserId: userId,
-      },
+    const userCourse = await UserCourses.findOne({
+      where: { UserId: +userId, GroupCourseId: courseId },
     });
-    userLesson.points = userLesson.points + Math.ceil((((maxPoints / 2) * points) / 100) * 10) / 10;
-    await userLesson.save();
+
+    console.log(userCourse, 1);
+
+    userCourse.totalPoints = +userCourse.totalPoints + +points;
+    userCourse.takenHomework = +userCourse.takenHomework + +points;
+    await userCourse.save();
+
+    // 10*50/100
+    // const userLesson = await UserLesson.findOne({
+    //   where: {
+    //     LessonId: lessonId,
+    //     UserId: userId,
+    //   },
+    // });
+    // userLesson.points = userLesson.points + Math.ceil((((maxPoints / 2) * points) / 100) * 10) / 10;
+    // await userLesson.save();
     if (status === 0) {
       return res.status(403).json({
         message: 'Homework not found',

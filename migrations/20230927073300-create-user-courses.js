@@ -35,6 +35,7 @@ module.exports = {
       },
       certification: {
         type: Sequelize.STRING,
+        defaultValue: 0,
       },
       takenHomework: {
         type: Sequelize.DECIMAL,

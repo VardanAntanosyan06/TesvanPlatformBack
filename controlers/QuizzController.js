@@ -382,8 +382,8 @@ const finishQuizz = async (req, res) => {
         },
       });
 
-      userCourses.totalPoints = userCourses.totalPoints + point;
-      userCourses.takenQuizzes = userCourses.takenQuizzes + point
+      userCourses.totalPoints = +userCourses.totalPoints + point;
+      userCourses.takenQuizzes = +userCourses.takenQuizzes + point;
       await userCourses.save();
 
       return res.json({ success: true });
@@ -450,8 +450,8 @@ const finishQuizz = async (req, res) => {
       where: { UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
     });
     
-    userCourses.totalPoints = userCourses.totalPoints + point;
     userCourses.totalPoints = +userCourses.totalPoints + point;
+    userCourses.takenQuizzes = +userCourses.takenQuizzes + point
     await userCourses.save();
 
     userLesson.points = userLesson.points + point
