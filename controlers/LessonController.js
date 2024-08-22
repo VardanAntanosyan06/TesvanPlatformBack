@@ -555,8 +555,9 @@ const updateLesson = async (req, res) => {
       presentationTitle_am,
       presentationDescription_am,
     } = req.body;
+    
 
-    if (!isNaN(+homeworkId)) {
+    if (isNaN(+homeworkId)) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });
       await UserHomework.update(
         {
@@ -663,7 +664,7 @@ const updateLesson = async (req, res) => {
       );
       // console.log('///////////////', uniqueCourses);
 
-      if (homeworkId) {
+      if (isNaN(+homeworkId)) {
         if (uniqueCourses.length > 0) {
           await Promise.all(
             uniqueCourses.map(async (cours) => {

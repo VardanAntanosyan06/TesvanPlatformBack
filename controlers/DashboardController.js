@@ -31,7 +31,7 @@ const getUserStatictis = async (req, res) => {
     const isIndividual = await UserCourses.findOne({
       where: {
         UserId: userId,
-        GroupCourseId: assignCourseId,
+        GroupCourseId: 12,
       },
       include: [CoursesContents],
     });
