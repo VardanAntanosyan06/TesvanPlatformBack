@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   LessonTime.init({
     lessonId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
-    time: DataTypes.INTEGER
+    time: DataTypes.INTEGER,
+    courseId: DataTypes.INTEGER,
+    number: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'LessonTime',

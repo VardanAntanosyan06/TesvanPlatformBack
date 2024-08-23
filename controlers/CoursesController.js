@@ -13,6 +13,8 @@ const {
   UserPoints,
   Calendar,
   UserInterview,
+  HomeworkPerLesson,
+  UserHomework,
 } = require('../models');
 
 const { CoursesContents } = require('../models');
@@ -457,7 +459,7 @@ const getUserCourses = async (req, res) => {
     courses = courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-      if (e.GroupCourse.CoursesContents[0].courseType === 'Individual') {
+      if (e.GroupCourse?.CoursesContents[0].courseType === 'Individual') {
         const IndividualCourse = {
           id: e.GroupCourse.id,
           userId: e.userId,
@@ -1150,24 +1152,49 @@ const updateCourse = async (req, res) => {
 
     await CoursesPerLessons.destroy({ where: { courseId } });
     await Promise.all(
-      lessonIds.flatMap((lessonId, i) =>{
+      lessonIds.flatMap(async (lessonId, i) => {
+        const homework = await HomeworkPerLesson.findOne({ where: { lessonId: lessonId } })
+
+        // console.log(homeworkId, 1);
+        console.log(lessonId, 1);
+
+
         CoursesPerLessons.create({ type, courseId, lessonId, number: i + 1 }),
-        userIds.map(async (userId) => {
-          await UserLesson.findOrCreate({
-            where: {
-              GroupCourseId: courseId,
-              LessonId: lessonId,
-              UserId: userId,
-            },
-            defaults: {
-              GroupCourseId: courseId,
-              LessonId: lessonId,
-              points: 0,
-              attempt: 1,
-              UserId: userId,
-            },
-          });
-        })
+          userIds.map(async (userId) => {
+            const user = await Users.findOne({ where: { id: userId } })
+            await UserLesson.findOrCreate({
+              where: {
+                GroupCourseId: courseId,
+                LessonId: lessonId,
+                UserId: userId,
+              },
+              defaults: {
+                GroupCourseId: courseId,
+                LessonId: lessonId,
+                points: 0,
+                attempt: 1,
+                UserId: userId,
+              },
+            });
+            if (user.role == "STUDENT") {
+              UserHomework.findOrCreate({
+                where: {
+                  GroupCourseId: courseId,
+                  UserId: userId,
+                  LessonId: lessonId,
+                },
+                defaults: {
+                  GroupCourseId: courseId,
+                  UserId: userId,
+                  HomeworkId: homework ? homework.homeworkId : 0,
+                  points: 0,
+                  LessonId: lessonId,
+                }
+              });
+            }
+
+          })
+
       }),
     );
 

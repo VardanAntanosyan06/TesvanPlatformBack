@@ -98,7 +98,7 @@ const getLessonTitles = async (req, res) => {
 };
 
 const getLesson = async (req, res) => {
-  //// avelacnel coursId lessonum ev userHomworkum
+
   try {
     const { id } = req.params;
     const { user_id: userId } = req.user;
@@ -111,7 +111,7 @@ const getLesson = async (req, res) => {
         userId,
       },
     });
-    ////////////////////
+
     let lesson = await UserLesson.findOne({
       where: { LessonId: id, UserId: userId, GroupCourseId: courseId },
       attributes: ['points', 'attempt'],
@@ -171,7 +171,6 @@ const getLesson = async (req, res) => {
         message: "Lessons not found or User doesn't have the lessons",
       });
     }
-    /////////////////////////////
 
     let homeworkPoint
     if (lesson.Lesson.homework.length > 0) {
@@ -555,7 +554,7 @@ const updateLesson = async (req, res) => {
       presentationTitle_am,
       presentationDescription_am,
     } = req.body;
-    
+
 
     if (isNaN(+homeworkId)) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });
@@ -715,16 +714,41 @@ const createLessonTime = async (req, res) => {
     const { lessonId } = req.params;
     const { time } = req.body;
 
-    await LessonTime.destroy({
-      where: { userId, lessonId },
-    });
+    let lessons = await CoursesPerLessons.findOne({
+      where: {
+        courseId: 12,
+        lessonId
+      }
+    })
 
-    await LessonTime.create({
-      userId,
-      lessonId,
-      time,
-    });
-
+    if (+lessons.number === 1) {
+      await LessonTime.create({
+        userId,
+        lessonId,
+        time,
+        courseId: 12,
+        number: lessons.number
+      });
+      return res.status(200).json({ success: true });
+    } else {
+      const lessonNumber = await LessonTime.findOne({
+        where: {
+          userId,
+          courseId: 12,
+          number: +lessons.number - 1
+        }
+      })
+      if (!lessonNumber) {
+        return res.status(200).json({ success: false, message: "Not filled in order" });
+      }
+      await LessonTime.create({
+        userId,
+        lessonId,
+        time,
+        courseId: 12,
+        number: lessons.number
+      });
+    }
     return res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);

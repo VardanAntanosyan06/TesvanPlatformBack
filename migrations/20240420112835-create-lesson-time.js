@@ -25,6 +25,12 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      courseId: {
+        type: Sequelize.INTEGER
+      },
+      number: {
+        type: Sequelize.INTEGER
       }
     });
   },
