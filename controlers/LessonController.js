@@ -739,7 +739,7 @@ const createLessonTime = async (req, res) => {
         }
       })
       if (!lessonNumber) {
-        return res.status(200).json({ success: false, message: "Not filled in order" });
+        return res.status(400).json({ success: false, message: "Not filled in order" });
       }
       await LessonTime.create({
         userId,
