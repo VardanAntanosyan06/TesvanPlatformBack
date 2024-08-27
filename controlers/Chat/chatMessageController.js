@@ -37,7 +37,7 @@ const getMessageNotifications = async (req, res) => {
                         receiverId: userId,
                         isRead: false
                     },
-                    attributes: ["id", "text","createdAt"],
+                    attributes: ["id", "text", "createdAt"],
                     order: [['createdAt', 'DESC']],
                 }
             ],
@@ -111,6 +111,15 @@ const createChatMessage = async (req, res) => {
             },
         });
 
+        const userGroupChat = await GroupChats.findOne({
+            where: {
+                members: {
+                    [Op.contains]: [userId]
+                },
+            },
+            attributes: ["id"]
+        })
+
         let whoWillRead
         if (chat.firstId === userId) {
             whoWillRead = chat.secondId
@@ -162,8 +171,9 @@ const createChatMessage = async (req, res) => {
                 }
             ],
         });
+        message.setDataValue('userGroupChat', userGroupChat.id);
         const firstIdSocket = await userSockets.get(chat.firstId)
-        if (firstIdSocket) { 
+        if (firstIdSocket) {
             firstIdSocket.emit('createChatMessage', message)
             // const notification = await getMessageNotifications(userId)
             // io.to(firstIdSocket.id).emit('notifications', notification.chatNotification)
