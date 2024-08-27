@@ -556,7 +556,7 @@ const updateLesson = async (req, res) => {
     } = req.body;
 
 
-    if (isNaN(+homeworkId)) {
+    if (homeworkId) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });
       await UserHomework.update(
         {
@@ -568,8 +568,6 @@ const updateLesson = async (req, res) => {
           }
         }
       )
-    }
-    if (homeworkId) {
       await HomeworkPerLesson.create({
         lessonId,
         homeworkId
@@ -663,7 +661,7 @@ const updateLesson = async (req, res) => {
       );
       // console.log('///////////////', uniqueCourses);
 
-      if (isNaN(+homeworkId)) {
+      if (homeworkId) {
         if (uniqueCourses.length > 0) {
           await Promise.all(
             uniqueCourses.map(async (cours) => {
@@ -755,6 +753,30 @@ const createLessonTime = async (req, res) => {
     return res.status(500).json({ message: 'Something Went Wrong .' });
   }
 };
+
+const updateLessonTime = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { lessonId } = req.params;
+    const { time } = req.body;
+    await LessonTime.update(
+      {
+        time: time
+      },
+      {
+        where: {
+          userId,
+          courseId: 12,
+          lessonId
+        }
+      }
+    )
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong .' });
+  }
+}
 module.exports = {
   getLessons,
   getLesson,
@@ -767,4 +789,5 @@ module.exports = {
   updateLesson,
   getLessonForAdmin,
   createLessonTime,
+  updateLessonTime
 };

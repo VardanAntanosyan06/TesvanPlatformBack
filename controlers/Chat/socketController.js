@@ -71,7 +71,7 @@ const socketController = (io, socket) => {
             data.groupChats.map((groupChatId) => {
                 userSocket.join(`room_${groupChatId}`)
                 userSocket.userRooms = [...userSocket.userRooms, ...[`room_${groupChatId}`]]
-                userSocket.userRooms = [...new Set(userSocket.userRooms)]
+                userSocket.userRooms = [...new Set(userSocket.userRooms)]   
                 socket.to(`room_${groupChatId}`).emit('online', { userId: data.userId })
             })
         }

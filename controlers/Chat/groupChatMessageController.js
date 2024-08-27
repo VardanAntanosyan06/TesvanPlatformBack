@@ -323,6 +323,7 @@ const seenGroupChatMessage = async (req, res) => {
             include: {
                 model: GroupChatReads,
                 where: {
+                    groupChatId: chatId,
                     lastSeen: { [Op.gte]: messageId }
                 }
             },

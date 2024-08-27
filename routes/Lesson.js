@@ -32,4 +32,10 @@ router.post(
   checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
   controller.createLessonTime,
 );
+
+router.post(
+  '/updateTime/:lessonId',
+  checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
+  controller.updateLessonTime,
+);
 module.exports = router;

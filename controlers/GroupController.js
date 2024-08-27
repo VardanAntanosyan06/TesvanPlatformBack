@@ -338,7 +338,7 @@ const update = async (req, res) => {
 
     await Promise.all(
       users.map(async (userId) => {
-        console.log(userId);
+
         const user = await Users.findByPk(userId);
         await UserCourses.create({
           GroupCourseId: assignCourseId,

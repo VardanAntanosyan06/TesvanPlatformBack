@@ -135,7 +135,7 @@ const getOne = async (req, res) => {
     const isCourse = await CoursesContents.findOne({
       where: { courseId: id, language },
     });
-    console.log(isCourse, '++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
     // if(!isCourse) return res.status(403).json({message:"Course not found"})
     if (isCourse && isCourse.courseType === 'Individual') {
       let course = await GroupCourses.findOne({
@@ -643,7 +643,7 @@ const createCourse = async (req, res) => {
       priceTitle_en,
       priceTitle_ru,
     } = req.body;
-    console.log(price);
+
     let { img, trainersImages } = req.files;
 
     const imgType = img.mimetype.split('/')[1];
@@ -841,7 +841,7 @@ const getCoursesByFilter = async (req, res) => {
       attributes: ['id', [`name_${language}`, 'title'], 'startDate', 'endDate', 'price', 'sale'],
       require: true,
     });
-    console.log(Courses);
+
     let Individual = await CoursesContents.findAll({
       where: {
         courseType: 'Individual',
@@ -932,13 +932,13 @@ const getCoursesByFilter = async (req, res) => {
     if (courseType == 'Group') {
       return res.status(200).json({ Courses, criticalPrices });
     } else if (courseType == 'Individual') {
-      console.log('++++');
+   
       return res.status(200).json({ Courses: Individual, criticalPrices });
     } else {
       Courses = [...Courses, ...Individual];
       return res.status(200).json({ Courses, criticalPrices });
     }
-    // >>>>>>> Stashed changes
+
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -1026,7 +1026,7 @@ const getOneGroup = async (req, res) => {
     Courses = Courses.toJSON();
     delete Courses.dataValues;
     // return res.json({Courses})
-    console.log(Courses);
+
     Courses = {
       title: Courses[`name_${language}`],
       courseType: Courses.GroupCourse.CoursesContents[0].courseType,
@@ -1155,9 +1155,6 @@ const updateCourse = async (req, res) => {
       lessonIds.flatMap(async (lessonId, i) => {
         const homework = await HomeworkPerLesson.findOne({ where: { lessonId: lessonId } })
 
-        // console.log(homeworkId, 1);
-        console.log(lessonId, 1);
-
 
         CoursesPerLessons.create({ type, courseId, lessonId, number: i + 1 }),
           userIds.map(async (userId) => {
@@ -1198,14 +1195,11 @@ const updateCourse = async (req, res) => {
       }),
     );
 
-    console.log('lessonnUpdate', '+++++++++++++++++++++++++++++++++++++++');
-
     const parsedTrainers = JSON.parse(trainers);
 
     await Trainer.destroy({
       where: { courseId },
     });
-    console.log(courseId);
     parsedTrainers.map(async (e, i) => {
       // const type = trainersImages[i].mimetype.split("/")[1];
       // const fileName = v4() + "." + type;
@@ -1320,7 +1314,7 @@ const getCourseForAdmin = async (req, res) => {
     });
 
     if (!course) return res.json({ success: false, message: 'Course not found' });
-    console.log(course.Lessons);
+
     const trainers = await Trainer.findAll({
       where: { courseId: id },
       // attributes: ['fullName', 'img', 'profession'],

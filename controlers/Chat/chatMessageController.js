@@ -163,14 +163,14 @@ const createChatMessage = async (req, res) => {
             ],
         });
         const firstIdSocket = await userSockets.get(chat.firstId)
-        if (firstIdSocket) {
-            io.to(firstIdSocket.id).emit('createChatMessage', message)
+        if (firstIdSocket) { 
+            firstIdSocket.emit('createChatMessage', message)
             // const notification = await getMessageNotifications(userId)
             // io.to(firstIdSocket.id).emit('notifications', notification.chatNotification)
         };
         const secondSocket = await userSockets.get(chat.secondId)
         if (secondSocket) {
-            io.to(secondSocket.id).emit('createChatMessage', message)
+            secondSocket.emit('createChatMessage', message)
             // const notification = await getMessageNotifications(userId)
             // io.to(firstIdSocket.id).emit('chatNotifications', notification.chatNotification)
         };
