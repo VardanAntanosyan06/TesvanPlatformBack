@@ -515,7 +515,7 @@ const updateQuizz = async (req, res) => {
       questions,
       point,
     } = req.body;
-
+    return res.status(500).json({ message: 'Something went wrong.' });
     // const questionCount = await Question.findAll({
     //   where: {
     //     quizzId: id,
