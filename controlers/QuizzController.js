@@ -449,7 +449,7 @@ const finishQuizz = async (req, res) => {
     const userLesson = await UserLesson.findOne({
       where: { UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
     });
-    
+
     userCourses.totalPoints = +userCourses.totalPoints + point;
     userCourses.takenQuizzes = +userCourses.takenQuizzes + point
     await userCourses.save();
@@ -516,6 +516,14 @@ const updateQuizz = async (req, res) => {
       point,
     } = req.body;
 
+    // const questionCount = await Question.findAll({
+    //   where: {
+    //     quizzId: id,
+    //   },
+    // })
+    // if (questionCount.length !== questions.length) {
+    //   return res.status(500).json({ message: 'Something went wrong.' });
+    // }
     // Update the Quizz details
     await Quizz.update(
       {
@@ -529,6 +537,46 @@ const updateQuizz = async (req, res) => {
       },
       { where: { id: id } },
     );
+
+
+
+    /*
+        questions.forEach(async (question) => {
+          await Question.update(
+            {
+              title_en: question.title_en,
+              title_am: question.title_am,
+              title_ru: question.title_ru,
+              points: +point / questions.length,
+            },
+            {
+              where: {
+                id: question.id,
+              }
+            }
+          )
+    
+          element.options.forEach(async(option) => {
+            await Option.update(
+              {
+                title_en: option.title_en,
+                title_ru: option.title_ru,
+                title_am: option.title_am,
+                isCorrect: option.isCorrect,
+              },
+              {
+                where: {
+                  id: option.id
+                }
+              }
+            )
+    
+    
+    
+          });
+        });
+    
+        */
 
     await Question.destroy({
       where: {
