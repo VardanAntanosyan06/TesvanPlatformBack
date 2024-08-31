@@ -11,6 +11,7 @@ const {
   UserCourses,
   UserPoints,
   UserLesson,
+  UserAnswersOption
 } = require('../models');
 
 const createQuizz = async (req, res) => {
@@ -282,20 +283,65 @@ const submitQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
-    const { quizzId, questionId, optionId } = req.body;
+    const { quizzId, questionId, optionId, lessonId } = req.body;
     const { courseId } = req.query;
+
+
+
+    const quizz = await Quizz.findOne({
+      where: {
+        id: quizzId
+      },
+      include: [
+        {
+          model: Question,
+          attributes: ['id', 'quizzId', 'title_ru', 'title_en', 'title_am', 'points'],
+          order: [['id', 'ASC']],
+          where: {
+            id: questionId
+          },
+          include: [
+            {
+              model: Option,
+              attributes: ['id', 'title_ru', 'title_en', 'title_am', 'isCorrect'],
+              order: [['id', 'ASC']],
+            },
+          ],
+        },
+      ],
+    })
 
     await UserAnswersQuizz.destroy({
       where: { userId, testId: quizzId, questionId, courseId },
     });
 
-    await UserAnswersQuizz.create({
+
+    const { id: userAnswerQuizzId } = await UserAnswersQuizz.create({
       userId,
       testId: quizzId,
       questionId,
       optionId,
       courseId,
+      lessonId: 0,
+      questionTitle_en: quizz.Questions[0].title_en,
+      questionTitle_am: quizz.Questions[0].title_am,
+      questionTitle_ru: quizz.Questions[0].title_ru
     });
+
+
+    quizz.Questions[0].Options.forEach(async (option) => {
+      await UserAnswersOption.create({
+        userAnswerQuizzId: userAnswerQuizzId,
+        title_en: option.title_en,
+        title_am: option.title_am,
+        title_ru: option.title_ru,
+        isCorrect: option.isCorrect,
+        userAnswer: option.id === optionId ? true : false
+      })
+    });
+
+    // avelanuma -- lessonId, QuestionTitle(am, en , ru), 4 hat optionTitle(am, en , ru) -- isCorect, userUnswer, point,  
+
 
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -656,30 +702,51 @@ const getUserQuizzAnswers = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { quizzId } = req.params;
-    const { courseId } = req.query;
+    const { courseId, language } = req.query;
+    language ? language : language = "en"
+
     /////////////////////
     ////////////////////
-    const quizz = await UserAnswersQuizz.findAll({
+    // const quizz = await UserAnswersQuizz.findAll({
+    //   where: {
+    //     testId: quizzId,
+    //     userId,
+    //     courseId,
+    //   },
+    //   include: [
+    //     {
+    //       model: Question,
+    //       as: 'question',
+    //       include: [
+    //         {
+    //           model: Option,
+    //         },
+    //       ],
+    //     },
+    //   ],
+
+    //   attributes: ['questionId', ['optionId', 'userAnswerId']],
+    // });
+
+
+    const userAnswersQuizz = await UserAnswersQuizz.findAll({
       where: {
-        testId: quizzId,
+        testId: quizzId, //poxvi lessonId
         userId,
         courseId,
       },
       include: [
         {
-          model: Question,
-          as: 'question',
-          include: [
-            {
-              model: Option,
-            },
-          ],
-        },
+          model: UserAnswersOption,
+          as: 'userAnswersOption',
+          attributes: [[`title_${language}`, 'title'], 'isCorrect', 'userAnswer']
+        }
       ],
+      attributes: [[`questionTitle_${language}`, 'questionTitle']]
+    })
 
-      attributes: ['questionId', ['optionId', 'userAnswerId']],
-    });
-    return res.status(200).json(quizz);
+
+    return res.status(200).json(userAnswersQuizz);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, message: 'Something Went Wrong. ' });

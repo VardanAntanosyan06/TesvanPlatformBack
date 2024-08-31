@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       GroupChatMessages.belongsTo(models.GroupChats, {foreignKey: 'groupChatId', as: 'groupChat', onDelete: 'CASCADE'});
       GroupChatMessages.belongsTo(models.Users, {foreignKey: "senderId"})
-      GroupChatMessages.hasMany(models.GroupChatMessages, { foreignKey: "isReply", as: "ParentMessage" })
-      GroupChatMessages.belongsTo(models.GroupChatMessages, { foreignKey: "isReply", as: "Reply" })
+      GroupChatMessages.hasMany(models.GroupChatMessages, { foreignKey: "isReply", as: "ParentMessage" , onDelete: 'SET NULL'})
+      GroupChatMessages.belongsTo(models.GroupChatMessages, { foreignKey: "isReply", as: "Reply", onDelete: 'SET NULL' })
       GroupChatMessages.belongsTo(models.GroupChats, {foreignKey: "groupChatId", as: "isReads"})
     }
   }

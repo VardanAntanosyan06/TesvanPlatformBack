@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       UserAnswersQuizz.belongsTo(models.Quizz, { foreignKey: 'testId', as: 'quizz' });
       UserAnswersQuizz.belongsTo(models.Question, { foreignKey: 'questionId', as: 'question' });
+      UserAnswersQuizz.hasMany(models.UserAnswersOption, {foreignKey: 'userAnswerQuizzId', as: 'userAnswersOption', onDelete: 'cascade' })
     }
   }
 
@@ -19,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     questionId: DataTypes.INTEGER,
     optionId: DataTypes.INTEGER,
     courseId: DataTypes.INTEGER,
+    lessonId: DataTypes.INTEGER,
+    questionTitle_en: DataTypes.STRING,
+    questionTitle_am: DataTypes.STRING, 
+    questionTitle_ru: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'UserAnswersQuizz',

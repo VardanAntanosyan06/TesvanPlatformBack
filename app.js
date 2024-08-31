@@ -109,7 +109,7 @@ const { userSockets } = require("./userSockets") // Assuming you have a Map for 
 const { socketController } = require("./controlers/Chat/socketController")
 
 io.on('connection', (socket) => {
-  console.log("+++ connection request +++");
+  console.log("+++ connection request +++", 555);
   const token = socket?.handshake?.query?.token;
 
   if (token) {
@@ -135,7 +135,7 @@ io.on('connection', (socket) => {
           socket.to(room).emit('offline', { userId }) 
         });
         userSockets.delete(userId);
-        console.log(`=== ${userId} Disconnected ===`);
+        console.log(`=== ${userId} Disconnected ===`); 
       });
     } else {
       console.log("Failed to decode token, socket disconnected");

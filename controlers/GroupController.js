@@ -29,7 +29,7 @@ const CreateGroup = async (req, res) => {
     const { user_id: userId } = req.user;
     const { name_en, name_am, name_ru, assignCourseId, users, startDate, endDate, payment } =
       req.body;
-
+    users.push(userId)
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
     let { price, discount } = payment.reduce(
@@ -798,6 +798,22 @@ const deleteMember = async (req, res) => {
         GroupCourseId: assignCourseId
       }
     })
+
+    const groupChats = await GroupChats.findOne({
+      where: { groupId: groupId },
+    });
+
+    if (groupChats) {
+      const index = groupChats.members.indexOf(userId);
+      if (index !== -1) {
+        groupChats.members.splice(index, 1);
+        await groupChats.save();
+      } else {
+        return res.status(400).json({ message: 'User not found in group members.' });
+      }
+    } else {
+      return res.status(400).json({ message: 'Group not found.' });
+    }
 
     res.status(200).json({ success: true });
   } catch (error) {

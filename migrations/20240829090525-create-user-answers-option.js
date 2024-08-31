@@ -2,48 +2,35 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('GroupChatMessages', {
+    await queryInterface.createTable('UserAnswersOptions', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      groupChatId: {
+      userAnswerQuizzId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: 'GroupChats',
+          model: 'UserAnswersQuizzs',
           key: 'id',
         },
         onDelete: 'CASCADE',
       },
-      senderId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Users",
-          key: "id"
-        }
-      },
-      text: {
-        type: Sequelize.TEXT
-      },
-      image: {
+      title_en: {
         type: Sequelize.STRING
       },
-      file: {
+      title_am: {
         type: Sequelize.STRING
       },
-      isUpdated: {
+      title_ru: {
+        type: Sequelize.STRING
+      },
+      isCorrect: {
         type: Sequelize.BOOLEAN
       },
-      isReply: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'GroupChatMessages',
-          key: "id"
-        },
-        onDelete: 'SET NULL'
+      userAnswer: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -56,6 +43,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('GroupChatMessages');
+    await queryInterface.dropTable('UserAnswersOptions');
   }
 };

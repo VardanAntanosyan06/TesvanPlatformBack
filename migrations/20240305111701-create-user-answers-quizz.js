@@ -24,8 +24,17 @@ module.exports = {
       courseId: {
         type: Sequelize.INTEGER,
       },
-      courseId: {
+      lessonId: {
         type: Sequelize.INTEGER,
+      },
+      questionTitle_en: {
+        type: Sequelize.STRING
+      },
+      questionTitle_am: {
+        type: Sequelize.STRING
+      },
+      questionTitle_ru: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

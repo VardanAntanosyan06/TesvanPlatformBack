@@ -50,6 +50,7 @@ module.exports = {
           model: 'ChatMessages',
           key: 'id',
         },
+        onDelete: 'SET NULL'
       },
       createdAt: {
         allowNull: false,
