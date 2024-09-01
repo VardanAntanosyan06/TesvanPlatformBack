@@ -36,6 +36,9 @@ module.exports = {
       questionTitle_ru: {
         type: Sequelize.STRING
       },
+      point: {
+        type: Sequelize.DECIMAL
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

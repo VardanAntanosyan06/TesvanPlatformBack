@@ -89,13 +89,22 @@ const getQuizzes = async (req, res) => {
     const { quizzId } = req.params;
     const { language, courseId } = req.query;
 
-    const userQuizzes = await UserAnswersQuizz.findOne({
+    const userPoints = await UserPoints.findOne({
       where: {
         userId,
         courseId,
-        testId: quizzId,
+        quizzId,
       },
     });
+
+    if (userPoints) {
+      return res.status(403).json({ success: false, message: 'already passed' });
+    }
+    const userQuizzes = await UserAnswersQuizz.findOne({
+        userId,
+        courseId,
+        testId: quizzId,
+    })
     if (userQuizzes) {
       return res.status(403).json({ success: false, message: 'already passed' });
     }
@@ -283,8 +292,8 @@ const submitQuizz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
-    const { quizzId, questionId, optionId, lessonId } = req.body;
-    const { courseId } = req.query;
+    const { quizzId, questionId, optionId } = req.body;
+    const { courseId, lessonId } = req.query;
 
 
 
@@ -322,12 +331,12 @@ const submitQuizz = async (req, res) => {
       questionId,
       optionId,
       courseId,
-      lessonId: 0,
+      lessonId,
       questionTitle_en: quizz.Questions[0].title_en,
       questionTitle_am: quizz.Questions[0].title_am,
-      questionTitle_ru: quizz.Questions[0].title_ru
+      questionTitle_ru: quizz.Questions[0].title_ru,
+      point: quizz.Questions[0].points
     });
-
 
     quizz.Questions[0].Options.forEach(async (option) => {
       await UserAnswersOption.create({
@@ -336,12 +345,9 @@ const submitQuizz = async (req, res) => {
         title_am: option.title_am,
         title_ru: option.title_ru,
         isCorrect: option.isCorrect,
-        userAnswer: option.id === optionId ? true : false
+        userAnswer: option.id === optionId ? true : false,
       })
     });
-
-    // avelanuma -- lessonId, QuestionTitle(am, en , ru), 4 hat optionTitle(am, en , ru) -- isCorect, userUnswer, point,  
-
 
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -361,119 +367,106 @@ const finishQuizz = async (req, res) => {
     const userCourses = await UserCourses.findOne({
       where: { UserId: userId, GroupCourseId: courseId },
     });
-    if (!lessonId) {
-      let correctAnswers = await Quizz.findByPk(quizzId, {
-        attributes: ['id'],
-        include: [
-          {
-            model: Question,
-            attributes: ['id', 'points'],
-            include: [
-              {
-                model: Option,
-                where: { isCorrect: true },
-                attributes: ['id'],
-              },
-            ],
-          },
-        ],
-      });
 
-      // const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length;
-      const oneQuizzPoint = correctAnswers.Questions[0].points;
+    let point = 0
+    let correctAnswers = 0
+    // if (!lessonId) {
+    //   let correctAnswers = await Quizz.findByPk(quizzId, {
+    //     attributes: ['id'],
+    //     include: [
+    //       {
+    //         model: Question,
+    //         attributes: ['id', 'points'],
+    //         include: [
+    //           {
+    //             model: Option,
+    //             where: { isCorrect: true },
+    //             attributes: ['id'],
+    //           },
+    //         ],
+    //       },
+    //     ],
+    //   });
 
-      correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
-        (a, b) => a.id - b.id,
-      );
+    //   // const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length;
+    //   const oneQuizzPoint = correctAnswers.Questions[0].points;
 
-      const userAnswers = await UserAnswersQuizz.findAll({
-        where: {
-          testId: quizzId,
-          userId,
-        },
-        attributes: ['optionId'],
-        order: [['id', 'ASC']],
-      });
-      userAnswers.map((e) => {
-        correctAnswers.push(e.optionId);
-      });
+    //   correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
+    //     (a, b) => a.id - b.id,
+    //   );
 
-      // const point =
-      //   (Math.round(
-      //     ((correctAnswers.length - new Set(correctAnswers).size) /
-      //       Math.ceil(correctAnswers.length / 2)) *
-      //     100,
-      //   ) *
-      //     (10 / 2)) /
-      //   100;
+    //   const userAnswers = await UserAnswersQuizz.findAll({
+    //     where: {
+    //       testId: quizzId,
+    //       userId,
+    //     },
+    //     attributes: ['optionId'],
+    //     order: [['id', 'ASC']],
+    //   });
+    //   userAnswers.map((e) => {
+    //     correctAnswers.push(e.optionId);
+    //   });
 
-      let point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint;
+    //   // const point =
+    //   //   (Math.round(
+    //   //     ((correctAnswers.length - new Set(correctAnswers).size) /
+    //   //       Math.ceil(correctAnswers.length / 2)) *
+    //   //     100,
+    //   //   ) *
+    //   //     (10 / 2)) /
+    //   //   100;
 
-      point = parseFloat(point.toFixed(2));
+    //   let point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint;
 
-      await UserPoints.findOrCreate({
-        where: {
-          userId,
-          quizzId,
-          courseId,
-          isFinal,
-        },
-        defaults: {
-          quizzId,
-          userId,
-          correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
-          point: point,
-          isFinal,
-          courseId,
-        },
-      });
+    //   point = parseFloat(point.toFixed(2));
 
-      userCourses.totalPoints = +userCourses.totalPoints + point;
-      userCourses.takenQuizzes = +userCourses.takenQuizzes + point;
-      await userCourses.save();
+    //   await UserPoints.findOrCreate({
+    //     where: {
+    //       userId,
+    //       quizzId,
+    //       courseId,
+    //       isFinal,
+    //     },
+    //     defaults: {
+    //       quizzId,
+    //       userId,
+    //       correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
+    //       point: point,
+    //       isFinal,
+    //       courseId,
+    //     },
+    //   });
 
-      return res.json({ success: true });
-    }
+    //   userCourses.totalPoints = +userCourses.totalPoints + point;
+    //   userCourses.takenQuizzes = +userCourses.takenQuizzes + point;
+    //   await userCourses.save();
+
+    //   return res.json({ success: true });
+    // }
     // const { maxPoints } = await Lesson.findByPk(lessonId);
 
-    let correctAnswers = await Quizz.findByPk(quizzId, {
-      attributes: ['id'],
+    const userAnswers = await UserAnswersQuizz.findAll({
+      where: { userId, testId: quizzId, courseId },
       include: [
         {
-          model: Question,
-          attributes: ['id', 'points'],
-          include: [
-            {
-              model: Option,
-              where: { isCorrect: true },
-              attributes: ['id'],
-            },
-          ],
-        },
+          model: UserAnswersOption,
+          as: 'userAnswersOption',
+        }
       ],
-    });
-
-    // const quizzPoints = correctAnswers.Questions[0].points * correctAnswers.Questions.length
-    const oneQuizzPoint = correctAnswers.Questions[0].points
-
-    correctAnswers = correctAnswers.Questions.map((e) => e.Options[0].id).sort(
-      (a, b) => a.id - b.id,
-    );
-
-    const userAnswers = await UserAnswersQuizz.findAll({
-      where: {
-        testId: quizzId,
-        userId,
-      },
-      attributes: ['optionId'],
       order: [['id', 'ASC']],
-    });
+    })
+   
+    
+    userAnswers.forEach((userAnswer)=> {
+      console.log(userAnswer.userAnswersOption[0]);
+      userAnswer.userAnswersOption.forEach((option)=>{
+        if(option.userAnswer && option.isCorrect){
+          point = point + +userAnswer.point
+          correctAnswers += 1
+        }
+      })
+    })
 
-    userAnswers.map((e) => {
-      correctAnswers.push(e.optionId);
-    });
-
-    let point = (correctAnswers.length - new Set(correctAnswers).size) * oneQuizzPoint;
     point = parseFloat(point.toFixed(2));
 
     await UserPoints.findOrCreate({
@@ -481,31 +474,32 @@ const finishQuizz = async (req, res) => {
         userId,
         quizzId,
         courseId,
+        lessonId
       },
       defaults: {
         quizzId,
         userId,
         point: point,
-        correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
+        correctAnswers: correctAnswers,
         isFinal,
         courseId,
       },
     });
 
-    const userLesson = await UserLesson.findOne({
-      where: { UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
-    });
+    // const userLesson = await UserLesson.findOne({
+    //   where: { UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
+    // });
 
     userCourses.totalPoints = +userCourses.totalPoints + point;
     userCourses.takenQuizzes = +userCourses.takenQuizzes + point
     await userCourses.save();
 
-    userLesson.points = userLesson.points + point
-    await userLesson.save();
+    // userLesson.points = +userLesson.points + point
+    // await userLesson.save();
 
     return res.json({
       point,
-      correctAnswers: correctAnswers.length - new Set(correctAnswers).size,
+      correctAnswers
     });
   } catch (error) {
     console.log(error);
@@ -665,17 +659,6 @@ const getUserAnswers = async (req, res) => {
     const { courseId } = req.query;
     const { user_id: userId } = req.user;
 
-    // const userQuizzes = await UserAnswersQuizz.findOne({
-    //   where: {
-    //     userId,
-    //     courseId,
-    //     testId: quizzId,
-    //   },
-    // });
-    // if (userQuizzes) {
-    //   return res.status(403).json({ success: false, message: 'already passed' });
-    // }
-
     const userPoints = await UserPoints.findOne({
       where: {
         userId,
@@ -704,30 +687,6 @@ const getUserQuizzAnswers = async (req, res) => {
     const { quizzId } = req.params;
     const { courseId, language } = req.query;
     language ? language : language = "en"
-
-    /////////////////////
-    ////////////////////
-    // const quizz = await UserAnswersQuizz.findAll({
-    //   where: {
-    //     testId: quizzId,
-    //     userId,
-    //     courseId,
-    //   },
-    //   include: [
-    //     {
-    //       model: Question,
-    //       as: 'question',
-    //       include: [
-    //         {
-    //           model: Option,
-    //         },
-    //       ],
-    //     },
-    //   ],
-
-    //   attributes: ['questionId', ['optionId', 'userAnswerId']],
-    // });
-
 
     const userAnswersQuizz = await UserAnswersQuizz.findAll({
       where: {

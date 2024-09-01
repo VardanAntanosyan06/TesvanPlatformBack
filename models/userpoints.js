@@ -16,10 +16,11 @@ module.exports = (sequelize, DataTypes) => {
   UserPoints.init({
     userId: DataTypes.INTEGER,
     quizzId: DataTypes.INTEGER,
-    point:DataTypes.DECIMAL,
-    correctAnswers:DataTypes.INTEGER,
-    courseId:DataTypes.INTEGER,
-    isFinal:DataTypes.BOOLEAN
+    point: DataTypes.DECIMAL,
+    correctAnswers: DataTypes.INTEGER,
+    courseId: DataTypes.INTEGER,
+    lessonId: DataTypes.INTEGER,
+    isFinal: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'UserPoints',

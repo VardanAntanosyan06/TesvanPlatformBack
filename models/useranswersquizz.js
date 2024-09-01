@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     lessonId: DataTypes.INTEGER,
     questionTitle_en: DataTypes.STRING,
     questionTitle_am: DataTypes.STRING, 
-    questionTitle_ru: DataTypes.STRING
+    questionTitle_ru: DataTypes.STRING,
+    point: DataTypes.DECIMAL
   }, {
     sequelize,
     modelName: 'UserAnswersQuizz',
