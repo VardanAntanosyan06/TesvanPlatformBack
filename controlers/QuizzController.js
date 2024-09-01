@@ -87,25 +87,30 @@ const getQuizzes = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { quizzId } = req.params;
-    const { language, courseId } = req.query;
+    const { language, courseId, lessonId } = req.query;
 
     const userPoints = await UserPoints.findOne({
       where: {
         userId,
         courseId,
-        quizzId,
+        quizzId
       },
     });
 
     if (userPoints) {
+      // return getUserQuizzAnswers(req, res)
       return res.status(403).json({ success: false, message: 'already passed' });
     }
     const userQuizzes = await UserAnswersQuizz.findOne({
+      where: {
         userId,
         courseId,
-        testId: quizzId,
+        testId: quizzId
+      }
     })
+
     if (userQuizzes) {
+      // return getUserQuizzAnswers(req, res)
       return res.status(403).json({ success: false, message: 'already passed' });
     }
 
@@ -455,12 +460,12 @@ const finishQuizz = async (req, res) => {
       ],
       order: [['id', 'ASC']],
     })
-   
-    
-    userAnswers.forEach((userAnswer)=> {
+
+
+    userAnswers.forEach((userAnswer) => {
       console.log(userAnswer.userAnswersOption[0]);
-      userAnswer.userAnswersOption.forEach((option)=>{
-        if(option.userAnswer && option.isCorrect){
+      userAnswer.userAnswersOption.forEach((option) => {
+        if (option.userAnswer && option.isCorrect) {
           point = point + +userAnswer.point
           correctAnswers += 1
         }
@@ -555,15 +560,15 @@ const updateQuizz = async (req, res) => {
       questions,
       point,
     } = req.body;
-    return res.status(500).json({ message: 'Something went wrong.' });
-    // const questionCount = await Question.findAll({
-    //   where: {
-    //     quizzId: id,
-    //   },
-    // })
-    // if (questionCount.length !== questions.length) {
-    //   return res.status(500).json({ message: 'Something went wrong.' });
-    // }
+
+    const questionCount = await Question.findAll({
+      where: {
+        quizzId: id,
+      },
+    })
+    if (questionCount.length !== questions.length) {
+      return res.status(400).json({ message: 'Something went wrong.' });
+    }
     // Update the Quizz details
     await Quizz.update(
       {
@@ -580,71 +585,68 @@ const updateQuizz = async (req, res) => {
 
 
 
-    /*
-        questions.forEach(async (question) => {
-          await Question.update(
-            {
-              title_en: question.title_en,
-              title_am: question.title_am,
-              title_ru: question.title_ru,
-              points: +point / questions.length,
-            },
-            {
-              where: {
-                id: question.id,
-              }
-            }
-          )
-    
-          element.options.forEach(async(option) => {
-            await Option.update(
-              {
-                title_en: option.title_en,
-                title_ru: option.title_ru,
-                title_am: option.title_am,
-                isCorrect: option.isCorrect,
-              },
-              {
-                where: {
-                  id: option.id
-                }
-              }
-            )
-    
-    
-    
-          });
-        });
-    
-        */
 
-    await Question.destroy({
-      where: {
-        quizzId: id,
-      },
-    });
-
-    await Promise.all(
-      questions.map(async (question, i) => {
-        const createdQuestion = await Question.create({
+    questions.forEach(async (question) => {
+      await Question.update(
+        {
           title_en: question.title_en,
           title_am: question.title_am,
           title_ru: question.title_ru,
-          quizzId: id,
           points: +point / questions.length,
-        });
+        },
+        {
+          where: {
+            id: question.id,
+          }
+        }
+      )
 
-        const options = question.options.map((option) => ({
-          title_en: option.title_en,
-          title_ru: option.title_ru,
-          title_am: option.title_am,
-          isCorrect: option.isCorrect,
-          questionId: createdQuestion.id,
-        }));
+      question.options.forEach(async (option) => {
+        await Option.update(
+          {
+            title_en: option.title_en,
+            title_ru: option.title_ru,
+            title_am: option.title_am,
+            isCorrect: option.isCorrect,
+          },
+          {
+            where: {
+              id: option.id
+            }
+          }
+        )
+      });
+    });
 
-        await Option.bulkCreate(options);
-      }),
-    );
+
+
+    // await Question.destroy({
+    //   where: {
+    //     quizzId: id,
+    //   },
+    // });
+
+    // await Promise.all(
+    //   questions.map(async (question, i) => {
+    //     const createdQuestion = await Question.create({
+    //       title_en: question.title_en,
+    //       title_am: question.title_am,
+    //       title_ru: question.title_ru,
+    //       quizzId: id,
+    //       points: +point / questions.length,
+    //     });
+
+    //     const options = question.options.map((option) => ({
+    //       title_en: option.title_en,
+    //       title_ru: option.title_ru,
+    //       title_am: option.title_am,
+    //       isCorrect: option.isCorrect,
+    //       questionId: createdQuestion.id,
+    //     }));
+
+    //     await Option.bulkCreate(options);
+    //   }),
+    // );
 
     res.status(200).json({ success: true });
   } catch (error) {
