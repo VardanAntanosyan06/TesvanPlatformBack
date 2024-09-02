@@ -687,12 +687,12 @@ const getUserQuizzAnswers = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { quizzId } = req.params;
-    const { courseId, language } = req.query;
+    const { courseId, language, lessonId } = req.query;
     language ? language : language = "en"
 
     const userAnswersQuizz = await UserAnswersQuizz.findAll({
       where: {
-        testId: quizzId, //poxvi lessonId
+        lessonId, //poxvi lessonId
         userId,
         courseId,
       },
