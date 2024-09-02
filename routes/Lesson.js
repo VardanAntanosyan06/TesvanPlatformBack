@@ -33,7 +33,7 @@ router.post(
   controller.createLessonTime,
 );
 
-router.post(
+router.put(
   '/updateTime/:lessonId',
   checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
   controller.updateLessonTime,
