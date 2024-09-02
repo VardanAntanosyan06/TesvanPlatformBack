@@ -189,6 +189,7 @@ const getLesson = async (req, res) => {
     if (lesson.Lesson.quizz.length > 0) {
       userPoint = await UserPoints.findOne({
         where: {
+          courseId,
           userId,
           quizzId: lesson.Lesson.quizz[0].id,
           isFinal: false,
