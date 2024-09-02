@@ -3,7 +3,6 @@ const {
   Users,
   Groups,
   GroupsPerUsers,
-  UserPoints,
   GroupCourses,
   CoursesContents,
   CoursesPerLessons,
@@ -16,9 +15,6 @@ const {
   Quizz,
   Question
 } = require('../models');
-const { Op } = require('sequelize');
-const { all } = require('axios');
-const lesson = require('../models/lesson');
 
 const getUserStatictis = async (req, res) => {
   try {

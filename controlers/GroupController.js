@@ -417,17 +417,17 @@ const addMember = async (req, res) => {
           }
         });
 
-        await UserPoints.findOrCreate({
-          where: {
-            userId: user.id,
-          },
-          defaults: {
-            userId: user.id,
-            lesson: 0,
-            quizz: 0,
-            finalInterview: 0,
-          },
-        });
+        // await UserPoints.findOrCreate({
+        //   where: {
+        //     userId: user.id,
+        //   },
+        //   defaults: {
+        //     userId: user.id,
+        //     lesson: 0,
+        //     quizz: 0,
+        //     finalInterview: 0,
+        //   },
+        // });
  
         lessons.map((lesson) => {
           

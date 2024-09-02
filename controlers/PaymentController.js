@@ -115,17 +115,17 @@ const buy = async (req, res) => {
       const lessons = await CoursesPerLessons.findAll({
         where: { courseId: group.assignCourseId },
       });
-      await UserPoints.findOrCreate({
-        where: {
-          userId: payment.userId,
-        },
-        defaults: {
-          userId: payment.userId,
-          lesson: 0,
-          quizz: 0,
-          finalInterview: 0,
-        },
-      });
+      // await UserPoints.findOrCreate({
+      //   where: {
+      //     userId: payment.userId,
+      //   },
+      //   defaults: {
+      //     userId: payment.userId,
+      //     lesson: 0,
+      //     quizz: 0,
+      //     finalInterview: 0,
+      //   },
+      // });
       lessons.map((e) => {
         UserLesson.create({
           GroupCourseId: group.assignCourseId,
@@ -211,17 +211,17 @@ const buy = async (req, res) => {
       const lessons = await CoursesPerLessons.findAll({
         where: { courseId: payment.groupId },
       });
-      await UserPoints.findOrCreate({
-        where: {
-          userId: payment.userId,
-        },
-        defaults: {
-          userId: payment.userId,
-          lesson: 0,
-          quizz: 0,
-          finalInterview: 0,
-        },
-      });
+      // await UserPoints.findOrCreate({
+      //   where: {
+      //     userId: payment.userId,
+      //   },
+      //   defaults: {
+      //     userId: payment.userId,
+      //     lesson: 0,
+      //     quizz: 0,
+      //     finalInterview: 0,
+      //   },
+      // });
       lessons.map((e) => {
         UserLesson.create({
           GroupCourseId: payment.groupId,
@@ -351,17 +351,17 @@ const ConfirmIdram = async (req, res) => {
             const lessons = await CoursesPerLessons.findAll({
               where: { courseId: group.assignCourseId },
             });
-            await UserPoints.findOrCreate({
-              where: {
-                userId: payment.userId,
-              },
-              defaults: {
-                userId: payment.userId,
-                lesson: 0,
-                quizz: 0,
-                finalInterview: 0,
-              },
-            });
+            // await UserPoints.findOrCreate({
+            //   where: {
+            //     userId: payment.userId,
+            //   },
+            //   defaults: {
+            //     userId: payment.userId,
+            //     lesson: 0,
+            //     quizz: 0,
+            //     finalInterview: 0,
+            //   },
+            // });
             lessons.forEach(async (e) => {
               await UserLesson.create({
                 GroupCourseId: group.assignCourseId,
@@ -445,17 +445,17 @@ const ConfirmIdram = async (req, res) => {
             const lessons = await CoursesPerLessons.findAll({
               where: { courseId: payment.groupId },
             });
-            await UserPoints.findOrCreate({
-              where: {
-                userId: payment.userId,
-              },
-              defaults: {
-                userId: payment.userId,
-                lesson: 0,
-                quizz: 0,
-                finalInterview: 0,
-              },
-            });
+            // await UserPoints.findOrCreate({
+            //   where: {
+            //     userId: payment.userId,
+            //   },
+            //   defaults: {
+            //     userId: payment.userId,
+            //     lesson: 0,
+            //     quizz: 0,
+            //     finalInterview: 0,
+            //   },
+            // });
             lessons.forEach(async (e) => {
               await UserLesson.create({
                 GroupCourseId: payment.groupId,

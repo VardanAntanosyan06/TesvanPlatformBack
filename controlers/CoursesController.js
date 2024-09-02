@@ -529,36 +529,36 @@ const getUserCourse = async (req, res) => {
         },
       ],
     });
-    const lessonsHaveQuizz = await CoursesPerLessons.count({
-      where: { courseId },
-      include: [
-        {
-          model: Lesson,
-          include: [
-            {
-              model: Quizz,
-              as: 'quizz',
-              required: true,
-            },
-          ],
-          required: true,
-        },
-      ],
-    });
+    // const lessonsHaveQuizz = await CoursesPerLessons.count({
+    //   where: { courseId },
+    //   include: [
+    //     {
+    //       model: Lesson,
+    //       include: [
+    //         {
+    //           model: Quizz,
+    //           as: 'quizz',
+    //           required: true,
+    //         },
+    //       ],
+    //       required: true,
+    //     },
+    //   ],
+    // });
 
-    const userSubmited = await UserPoints.count({
-      where: { userId: id, courseId },
-    });
+    // const userSubmited = await UserPoints.count({
+    //   where: { userId: id, courseId },
+    // });
 
     const userPoint = await UserPoints.findOne({
-      where: { isFinal: true, courseId },
+      where: { userId: id, isFinal: true, courseId },
     });
     let quizz = {
       id: Quizzs[0].id,
       title: Quizzs[0].dataValues.title,
       description: Quizzs[0].dataValues.description,
       points: userPoint ? userPoint.point : null,
-      isOpen: lessonsHaveQuizz === userSubmited,
+      isOpen: false,
     };
 
     let groups = await GroupCourses.findOne({
@@ -932,7 +932,7 @@ const getCoursesByFilter = async (req, res) => {
     if (courseType == 'Group') {
       return res.status(200).json({ Courses, criticalPrices });
     } else if (courseType == 'Individual') {
-   
+
       return res.status(200).json({ Courses: Individual, criticalPrices });
     } else {
       Courses = [...Courses, ...Individual];
