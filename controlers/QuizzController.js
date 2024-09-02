@@ -692,19 +692,25 @@ const getUserQuizzAnswers = async (req, res) => {
 
     const userAnswersQuizz = await UserAnswersQuizz.findAll({
       where: {
-        lessonId, //poxvi lessonId
-        userId,
+        lessonId,
+        userId, 
         courseId,
+     
       },
+   
       include: [
         {
           model: UserAnswersOption,
           as: 'userAnswersOption',
-          attributes: [[`title_${language}`, 'title'], 'isCorrect', 'userAnswer']
-        }
+          attributes: [[`title_${language}`, 'title'], 'isCorrect', 'userAnswer'],
+        },
       ],
-      attributes: [[`questionTitle_${language}`, 'questionTitle']]
-    })
+      attributes: [[`questionTitle_${language}`, 'questionTitle']],
+      order: [
+        ['id', 'ASC'],
+        [ {model: UserAnswersOption, as: 'userAnswersOption'} , 'id', 'ASC'],
+      ], 
+    });
 
 
     return res.status(200).json(userAnswersQuizz);
