@@ -8,7 +8,21 @@ var fs = require('fs');
 router.post('/file', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), async (req, res) => {
   try {
     const { file } = req.files;
-    console.log(file);
+    const allowedFormats = [
+      'image/jpeg', 
+      'image/png', 
+      'image/gif',
+      'application/pdf',              // PDF files
+      'application/msword',           // .doc files
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx files
+      'application/vnd.ms-excel',     // .xls files
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
+    ];
+
+    if (!allowedFormats.includes(file.mimetype)) {
+      return res.status(400).json({ success: false, message: 'Unsupported file format' });
+    }
+
     const type = file.mimetype.split('/')[1];
     const fileName = uuid.v4() + '.' + type;
     file.mv(path.resolve(__dirname, '..', 'static', fileName));
