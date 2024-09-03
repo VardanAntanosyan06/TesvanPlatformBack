@@ -16,7 +16,6 @@ const {
   Homework,
   Users,
   HomeworkPerLesson,
-  PaymentWays,
 } = require('../models');
 var CryptoJS = require('crypto-js');
 
@@ -24,19 +23,8 @@ const sequelize = require('sequelize');
 const payUrl = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { paymentWay, groupId, type } = req.body;
-    const thisCourse = await PaymentWays.findOne({
-      where: {
-        groupId,
-        type: 'Monthly',
-      },
-    });
-    if (!thisCourse) {
-      return res.status(409).json({ success: false });
-    }
-    const thisCoursePrice = thisCourse.price * (1 - thisCourse.discount / 100);
+    const { paymentWay, groupId, amount, type } = req.body;
     const orderNumber = Math.floor(Date.now() * Math.random());
-    let amount = thisCoursePrice;
     const data = `userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}&amount=${amount}&currency=${process.env.CURRENCY}&language=en&orderNumber=${orderNumber}&returnUrl=${process.env.RETURNURL}&failUrl=${process.env.FAILURL}&pageView=DESKTOP&description='Payment Tesvan Platform'`;
     let { data: paymentResponse } = await axios.post(
       `https://ipay.arca.am/payment/rest/register.do?${data}`,
@@ -363,17 +351,17 @@ const ConfirmIdram = async (req, res) => {
             const lessons = await CoursesPerLessons.findAll({
               where: { courseId: group.assignCourseId },
             });
-            // await UserPoints.findOrCreate({
-            //   where: {
-            //     userId: payment.userId,
-            //   },
-            //   defaults: {
-            //     userId: payment.userId,
-            //     lesson: 0,
-            //     quizz: 0,
-            //     finalInterview: 0,
-            //   },
-            // });
+            await UserPoints.findOrCreate({
+              where: {
+                userId: payment.userId,
+              },
+              defaults: {
+                userId: payment.userId,
+                lesson: 0,
+                quizz: 0,
+                finalInterview: 0,
+              },
+            });
             lessons.forEach(async (e) => {
               await UserLesson.create({
                 GroupCourseId: group.assignCourseId,
@@ -457,17 +445,17 @@ const ConfirmIdram = async (req, res) => {
             const lessons = await CoursesPerLessons.findAll({
               where: { courseId: payment.groupId },
             });
-            // await UserPoints.findOrCreate({
-            //   where: {
-            //     userId: payment.userId,
-            //   },
-            //   defaults: {
-            //     userId: payment.userId,
-            //     lesson: 0,
-            //     quizz: 0,
-            //     finalInterview: 0,
-            //   },
-            // });
+            await UserPoints.findOrCreate({
+              where: {
+                userId: payment.userId,
+              },
+              defaults: {
+                userId: payment.userId,
+                lesson: 0,
+                quizz: 0,
+                finalInterview: 0,
+              },
+            });
             lessons.forEach(async (e) => {
               await UserLesson.create({
                 GroupCourseId: payment.groupId,
