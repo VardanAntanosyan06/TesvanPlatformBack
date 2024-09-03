@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       description_en: DataTypes.STRING,
       description_ru: DataTypes.STRING,
       description_am: DataTypes.STRING,
-      price: DataTypes.INTEGER,
+      price: DataTypes.DECIMAL,
       groupId: DataTypes.INTEGER,
       discount: DataTypes.FLOAT,
       type: DataTypes.STRING,
