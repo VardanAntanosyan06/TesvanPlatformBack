@@ -553,9 +553,11 @@ const updateLesson = async (req, res) => {
       presentationTitle_am,
       presentationDescription_am,
     } = req.body;
+    
 
+console.log(isNaN(+homeworkId), 4445, homeworkId);
 
-    if (homeworkId) {
+    if (isNaN(+homeworkId)) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });
       await UserHomework.update(
         {
@@ -567,6 +569,7 @@ const updateLesson = async (req, res) => {
           }
         }
       )
+    } else {
       await HomeworkPerLesson.create({
         lessonId,
         homeworkId

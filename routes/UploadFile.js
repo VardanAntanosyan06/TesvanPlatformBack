@@ -5,19 +5,22 @@ const { Users } = require('../models');
 const checkAuth = require('../middleware/checkAuth');
 var router = express.Router();
 var fs = require('fs');
+
+const allowedFormats = [
+  'image/jpeg', 
+  'image/png', 
+  'image/gif',
+  'application/pdf',              // PDF files
+  'application/msword',           // .doc files
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx files
+  'application/vnd.ms-excel',     // .xls files
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
+];
+
 router.post('/file', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), async (req, res) => {
   try {
     const { file } = req.files;
-    const allowedFormats = [
-      'image/jpeg', 
-      'image/png', 
-      'image/gif',
-      'application/pdf',              // PDF files
-      'application/msword',           // .doc files
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx files
-      'application/vnd.ms-excel',     // .xls files
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
-    ];
+
 
     if (!allowedFormats.includes(file.mimetype)) {
       return res.status(400).json({ success: false, message: 'Unsupported file format' });
@@ -33,6 +36,7 @@ router.post('/file', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), async (req, res
     console.log(e);
   }
 });
+
 router.post('/setDefault', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), async (req, res) => {
   try {
     const { user_id: userId } = req.user;

@@ -5,6 +5,17 @@ const uuid = require("uuid");
 const path = require("path");
 const fs = require("fs")
 
+const allowedFormats = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'application/pdf',              // PDF files
+    'application/msword',           // .doc files
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx files
+    'application/vnd.ms-excel',     // .xls files
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
+];
+
 const getMessageNotifications = async (req, res) => {
     const { user_id: userId } = req.user;
     try {
@@ -131,6 +142,10 @@ const createChatMessage = async (req, res) => {
         let imageName
         let fileName
         if (image) {
+
+            if (!allowedFormats.includes(image.mimetype)) {
+                return res.status(400).json({ success: false, message: 'Unsupported file format' });
+            }
             const type = image.mimetype.split("/")[1];
             imageName = uuid.v4() + "." + type;
             image.mv(path.resolve(__dirname, "../../", "messageFiles", imageName), (err) => {
@@ -141,6 +156,9 @@ const createChatMessage = async (req, res) => {
                 }
             });
         } else if (file) {
+            if (!allowedFormats.includes(file.mimetype)) {
+                return res.status(400).json({ success: false, message: 'Unsupported file format' });
+            }
             const type = file.mimetype.split("/")[1];
             fileName = uuid.v4() + "." + type;
             file.mv(path.resolve(__dirname, "../../", "messageFiles", fileName), (err) => {
