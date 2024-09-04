@@ -231,9 +231,10 @@ const getQuizzesAdmin = async (req, res) => {
         'title_en',
         'description_en',
       ],
+      order: [[Question, "id", "ASC"]]
     });
 
-    quizz.Questions = quizz.Questions.sort((a, b) => b.points - a.points);
+    // quizz.Questions = quizz.Questions.sort((a, b) => b.points - a.points);
 
     quizz.Questions.forEach((question) => {
       question.Options = question.Options.sort((a, b) => a.id - b.id);
