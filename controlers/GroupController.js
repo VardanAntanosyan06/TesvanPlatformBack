@@ -380,7 +380,7 @@ const update = async (req, res) => {
 
 const addMember = async (req, res) => {
   try {
-    const { groupId, users } = req.body;    
+    const { groupId, users } = req.body;
 
     await Promise.all(
       users.map(async (userId) => {
@@ -428,9 +428,9 @@ const addMember = async (req, res) => {
         //     finalInterview: 0,
         //   },
         // });
- 
+
         lessons.map((lesson) => {
-          
+
           UserLesson.create({
             GroupCourseId: group.assignCourseId,
             UserId: user.id,
@@ -439,11 +439,11 @@ const addMember = async (req, res) => {
           UserHomework.create({
             GroupCourseId: group.assignCourseId,
             UserId: user.id,
-            HomeworkId: lesson.Lesson.homework.length > 0? lesson.Lesson.homework[0].id : 0,
+            HomeworkId: lesson.Lesson.homework.length > 0 ? lesson.Lesson.homework[0].id : 0,
             points: 0,
             LessonId: lesson.lessonId,
           });
-          
+
         });
 
         const boughtTests = await Tests.findAll({
@@ -804,9 +804,13 @@ const deleteMember = async (req, res) => {
     });
 
     if (groupChats) {
-      const index = groupChats.members.indexOf(userId);
+
+      const newMembers = groupChats.members;
+      groupChats.members = []
+      const index = newMembers.indexOf(+userId);
       if (index !== -1) {
-        groupChats.members.splice(index, 1);
+        newMembers.splice(index, 1);
+        groupChats.members = [...newMembers];
         await groupChats.save();
       } else {
         return res.status(400).json({ message: 'User not found in group members.' });

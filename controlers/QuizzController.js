@@ -42,17 +42,16 @@ const createQuizz = async (req, res) => {
       percent,
     });
 
-    questions.map((question, i) => {
-      console.log(question.title_en, question.title_am);
-      Question.create({
+    questions.forEach(async (question) => {
+      await Question.create({
         title_en: question.title_en,
         title_ru: question.title_ru,
         title_am: question.title_am,
         quizzId,
         points: +point / questions.length,
       }).then((data) => {
-        question.options.map((option, optionIndex) => {
-          Option.create({
+        question.options.forEach(async (option) => {
+          await Option.create({
             title_en: option.title_en,
             title_ru: option.title_ru,
             title_am: option.title_am,
