@@ -642,6 +642,9 @@ const createCourse = async (req, res) => {
       priceTitle_am,
       priceTitle_en,
       priceTitle_ru,
+      // maxQuizzPoint,
+      // maxHomeworkPoint,
+      // maxInterviewPoint
     } = req.body;
 
     let { img, trainersImages } = req.files;
@@ -673,6 +676,10 @@ const createCourse = async (req, res) => {
           priceDescription: req.body[`priceDescription_${language}`],
           price: 0,
           discount: 0,
+          // maxQuizzPoint,
+          // maxHomeworkPoint,
+          // maxInterviewPoint
+
         });
       }),
     );

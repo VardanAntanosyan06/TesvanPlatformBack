@@ -155,38 +155,52 @@ const getUserStatictis = async (req, res) => {
       where: { groupId: id, userRole: 'STUDENT' },
     });
 
-
-    const lessons = await CoursesPerLessons.findAll({
+    const lessons = await CoursesPerLessons.count({
       where: {
         courseId: course.assignCourseId ? course.assignCourseId : 1,
       },
-      include: {
-        model: Lesson,
-        include: [
-          {
-            model: Homework,
-            as: 'homework',
-          },
-          {
-            model: Quizz,
-            as: 'quizz',
-            include: [
-              {
-                model: Question,
-                order: [['id', 'ASC']],
-              },
-            ],
-          }
-        ],
-      }
     });
 
-    const maxPoint = lessons.reduce((aggr, value, index) => {
 
-      aggr.maxQuizzPoint = +aggr.maxQuizzPoint + +(value.Lesson.quizz.length > 0 ? value.Lesson.quizz[0].Questions.length * +value.Lesson.quizz[0].Questions[0].points : 0)
-      aggr.maxHomeworkPoint = +aggr.maxHomeworkPoint + +(value.Lesson.homework.length > 0 ? +value.Lesson.homework[0].point : 0)
-      return aggr
-    }, { maxQuizzPoint: 0, maxHomeworkPoint: 0 })
+    // const lessons = await CoursesPerLessons.findAll({
+    //   where: {
+    //     courseId: course.assignCourseId ? course.assignCourseId : 1,
+    //   },
+    //   include: {
+    //     model: Lesson,
+    //     include: [
+    //       {
+    //         model: Homework,
+    //         as: 'homework',
+    //       },
+    //       {
+    //         model: Quizz,
+    //         as: 'quizz',
+    //         include: [
+    //           {
+    //             model: Question,
+    //             order: [['id', 'ASC']],
+    //           },
+    //         ],
+    //       }
+    //     ],
+    //   }
+    // });
+
+    // const maxPoint = lessons.reduce((aggr, value, index) => {
+
+    //   aggr.maxQuizzPoint = +aggr.maxQuizzPoint + +(value.Lesson.quizz.length > 0 ? value.Lesson.quizz[0].Questions.length * +value.Lesson.quizz[0].Questions[0].points : 0)
+    //   aggr.maxHomeworkPoint = +aggr.maxHomeworkPoint + +(value.Lesson.homework.length > 0 ? +value.Lesson.homework[0].point : 0)
+    //   return aggr
+    // }, { maxQuizzPoint: 0, maxHomeworkPoint: 0 })
+
+    const maxPoint = await CoursesContents.findOne({
+      where: {
+        courseId: course.assignCourseId
+      }
+    })
+    console.log(maxPoint.maxQuizzPoint, maxPoint.maxInterviewPoint, maxPoint.maxHomeworkPoint);
+
 
 
     if (!group) {
@@ -210,20 +224,25 @@ const getUserStatictis = async (req, res) => {
     const response = {
       lesson: 0,
       homework: {
-        maxHomevorkPoint: maxPoint.maxHomeworkPoint,
+        maxHomevorkPoint: +maxPoint.maxHomeworkPoint,
         userCoursHomeworkPoints: parseFloat(userCoursHomeworkPoints.toFixed(2)),
       },
       quizzes: {
-        maxQuizzPoint: maxPoint.maxQuizzPoint,
+        maxQuizzPoint: +maxPoint.maxQuizzPoint,
         userCoursQuizzPoints: parseFloat(userCoursQuizzPoints.toFixed(2)),
       },
-
+      interview: {
+        maxInterviewPoint: +maxPoint.maxInterviewPoint,
+        userCoursInterviewPoint: 0
+      },
+      
       totalPoints: parseFloat(userCoursPoints.toFixed(2)),
+      maxTotalPoints: +maxPoint.maxInterviewPoint + +maxPoint.maxQuizzPoint + +maxPoint.maxHomeworkPoint,
       mySkils,
       charts,
       course: {
         students,
-        lessons: lessons.length,
+        lessons: lessons,
         lessonType: course.GroupCourse.CoursesContents[0].level,
       },
     };

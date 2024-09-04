@@ -39,6 +39,9 @@ module.exports = (sequelize, DataTypes) => {
       level: DataTypes.STRING,
       levelDescriptions: DataTypes.ARRAY(DataTypes.STRING),
       type: DataTypes.STRING,
+      maxQuizzPoint: DataTypes.STRING,
+      maxHomeworkPoint: DataTypes.STRING,
+      maxInterviewPoint: DataTypes.STRING,
     },
     {
       sequelize,

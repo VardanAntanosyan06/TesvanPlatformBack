@@ -1,5 +1,5 @@
 const { where } = require('sequelize')
-const { UserHomework, Quizz, Question, Option, UserAnswersQuizz, UserAnswersOption } = require('./models')
+const { UserHomework, Quizz, Question, Option, UserAnswersQuizz, UserAnswersOption, CoursesContents } = require('./models')
 const { log } = require('console')
 const users = [3, 163, 754, 900, 907, 890, 879]
 const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
@@ -94,3 +94,15 @@ const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
 // }
 
 // addAnswerData()
+
+
+// async function coureContent(params) {
+//     const maxPoint = await CoursesContents.findOne({
+//         where: {
+//           courseId: 12
+//         }
+//       })
+//       console.log(maxPoint.maxQuizzPoint, maxPoint.maxInterviewPoint, maxPoint.maxHomeworkPoint);
+// }
+
+// coureContent()
