@@ -56,8 +56,9 @@ const payUrl = async (req, res) => {
       groupId,
       userId,
       type,
+      sum: thisCoursePrice
     });
-    console.log(paymentResponse);
+
     return res.json({
       success: true,
       formUrl: paymentResponse.formUrl,
