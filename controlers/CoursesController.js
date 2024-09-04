@@ -1157,13 +1157,22 @@ const updateCourse = async (req, res) => {
     const userIds = [...new Set(usersHaveACourse.map((user) => user.UserId))];
     const lessonIds = Array.isArray(lessons) ? lessons : [lessons];
 
-    await CoursesPerLessons.destroy({ where: { courseId } });
+    const sequence = await CoursesPerLessons.findOne({ where: { courseId }, order: [['createdAt', 'DESC']] });
     await Promise.all(
       lessonIds.flatMap(async (lessonId, i) => {
         const homework = await HomeworkPerLesson.findOne({ where: { lessonId: lessonId } })
 
 
-        CoursesPerLessons.create({ type, courseId, lessonId, number: i + 1 }),
+        CoursesPerLessons.findOrCreate({
+          where: {
+            courseId, lessonId
+          },
+          defaults: {
+            courseId, lessonId, type, number: +sequence.number + 1
+          }
+        }),
+
+
           userIds.map(async (userId) => {
             const user = await Users.findOne({ where: { id: userId } })
             await UserLesson.findOrCreate({
