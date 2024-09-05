@@ -198,7 +198,7 @@ const getLesson = async (req, res) => {
     }
 
     const maxQuizzPoints =
-      lesson.Lesson.quizz[0].Questions[0].points * lesson.Lesson.quizz[0].Questions.length;
+      lesson.Lesson.quizz[0]?.Questions[0]?.points * lesson.Lesson.quizz[0]?.Questions?.length;
     const maxHomeworkPoints = +lesson.Lesson.homework.length > 0 ? +lesson.Lesson.homework[0].point : 0
     const maxPoints = +maxHomeworkPoints + +maxQuizzPoints;
     const lessonPoints =
@@ -210,10 +210,10 @@ const getLesson = async (req, res) => {
 
       (lesson = {
         points: parseFloat(lessonPoints.toFixed(2)),
-        maxPoints: maxPoints,
+        maxPoints: maxPoints? maxPoints: 0,
         pointsOfPercent: Math.round((lessonPoints * 100) / maxPoints),
         quizzPoint: userPoint ? parseFloat(quizPoints.toFixed(2)) : null,
-        maxQuizzPoints: maxQuizzPoints,
+        maxQuizzPoints: maxQuizzPoints ? maxQuizzPoints : 0,
         homeworkPoint: homeworkPoint ? (+homeworkPoint.points !== 0 ? homeworkPoint.points : null) : null,
         maxHomeworkPoints: maxHomeworkPoints,
         attempt: lesson.attempt,
@@ -553,9 +553,9 @@ const updateLesson = async (req, res) => {
       presentationTitle_am,
       presentationDescription_am,
     } = req.body;
-    
 
-console.log(isNaN(+homeworkId), 4445, homeworkId);
+
+    console.log(isNaN(+homeworkId), 4445, homeworkId);
 
     if (isNaN(+homeworkId)) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });

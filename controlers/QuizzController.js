@@ -137,13 +137,13 @@ const getQuizzes = async (req, res) => {
             'title_am',
             'points',
           ],
-          order: [['id', 'ASC']],
           include: {
             model: Option,
             attributes: ['id', [`title_${language}`, 'title'], 'title_ru', 'title_en', 'title_am'],
           },
         },
       ],
+      order: [[Question, 'id', 'ASC']],
     });
 
     if (!quizz)
@@ -152,99 +152,11 @@ const getQuizzes = async (req, res) => {
         message: `with ID ${id} Quizz not found`,
       });
 
-    const questions_en = [];
-    const questions_ru = [];
-    const questions_am = [];
-
-    quizz.Questions.sort((a, b) => a.id - b.id).map((question) => {
-      const options_en = question.Options.map((e) => {
-        return {
-          title_en: e.title_en,
-          isCorrect_en: e.isCorrect,
-        };
-      });
-      const options_am = question.Options.map((e) => {
-        return {
-          title_am: e.title_am,
-          isCorrect_am: e.isCorrect,
-        };
-      });
-      const options_ru = question.Options.map((e) => {
-        return {
-          title_ru: e.title_ru,
-          isCorrect_ru: e.isCorrect,
-        };
-      });
-      questions_en.push({
-        question_en: question.title_en,
-        options_en: options_en,
-      });
-      questions_am.push({
-        question_am: question.title_am,
-        options_am: options_am,
-      });
-      questions_ru.push({
-        question_ru: question.title_ru,
-        options_ru: options_ru,
-      });
-    });
-    quizz = {
-      ...quizz.dataValues,
-      questions_en,
-      questions_ru,
-      questions_am,
-      point: +quizz.Questions[0].points * quizz.Questions.length,
-    };
-
-    return res.status(200).json({ success: true, quizz });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
-  }
-};
-const getQuizzesAdmin = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    let quizz = await Quizz.findOne({
-      where: { id },
-      include: [
-        {
-          model: Question,
-          attributes: ['id', 'quizzId', 'title_ru', 'title_en', 'title_am', 'points'],
-          include: [
-            {
-              model: Option,
-              attributes: ['id', 'title_ru', 'title_en', 'title_am', 'isCorrect'],
-     
-            }
-          ],
-        }
-      ],
-      attributes: [
-        'id',
-        'title_am',
-        'title_ru',
-        'description_ru',
-        'description_am',
-        'time',
-        'title_en',
-        'description_en',
-      ],
-      order: [[Question, "id", "ASC"]]
-    });
-
-    // quizz.Questions = quizz.Questions.sort((a, b) => b.points - a.points);
-
     quizz.Questions.forEach((question) => {
       question.Options = question.Options.sort((a, b) => a.id - b.id);
     });
 
-    if (!quizz)
-      return res.status(404).json({
-        success: false,
-        message: `with ID ${id} Quizz not found`,
-      });
+
 
     // const questions_en = [];
     // const questions_ru = [];
@@ -282,12 +194,64 @@ const getQuizzesAdmin = async (req, res) => {
     //     options_ru: options_ru,
     //   });
     // });
-
     quizz = {
       ...quizz.dataValues,
       // questions_en,
       // questions_ru,
       // questions_am,
+      point: +quizz.Questions[0].points * quizz.Questions.length,
+    };
+
+    return res.status(200).json({ success: true, quizz });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+const getQuizzesAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    let quizz = await Quizz.findOne({
+      where: { id },
+      include: [
+        {
+          model: Question,
+          attributes: ['id', 'quizzId', 'title_ru', 'title_en', 'title_am', 'points'],
+          include: [
+            {
+              model: Option,
+              attributes: ['id', 'title_ru', 'title_en', 'title_am', 'isCorrect'],
+
+            }
+          ],
+        }
+      ],
+      attributes: [
+        'id',
+        'title_am',
+        'title_ru',
+        'description_ru',
+        'description_am',
+        'time',
+        'title_en',
+        'description_en',
+      ],
+      order: [[Question, "id", "ASC"]]
+    });
+
+    quizz.Questions.forEach((question) => {
+      question.Options = question.Options.sort((a, b) => a.id - b.id);
+    });
+
+    if (!quizz)
+      return res.status(404).json({
+        success: false,
+        message: `with ID ${id} Quizz not found`,
+      });
+
+    quizz = {
+      ...quizz.dataValues,
       point: +quizz.Questions[0].points * quizz.Questions.length,
     };
 
@@ -304,8 +268,6 @@ const submitQuizz = async (req, res) => {
 
     const { quizzId, questionId, optionId } = req.body;
     const { courseId, lessonId } = req.query;
-
-
 
     const quizz = await Quizz.findOne({
       where: {

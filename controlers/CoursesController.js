@@ -1162,16 +1162,14 @@ const updateCourse = async (req, res) => {
       lessonIds.flatMap(async (lessonId, i) => {
         const homework = await HomeworkPerLesson.findOne({ where: { lessonId: lessonId } })
 
-
         CoursesPerLessons.findOrCreate({
           where: {
             courseId, lessonId
           },
           defaults: {
-            courseId, lessonId, type, number: +sequence.number + 1
+            courseId, lessonId, type, number: sequence ? +sequence.number + 1 : 1
           }
         }),
-
 
           userIds.map(async (userId) => {
             const user = await Users.findOne({ where: { id: userId } })
@@ -1205,9 +1203,7 @@ const updateCourse = async (req, res) => {
                 }
               });
             }
-
           })
-
       }),
     );
 
