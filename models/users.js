@@ -91,8 +91,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         validate: {
           isIn: {
-            args: [['TEACHER', 'STUDENT']],
-            msg: "Role must be 'TEACHER' or 'STUDENT'",
+            args: [['STUDENT']],
+            msg: "Role must be 'STUDENT'",
           },
         },
         allowNull: false,

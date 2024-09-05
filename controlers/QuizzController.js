@@ -156,50 +156,9 @@ const getQuizzes = async (req, res) => {
       question.Options = question.Options.sort((a, b) => a.id - b.id);
     });
 
-
-
-    // const questions_en = [];
-    // const questions_ru = [];
-    // const questions_am = [];
-
-    // quizz.Questions.sort((a, b) => a.id - b.id).map((question) => {
-    //   const options_en = question.Options.map((e) => {
-    //     return {
-    //       title_en: e.title_en,
-    //       isCorrect_en: e.isCorrect,
-    //     };
-    //   });
-    //   const options_am = question.Options.map((e) => {
-    //     return {
-    //       title_am: e.title_am,
-    //       isCorrect_am: e.isCorrect,
-    //     };
-    //   });
-    //   const options_ru = question.Options.map((e) => {
-    //     return {
-    //       title_ru: e.title_ru,
-    //       isCorrect_ru: e.isCorrect,
-    //     };
-    //   });
-    //   questions_en.push({
-    //     question_en: question.title_en,
-    //     options_en: options_en,
-    //   });
-    //   questions_am.push({
-    //     question_am: question.title_am,
-    //     options_am: options_am,
-    //   });
-    //   questions_ru.push({
-    //     question_ru: question.title_ru,
-    //     options_ru: options_ru,
-    //   });
-    // });
     quizz = {
       ...quizz.dataValues,
-      // questions_en,
-      // questions_ru,
-      // questions_am,
-      point: +quizz.Questions[0].points * quizz.Questions.length,
+      point: +quizz?.Questions[0].points * quizz?.Questions.length,
     };
 
     return res.status(200).json({ success: true, quizz });

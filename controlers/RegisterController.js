@@ -42,11 +42,26 @@ const UserRegistartion = async (req, res) => {
       education,
       backgroundInQA,
       password,
-      role,
     } = req.body;
-    const isUser = await Users.findOne({ where: { email } });
+    const isUser = await Users.findOne({ where: { email, isVerified: true } });
     if (isUser) return res.status(403).json({ message: 'Email must be unique.' });
     const hashedPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT);
+    const userNotVerify = User.findOne({
+      where: {
+        email: email,
+        isVerified: false
+      }
+    })
+
+    if (userNotVerify) {
+      await User.destroy({
+        where: {
+          email: email,
+          isVerified: false
+        }
+      })
+    }
+
     const User = await Users.create({
       firstName,
       lastName,
@@ -61,7 +76,7 @@ const UserRegistartion = async (req, res) => {
       backgroundInQA,
       password: hashedPassword,
       tokenCreatedAt: moment(),
-      role,
+      role: 'STUDENT',
     });
     User.token = jwt.sign({ user_id: User.id, email, role }, process.env.SECRET);
     await User.save();
