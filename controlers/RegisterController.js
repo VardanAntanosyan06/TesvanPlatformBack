@@ -45,24 +45,9 @@ const UserRegistartion = async (req, res) => {
     } = req.body;
     const isUser = await Users.findOne({ where: { email, isVerified: true } });
     if (isUser) return res.status(403).json({ message: 'Email must be unique.' });
-    const hashedPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT);
-    const userNotVerify = User.findOne({
-      where: {
-        email: email,
-        isVerified: false
-      }
-    })
+    const hashedPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT); 12
 
-    if (userNotVerify) {
-      await User.destroy({
-        where: {
-          email: email,
-          isVerified: false
-        }
-      })
-    }
-
-    const User = await Users.create({
+    const newUser = await Users.create({
       firstName,
       lastName,
       email,
@@ -78,14 +63,18 @@ const UserRegistartion = async (req, res) => {
       tokenCreatedAt: moment(),
       role: 'STUDENT',
     });
-    User.token = jwt.sign({ user_id: User.id, email, role }, process.env.SECRET);
-    await User.save();
-    return res.status(200).json({ succes: true, token: User.token });
+    newUser.token = jwt.sign({ user_id: newUser.id, email, role: newUser.role }, process.env.SECRET);
+    await newUser.save();
+    return res.status(200).json({ succes: true, token: newUser.token });
   } catch (error) {
     console.log(error.message);
     if (error.name == 'SequelizeValidationError') {
+      console.log(1);
+
       return res.status(403).json({ message: error.message });
     } else {
+      console.log(2);
+
       return res.status(500).json({ message: 'Something went wrong.' });
     }
   }
@@ -160,13 +149,17 @@ const EmailExist = async (req, res) => {
   try {
     const { email } = req.params;
 
-    const user = await Users.findOne({ where: { email } });
+    const user = await Users.findOne({ where: { email, isVerified: true } });
 
     if (user)
       return res.status(403).json({
         success: false,
         message: 'This email address is already used',
       });
+    const userNotVerified = Users.findOne({ where: { email, isVerified: false } })
+    if (userNotVerified) {
+      await Users.destroy({ where: { email, isVerified: false } })
+    }
 
     return res.status(200).json({ success: true });
   } catch (error) {
