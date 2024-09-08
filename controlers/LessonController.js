@@ -191,7 +191,7 @@ const getLesson = async (req, res) => {
         where: {
           courseId,
           userId,
-          quizzId: lesson.Lesson.quizz[0].id,
+          lessonId: id,
           isFinal: false,
         },
       });
