@@ -297,7 +297,17 @@ const finishQuizz = async (req, res) => {
     const { quizzId, isFinal, lessonId } = req.body;
     const { courseId } = req.query
 
-
+    const userPoint = await UserPoints.findOne({
+      where: {
+        courseId,
+        userId,
+        lessonId
+      }
+    })
+    if(userPoint){
+      return res.status(403).json({ success: false, message: 'the finish has already been set' });
+    }
+    
     const userCourses = await UserCourses.findOne({
       where: { UserId: userId, GroupCourseId: courseId },
     });
