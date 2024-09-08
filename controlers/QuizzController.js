@@ -236,7 +236,6 @@ const submitQuizz = async (req, res) => {
         {
           model: Question,
           attributes: ['id', 'quizzId', 'title_ru', 'title_en', 'title_am', 'points'],
-          order: [['id', 'ASC']],
           where: {
             id: questionId
           },
@@ -244,12 +243,16 @@ const submitQuizz = async (req, res) => {
             {
               model: Option,
               attributes: ['id', 'title_ru', 'title_en', 'title_am', 'isCorrect'],
-              order: [['id', 'ASC']],
             },
           ],
         },
       ],
+      order: [[Question, "id", "ASC"]]
     })
+
+    quizz.Questions.forEach((question) => {
+      question.Options = question.Options.sort((a, b) => a.id - b.id);
+    });
 
     await UserAnswersQuizz.destroy({
       where: { userId, testId: quizzId, questionId, courseId },
@@ -384,12 +387,14 @@ const finishQuizz = async (req, res) => {
           as: 'userAnswersOption',
         }
       ],
-      order: [['id', 'ASC']],
+      order: [
+        ['id', 'ASC'],
+        [{ model: UserAnswersOption, as: 'userAnswersOption' }, 'id', 'ASC']
+      ],
     })
 
 
     userAnswers.forEach((userAnswer) => {
-      console.log(userAnswer.userAnswersOption[0]);
       userAnswer.userAnswersOption.forEach((option) => {
         if (option.userAnswer && option.isCorrect) {
           point = point + +userAnswer.point
