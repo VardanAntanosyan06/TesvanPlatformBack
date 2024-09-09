@@ -16,9 +16,10 @@ const { UserRegistartionSendEmail } = require('../controlers/RegisterController'
 const LoginUsers = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const userEmail = email.toLowerCase()
 
     const User = await Users.findOne({
-      where: { email },
+      where: { email: userEmail },
       include: [
         {
           model: UserCourses,
@@ -55,12 +56,13 @@ const LoginUsers = async (req, res) => {
 const sendEmailForForgotPassword = async (req, res) => {
   try {
     const { email } = req.query;
+    const userEmail = email.toLowerCase()
 
-    const User = await Users.findOne({ where: { email } });
+    const User = await Users.findOne({ where: { email: userEmail } });
     if (!User || (User && !User.isVerified))
       return res.status(403).json({ message: 'There is not verified user' });
 
-    User.token = jwt.sign({ user_id: User.id, email, role: User.role }, process.env.SECRET);
+    User.token = jwt.sign({ user_id: User.id, email: User.email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
@@ -68,7 +70,7 @@ const sendEmailForForgotPassword = async (req, res) => {
 
     const data = {
       from: 'verification@tesvan.com',
-      to: email,
+      to: email.toLowerCase(),
       subject: 'Forgot Password Tesvan Platform',
       html: `<!DOCTYPE html>
       <html lang="en">
@@ -88,7 +90,7 @@ const sendEmailForForgotPassword = async (req, res) => {
             <div style="width: 70%">
               <h1 style="font-style: normal; font-weight: 600; font-size: 32px; line-height: 48px;">Please verify your email address.</h1>
               <p style="font-style: normal; font-size: 20px; text-align: left;">In order to complete your registration and start preparing for college admissions, you'll need to verify your email address.</p>
-              <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email} as the email address for your account. Please verify this email address by clicking the button below.</p>
+              <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email.toLowerCase()}. as the email address for your account. Please verify this email address by clicking the button below.</p>
               <a href="http://platform.tesvan.com/changePassword?token=${User.token}" style="text-decoration:none">
                 <div style="width: 130px; height: 40px; background: #FFC038; border-radius: 5px; border:none; font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #143E59; cursor:pointer; padding:7px; box-sizing:border-box;">Verify</div>
               </a>
@@ -229,7 +231,6 @@ const changeUserData = async (req, res) => {
   try {
     const data = req.body;
     const { user_id } = req.user;
-    console.log(user_id);
 
     if (!data) {
       return res.status(400).json({ message: 'Data is required.' });
@@ -287,7 +288,7 @@ const authMe = async (req, res) => {
         },
       },
       attributes: ["id", "name", "image"]
-  })
+    })
     User.setDataValue('groupChats', groupChats);
     await User.save();
     res.json({ User });
@@ -303,15 +304,16 @@ const changeEmail = async (req, res) => {
 
     const thisUser = await Users.findOne({ where: { id } });
     const { email } = req.body;
-    if (thisUser.email === email) {
+    
+    if (thisUser.email === email.toLowerCase()) {
       return res.status(400).json({ succes: false });
     }
     const user = await Users.findOne({
       where: {
-        email,
+        email: email.toLowerCase(),
       },
     });
-    await Email.destroy({ where: { newEmail: email } });
+    await Email.destroy({ where: { newEmail: email.toLowerCase() } });
 
     if (user) {
       return res.status(409).json({ message: 'This Email already Used' });
@@ -319,13 +321,13 @@ const changeEmail = async (req, res) => {
 
     await Email.create({
       userId: id,
-      newEmail: email,
+      newEmail: email.toLowerCase(),
       newEmailVerification: false,
     });
 
     const data = {
       from: 'verification@tesvan.com',
-      to: email,
+      to: email.toLowerCase(),
       subject: 'Forgot Password Tesvan Platform',
       html: `<!DOCTYPE html>
       <html lang="en">
@@ -345,7 +347,7 @@ const changeEmail = async (req, res) => {
             <div style="width: 70%">
               <h1 style="font-style: normal; font-weight: 600; font-size: 32px; line-height: 48px;">Please verify your new email address.</h1>
               <p style="font-style: normal; font-size: 20px; text-align: left;">In order to complete your registration and start preparing for college admissions, you'll need to verify your email address.</p>
-              <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email} as the email address for your account. Please verify this email address by clicking the button below.</p>
+              <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email.toLowerCase()} as the email address for your account. Please verify this email address by clicking the button below.</p>
               <a href="https://platform.tesvan.com/settingsVerify?token=${thisUser.token}" style="text-decoration:none">
                 <div style="width: 130px; height: 40px; background: #FFC038; border-radius: 5px; border:none; font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #143E59; cursor:pointer; padding:7px; box-sizing:border-box;">Verify new email</div>
               </a>

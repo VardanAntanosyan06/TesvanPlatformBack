@@ -43,14 +43,15 @@ const UserRegistartion = async (req, res) => {
       backgroundInQA,
       password,
     } = req.body;
-    const isUser = await Users.findOne({ where: { email, isVerified: true } });
+    const userEmail = email.toLowerCase()
+    const isUser = await Users.findOne({ where: { email: userEmail, isVerified: true } });
     if (isUser) return res.status(403).json({ message: 'Email must be unique.' });
     const hashedPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT); 12
 
     const newUser = await Users.create({
       firstName,
       lastName,
-      email,
+      email: userEmail,
       phoneNumber,
       birthday,
       gender,
@@ -63,7 +64,7 @@ const UserRegistartion = async (req, res) => {
       tokenCreatedAt: moment(),
       role: 'STUDENT',
     });
-    newUser.token = jwt.sign({ user_id: newUser.id, email, role: newUser.role }, process.env.SECRET);
+    newUser.token = jwt.sign({ user_id: newUser.id, email: newUser.email, role: newUser.role }, process.env.SECRET);
     await newUser.save();
     return res.status(200).json({ succes: true, token: newUser.token });
   } catch (error) {
@@ -83,20 +84,21 @@ const UserRegistartion = async (req, res) => {
 const UserRegistartionSendEmail = async (req, res) => {
   try {
     let { email } = req.query;
+    const userEmail = email.toLowerCase()
 
     const User = await Users.findOne({
-      where: { email },
+      where: { email: userEmail },
     });
     if (!User || User.isVerified)
       return res.status(404).json({ message: 'There is not unverified user!' });
-    User.token = jwt.sign({ user_id: User.id, email, role: User.role }, process.env.SECRET);
+    User.token = jwt.sign({ user_id: User.id, email: User.email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
     (function () {
       const data = {
         from: 'verification@tesvan.com',
-        to: email,
+        to: userEmail,
         subject: 'Verify your email address',
         html: `<!DOCTYPE html>
         <html lang="en">
@@ -116,7 +118,7 @@ const UserRegistartionSendEmail = async (req, res) => {
               <div style="width: 70%">
                 <h1 style="font-style: normal; font-weight: 600; font-size: 32px; line-height: 48px;">Please verify your email address.</h1>
                 <p style="font-style: normal; font-size: 20px; text-align: left;">“In order to complete your registration and start your learning journey, please verify your email address.</p>
-                <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email} as the email address for your account. Please verify this email address by clicking the button below.</p>
+                <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${User.email} as the email address for your account. Please verify this email address by clicking the button below.</p>
                 <a href="https://platform.tesvan.com/verify?token=${User.token}" style="text-decoration:none">
                   <div style="width: 130px; height: 40px; background: #FFC038; border-radius: 5px; border:none; font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #143E59; cursor:pointer; padding:7px; box-sizing:border-box;">Verify</div>
                 </a>
@@ -148,17 +150,18 @@ const UserRegistartionSendEmail = async (req, res) => {
 const EmailExist = async (req, res) => {
   try {
     const { email } = req.params;
+    const userEmail = email.toLowerCase()
 
-    const user = await Users.findOne({ where: { email, isVerified: true } });
+    const user = await Users.findOne({ where: { email: userEmail, isVerified: true } });
 
     if (user)
       return res.status(403).json({
         success: false,
         message: 'This email address is already used',
       });
-    const userNotVerified = Users.findOne({ where: { email, isVerified: false } })
+    const userNotVerified = Users.findOne({ where: { email:userEmail, isVerified: false } })
     if (userNotVerified) {
-      await Users.destroy({ where: { email, isVerified: false } })
+      await Users.destroy({ where: { email:userEmail, isVerified: false } })
     }
 
     return res.status(200).json({ success: true });
@@ -198,13 +201,14 @@ const AddMember = async (req, res) => {
   try {
     const { role, firstName, lastName, email, phoneNumber, birthday, gender, city, country } =
       req.body;
+      
     const hashPassword = await bcrypt.hash(v4(), BCRYPT_HASH_SALT);
 
     const User = await Users.create({
       role,
       firstName,
       lastName,
-      email,
+      email: email.toLowerCase(),
       phoneNumber,
       birthday,
       gender,
@@ -217,7 +221,7 @@ const AddMember = async (req, res) => {
       tokenCreatedAt: new Date().toISOString(),
     });
 
-    User.token = jwt.sign({ user_id: User.id, email, role: User.role }, process.env.SECRET);
+    User.token = jwt.sign({ user_id: User.id, email:User.email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
@@ -225,7 +229,7 @@ const AddMember = async (req, res) => {
 
     const data = {
       from: 'verification@tesvan.com',
-      to: email,
+      to: email.toLowerCase(),
       subject: 'Forgot Password Tesvan Platform',
       html: `<!DOCTYPE html>
       <html lang="en">
@@ -245,7 +249,7 @@ const AddMember = async (req, res) => {
             <div style="width: 70%">
               <h1 style="font-style: normal; font-weight: 600; font-size: 32px; line-height: 48px;">Please verify your email address.</h1>
               <p style="font-style: normal; font-size: 20px; text-align: left;">In order to complete your registration and start preparing for college admissions, you'll need to verify your email address.</p>
-              <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email} as the email address for your account. Please verify this email address by clicking the button below.</p>
+              <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email.toLowerCase()} as the email address for your account. Please verify this email address by clicking the button below.</p>
               <a href="http://platform.tesvan.com/changePassword?token=${User.token}" style="text-decoration:none">
                 <div style="width: 130px; height: 40px; background: #FFC038; border-radius: 5px; border:none; font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #143E59; cursor:pointer; padding:7px; box-sizing:border-box;">Create password</div>
               </a>
@@ -373,7 +377,7 @@ const editMember = async (req, res) => {
     member.role = role;
     member.firstName = firstName;
     member.lastName = lastName;
-    member.email = email;
+    member.email = email.toLowerCase();
     member.phoneNumber = phoneNumber;
     member.birthday = isoDate;
     member.gender = gender;
@@ -498,7 +502,7 @@ const RegisterTesting = async (req, res) => {
       role,
       firstName,
       lastName,
-      email,
+      email: email.toLowerCase(),
       phoneNumber,
       birthday,
       gender,
@@ -511,7 +515,7 @@ const RegisterTesting = async (req, res) => {
       tokenCreatedAt: new Date().toISOString(),
     });
 
-    User.token = jwt.sign({ user_id: User.id, email, role: User.role }, process.env.SECRET);
+    User.token = jwt.sign({ user_id: User.id, email: User.email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
@@ -535,15 +539,15 @@ const changeEmail = async (req, res) => {
 
     const User = await Users.findOne({ where: { id: userId } });
 
-    User.email = email;
-    User.token = jwt.sign({ user_id: User.id, email, role: User.role }, process.env.SECRET);
+    User.email = email.toLowerCase();
+    User.token = jwt.sign({ user_id: User.id, email:User.email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
     (function () {
       const data = {
         from: 'verification@tesvan.com',
-        to: email,
+        to: email.toLowerCase(),
         subject: 'Verify your email address',
         html: `<!DOCTYPE html>
         <html lang="en">
@@ -563,7 +567,7 @@ const changeEmail = async (req, res) => {
               <div style="width: 70%">
                 <h1 style="font-style: normal; font-weight: 600; font-size: 32px; line-height: 48px;">Please verify your email address.</h1>
                 <p style="font-style: normal; font-size: 20px; text-align: left;">“In order to complete your registration and start your learning journey, please verify your email address.</p>
-                <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email} as the email address for your account. Please verify this email address by clicking the button below.</p>
+                <p style="font-style: normal; font-size: 20px; text-align: left;">You've entered ${email.toLowerCase()} as the email address for your account. Please verify this email address by clicking the button below.</p>
                 <a href="https://platform.tesvan.com/verify?token=${User.token}" style="text-decoration:none">
                   <div style="width: 130px; height: 40px; background: #FFC038; border-radius: 5px; border:none; font-style: normal; font-weight: 500; font-size: 18px; line-height: 27px; color: #143E59; cursor:pointer; padding:7px; box-sizing:border-box;">Verify</div>
                 </a>
