@@ -28,7 +28,7 @@ const payUrl = async (req, res) => {
     const thisCourse = await PaymentWays.findOne({
       where: {
         groupId,
-        type: 'Monthly',
+        type,
       },
     });
     if (!thisCourse) {
