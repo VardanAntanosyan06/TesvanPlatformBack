@@ -109,7 +109,7 @@ const { userSockets } = require("./userSockets") // Assuming you have a Map for 
 const { socketController } = require("./controlers/Chat/socketController")
 
 io.on('connection', (socket) => {
-  console.log("+++ connection request +++", 555);
+  console.log("+++ connection request +++");
   const token = socket?.handshake?.query?.token;
 
   if (token) {

@@ -46,7 +46,7 @@ const UserRegistartion = async (req, res) => {
     const userEmail = email.toLowerCase()
     const isUser = await Users.findOne({ where: { email: userEmail, isVerified: true } });
     if (isUser) return res.status(403).json({ message: 'Email must be unique.' });
-    const hashedPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT); 12
+    const hashedPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT); 
 
     const newUser = await Users.create({
       firstName,
