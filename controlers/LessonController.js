@@ -210,7 +210,7 @@ const getLesson = async (req, res) => {
 
       (lesson = {
         points: parseFloat(lessonPoints.toFixed(2)),
-        maxPoints: maxPoints? maxPoints: 0,
+        maxPoints: maxPoints ? maxPoints : 0,
         pointsOfPercent: Math.round((lessonPoints * 100) / maxPoints),
         quizzPoint: userPoint ? parseFloat(quizPoints.toFixed(2)) : null,
         maxQuizzPoints: maxQuizzPoints ? maxQuizzPoints : 0,
@@ -713,10 +713,11 @@ const createLessonTime = async (req, res) => {
     const { user_id: userId } = req.user;
     const { lessonId } = req.params;
     const { time } = req.body;
+    const { courseId } = req.query
 
     let lessons = await CoursesPerLessons.findOne({
       where: {
-        courseId: 12,
+        courseId: courseId,
         lessonId
       }
     })
@@ -726,7 +727,7 @@ const createLessonTime = async (req, res) => {
         userId,
         lessonId,
         time,
-        courseId: 12,
+        courseId: courseId,
         number: lessons.number
       });
       return res.status(200).json({ success: true });
@@ -734,7 +735,7 @@ const createLessonTime = async (req, res) => {
       const lessonNumber = await LessonTime.findOne({
         where: {
           userId,
-          courseId: 12,
+          courseId: courseId,
           number: +lessons.number - 1
         }
       })
@@ -745,7 +746,7 @@ const createLessonTime = async (req, res) => {
         userId,
         lessonId,
         time,
-        courseId: 12,
+        courseId: courseId,
         number: lessons.number
       });
     }
