@@ -34,12 +34,20 @@ module.exports = {
         },
       },
       points: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.DECIMAL,
         defaultValue: 0,
       },
       attempt: {
         type: Sequelize.INTEGER,
         defaultValue: 1,
+      },
+      homeworkPoint: {
+        type: Sequelize.DECIMAL,
+        defaultValue: 0,
+      },
+      quizzPoint: {
+        type: Sequelize.DECIMAL,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

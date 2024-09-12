@@ -489,14 +489,23 @@ const SingleUserStstic = async (req, res) => {
   try {
     const { id, userId } = req.query;
 
-    const UserInfo = await UserCourses.findOne({
-      where: { GroupCourseId: id, UserId: userId },
-      include: { model: Users, attributes: ['firstName', 'lastName', 'image'] },
+    const group = await Groups.findOne({
+      where: {
+        id,
+      },
     });
 
-    if (!UserInfo) return res.status(404).json({ success: false, message: 'Invalid id or userId' });
+    const userInfo = await UserCourses.findOne({
+      where: { GroupCourseId: group.assignCourseId, UserId: userId },
+      include: {
+        model: Users,
+        attributes: ['firstName', 'lastName', 'image']
+      },
+    });
 
-    return res.status(200).json({ success: true, UserInfo });
+    if (!userInfo) return res.status(404).json({ success: false, message: 'Invalid id or userId' });
+
+    return res.status(200).json({ success: true, userInfo });
   } catch (error) {
     console.log(error.message, error.name);
     return res.status(500).json({ message: 'Something went wrong.' });

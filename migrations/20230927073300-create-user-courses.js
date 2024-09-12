@@ -24,6 +24,7 @@ module.exports = {
           model: 'Users',
           key: 'id',
         },
+        onDelete: "CASCADE"
       },
       totalPoints: {
         type: Sequelize.DECIMAL,

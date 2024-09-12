@@ -4,11 +4,11 @@ const groups = require('./groups');
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
-      Users.hasMany(models.Chats, { foreignKey: "firstId", as: "firstIds",onDelete: 'CASCADE' })
-      Users.hasMany(models.Chats, { foreignKey: "secondId", as: "secondIds",onDelete: 'CASCADE' })
-      Users.hasMany(models.ChatMessages, { foreignKey: "senderId",onDelete: 'CASCADE' })
-      Users.hasMany(models.GroupChatMessages, { foreignKey: "senderId",onDelete: 'CASCADE' })
-      Users.hasOne(models.GroupChatReads, {foreignKey: "userId",onDelete: 'CASCADE'})
+      Users.hasMany(models.Chats, { foreignKey: "firstId", as: "firstIds", onDelete: 'CASCADE' }) //+
+      Users.hasMany(models.Chats, { foreignKey: "secondId", as: "secondIds", onDelete: 'CASCADE' }) //+
+      Users.hasMany(models.ChatMessages, { foreignKey: "senderId" })
+      Users.hasMany(models.GroupChatMessages, { foreignKey: "senderId", onDelete: 'CASCADE' }) //+
+      Users.hasOne(models.GroupChatReads, { foreignKey: "userId", onDelete: 'CASCADE' }) //+
     }
   }
   Users.init(
@@ -121,38 +121,29 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const userLikes = sequelize.define('UserLikes');
-  Users.hasMany(userLikes, {
-    foreignKey: 'id',
-    onDelete: 'CASCADE',
-  });
+  Users.hasMany(userLikes, { foreignKey: 'id', onDelete: 'CASCADE' }); ///???
 
   const GroupCourses = sequelize.define('GroupCourses');
-  Users.belongsToMany(GroupCourses, { through: 'UserCourses', as: 'courses', onDelete: 'CASCADE' });
-
-  //
-  // const UserCourses = sequelize.define("UserCourses");
-  // Users.hasMany(UserCourses);
-  //
+  Users.belongsToMany(GroupCourses, { through: 'UserCourses', as: 'courses' }); //-
 
   const Lessons = sequelize.define('Lessons');
-  Users.belongsToMany(Lessons, { through: 'UserLesson', onDelete: 'CASCADE' });
+  Users.belongsToMany(Lessons, { through: 'UserLesson' }); //-
 
   const Homework = sequelize.define('Homework');
-  Users.belongsToMany(Homework, { through: 'UserHomework', onDelete: 'CASCADE' });
+  Users.belongsToMany(Homework, { through: 'UserHomework' }); //-
 
   const Message = sequelize.define('Message');
-  Users.hasMany(Message, { onDelete: 'CASCADE' });
+  Users.hasMany(Message, { foreignKey: "UserId", onDelete: 'CASCADE' }); //+
 
   const UserCourses = sequelize.define('UserCourses');
   const Groups = sequelize.define('Groups');
-  Users.hasMany(UserCourses, { onDelete: 'CASCADE' });
+  Users.hasMany(UserCourses, {foreignKey: "UserId", onDelete: 'CASCADE' }); //+
 
   Users.belongsToMany(Groups, {
     through: 'GroupsPerUsers',
     foreignKey: 'userId',
     otherKey: 'groupId',
     as: 'groups',
-    onDelete: 'CASCADE',
   });
 
   const UserInterview = sequelize.define('UserInterview');

@@ -679,7 +679,6 @@ const createCourse = async (req, res) => {
           // maxQuizzPoint,
           // maxHomeworkPoint,
           // maxInterviewPoint
-
         });
       }),
     );
@@ -1094,6 +1093,9 @@ const updateCourse = async (req, res) => {
       trainers,
       type,
       quizzId,
+      // maxQuizzPoint,
+      // maxHomeworkPoint,
+      // maxInterviewPoint
     } = req.body;
 
     const updatedCourse = {
@@ -1144,6 +1146,9 @@ const updateCourse = async (req, res) => {
             lessonType: req.body[`lessonType_${language}`],
             whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
             level: req.body[`level_${language}`],
+            // maxQuizzPoint,
+            // maxHomeworkPoint,
+            // maxInterviewPoint
           },
           { where: { courseId, language } },
         );

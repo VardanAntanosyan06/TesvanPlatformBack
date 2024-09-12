@@ -37,8 +37,10 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-      points: DataTypes.FLOAT,
+      points: DataTypes.DECIMAL,
       attempt: DataTypes.INTEGER,
+      homeworkPoint: DataTypes.DECIMAL,
+      quizzPoint: DataTypes.DECIMAL,
     },
     {
       sequelize,

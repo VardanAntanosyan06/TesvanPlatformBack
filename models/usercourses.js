@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      UserCourses.belongsTo(models.Users, { foreignKey: "UserId", onDelete: 'CASCADE' });
     }
   }
   UserCourses.init(

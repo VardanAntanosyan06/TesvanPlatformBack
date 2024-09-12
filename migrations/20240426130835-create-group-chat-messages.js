@@ -14,7 +14,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'GroupChats',
-          key: 'id',
+          key: 'id'
         },
         onDelete: 'CASCADE',
       },
@@ -23,7 +23,8 @@ module.exports = {
         references: {
           model: "Users",
           key: "id"
-        }
+        },
+        onDelete: "CASCADE"
       },
       text: {
         type: Sequelize.TEXT

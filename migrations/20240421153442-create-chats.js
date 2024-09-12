@@ -12,15 +12,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      // members: {
-      //   type: Sequelize.ARRAY(Sequelize.INTEGER),
-      // }
       firstId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Users",
           key: "id"
         },
+        onDelete: "CASCADE"
       },
       secondId: {
         type: Sequelize.INTEGER,
@@ -28,6 +26,7 @@ module.exports = {
           model: "Users",
           key: "id"
         },
+        onDelete: "CASCADE"
       },
     });
   },

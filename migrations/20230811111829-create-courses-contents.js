@@ -59,13 +59,16 @@ module.exports = {
         type:Sequelize.STRING
       },
       maxQuizzPoint:{
-        type:Sequelize.STRING
+        type:Sequelize.STRING,
+        defaultValue: 0
       },
       maxHomeworkPoint:{
-        type:Sequelize.STRING
+        type:Sequelize.STRING,
+        defaultValue: 0
       },
       maxInterviewPoint:{
-        type:Sequelize.STRING
+        type:Sequelize.STRING,
+        defaultValue: 0
       },
     });
   },
