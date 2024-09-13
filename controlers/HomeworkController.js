@@ -232,7 +232,10 @@ const submitHomework = async (req, res) => {
       where: { HomeworkId: id, UserId: userId },
     });
 
-    console.log(homework);
+    if (homework.status == 2) {
+      return res.status(403).json("You have homwork answer");
+    }
+
     if (!homework) {
       return res.status(403).json({
         message: "Homework not found or User doesn't have a homework",
@@ -243,23 +246,19 @@ const submitHomework = async (req, res) => {
     homework.status = 2;
     await homework.save();
 
-    Promise.all(
-      answer.links.map(async (e) => {
-        await HomeWorkFiles.create({
-          fileName: e.name,
-          fileLink: e.link,
-          homeWorkId: id,
-          userId,
-        });
-        // e['name'] = e.name;
-        return e;
-      }),
-    );
+    answer.links.forEach(async (e) => {
+      await HomeWorkFiles.create({
+        fileName: e.name,
+        fileLink: e.link,
+        homeWorkId: id,
+        userId,
+      });
+    }),
 
-    homework = {
-      ...homework.dataValues,
-      answer,
-    };
+      homework = {
+        ...homework.dataValues,
+        answer,
+      };
     res.send(homework);
   } catch (error) {
     console.log(error);

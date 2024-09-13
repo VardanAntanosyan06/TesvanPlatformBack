@@ -427,17 +427,17 @@ const deleteAccount = async (req, res) => {
     const { password } = req.query;
     const User = await Users.findByPk(id);
     if (User && User.isVerified && (await bcrypt.compare(password, User.password))) {
-      // await
-      // await UserCourses.destroy({
-      //   where: {
-      //     UserId: id,
-      //   },
-      // });
-      // await UserLesson.destroy({
-      //   where: {
-      //     UserId: id,
-      //   },
-      // });
+
+      await UserCourses.destroy({
+        where: {
+          UserId: id,
+        },
+      });
+      await UserLesson.destroy({
+        where: {
+          UserId: id,
+        },
+      });
       await Chats.destroy({
         where: {
           [Op.or]: [{ firstId: id }, { secondId: id }],
