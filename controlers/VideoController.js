@@ -5,6 +5,7 @@ const { Video } = require('../models');
 
 const path = require('path');
 const uuid = require('uuid');
+const fs = require('fs')
 
 const allowedFormats = [
     "video/mp4",
@@ -18,19 +19,16 @@ const createVideo = async (req, res) => {
 
         if (!req.files.file || !req.body.title_am || !req.body.title_en || !req.body.title_ru) {
             return res.status(400).json({ success: false, message: 'No video uploaded or no title.' });
-        }
+        };
 
         if (!allowedFormats.includes(file.mimetype)) {
             return res.status(400).json({ success: false, message: 'Unsupported file format' });
-        }
+        };
 
         const type = file.mimetype.split('/')[1];
         const videoFilename = uuid.v4() + '.' + type;
-        file.mv(path.resolve(__dirname, '..', 'static', videoFilename), (err) => {
-            if (err) {
-                return res.status(400).json({ success: false, message: 'Video do not uploaded.' });
-            }
-        });
+
+        await file.mv(path.resolve(__dirname, '..', 'static', videoFilename));
 
         const video = await Video.create({
             url: videoFilename,
@@ -40,7 +38,7 @@ const createVideo = async (req, res) => {
             description_am,
             description_en,
             description_ru
-        })
+        });
 
         return res.status(200).json({
             success: true,
@@ -71,7 +69,7 @@ const getVideo = async (req, res) => {
         return res.status(200).json({
             success: true,
             video
-        })
+        });
 
     } catch (error) {
         console.log(error);
@@ -85,7 +83,7 @@ const getVideos = async (req, res) => {
             attributes: {
                 exclude: ['lessonId']
             }
-        })
+        });
 
         return res.status(200).json({
             success: true,
@@ -100,6 +98,37 @@ const getVideos = async (req, res) => {
 
 const updateVideo = async (req, res) => {
     try {
+        const { id } = req.params;
+        const { title_am, title_en, title_ru, description_am, description_en, description_ru } = req.body
+
+        if (!title_am || !title_en || !title_ru) {
+            return res.status(400).json({ success: false, message: "Bad request" });
+        };
+
+        const [affectedCount] = await Video.update(
+            {
+                title_am,
+                title_en,
+                title_ru,
+                description_am,
+                description_en,
+                description_ru
+            },
+            {
+                where: {
+                    id
+                }
+            }
+        );
+
+        if (affectedCount === 0) {
+            return res.status(500).json({ success: false, message: 'Video do not updated.' });
+        };
+
+        return res.status(200).json({
+            success: true,
+            message: "Video updated"
+        });
 
     } catch (error) {
         console.log(error);
@@ -109,6 +138,30 @@ const updateVideo = async (req, res) => {
 
 const deleteVideo = async (req, res) => {
     try {
+        const { id } = req.params;
+
+        const { url } = await Video.findOne({
+            where: {
+                id
+            }
+        });
+
+        fs.unlinkSync(path.resolve(__dirname, "../", "static", url))
+
+        const deleteVideo = await Video.destroy({
+            where: {
+                id
+            }
+        });
+
+        if (deleteVideo === 0) {
+            return res.status(500).json({ success: false, message: 'Video do not deleted.' });
+        };
+
+        return res.status(200).json({
+            success: true,
+            message: "Video delated"
+        });
 
     } catch (error) {
         console.log(error);

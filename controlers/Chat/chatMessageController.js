@@ -406,14 +406,12 @@ const deleteChatMessage = async (req, res) => {
             where: { id: messageId }
         })
         if (file) {
-            const fileName = file.split("/").pop()
-            fs.unlinkSync(path.resolve(__dirname, "../../", "messageFiles", fileName), (err) => {
+            fs.unlinkSync(path.resolve(__dirname, "../../", "messageFiles", file), (err) => {
                 console.log(err.message);
             })
         }
         if (image) {
-            const imageName = image.split("/").pop()
-            fs.unlinkSync(path.resolve(__dirname, "../../", "messageFiles", imageName), (err) => {
+            fs.unlinkSync(path.resolve(__dirname, "../../", "messageFiles", image), (err) => {
                 console.log(err.message);
             })
         }
