@@ -441,27 +441,7 @@ const createLesson = async (req, res) => {
 
     const { video } = req.files;
 
-    if (video) {
 
-      if (!allowedFormats.includes(file.mimetype)) {
-        return res.status(400).json({ success: false, message: 'Unsupported file format' });
-      };
-
-      const type = video.mimetype.split('/')[1];
-      const videoFilename = uuid.v4() + '.' + type;
-      await video.mv(path.resolve(__dirname, '../', 'static', videoFilename));
-
-      await Video.create({
-        lessonId,
-        url: videoFilename,
-        title_am: videoTitle,
-        title_en: videoTitle,
-        title_ru: videoTitle,
-        description_am,
-        description_en,
-        description_ru
-      });
-    }
 
     if (req.files) {
       const { file_en, file_ru, file_am } = req.files;
@@ -507,6 +487,28 @@ const createLesson = async (req, res) => {
         await HomeworkPerLesson.create({
           homeworkId,
           lessonId,
+        });
+      }
+
+      if (video) {
+
+        if (!allowedFormats.includes(file.mimetype)) {
+          return res.status(400).json({ success: false, message: 'Unsupported file format' });
+        };
+  
+        const type = video.mimetype.split('/')[1];
+        const videoFilename = uuid.v4() + '.' + type;
+        await video.mv(path.resolve(__dirname, '../', 'static', videoFilename));
+  
+        await Video.create({
+          lessonId: id,
+          url: videoFilename,
+          title_am: videoTitle,
+          title_en: videoTitle,
+          title_ru: videoTitle,
+          description_am,
+          description_en,
+          description_ru
         });
       }
       // else {
