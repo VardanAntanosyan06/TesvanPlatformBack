@@ -531,6 +531,11 @@ const deleteLesson = async (req, res) => {
   }
 };
 
+const allowedFormats = [
+  "video/mp4",
+  "video/mpeg"
+];
+
 const updateLesson = async (req, res) => {
   try {
     const {
@@ -552,8 +557,31 @@ const updateLesson = async (req, res) => {
       presentationDescription_ru,
       presentationTitle_am,
       presentationDescription_am,
+      videoTitle
     } = req.body;
+    const { video } = req.files;
 
+    if (video) {
+
+      if (!allowedFormats.includes(file.mimetype)) {
+        return res.status(400).json({ success: false, message: 'Unsupported file format' });
+      };
+
+      const type = video.mimetype.split('/')[1];
+      const videoFilename = uuid.v4() + '.' + type;
+      await video.mv(path.resolve(__dirname, '../', 'static', videoFilename));
+
+      await Video.create({
+        lessonId,
+        url: videoFilename,
+        title_am: videoTitle,
+        title_en: videoTitle,
+        title_ru: videoTitle,
+        description_am,
+        description_en,
+        description_ru
+      });
+    }
 
     console.log(isNaN(+homeworkId), 4445, homeworkId);
 
