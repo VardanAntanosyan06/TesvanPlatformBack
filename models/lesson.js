@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Lesson.hasOne(models.Video, { foreignKey: "lessonId", as: "video" });
     }
   }
   Lesson.init(
@@ -41,9 +42,6 @@ module.exports = (sequelize, DataTypes) => {
   const HomeworkPerLesson = sequelize.define('HomeworkPerLesson');
   const Homework = sequelize.define('Homework');
   // Lesson.hasOne(Quizz, { foreignKey: "lessonId", as: "quizz" });
-
-  const Video = sequelize.define('Video');
-  Lesson.hasOne(Video, { foreignKey: 'lessonId', as: 'video' });
 
   const CoursesPerLessons = sequelize.define('CoursesPerLessons');
 

@@ -227,9 +227,10 @@ const submitHomework = async (req, res) => {
     const { id } = req.params;
     const { user_id: userId } = req.user;
     const { answer } = req.body;
+    const {courseId} = req.query
 
     let homework = await UserHomework.findOne({
-      where: { HomeworkId: id, UserId: userId },
+      where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId },
     });
 
     if (homework.status == 2) {

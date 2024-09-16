@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Video.belongsTo(models.Lesson, {foreignKey: "lessonId"});
     }
   }
   Video.init(

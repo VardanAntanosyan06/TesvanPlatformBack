@@ -21,6 +21,8 @@ const {
 } = require('../models');
 const { v4 } = require('uuid');
 const path = require('path');
+const uuid = require('uuid');
+const fs = require('fs');
 
 const lessonsperquizz = require('../models/lessonsperquizz');
 const { userSockets } = require('../userSockets');
@@ -269,6 +271,13 @@ const getLessonForAdmin = async (req, res) => {
             [`description_${language}`, 'description'],
           ],
         },
+        {
+          model: Video,
+          as: "video",
+          attributes: {
+            exclude: ['lessonId']
+          },
+        }
       ],
     });
 
@@ -439,9 +448,7 @@ const createLesson = async (req, res) => {
       videoTitle
     } = req.body;
 
-    const { video } = req.files;
-
-
+    const video = req.files?.video;
 
     if (req.files) {
       const { file_en, file_ru, file_am } = req.files;
@@ -492,16 +499,16 @@ const createLesson = async (req, res) => {
 
       if (video) {
 
-        if (!allowedFormats.includes(file.mimetype)) {
+        if (!allowedFormats.includes(video.mimetype)) {
           return res.status(400).json({ success: false, message: 'Unsupported file format' });
         };
-  
+
         const type = video.mimetype.split('/')[1];
         const videoFilename = uuid.v4() + '.' + type;
         await video.mv(path.resolve(__dirname, '../', 'static', videoFilename));
-  
+
         await Video.create({
-          lessonId: id,
+          lessonId,
           url: videoFilename,
           title_am: videoTitle,
           title_en: videoTitle,
@@ -527,6 +534,7 @@ const createLesson = async (req, res) => {
           quizzId,
         });
       }
+
       return res.status(200).json({ success: true });
     } else {
       res.status(400).json({ message: "You didn't specify a presentation" });
@@ -586,29 +594,42 @@ const updateLesson = async (req, res) => {
       presentationDescription_am,
       videoTitle
     } = req.body;
-    // const { video } = req.files;
+    const video = req.files?.video;
 
-    // if (video) {
+    if (video) {
+      if (!allowedFormats.includes(video.mimetype)) {
+        return res.status(400).json({ success: false, message: 'Unsupported file format' });
+      };
 
-    //   if (!allowedFormats.includes(file.mimetype)) {
-    //     return res.status(400).json({ success: false, message: 'Unsupported file format' });
-    //   };
+      const { url } = await Video.findOne({
+        where: {
+          lessonId
+        }
+      });
 
-    //   const type = video.mimetype.split('/')[1];
-    //   const videoFilename = uuid.v4() + '.' + type;
-    //   await video.mv(path.resolve(__dirname, '../', 'static', videoFilename));
+      fs.unlinkSync(path.resolve(__dirname, "../", "static", url));
 
-    //   await Video.create({
-    //     lessonId,
-    //     url: videoFilename,
-    //     title_am: videoTitle,
-    //     title_en: videoTitle,
-    //     title_ru: videoTitle,
-    //     description_am,
-    //     description_en,
-    //     description_ru
-    //   });
-    // }
+      const type = video.mimetype.split('/')[1];
+      const videoFilename = uuid.v4() + '.' + type;
+      await video.mv(path.resolve(__dirname, '../', 'static', videoFilename));
+
+      await Video.update(
+        {
+          url: videoFilename,
+          title_am: videoTitle,
+          title_en: videoTitle,
+          title_ru: videoTitle,
+          description_am,
+          description_en,
+          description_ru
+        },
+        {
+          where: {
+            lessonId
+          }
+        }
+      );
+    }
 
     if (isNaN(+homeworkId)) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });
