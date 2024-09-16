@@ -107,14 +107,34 @@ const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
 
 // coureContent()
 
-async function toLoverCase() {
-    const users = await Users.findAll(
-    )
-    users.forEach(user => {
-        console.log(user.email);
+// async function toLoverCase() {
+//     const users = await Users.findAll(
+//     )
+//     users.forEach(user => {
+//         console.log(user.email);
         
-        user.email = user.email.toLowerCase()
-        user.save()
-    });
+//         user.email = user.email.toLowerCase()
+//         user.save()
+//     });
+// }
+// toLoverCase()
+
+const axios = require('axios');
+
+
+async function fuu(){
+    console.log(222)
+
+const { data: paymentResponse } = await axios.post(
+    `http://localhost:4000/api/v2/quizz/submitQuizz?courseId=17&lessonId=22&language=am`,
+    {"quizzId":92,"questionId":2515,"optionId":9545}
+  )
 }
-toLoverCase()
+
+fuu();fuu();fuu();
+fuu();fuu();fuu();
+fuu();fuu();fuu();
+fuu();fuu();fuu();
+
+
+console.log(111);

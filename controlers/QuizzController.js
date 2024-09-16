@@ -254,7 +254,7 @@ const submitQuizz = async (req, res) => {
       question.Options = question.Options.sort((a, b) => a.id - b.id);
     });
 
-    await UserAnswersQuizz.destroy({
+    UserAnswersQuizz.destroy({
       where: { userId, testId: quizzId, questionId, courseId },
     });
 
@@ -272,16 +272,27 @@ const submitQuizz = async (req, res) => {
       point: quizz.Questions[0].points
     });
 
-    quizz.Questions[0].Options.forEach(async (option) => {
+    // quizz.Questions[0].Options.forEach(async (option) => {
+    //    await UserAnswersOption.create({
+    //     userAnswerQuizzId: userAnswerQuizzId,
+    //     title_en: option.title_en,
+    //     title_am: option.title_am,
+    //     title_ru: option.title_ru,
+    //     isCorrect: option.isCorrect,
+    //     userAnswer: option.id === optionId ? true : false,
+    //   })
+    // });
+
+    for (const option of quizz.Questions[0].Options) {
       await UserAnswersOption.create({
         userAnswerQuizzId: userAnswerQuizzId,
         title_en: option.title_en,
         title_am: option.title_am,
         title_ru: option.title_ru,
         isCorrect: option.isCorrect,
-        userAnswer: option.id === optionId ? true : false,
-      })
-    });
+        userAnswer: +option.id === +optionId ? true : false,
+      });
+    }
 
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -304,10 +315,10 @@ const finishQuizz = async (req, res) => {
         lessonId
       }
     })
-    if(userPoint){
+    if (userPoint) {
       return res.status(403).json({ success: false, message: 'the finish has already been set' });
     }
-    
+
     const userCourses = await UserCourses.findOne({
       where: { UserId: userId, GroupCourseId: courseId },
     });

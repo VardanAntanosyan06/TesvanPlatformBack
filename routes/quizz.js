@@ -10,7 +10,7 @@ router.get('/getAll', checkAuth(['TEACHER', 'ADMIN']), controller.getAll);
 router.post("/getUserAnswers/",  checkAuth(["STUDENT","TEACHER"]),controller.getUserAnswers);
 router.get("/getQuizzesAdmin/:id",  checkAuth(["ADMIN"]),controller.getQuizzesAdmin);
 router.get("/getQuizzes/:quizzId",  checkAuth(["STUDENT","TEACHER", "ADMIN"]),controller.getQuizzes);
-router.post("/submitQuizz", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.submitQuizz);
+router.post("/submitQuizz",  controller.submitQuizz);
 router.post("/finishQuizz", checkAuth(["STUDENT","TEACHER", "ADMIN"]), controller.finishQuizz);
 
 router.delete("/delete/:id", checkAuth(["ADMIN"]), controller.deleteQuizz);
