@@ -586,31 +586,29 @@ const updateLesson = async (req, res) => {
       presentationDescription_am,
       videoTitle
     } = req.body;
-    const { video } = req.files;
+    // const { video } = req.files;
 
-    if (video) {
+    // if (video) {
 
-      if (!allowedFormats.includes(file.mimetype)) {
-        return res.status(400).json({ success: false, message: 'Unsupported file format' });
-      };
+    //   if (!allowedFormats.includes(file.mimetype)) {
+    //     return res.status(400).json({ success: false, message: 'Unsupported file format' });
+    //   };
 
-      const type = video.mimetype.split('/')[1];
-      const videoFilename = uuid.v4() + '.' + type;
-      await video.mv(path.resolve(__dirname, '../', 'static', videoFilename));
+    //   const type = video.mimetype.split('/')[1];
+    //   const videoFilename = uuid.v4() + '.' + type;
+    //   await video.mv(path.resolve(__dirname, '../', 'static', videoFilename));
 
-      await Video.create({
-        lessonId,
-        url: videoFilename,
-        title_am: videoTitle,
-        title_en: videoTitle,
-        title_ru: videoTitle,
-        description_am,
-        description_en,
-        description_ru
-      });
-    }
-
-    console.log(isNaN(+homeworkId), 4445, homeworkId);
+    //   await Video.create({
+    //     lessonId,
+    //     url: videoFilename,
+    //     title_am: videoTitle,
+    //     title_en: videoTitle,
+    //     title_ru: videoTitle,
+    //     description_am,
+    //     description_en,
+    //     description_ru
+    //   });
+    // }
 
     if (isNaN(+homeworkId)) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });
