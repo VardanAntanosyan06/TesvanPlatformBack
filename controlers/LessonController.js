@@ -614,6 +614,9 @@ const updateLesson = async (req, res) => {
       videoTitle
     } = req.body;
     const video = req.files?.video;
+    const file_en = req.files?.file_en
+    const file_ru = req.files?.file_ru
+    const file_am = req.files?.file_am
 
     if (video) {
       if (!allowedFormats.includes(video.mimetype)) {
@@ -685,8 +688,7 @@ const updateLesson = async (req, res) => {
       { where: { id: lessonId } },
     );
 
-    if (req.files) {
-      const { file_en, file_ru, file_am } = req.files;
+    if (file_en || file_am || file_ru) {
       const fileEnType = file_en.mimetype.split('/')[1];
       const fileNameEn = v4() + '.' + fileEnType;
       file_en.mv(path.resolve(__dirname, '..', 'static', fileNameEn));
