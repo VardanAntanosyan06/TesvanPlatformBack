@@ -642,9 +642,9 @@ const createCourse = async (req, res) => {
       priceTitle_am,
       priceTitle_en,
       priceTitle_ru,
-      // maxQuizzPoint,
-      // maxHomeworkPoint,
-      // maxInterviewPoint
+      maxQuizzPoint,
+      maxHomeworkPoint,
+      maxInterviewPoint
     } = req.body;
 
     let { img, trainersImages } = req.files;
@@ -676,9 +676,9 @@ const createCourse = async (req, res) => {
           priceDescription: req.body[`priceDescription_${language}`],
           price: 0,
           discount: 0,
-          // maxQuizzPoint,
-          // maxHomeworkPoint,
-          // maxInterviewPoint
+          maxQuizzPoint,
+          maxHomeworkPoint,
+          maxInterviewPoint
         });
       }),
     );
@@ -1093,9 +1093,9 @@ const updateCourse = async (req, res) => {
       trainers,
       type,
       quizzId,
-      // maxQuizzPoint,
-      // maxHomeworkPoint,
-      // maxInterviewPoint
+      maxQuizzPoint,
+      maxHomeworkPoint,
+      maxInterviewPoint
     } = req.body;
 
     const updatedCourse = {
@@ -1146,9 +1146,9 @@ const updateCourse = async (req, res) => {
             lessonType: req.body[`lessonType_${language}`],
             whyThisCourse: JSON.parse(req.body[`whyThisCourse_${language}`]),
             level: req.body[`level_${language}`],
-            // maxQuizzPoint,
-            // maxHomeworkPoint,
-            // maxInterviewPoint
+            maxQuizzPoint,
+            maxHomeworkPoint,
+            maxInterviewPoint
           },
           { where: { courseId, language } },
         );
@@ -1369,6 +1369,9 @@ const getCourseForAdmin = async (req, res) => {
       description_ru: course.CoursesContents[2].description,
       whyThisCourse_ru: course.CoursesContents[2].whyThisCourse,
       levelDescriptions: course.levelDescriptions,
+      maxQuizzPoint: course.CoursesContents[0].maxQuizzPoint,
+      maxHomeworkPoint: course.CoursesContents[0].maxHomeworkPoint,
+      maxInterviewPoint: course.CoursesContents[0].maxInterviewPoint,
       lessons: course.Lessons.map((lesson, index) => {
         const formattedLesson = {
           id: lesson.dataValues.id,
