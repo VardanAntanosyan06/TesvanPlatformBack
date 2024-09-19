@@ -111,7 +111,6 @@ const getLesson = async (req, res) => {
     const { user_id: userId } = req.user;
     const { language, courseId } = req.query;
 
-    console.log(userId, id);
     const lessonTime = await LessonTime.findOne({
       where: {
         lessonId: id,
@@ -168,6 +167,16 @@ const getLesson = async (req, res) => {
                 attributes: [],
               },
             },
+            {
+              model: Video,
+              as: "video",
+              attributes: [
+                'id',
+                'lessonId',
+                [`title_${language}`, 'title'],
+                [`description_${language}`, 'description'],
+              ],
+            }
           ],
         },
       ],
@@ -497,6 +506,15 @@ const createLesson = async (req, res) => {
         });
       }
 
+      // if(homeworkId.length>0){
+      //   for(const id of homeworkId){
+      //     await HomeworkPerLesson.create({
+      //       lessonId,
+      //       homeworkId: id
+      //     })
+      //   }
+      // };
+
       if (video) {
 
         if (!allowedFormats.includes(video.mimetype)) {
@@ -528,6 +546,7 @@ const createLesson = async (req, res) => {
       //     courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values(),
       //   );
       // }
+      
       if (!isNaN(+quizzId)) {
         await LessonsPerQuizz.create({
           lessonId,

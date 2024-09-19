@@ -120,8 +120,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  const userLikes = sequelize.define('UserLikes');
-  Users.hasMany(userLikes, { foreignKey: 'id', onDelete: 'CASCADE' }); ///???
+  // const userLikes = sequelize.define('UserLikes');
+  // Users.hasMany(userLikes, { foreignKey: 'id', onDelete: 'CASCADE' }); ///???
 
   const GroupCourses = sequelize.define('GroupCourses');
   Users.belongsToMany(GroupCourses, { through: 'UserCourses', as: 'courses' }); //-
@@ -144,17 +144,17 @@ module.exports = (sequelize, DataTypes) => {
     foreignKey: 'userId',
     otherKey: 'groupId',
     as: 'groups',
-  });
+  }); //-
 
   const UserInterview = sequelize.define('UserInterview');
   Users.hasMany(UserInterview, {
     foreignKey: "userId"
-  });
+  }); //+
 
   const UserHomework = sequelize.define('UserHomework');
-  Users.hasMany(UserHomework);
+  Users.hasMany(UserHomework); //+
 
   const GroupsPerUsers = sequelize.define('GroupsPerUsers');
-  Users.hasMany(GroupsPerUsers, { onDelete: 'CASCADE', foreignKey: 'userId' });
+  Users.hasMany(GroupsPerUsers, { onDelete: 'CASCADE', foreignKey: 'userId' }); //-
   return Users;
 };

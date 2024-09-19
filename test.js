@@ -119,22 +119,17 @@ const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
 // }
 // toLoverCase()
 
-const axios = require('axios');
+// const axios = require('axios');
 
 
-async function fuu(){
-    console.log(222)
+// async function fuu(){
 
-const { data: paymentResponse } = await axios.post(
-    `http://localhost:4000/api/v2/quizz/submitQuizz?courseId=17&lessonId=22&language=am`,
-    {"quizzId":92,"questionId":2515,"optionId":9545}
-  )
-}
+// const { data: paymentResponse } = await axios.post(
+//     `http://localhost:4000/api/v2/quizz/submitQuizz?courseId=17&lessonId=22&language=am`,
+//     {"quizzId":92,"questionId":2515,"optionId":9545}
+//   )
+// }
 
-fuu();fuu();fuu();
-fuu();fuu();fuu();
-fuu();fuu();fuu();
-fuu();fuu();fuu();
-
-
-console.log(111);
+// fuu();fuu();fuu()
+// fuu();fuu();fuu()
+// fuu()

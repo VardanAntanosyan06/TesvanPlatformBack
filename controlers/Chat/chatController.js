@@ -27,15 +27,15 @@ const createChat = async (req, res) => {
             ]
         })
         if (Chat) {
-            if(Chat.firstId === userId){
-                delete Chat.dataValues.firstIds
-                Chat.setDataValue('receiver', Chat.dataValues.secondIds)
-                delete Chat.dataValues.secondIds
+            if (Chat.firstId === userId) {
+                Chat.setDataValue('receiver', Chat.dataValues.secondIds);
+                delete Chat.dataValues.firstIds;
+                delete Chat.dataValues.secondIds;
                 await Chat.save()
             } else {
-                delete Chat.dataValues.secondIds
-                Chat.setDataValue('receiver', Chat.dataValues.firstIds)
-                delete Chat.dataValues.firstIds
+                Chat.setDataValue('receiver', Chat.dataValues.firstIds);
+                delete Chat.dataValues.secondIds;
+                delete Chat.dataValues.firstIds;
                 await Chat.save()
             }
             return res.status(200).json(Chat);
@@ -59,15 +59,15 @@ const createChat = async (req, res) => {
                 ]
             })
 
-            if(Chat.firstId === userId){
-                delete Chat.dataValues.firstIds
-                Chat.setDataValue('receiver', Chat.dataValues.secondIds)
-                delete Chat.dataValues.secondIds
+            if (Chat.firstId === userId) {
+                Chat.setDataValue('receiver', Chat.dataValues.secondIds);
+                delete Chat.dataValues.firstIds;
+                delete Chat.dataValues.secondIds;
                 await Chat.save()
-            } else {
-                delete Chat.dataValues.secondIds
-                Chat.setDataValue('receiver', Chat.dataValues.firstIds)
-                delete Chat.dataValues.firstIds
+            } else { 
+                Chat.setDataValue('receiver', Chat.dataValues.firstIds);
+                delete Chat.dataValues.secondIds;
+                delete Chat.dataValues.firstIds;
                 await Chat.save()
             }
             return res.status(200).json(Chat);

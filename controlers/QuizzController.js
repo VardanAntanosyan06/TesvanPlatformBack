@@ -271,7 +271,7 @@ const submitQuizz = async (req, res) => {
       questionTitle_ru: quizz.Questions[0].title_ru,
       point: quizz.Questions[0].points
     });
-
+    
     // quizz.Questions[0].Options.forEach(async (option) => {
     //    await UserAnswersOption.create({
     //     userAnswerQuizzId: userAnswerQuizzId,

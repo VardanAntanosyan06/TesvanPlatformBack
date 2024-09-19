@@ -39,7 +39,6 @@ const changeStatus = async (req, res) => {
     await Certificate.save();
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
     if (error.name === "SequelizeValidationError") {
       return res.status(403).json({ message: error.message });
     } else {

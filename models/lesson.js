@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Lesson.hasOne(models.Video, { foreignKey: "lessonId", as: "video" });
+      Lesson.belongsToMany(models.Homework, { through: HomeworkPerLesson, foreignKey: 'lessonId', otherKey: 'homeworkId', as: 'homework' });
     }
   }
   Lesson.init(
@@ -56,13 +57,6 @@ module.exports = (sequelize, DataTypes) => {
     foreignKey: 'lessonId',
     otherKey: 'quizzId',
     as: 'quizz',
-  });
-
-  Lesson.belongsToMany(Homework, {
-    through: HomeworkPerLesson,
-    foreignKey: 'lessonId',
-    otherKey: 'homeworkId',
-    as: 'homework',
   });
 
   const Presentations = sequelize.define('Presentations');
