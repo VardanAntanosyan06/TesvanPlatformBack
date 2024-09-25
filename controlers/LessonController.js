@@ -546,7 +546,7 @@ const createLesson = async (req, res) => {
       //     courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values(),
       //   );
       // }
-      
+
       if (!isNaN(+quizzId)) {
         await LessonsPerQuizz.create({
           lessonId,
@@ -613,6 +613,7 @@ const updateLesson = async (req, res) => {
       presentationDescription_am,
       videoTitle
     } = req.body;
+    
     const video = req.files?.video;
     const file_en = req.files?.file_en
     const file_ru = req.files?.file_ru
@@ -653,7 +654,7 @@ const updateLesson = async (req, res) => {
       );
     }
 
-    if (isNaN(+homeworkId)) {
+    if (isNaN(+homeworkId)) { //homeworkId.length > 0
       await HomeworkPerLesson.destroy({ where: { lessonId } });
       await UserHomework.update(
         {
@@ -670,6 +671,13 @@ const updateLesson = async (req, res) => {
         lessonId,
         homeworkId
       });
+
+      //   for(const id of homeworkId){
+      //     await HomeworkPerLesson.create({
+      //       lessonId,
+      //       homeworkId: id
+      //     })
+      //   }
     }
 
     await Lesson.update(

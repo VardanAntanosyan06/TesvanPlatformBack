@@ -4,23 +4,23 @@ const { Op } = require("sequelize");
 const findAllStudents = async (req, res) => {
   try {
     let certificates = await Certificates.findAll({
-      include: { model: Users, attributes: ["firstName", "lastName","image"] },
+      include: { model: Users, attributes: ["firstName", "lastName", "image"] },
       attributes: ["id", "userId", "status", "giveDate"],
     });
 
     certificates = certificates.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
-      e["name"] = e.User.firstName+" "+e.User.lastName;
+      e["name"] = e.User.firstName + " " + e.User.lastName;
       e["image"] = e.User.image;
-      e["points"] =100
+      e["points"] = 100
       e["type"] = "excellence"
-    
+
 
       delete e.User;
       return e;
     });
-    return res.status(200).json( certificates );
+    return res.status(200).json(certificates);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong." });
@@ -48,19 +48,19 @@ const changeStatus = async (req, res) => {
 };
 
 
-const getUserCertificates = async(req,res)=>{
+const getUserCertificates = async (req, res) => {
   try {
-    const {user_id:userId} = req.user;
+    const { user_id: userId } = req.user;
 
     let certificates = await Certificates.findAll({
-      where:{userId},
-      attributes: ["id", "userId", "status", "giveDate","courseName"],
+      where: { userId },
+      attributes: ["id", "userId", "status", "giveDate", "courseName", "url"],
       include: { model: Users, attributes: ["firstName", "lastName"] },
     });
 
     certificates = certificates.map((e) => {
       e = e.toJSON();
-      delete e.dataValues;
+      // delete e.dataValues;
       e["firstName"] = e.User.firstName;
       e["lastName"] = e.User.lastName;
       delete e.User;

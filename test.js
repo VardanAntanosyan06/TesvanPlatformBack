@@ -112,7 +112,7 @@ const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
 //     )
 //     users.forEach(user => {
 //         console.log(user.email);
-        
+
 //         user.email = user.email.toLowerCase()
 //         user.save()
 //     });
@@ -130,6 +130,70 @@ const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
 //   )
 // }
 
-// fuu();fuu();fuu()
-// fuu();fuu();fuu()
 // fuu()
+
+// const pdf = require('html-pdf');
+// const fs = require('fs');
+// const path = require('path');
+
+// const htmlFilePath = path.join(__dirname, 'certificate.html'); // Path to HTML file
+// const cssFilePath = path.join(__dirname, 'styles.css');
+// const jsFilePath = path.join(__dirname, 'script.js'); // Path to CSS file
+
+// function createPDF() {
+
+//     fs.readFile(cssFilePath, 'utf-8', (err, cssData) => {
+//         if (err) {
+//             console.error('Error reading CSS file:', err);
+//             return;
+//         }
+//         const htmlWithStyles = `
+//                 <html>
+//                 <head>
+//                     <style>${cssData}</style>
+//                 </head>
+//                 <body>
+//                 <div class="certificate-container">
+//                         <div class="certificate-content">
+//                             <h1 class="certificate-title">CERTIFICATE</h1>
+//                             <p class="certificate-subtitle">OF PARTICIPATION</p>
+
+//                             <p class="presented-to">This certificate is proudly presented to</p>
+//                             <h2 class="name">Sarah Smith</h2>
+//                             <p class="confirmation">This certificate confirms that he/she has participated in the Manual Testing course</p>
+
+//                             <div class="date-signature">
+//                                 <div class="date">
+//                                     <p class="label">Date</p>
+//                                     <p id="date">25</p>
+//                                 </div>
+//                                 <div class="signature">
+//                                     <p class="label">Signature</p>
+//                                     <img src="signature.png" alt="Signature" class="signature-img">
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     </div>
+//                     <script>
+//                     </script>
+//                 </body>
+//                 </html>
+//             `;
+
+//         const options = { format: 'A4' };
+//         const outputFilePath = path.join(__dirname, 'output.pdf'); 
+
+//         pdf.create(htmlWithStyles, options).toFile(outputFilePath, (err, res) => {
+//             if (err) {
+//                 console.error('Error creating PDF:', err);
+//                 return;
+//             }
+//             console.log('PDF successfully created:', res.filename);
+//         });
+
+//     });
+
+// }
+
+// // Call the function to create the PDF
+// createPDF();

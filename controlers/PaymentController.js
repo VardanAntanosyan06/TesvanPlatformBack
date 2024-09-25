@@ -19,9 +19,10 @@ const {
   PaymentWays,
 } = require('../models');
 var CryptoJS = require('crypto-js');
+const { Op } = require('sequelize');
 
 const sequelize = require('sequelize');
-const payUrl = async (req, res) => {
+const paymentUrlArca = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { paymentWay, groupId, type } = req.body;
@@ -56,7 +57,7 @@ const payUrl = async (req, res) => {
       groupId,
       userId,
       type,
-      sum: thisCoursePrice
+      amount: thisCoursePrice
     });
 
     return res.json({
@@ -70,7 +71,7 @@ const payUrl = async (req, res) => {
   }
 };
 
-const buy = async (req, res) => {
+const paymentArca = async (req, res) => {
   try {
     const { orderKey } = req.body;
 
@@ -96,6 +97,12 @@ const buy = async (req, res) => {
         errorMessage: paymentResponse.errorMessage,
         groupId: payment.groupId,
       });
+
+    if (req.body.monthlyPayment === true) {
+      return res.json({
+        success: true,
+      });
+    }
 
     if (payment.type == 'Group') {
       const user = await Users.findOne({ where: { id: payment.userId } });
@@ -334,6 +341,12 @@ const ConfirmIdram = async (req, res) => {
           payment.status = 'Success';
           await payment.save();
 
+          if (req.body.monthlyPayment === true) {
+            return res.json({
+              success: true,
+            });
+          };
+
           if (payment.type === 'Group') {
             const user = await Users.findOne({ where: { id: payment.userId } });
             const group = await Groups.findByPk(payment.groupId);
@@ -509,8 +522,157 @@ const ConfirmIdram = async (req, res) => {
   }
 };
 
+const getUserPayment = async (req, res) => {
+  try {
+    // const { user_id: userId } = req.user;
+    const { groupId } = req.query
+    const type = "monthly";
+    const userId = 3
+
+    const paymentWays = await PaymentWays.findOne({
+      where: {
+        groupId,
+        type
+      }
+    });
+    const priceCourse = paymentWays.price * (1 - paymentWays.discount / 100) * paymentWays.durationMonths
+
+    const payments = await Payment.findAll({
+      where: {
+        userId,
+        groupId,
+        status: {
+          [Op.not]: "Pending"
+        }
+      },
+      attributes: ['paymentWay', 'status', 'type', 'amount', 'createdAt'],
+      order: [['createdAt', 'DESC']]
+    });
+
+    if (payments.length === 0) {
+      return res.status(400).json({ success: false, message: 'Bad request1.' });
+    };
+    const fullPaid = payments.find(value => value.type === "full");
+
+    if (fullPaid) {
+      const responsData = {
+        payments,
+        nextPayment: false
+      };
+
+      return res.status(200).json({
+        success: true,
+        responsData
+      });
+    };
+
+    const lastPaid = payments.find(value => value.status === "Success");
+    const userPaidSum = payments.reduce((aggr, value) => {
+      if (value.status === "Success") {
+        return aggr = aggr + +value.amount
+      };
+    }, 0);
+    const userUnpaidSum = priceCourse - userPaidSum;
+
+    let nextPaymentDate = new Date(lastPaid.createdAt);
+    nextPaymentDate.setDate(nextPaymentDate.getDate() + 30);
+    if (+priceCourse === +userPaidSum) {
+      const responsData = {
+        payments,
+        nextPayment: false
+      };
+
+      return res.status(200).json({
+        success: true,
+        responsData
+      });
+    };
+
+    const responsData = {
+      payments,
+      nextPayment: true,
+      userPaidSum,
+      userUnpaidSum,
+      lastPaid,
+      nextPaymentDate
+    };
+
+    return res.status(200).json({
+      success: true,
+      responsData
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Internal Server Error');
+  }
+};
+
+const monthlyPayment = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { groupId } = req.query;
+    const { paymentWay } = req.body;
+    const type = "monthly";
+
+    const paymentWays = PaymentWays.findOne({
+      where: {
+        groupId,
+        type
+      }
+    });
+
+    const priceCourse = paymentWays.price * (1 - paymentWays.discount / 100) * paymentWays.durationMonths
+
+    const payment = Payment.findAll({
+      where: {
+        userId,
+        groupId,
+        status: "Success",
+        type
+      },
+      attributes: ['paymentWay', 'status', 'type', 'amount', 'createdAt'],
+    });
+
+    const userPaymentSum = payment.reduce((aggr, value) => {
+      return aggr = aggr + value.amount
+    })
+
+    if (userPaymentSum <= priceCourse && paymentWay === ARCA) {
+      req.body.paymentWay = paymentWay;
+      req.body.groupId = groupId;
+      req.body.type = type;
+      paymentUrlArca(req, res);
+    } else if (userPaymentSum <= priceCourse && paymentWay === IDRAM) {
+      req.body.monthlyPayment = true;
+      ConfirmIdram(req, res);
+    };
+    return res.status(400).json({ success: false, message: 'Bad request.' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Internal Server Error');
+  }
+};
+
+const monthlyPaymentArca = (req, res) => {
+  try {
+    const { orderKey } = req.body;
+    if (!orderKey) {
+      return res.status(400).json({ success: false, message: 'Bad request.' });
+    };
+    req.body.monthlyPayment = true;
+    req.body.orderKey = orderKey;
+    paymentArca(req, res)
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Internal Server Error');
+  }
+};
+
 module.exports = {
-  payUrl,
-  buy,
+  paymentUrlArca,
+  paymentArca,
   ConfirmIdram,
+  getUserPayment,
+  monthlyPayment,
+  monthlyPaymentArca
 };

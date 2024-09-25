@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.INTEGER,
       groupId: DataTypes.INTEGER,
       type: DataTypes.STRING,
-      sum: DataTypes.DECIMAL
+      amount: DataTypes.DECIMAL
     },
     {
       sequelize,

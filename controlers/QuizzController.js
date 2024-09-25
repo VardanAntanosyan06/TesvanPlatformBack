@@ -271,7 +271,7 @@ const submitQuizz = async (req, res) => {
       questionTitle_ru: quizz.Questions[0].title_ru,
       point: quizz.Questions[0].points
     });
-    
+
     // quizz.Questions[0].Options.forEach(async (option) => {
     //    await UserAnswersOption.create({
     //     userAnswerQuizzId: userAnswerQuizzId,
@@ -325,6 +325,7 @@ const finishQuizz = async (req, res) => {
 
     let point = 0
     let correctAnswers = 0
+
     // if (!lessonId) {
     //   let correctAnswers = await Quizz.findByPk(quizzId, {
     //     attributes: ['id'],
@@ -414,8 +415,71 @@ const finishQuizz = async (req, res) => {
       ],
     })
 
+    const quiz = await Quizz.findAll({
+      where: { id: quizzId },
+      attributes: [
+        'id',
+        'title_am',
+        'title_ru',
+        'description_ru',
+        'description_am',
+        'title_en',
+        'description_en',
+      ],
+      include: [
+        {
+          model: Question,
+          attributes: [
+            'id',
+            'quizzId',
+            'title_ru',
+            'title_en',
+            'title_am',
+            'points',
+          ],
+          include: [
+            {
+              model: Option,
+              attributes: ['id', 'title_ru', 'title_en', 'title_am'],
+            }
+          ]
+        },
+      ],
+      order: [[Question, 'id', 'ASC']],
+    });
 
-    userAnswers.forEach((userAnswer) => {
+    // const unansweredQuestions = quiz.reduce((aggr, value) => {
+    //   aggr[value.id] = value;
+    //   return aggr
+    // }, {})
+
+
+    userAnswers.forEach(async (userAnswer) => {
+      // if (!unansweredQuestions[userAnswer.testId]) {
+      //   const { id: userAnswerQuizzId } = await UserAnswersQuizz.create({
+      //     userId,
+      //     testId: unansweredQuestions[userAnswer.testId].id,
+      //     questionId: 0,
+      //     optionId: 0,
+      //     courseId: courseId,
+      //     lessonId: lessonId,
+      //     questionTitle_en: unansweredQuestions[userAnswer.testId].title_en,
+      //     questionTitle_am: unansweredQuestions[userAnswer.testId].title_am,
+      //     questionTitle_ru: unansweredQuestions[userAnswer.testId].title_ru,
+      //     point: 0
+      //   });
+
+      //   for (const option of unansweredQuestions[userAnswer.testId].Questions[0].Options) {
+      //     await UserAnswersOption.create({
+      //       userAnswerQuizzId: userAnswerQuizzId,
+      //       title_en: option.title_en,
+      //       title_am: option.title_am,
+      //       title_ru: option.title_ru,
+      //       isCorrect: option.isCorrect,
+      //       userAnswer: false
+      //     });
+      //   }
+      // }
       userAnswer.userAnswersOption.forEach((option) => {
         if (option.userAnswer && option.isCorrect) {
           point = point + +userAnswer.point
@@ -647,7 +711,6 @@ const getUserQuizzAnswers = async (req, res) => {
         lessonId,
         userId,
         courseId,
-
       },
 
       include: [
@@ -663,6 +726,11 @@ const getUserQuizzAnswers = async (req, res) => {
         [{ model: UserAnswersOption, as: 'userAnswersOption' }, 'id', 'ASC'],
       ],
     });
+
+    // const trueAnswer = userAnswersQuizz.reduce((aggr, value) => {
+    //   value.
+    //   return aggr
+    // }, {})
 
 
     return res.status(200).json(userAnswersQuizz);

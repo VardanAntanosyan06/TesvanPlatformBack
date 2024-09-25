@@ -552,6 +552,8 @@ const getUserStaticChart = async (req, res) => {
   }
 };
 
+// const { generateCertificate } = require('../generateCertificate/generateCertificate')
+
 const finishGroup = async (req, res) => {
   try {
     const { id } = req.params;
@@ -564,6 +566,15 @@ const finishGroup = async (req, res) => {
         {
           model: UserCourses,
         },
+        {
+          model: Users,
+          through: {
+            model: GroupsPerUsers,
+            where: {
+              userRole: "STUDENT"
+            }
+          },
+        }
       ],
     });
 
@@ -573,22 +584,37 @@ const finishGroup = async (req, res) => {
         message: `Group with ID ${id} not defined`,
       });
 
-    let status = 1;
     const { title: courseName } = await CoursesContents.findOne({
       where: { courseId: Group.assignCourseId, language },
     });
 
-    Group.UserCourses.map((e) => {
-      if (e.totalPoints > 40) {
-        status = 2;
-      } else if (e.totalPoints > 90) {
-        status = 3;
+    const userPoints = Group.UserCourses.reduce((aggr, value) => {
+      aggr[`${value.UserId}`] = value.totalPoints
+      return aggr
+    }, {});
+
+    let status = 1;
+    Group.Users.map((user) => {
+      if (userPoints[user.id]) {
+        if (+userPoints[user.id] > 90) {
+          status = 3;
+        } else if (+userPoints[user.id] >= 40) {
+          status = 2;
+        } else {
+          status = 1
+        }
       }
+      const userName = `${user.firstName} ${user.lastName}`
+      const date = new Date().toISOString()
+
+      // const fileName = generateCertificate(status, userName, courseName, date);
+
       Certificates.create({
-        userId: e.UserId,
+        userId: user.id,
+        // url: fileName,
         courseName,
         status,
-        giveDate: new Date().toISOString(),
+        giveDate: date,
       });
       return;
     });
@@ -734,6 +760,7 @@ const getUsers = async (req, res) => {
         },
       },
       attributes: ['id', 'firstName', 'lastName', 'role'],
+      order: [["createdAt", "DESC"]]
     });
 
     const teacherUsers = [];

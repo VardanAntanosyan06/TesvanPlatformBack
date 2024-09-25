@@ -16,22 +16,23 @@ module.exports = (sequelize, DataTypes) => {
   Certificates.init({
     userId: DataTypes.INTEGER,
     status: {
-      type:DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       validate: {
         isIn: {
-          args: [[1,2,3]],
+          args: [[1, 2, 3]],
           msg: "status must be '1' or '2','3'",
         },
       },
     },
+    url: DataTypes.STRING,
     giveDate: DataTypes.DATE,
-    courseName:DataTypes.STRING
+    courseName: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Certificates',
   });
 
   const Users = sequelize.define("Users")
-  Certificates.belongsTo(Users,{foreignKey:"userId"})
+  Certificates.belongsTo(Users, { foreignKey: "userId" })
   return Certificates;
 };

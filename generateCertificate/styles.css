@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.userName {
+    position: relative;
+    text-align: center;
+    top: 140mm;
+}
+
+.date {
+    position: relative;
+    text-align: center;
+    top: 200mm;
+    right: 50mm
+}
+
+.courseName {
+    position: relative;
+    text-align: center;
+    top: 180mm;
+}

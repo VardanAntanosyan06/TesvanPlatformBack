@@ -30,7 +30,7 @@ module.exports = {
       type: {
         type: Sequelize.STRING,
       },
-      sum: {
+      amount: {
         type: Sequelize.DECIMAL
       },
       createdAt: {

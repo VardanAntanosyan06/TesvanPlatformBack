@@ -17,7 +17,9 @@ module.exports = {
       },
       status: {
         type: Sequelize.INTEGER,
-        defaultValue:0
+      },
+      url: {
+        type:Sequelize.STRING
       },
       giveDate: {
         type: Sequelize.DATE

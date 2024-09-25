@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       groupId: DataTypes.INTEGER,
       discount: DataTypes.FLOAT,
       type: DataTypes.STRING,
+      durationMonths: DataTypes.INTEGER
     },
     {
       sequelize,
