@@ -524,10 +524,10 @@ const ConfirmIdram = async (req, res) => {
 
 const getUserPayment = async (req, res) => {
   try {
-    // const { user_id: userId } = req.user;
+    const { user_id: userId } = req.user;
     const { groupId } = req.query
     const type = "monthly";
-    const userId = 3
+    // const userId = 3
 
     const paymentWays = await PaymentWays.findOne({
       where: {
