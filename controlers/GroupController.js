@@ -48,7 +48,34 @@ const CreateGroup = async (req, res) => {
       sale: discount,
     });
 
-    // for (let i = 0; i < payment_en.length; i++) {
+    function getMonthAndDayCount(startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+    
+      // Calculate the difference in years and months
+      const yearsDifference = end.getFullYear() - start.getFullYear();
+      const monthsDifference = end.getMonth() - start.getMonth();
+    
+      // Total months count
+      const totalMonths = (yearsDifference * 12) + monthsDifference;
+    
+      // Calculate the difference in days
+      const startDay = start.getDate();
+      const endDay = end.getDate();
+    
+      // Handle case where the end day is before the start day in the month
+      let totalDays = endDay - startDay;
+      if (totalDays < 0) {
+        // Go back one month and calculate the correct number of days
+        const previousMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+        totalDays += previousMonth.getDate();
+      }
+    
+      return { months: totalMonths, days: totalDays };
+    }
+
+    const durationMonths = getMonthAndDayCount(startDate, endDate)
+
     payment.map((e) => {
       PaymentWays.create({
         title_en: e.title,
@@ -60,9 +87,9 @@ const CreateGroup = async (req, res) => {
         price: e.price,
         discount: e.discount,
         groupId: task.id,
+        durationMonths: durationMonths.months
       });
     });
-    // }
 
     await Promise.all(
       users.map(async (userId) => {

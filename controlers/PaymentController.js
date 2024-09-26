@@ -524,17 +524,78 @@ const ConfirmIdram = async (req, res) => {
 
 const getUserPayment = async (req, res) => {
   try {
-    const { user_id: userId } = req.user;
+    // const { user_id: userId } = req.user;
     const { groupId } = req.query
     const type = "monthly";
-    // const userId = 3
+    const userId = 3
 
     const paymentWays = await PaymentWays.findOne({
       where: {
         groupId,
         type
-      }
+      },
+      include: [
+        {
+          model: Groups,
+          as: "group"
+        }
+      ]
     });
+
+    // function getMonthAndDayCount(startDate, endDate) {
+    //   const start = new Date(startDate);
+    //   const end = new Date(endDate);
+
+    //   // Calculate the difference in years and months
+    //   const yearsDifference = end.getFullYear() - start.getFullYear();
+    //   const monthsDifference = end.getMonth() - start.getMonth();
+
+    //   // Total months count
+    //   const totalMonths = (yearsDifference * 12) + monthsDifference;
+
+    //   // Calculate the difference in days
+    //   const startDay = start.getDate();
+    //   const endDay = end.getDate();
+
+    //   // Handle case where the end day is before the start day in the month
+    //   let totalDays = endDay - startDay;
+    //   if (totalDays < 0) {
+    //     // Go back one month and calculate the correct number of days
+    //     const previousMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+    //     totalDays += previousMonth.getDate();
+    //   }
+
+    //   return { months: totalMonths, days: totalDays };
+    // }
+
+    // // Example usage:
+    // const startDate = '2023-01-15';
+    // const endDate = '2024-09-10';
+    // const result = getMonthAndDayCount(startDate, endDate);
+    // console.log(`Months: ${result.months}, Days: ${result.days}`);
+
+    function getMonthCount(startDate, endDate) {
+      const nowDate = new Date()
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      const yearsDifference = end.getFullYear() - start.getFullYear();
+      const monthsDifference = end.getMonth() - start.getMonth();
+      const yearsDifferenceNow = end.getFullYear() - nowDate.getFullYear();
+      const monthsDifferenceNow = end.getMonth() - nowDate.getMonth();
+
+      // Total number of months between the two dates
+      const totalMonths = (yearsDifference * 12) + monthsDifference;
+      const totalMonthsNow = (yearsDifferenceNow * 12) + monthsDifferenceNow;
+
+      return totalMonths - totalMonthsNow
+    }
+
+    const durationMonths = getMonthCount(paymentWays.group.startDate, paymentWays.group.endDate)
+
+    let nextPaymentDate = new Date(paymentWays.group.startDate);
+    nextPaymentDate.setDate(nextPaymentDate.getDate() + (durationMonths * 30));
+
     const priceCourse = paymentWays.price * (1 - paymentWays.discount / 100) * paymentWays.durationMonths
 
     const payments = await Payment.findAll({
@@ -566,7 +627,6 @@ const getUserPayment = async (req, res) => {
       });
     };
 
-    const lastPaid = payments.find(value => value.status === "Success");
     const userPaidSum = payments.reduce((aggr, value) => {
       if (value.status === "Success") {
         return aggr = aggr + +value.amount
@@ -574,8 +634,6 @@ const getUserPayment = async (req, res) => {
     }, 0);
     const userUnpaidSum = priceCourse - userPaidSum;
 
-    let nextPaymentDate = new Date(lastPaid.createdAt);
-    nextPaymentDate.setDate(nextPaymentDate.getDate() + 30);
     if (+priceCourse === +userPaidSum) {
       const responsData = {
         payments,
@@ -593,7 +651,6 @@ const getUserPayment = async (req, res) => {
       nextPayment: true,
       userPaidSum,
       userUnpaidSum,
-      lastPaid,
       nextPaymentDate
     };
 
