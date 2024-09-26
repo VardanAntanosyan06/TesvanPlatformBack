@@ -9,7 +9,7 @@ router.post("/payUrl", checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controller.pa
 // router.post("/configidram", controller.ConfirmIdram);
 router.post("/buy", controller.paymentArca);
 
-router.get("/getUserPayment",  controller.getUserPayment);
+router.get("/getUserPayment", checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controller.getUserPayment);
 
 // router.post("/monthlyPayment", checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controller.monthlyPayment);
 
