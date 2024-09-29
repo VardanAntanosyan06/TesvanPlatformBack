@@ -1,13 +1,13 @@
 const pdf = require('html-pdf');
-const fs = require('fs').promises; // Use fs.promises for promise-based functions
+const fs = require('fs').promises;
 const path = require('path');
 
 async function generateCertificate(status, userName, courseName, date) {
     try {
-
         const htmlFilePath = path.join(__dirname, '.', 'certificate.html');
         const cssFilePath = path.join(__dirname, '.', 'styles.css');
-        let imagePath
+        let imagePath;
+
         if (status === 3) {
             imagePath = path.join(__dirname, '.', 'photo_2024-09-22_20-27-36.jpg');
         } else if (status === 2) {
@@ -42,9 +42,9 @@ async function generateCertificate(status, userName, courseName, date) {
             <body>
                 ${htmlData}
                 <script>
-                    document.querySelector(".userName").innerHTML = "${userName}"
-                    document.querySelector(".date").innerHTML = "${date}"
-                    document.querySelector(".courseName").innerHTML = "${courseName}"
+                    document.querySelector(".userName").innerHTML = "${userName}";
+                    document.querySelector(".date").innerHTML = "${date}";
+                    document.querySelector(".courseName").innerHTML = "${courseName}";
                 </script>
             </body>
             </html>
@@ -52,30 +52,26 @@ async function generateCertificate(status, userName, courseName, date) {
 
         const options = {
             format: 'A4',
-            orientation: 'landscape'
+            orientation: 'landscape',
         };
-        const fileName = `${userName}_${courseName}_${date}_${status}_certificate.pdf`
-        const outputFilePath = path.join(__dirname, '../', 'static', fileName);
 
-        // Generate the PDF
-        pdf.create(htmlWithStyles, options).toFile(outputFilePath, (err, res) => {
-            if (err) {
-                console.error('Error creating PDF:', err);
-                return;
-            }
-            console.log('PDF successfully created:', res.filename);
+        // Wrap the PDF creation in a Promise to handle it with async/await
+        return new Promise((resolve, reject) => {
+            pdf.create(htmlWithStyles, options).toStream((err, stream) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(stream);  // Return the stream for the response
+            });
         });
 
-        return fileName
     } catch (error) {
-        console.log('Error:', error);
-    };
+        console.log('Error generating certificate:', error);
+        throw error;
+    }
 }
 
 module.exports = {
     generateCertificate
-}
-
-// // Call the createPDF function
-// generateCertificate(2, "Mher Tovmasyan", "courseName", "date");
+};
 

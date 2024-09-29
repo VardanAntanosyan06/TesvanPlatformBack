@@ -72,8 +72,38 @@ const getUserCertificates = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong." });
   }
 }
+
+const { generateCertificate } = require('../generateCertificate/generateCertificate')
+const downloadCertificate = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Fetch the certificate data from the database
+    const certificate = await Certificates.findOne({
+      where: { id }
+    });
+
+    if (!certificate) {
+      return res.status(404).send('Certificate not found');
+    }
+
+    // Generate the certificate stream
+    const certificateStream = await generateCertificate(certificate.status, "mher", "courseName", "date");
+
+    // Set headers for downloading the file
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=Certificate_${certificate.id}.pdf`);
+
+    // Pipe the certificate PDF stream to the response
+    certificateStream.pipe(res);
+  } catch (error) {
+    console.error('Error generating or downloading certificate:', error);
+    res.status(500).send('Internal server error');
+  }
+};
 module.exports = {
   findAllStudents,
   changeStatus,
-  getUserCertificates
+  getUserCertificates,
+  downloadCertificate
 };

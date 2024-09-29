@@ -22,5 +22,10 @@ router.patch(
   controller.changeStatus
 );
 
+router.post(
+  "/c/:id",
+  // checkAuth(["ADMIN"]),
+  controller.downloadCertificate
+)
 
 module.exports = router;

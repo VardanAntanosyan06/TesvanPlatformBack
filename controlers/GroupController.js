@@ -579,8 +579,6 @@ const getUserStaticChart = async (req, res) => {
   }
 };
 
-// const { generateCertificate } = require('../generateCertificate/generateCertificate')
-
 const finishGroup = async (req, res) => {
   try {
     const { id } = req.params;
@@ -621,7 +619,7 @@ const finishGroup = async (req, res) => {
     }, {});
 
     let status = 1;
-    Group.Users.map((user) => {
+    Group.Users.forEach(async (user) => {
       if (userPoints[user.id]) {
         if (+userPoints[user.id] > 90) {
           status = 3;
@@ -631,14 +629,10 @@ const finishGroup = async (req, res) => {
           status = 1
         }
       }
-      const userName = `${user.firstName} ${user.lastName}`
-      const date = new Date().toISOString()
 
-      // const fileName = generateCertificate(status, userName, courseName, date);
-
+      const date = Group.endDate.toISOString()    
       Certificates.create({
         userId: user.id,
-        // url: fileName,
         courseName,
         status,
         giveDate: date,
