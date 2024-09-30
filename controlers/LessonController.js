@@ -173,6 +173,7 @@ const getLesson = async (req, res) => {
               attributes: [
                 'id',
                 'lessonId',
+                'url',
                 [`title_${language}`, 'title'],
                 [`description_${language}`, 'description'],
               ],

@@ -23,7 +23,7 @@ router.patch(
 );
 
 router.post(
-  "/c/:id",
+  "/:id",
   // checkAuth(["ADMIN"]),
   controller.downloadCertificate
 )
