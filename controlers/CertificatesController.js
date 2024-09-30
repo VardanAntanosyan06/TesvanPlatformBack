@@ -11,6 +11,7 @@ const findAllStudents = async (req, res) => {
     certificates = certificates.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
+      e["id"] = e.id
       e["name"] = e.User.firstName + " " + e.User.lastName;
       e["image"] = e.User.image;
       e["points"] = 100
@@ -61,6 +62,7 @@ const getUserCertificates = async (req, res) => {
     certificates = certificates.map((e) => {
       e = e.toJSON();
       // delete e.dataValues;
+      e["id"] = e.id
       e["firstName"] = e.User.firstName;
       e["lastName"] = e.User.lastName;
       delete e.User;
