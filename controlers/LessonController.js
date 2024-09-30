@@ -599,31 +599,26 @@ const updateLesson = async (req, res) => {
       videoTitle
     } = req.body;
     const homeworkId = JSON.parse(req.body.homeworkId);
-    const video = req.files?.video;
+    const videos = req.files?.video;
     const file_en = req.files?.file_en
     const file_ru = req.files?.file_ru
     const file_am = req.files?.file_am
+    console.log(videos, 55);
 
-    if (video) {
+
+    const updateVideoLogic = async (video) => {
+
       if (!allowedFormats.includes(video.mimetype)) {
         return res.status(400).json({ success: false, message: 'Unsupported file format' });
       };
-
-      const updateVideo = await Video.findOne({
-        where: {
-          lessonId
-        }
-      });
-      if (updateVideo) {
-        fs.unlinkSync(path.resolve(__dirname, "../", "static", updateVideo.url));
-      }
 
       const type = video.mimetype.split('/')[1];
       const videoFilename = uuid.v4() + '.' + type;
       await video.mv(path.resolve(__dirname, '../', 'static', videoFilename));
 
-      await Video.update(
+      await Video.create(
         {
+          lessonId,
           url: videoFilename,
           title_am: videoTitle,
           title_en: videoTitle,
@@ -632,13 +627,55 @@ const updateLesson = async (req, res) => {
           description_en,
           description_ru
         },
-        {
-          where: {
-            lessonId
-          }
-        }
-      );
+      )
+
     }
+    if (Array.isArray(videos)) {
+      const findeVideos = await Video.findAll({
+        where: {
+          lessonId
+        }
+      });
+      if (findeVideos) {
+        findeVideos.forEach((findeVideo) => {
+          fs.unlinkSync(path.resolve(__dirname, "../", "static", findeVideo.url));
+        })
+      }
+      videos.forEach(async (video) => {
+        await updateVideoLogic(video)
+      })
+    } else if (videos !== null && typeof videos === 'object' && !Array.isArray(videos)) {
+      const findeVideos = await Video.findAll({
+        where: {
+          lessonId
+        }
+      });
+      if (findeVideos) {
+        findeVideos.forEach((findeVideo) => {
+          fs.unlinkSync(path.resolve(__dirname, "../", "static", findeVideo.url));
+        })
+      }
+      await updateVideoLogic(videos)
+    }
+
+    if (!videos) {
+      const findeVideos = await Video.findAll({
+        where: {
+          lessonId
+        }
+      });
+      if (findeVideos) {
+        findeVideos.forEach((findeVideo) => {
+          fs.unlinkSync(path.resolve(__dirname, "../", "static", findeVideo.url));
+        })
+      }
+      await Video.destroy({
+        where: {
+          lessonId
+        }
+      });
+    }
+
     if (homeworkId.length === 0) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });
       await UserHomework.update(
@@ -746,16 +783,18 @@ const updateLesson = async (req, res) => {
 
           })
         }
-        if (!isNaN(+quizzId)) {
-          await LessonsPerQuizz.destroy({
-            where: { lessonId },
-          });
-          await LessonsPerQuizz.create({
-            lessonId,
-            quizzId,
-          });
-        }
+
       })
+    }
+
+    if (quizzId) {
+      await LessonsPerQuizz.destroy({
+        where: { lessonId },
+      });
+      await LessonsPerQuizz.create({
+        lessonId,
+        quizzId,
+      });
     }
 
     return res.status(200).json({ success: true });
