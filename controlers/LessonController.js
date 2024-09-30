@@ -447,7 +447,6 @@ const createLesson = async (req, res) => {
       htmlContent_ru,
       htmlContent_am,
       quizzId,
-      homeworkId,
       presentationTitle_en,
       presentationDescription_en,
       presentationTitle_ru,
@@ -456,8 +455,10 @@ const createLesson = async (req, res) => {
       presentationDescription_am,
       videoTitle
     } = req.body;
+    const homeworkId = JSON.parse(req.body.homeworkId);
 
     const video = req.files?.video;
+
 
     if (req.files) {
       const { file_en, file_ru, file_am } = req.files;
@@ -499,53 +500,38 @@ const createLesson = async (req, res) => {
         lessonId,
       });
 
-      if (!isNaN(+homeworkId)) {
-        await HomeworkPerLesson.create({
-          homeworkId,
-          lessonId,
-        });
+      if (homeworkId.length > 0) {
+        for (const id of homeworkId) {
+          await HomeworkPerLesson.create({
+            lessonId,
+            homeworkId: id
+          })
+        }
+      };
+
+      if (video.length > 0) {
+        for (const value of video) {
+
+          if (!allowedFormats.includes(value.mimetype)) {
+            return res.status(400).json({ success: false, message: 'Unsupported file format' });
+          };
+
+          const type = value.mimetype.split('/')[1];
+          const videoFilename = uuid.v4() + '.' + type;
+          await value.mv(path.resolve(__dirname, '../', 'static', videoFilename));
+
+          await Video.create({
+            lessonId,
+            url: videoFilename,
+            title_am: videoTitle,
+            title_en: videoTitle,
+            title_ru: videoTitle,
+            description_am,
+            description_en,
+            description_ru
+          });
+        }
       }
-
-      // if(homeworkId.length>0){
-      //   for(const id of homeworkId){
-      //     await HomeworkPerLesson.create({
-      //       lessonId,
-      //       homeworkId: id
-      //     })
-      //   }
-      // };
-
-      if (video) {
-
-        if (!allowedFormats.includes(video.mimetype)) {
-          return res.status(400).json({ success: false, message: 'Unsupported file format' });
-        };
-
-        const type = video.mimetype.split('/')[1];
-        const videoFilename = uuid.v4() + '.' + type;
-        await video.mv(path.resolve(__dirname, '../', 'static', videoFilename));
-
-        await Video.create({
-          lessonId,
-          url: videoFilename,
-          title_am: videoTitle,
-          title_en: videoTitle,
-          title_ru: videoTitle,
-          description_am,
-          description_en,
-          description_ru
-        });
-      }
-      // else {
-      //   const courses = await CoursesPerLessons.findAll({
-      //     where: {
-      //       lessonId,
-      //     },
-      //   });
-      //   const uniqueCourses = Array.from(
-      //     courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values(),
-      //   );
-      // }
 
       if (!isNaN(+quizzId)) {
         await LessonsPerQuizz.create({
@@ -604,7 +590,6 @@ const updateLesson = async (req, res) => {
       htmlContent_ru,
       htmlContent_am,
       quizzId,
-      homeworkId,
       presentationTitle_en,
       presentationDescription_en,
       presentationTitle_ru,
@@ -613,7 +598,7 @@ const updateLesson = async (req, res) => {
       presentationDescription_am,
       videoTitle
     } = req.body;
-    
+    const homeworkId = JSON.parse(req.body.homeworkId);
     const video = req.files?.video;
     const file_en = req.files?.file_en
     const file_ru = req.files?.file_ru
@@ -624,13 +609,14 @@ const updateLesson = async (req, res) => {
         return res.status(400).json({ success: false, message: 'Unsupported file format' });
       };
 
-      const { url } = await Video.findOne({
+      const updateVideo = await Video.findOne({
         where: {
           lessonId
         }
       });
-
-      fs.unlinkSync(path.resolve(__dirname, "../", "static", url));
+      if (updateVideo) {
+        fs.unlinkSync(path.resolve(__dirname, "../", "static", updateVideo.url));
+      }
 
       const type = video.mimetype.split('/')[1];
       const videoFilename = uuid.v4() + '.' + type;
@@ -653,8 +639,7 @@ const updateLesson = async (req, res) => {
         }
       );
     }
-
-    if (isNaN(+homeworkId)) { //homeworkId.length > 0
+    if (homeworkId.length === 0) {
       await HomeworkPerLesson.destroy({ where: { lessonId } });
       await UserHomework.update(
         {
@@ -667,17 +652,13 @@ const updateLesson = async (req, res) => {
         }
       )
     } else {
-      await HomeworkPerLesson.create({
-        lessonId,
-        homeworkId
+      await HomeworkPerLesson.destroy({ where: { lessonId } });
+      homeworkId.forEach(id => {
+        HomeworkPerLesson.create({
+          lessonId,
+          homeworkId: id
+        });
       });
-
-      //   for(const id of homeworkId){
-      //     await HomeworkPerLesson.create({
-      //       lessonId,
-      //       homeworkId: id
-      //     })
-      //   }
     }
 
     await Lesson.update(
@@ -723,78 +704,58 @@ const updateLesson = async (req, res) => {
         lessonId,
       });
     }
-    // await Presentations.destroy({ where: { lessonId } });
-    // await Presentations.create({
-    //   title_en: presentationTitle_en,
-    //   url_en: file_en,
-    //   description_en: presentationDescription_en,
-    //   title_ru: presentationTitle_ru,
-    //   url_ru: file_ru,
-    //   description_ru: presentationDescription_ru,
-    //   title_am: presentationTitle_am,
-    //   url_am: file_am,
-    //   description_am: presentationDescription_am,
-    //   lessonId,
-    // });
 
-    // if (!isNaN(+homeworkId)) {
-    //   await HomeworkPerLesson.upsert({
-    //     homeworkId,
-    //     lessonId,
-    //   });
-    // }
+    if (homeworkId.length === 0) {
+      homeworkId.forEach(async (id) => {
+        const homeworkPerLesson = await HomeworkPerLesson.findOne({
+          where: {
+            lessonId,
+          },
+        });
 
-    if (!isNaN(+homeworkId)) {
-      const homeworkPerLesson = await HomeworkPerLesson.findOne({
-        where: {
-          lessonId,
-        },
-      });
-
-      if (homeworkPerLesson) {
-        homeworkPerLesson.homeworkId = homeworkId;
-        await homeworkPerLesson.save();
-      }
-
-      const courses = await CoursesPerLessons.findAll({
-        where: {
-          lessonId,
-        },
-      });
-      const uniqueCourses = Array.from(
-        courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values(),
-      );
-      // console.log('///////////////', uniqueCourses);
-
-      if (homeworkId) {
-        if (uniqueCourses.length > 0) {
-          await Promise.all(
-            uniqueCourses.map(async (cours) => {
-              await UserHomework.update(
-                {
-                  HomeworkId: homeworkId,
-                },
-                {
-                  where: {
-                    GroupCourseId: cours.courseId,
-                    LessonId: lessonId,
-                  },
-                },
-              );
-            }),
-          );
+        if (homeworkPerLesson) {
+          homeworkPerLesson.homeworkId = id;
+          await homeworkPerLesson.save();
         }
-      }
-    }
 
-    if (!isNaN(+quizzId)) {
-      await LessonsPerQuizz.destroy({
-        where: { lessonId },
-      });
-      await LessonsPerQuizz.create({
-        lessonId,
-        quizzId,
-      });
+        const courses = await CoursesPerLessons.findAll({
+          where: {
+            lessonId,
+          },
+        });
+        const uniqueCourses = Array.from(
+          courses.reduce((map, obj) => map.set(obj.courseId, obj), new Map()).values(),
+        );
+
+
+        if (uniqueCourses.length > 0) {
+          uniqueCourses.forEach(async (cours) => {
+
+            await UserHomework.update(
+              {
+                HomeworkId: id,
+              },
+              {
+                where: {
+                  HomeworkId: id,
+                  GroupCourseId: cours.courseId,
+                  LessonId: lessonId,
+                },
+              },
+            );
+
+          })
+        }
+        if (!isNaN(+quizzId)) {
+          await LessonsPerQuizz.destroy({
+            where: { lessonId },
+          });
+          await LessonsPerQuizz.create({
+            lessonId,
+            quizzId,
+          });
+        }
+      })
     }
 
     return res.status(200).json({ success: true });
@@ -802,8 +763,7 @@ const updateLesson = async (req, res) => {
     console.error(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
-};
-
+}
 const uploadFileAndGetUrl = async (file) => {
   const fileMimeType = file.mimetype.split('/')[1];
   const fileName = v4() + '.' + fileMimeType;
