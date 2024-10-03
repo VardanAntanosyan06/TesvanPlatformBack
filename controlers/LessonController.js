@@ -599,13 +599,12 @@ const updateLesson = async (req, res) => {
       presentationDescription_am,
       videoTitle
     } = req.body;
-    const homeworkId = JSON.parse(req.body.homeworkId);
+    const homeworkId = req.body.homeworkId ? JSON.parse(req.body.homeworkId) : undefined
     const videos = req.files?.video;
     const file_en = req.files?.file_en
     const file_ru = req.files?.file_ru
     const file_am = req.files?.file_am
     console.log(videos, 55);
-
 
     const updateVideoLogic = async (video) => {
 
@@ -677,8 +676,10 @@ const updateLesson = async (req, res) => {
       });
     }
 
-    if (homeworkId.length === 0) {
-      await HomeworkPerLesson.destroy({ where: { lessonId } });
+
+
+    if (!homeworkId) {
+      HomeworkPerLesson.destroy({ where: { lessonId } });
       await UserHomework.update(
         {
           HomeworkId: 0
@@ -690,13 +691,21 @@ const updateLesson = async (req, res) => {
         }
       )
     } else {
+      // Destroy all records with the matching lessonId
       await HomeworkPerLesson.destroy({ where: { lessonId } });
-      homeworkId.forEach(id => {
-        HomeworkPerLesson.create({
-          lessonId,
-          homeworkId: id
+      // Create new records for each homeworkId
+      Promise.all(homeworkId.map((id) => {
+        HomeworkPerLesson.findOrCreate({
+          where: {
+            lessonId,
+            homeworkId: id
+          },
+          default: {
+            lessonId,
+            homeworkId: id
+          }
         });
-      });
+      }));
     }
 
     await Lesson.update(
@@ -743,18 +752,9 @@ const updateLesson = async (req, res) => {
       });
     }
 
-    if (homeworkId.length === 0) {
+    if (homeworkId?.length > 0) {
       homeworkId.forEach(async (id) => {
-        const homeworkPerLesson = await HomeworkPerLesson.findOne({
-          where: {
-            lessonId,
-          },
-        });
 
-        if (homeworkPerLesson) {
-          homeworkPerLesson.homeworkId = id;
-          await homeworkPerLesson.save();
-        }
 
         const courses = await CoursesPerLessons.findAll({
           where: {
