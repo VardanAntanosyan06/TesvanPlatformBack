@@ -2,18 +2,18 @@ const pdf = require('html-pdf');
 const fs = require('fs').promises;
 const path = require('path');
 
-async function generateCertificate(status, userName, courseName, date) {
+async function generateCertificate(status, userName, courseName, date, year) {
     try {
         const htmlFilePath = path.join(__dirname, '.', 'certificate.html');
         const cssFilePath = path.join(__dirname, '.', 'styles.css');
         let imagePath;
 
         if (status === 3) {
-            imagePath = path.join(__dirname, '.', 'photo_2024-09-22_20-27-36.jpg');
+            imagePath = path.join(__dirname, '.', 'Excellence.png');
         } else if (status === 2) {
-            imagePath = path.join(__dirname, '.', 'photo_2024-09-22_20-27-36.jpg');
+            imagePath = path.join(__dirname, '.', 'Basic Skills.png');
         } else {
-            imagePath = path.join(__dirname, '.', 'photo_2024-09-22_20-27-36.jpg');
+            imagePath = path.join(__dirname, '.', 'Participation.png');
         }
 
         // Read files using async/await
@@ -28,6 +28,7 @@ async function generateCertificate(status, userName, courseName, date) {
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500&display=swap" rel="stylesheet">
                 <title>Certificate of Excellence</title>
                 <style>
                     ${cssData}
@@ -36,6 +37,12 @@ async function generateCertificate(status, userName, courseName, date) {
                         height: 262mm;
                         background-image: url('data:image/png;base64,${imgBase64}');
                         background-size: 372mm 262mm;
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        text-align: center;
                     }
                 </style>
             </head>
@@ -45,6 +52,8 @@ async function generateCertificate(status, userName, courseName, date) {
                     document.querySelector(".userName").innerHTML = "${userName}";
                     document.querySelector(".date").innerHTML = "${date}";
                     document.querySelector(".courseName").innerHTML = "${courseName}";
+                    document.querySelector(".month").innerHTML = "${3}";
+                    document.querySelector(".year").innerHTML = "${year}";
                 </script>
             </body>
             </html>

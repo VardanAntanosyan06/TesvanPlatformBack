@@ -8,6 +8,15 @@ const findAllStudents = async (req, res) => {
       attributes: ["id", "userId", "status", "giveDate"],
     });
 
+    let status
+    if (+certificates.status === 1) {
+      status = "Participation"
+    } else if (+certificates.status === 2) {
+      status = "Basic Skills"
+    } else if (+certificates.status === 3) {
+      status = "Excellence"
+    }
+
     certificates = certificates.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
@@ -15,7 +24,7 @@ const findAllStudents = async (req, res) => {
       e["name"] = e.User.firstName + " " + e.User.lastName;
       e["image"] = e.User.image;
       e["points"] = 100
-      e["type"] = "excellence"
+      e["type"] = status
 
 
       delete e.User;
@@ -82,15 +91,23 @@ const downloadCertificate = async (req, res) => {
   try {
     // Fetch the certificate data from the database
     const certificate = await Certificates.findOne({
-      where: { id }
+      where: { id },
+      attributes: ["id", "userId", "status", "giveDate", "courseName", "url"],
+      include: { model: Users, attributes: ["firstName", "lastName"] },
     });
 
     if (!certificate) {
       return res.status(404).send('Certificate not found');
     }
 
+    const userName = `${certificate.User.firstName} ${certificate.User.lastName}`;
+    const courseName = certificate.courseName;
+    const giveDate = certificate.giveDate.toString().split(" ")
+    const date = `${giveDate[1]} ${giveDate[2]} ${giveDate[3]}`
+    const year = giveDate[3]
+
     // Generate the certificate stream
-    const certificateStream = await generateCertificate(certificate.status, "mher", "courseName", "date");
+    const certificateStream = await generateCertificate(certificate.status, userName, courseName, date, year);
 
     // Set headers for downloading the file
     res.setHeader('Content-Type', 'application/pdf');

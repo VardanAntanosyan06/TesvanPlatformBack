@@ -6,18 +6,68 @@
 .userName {
     position: relative;
     text-align: center;
-    top: 140mm;
+    top: 130mm;
+}
+
+.userName {
+    font-family: 'Teko', sans-serif;
+    font-size: 64px;
+    color: #12222D;
+    font-weight: 500;
 }
 
 .date {
     position: relative;
     text-align: center;
-    top: 200mm;
-    right: 50mm
+    top: 188mm;
+    right: 72mm
+}
+
+.date {
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 400;
+    color: #12222D;
+    font-size: 26px;
 }
 
 .courseName {
     position: relative;
+    text-align: left;
+    top: 130mm;
+    left: 240mm;
+
+}
+
+.courseName {
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 500;
+    color: #143E59;
+    font-size: 30px;
+}
+
+.month {
+    position: relative;
     text-align: center;
-    top: 180mm;
+    top: 121mm;
+    left: 17mm;
+}
+
+.month {
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 500;
+    color: #143E59;
+    font-size: 30px;
+}
+
+.year {
+    position: relative;
+    top: 121mm;
+    right: 18mm;
+}
+
+.year {
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 500;
+    color: #143E59;
+    font-size: 30px;
 }
