@@ -164,9 +164,15 @@ const getHomework = async (req, res) => {
     const { user_id: userId, role } = req.user;
     const { language, courseId } = req.query;
 
+    await UserHomework.findOrCreate({
+      where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId },
+      default: {
+        HomeworkId: id, UserId: userId, GroupCourseId: courseId
+      }
+    });
+
     let homework = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId },
-
       include: [
         {
           model: Homework,
@@ -178,7 +184,7 @@ const getHomework = async (req, res) => {
           ],
         },
       ],
-    });
+    })
 
     if (!homework) {
       return res.status(403).json({
@@ -227,7 +233,7 @@ const submitHomework = async (req, res) => {
     const { id } = req.params;
     const { user_id: userId } = req.user;
     const { answer } = req.body;
-    const {courseId} = req.query
+    const { courseId } = req.query
 
     let homework = await UserHomework.findOne({
       where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId },
