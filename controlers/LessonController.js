@@ -191,7 +191,7 @@ const getLesson = async (req, res) => {
 
     let homeworkPoint
     if (lesson.Lesson.homework.length > 0) {
-      homeworkPoint = await UserHomework.findOne({
+      point = await UserHomework.findAll({
         where: {
           LessonId: id,
           UserId: userId,
@@ -199,6 +199,9 @@ const getLesson = async (req, res) => {
           GroupCourseId: courseId
         },
       });
+      homeworkPoint = point.reduce((aggr, value) => {
+        return aggr =  aggr + +value.point
+      }, 0)
     }
 
     let userPoint = null;

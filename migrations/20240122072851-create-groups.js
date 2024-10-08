@@ -15,7 +15,7 @@ module.exports = {
       name_ru: {
         type: Sequelize.STRING,
       },
-            name_en: {
+      name_en: {
         type: Sequelize.STRING,
       },
       assignCourseId: {
@@ -39,6 +39,9 @@ module.exports = {
       },
       sale: {
         type: Sequelize.FLOAT,
+      },
+      creatorId: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,

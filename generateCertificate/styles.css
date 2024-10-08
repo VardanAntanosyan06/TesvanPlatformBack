@@ -11,29 +11,15 @@
 
 .userName {
     font-family: 'Teko', sans-serif;
-    font-size: 64px;
+    font-size: 65px;
     color: #12222D;
     font-weight: 500;
-}
-
-.date {
-    position: relative;
-    text-align: center;
-    top: 188mm;
-    right: 72mm
-}
-
-.date {
-    font-family: 'Fira Sans', sans-serif;
-    font-weight: 400;
-    color: #12222D;
-    font-size: 26px;
 }
 
 .courseName {
     position: relative;
     text-align: left;
-    top: 130mm;
+    top: 129.3mm;
     left: 240mm;
 
 }
@@ -43,13 +29,14 @@
     font-weight: 500;
     color: #143E59;
     font-size: 30px;
+    font-weight: bold;
 }
 
 .month {
     position: relative;
     text-align: center;
-    top: 121mm;
-    left: 17mm;
+    top: 119.8mm;
+    left: 18mm;
 }
 
 .month {
@@ -57,12 +44,13 @@
     font-weight: 500;
     color: #143E59;
     font-size: 30px;
+    font-weight: bold;
 }
 
 .year {
     position: relative;
     top: 121mm;
-    right: 18mm;
+    right: 17mm;
 }
 
 .year {
@@ -70,4 +58,20 @@
     font-weight: 500;
     color: #143E59;
     font-size: 30px;
+    font-weight: bold;
+}
+
+.date {
+    position: relative;
+    text-align: center;
+    top: 189mm;
+    right: 72mm
+}
+
+.date {
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 400;
+    color: #12222D;
+    font-size: 28px;
+    font-weight: bold;
 }

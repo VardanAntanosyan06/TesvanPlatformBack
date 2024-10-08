@@ -29,7 +29,7 @@ const getGroupChat = async (req, res) => {
                     [Op.contains]: [userId]
                 },
             },
-            attributes: ["id", "name", "image", "members"]
+            attributes: ["id", "name", "image", "members", "adminId"]
         })
         const members = await Users.findAll({
             where: { id: groupChat.members },
@@ -44,10 +44,10 @@ const getGroupChat = async (req, res) => {
             }
         })
         groupChat.setDataValue('members', members);
-        const userSocket = await userSockets.get(userId); 
+        const userSocket = await userSockets.get(userId);
         if (userSocket) {
             userSocket.join(`room_${groupChatId}`)
-            userSocket.userRooms = [...userSocket.userRooms,...[`room_${groupChatId}`]]
+            userSocket.userRooms = [...userSocket.userRooms, ...[`room_${groupChatId}`]]
             userSocket.userRooms = [...new Set(userSocket.userRooms)]
         }
         return res.status(200).json(groupChat)
@@ -66,11 +66,11 @@ const getGroupChats = async (req, res) => {
                     [Op.contains]: [userId]
                 }
             },
-            attributes: ["id", "name", "members"]
+            attributes: ["id", "name", "members", "adminId"]
         })
         const userSocket = await userSockets.get(userId);
-        if (userSocket) { 
-            groupChats.map((chat)=> {
+        if (userSocket) {
+            groupChats.map((chat) => {
                 userSocket.join(`room_${chat.id}`)
             })
         }
@@ -215,6 +215,27 @@ const deleteGroupChat = async (req, res) => {
     }
 };
 
+const getGroupChatsForAdmin = async (req, res) => {
+    try {
+        const groupChats = await GroupChats.findAll()
+
+        const members = groupChats.reduce((members, chat) => {
+            return members = [...members, ...chat.members]
+        }, []);
+
+        const allGroupChatMembers = await Users.findAll({
+            where: { id: members },
+            attributes: ["id", "firstName", "lastName", "image", "role"]
+        })
+        return res.status(200).json({
+            success: true,
+            allGroupChatMembers
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error.message)
+    }
+}
 module.exports = {
     getGroupChat,
     getGroupChats,
@@ -223,5 +244,6 @@ module.exports = {
     addMemberGroupChat,
     deleteMemberGroupChat,
     deleteGroupChat,
-    getGroupChatMembers
+    getGroupChatMembers,
+    getGroupChatsForAdmin
 }

@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       endDate: DataTypes.DATE,
       price: DataTypes.INTEGER,
       sale: DataTypes.FLOAT,
+      creatorId: DataTypes.INTEGER
     },
     {
       sequelize,

@@ -24,7 +24,7 @@ router.get(
 router.get('/findAll', checkAuth(['TEACHER', 'ADMIN', 'STUDENT']), controller.findAll);
 router.get('/findGroups', checkAuth(['TEACHER', 'ADMIN', 'STUDENT']), controller.findGroups);
 router.get('/getUsers/:id', checkAuth(['TEACHER', 'ADMIN']), controller.getUsers);
-router.get('/singleUserStatic', checkAuth(['TEACHER', 'ADMIN']), controller.SingleUserStstic);
+router.get('/singleUserStatic', checkAuth(['TEACHER', 'ADMIN']), controller.SingleUserStatics);
 router.get(
   '/getGroupesForTeacher',
   checkAuth(['TEACHER', 'ADMIN']),

@@ -29,7 +29,6 @@ const CreateGroup = async (req, res) => {
     const { user_id: userId } = req.user;
     const { name_en, name_am, name_ru, assignCourseId, users, startDate, endDate, payment } =
       req.body;
-    users.push(userId)
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
     let { price, discount } = payment.reduce(
@@ -46,23 +45,24 @@ const CreateGroup = async (req, res) => {
       endDate,
       price: price,
       sale: discount,
+      creatorId: userId
     });
 
     function getMonthAndDayCount(startDate, endDate) {
       const start = new Date(startDate);
       const end = new Date(endDate);
-    
+
       // Calculate the difference in years and months
       const yearsDifference = end.getFullYear() - start.getFullYear();
       const monthsDifference = end.getMonth() - start.getMonth();
-    
+
       // Total months count
       const totalMonths = (yearsDifference * 12) + monthsDifference;
-    
+
       // Calculate the difference in days
       const startDay = start.getDate();
       const endDay = end.getDate();
-    
+
       // Handle case where the end day is before the start day in the month
       let totalDays = endDay - startDay;
       if (totalDays < 0) {
@@ -70,7 +70,7 @@ const CreateGroup = async (req, res) => {
         const previousMonth = new Date(end.getFullYear(), end.getMonth(), 0);
         totalDays += previousMonth.getDate();
       }
-    
+
       return { months: totalMonths, days: totalDays };
     }
 
@@ -128,8 +128,13 @@ const CreateGroup = async (req, res) => {
     const { img } = await GroupCourses.findOne({
       where: { id: task.assignCourseId },
     });
+    const admin = await Users.findOne({
+      where: {
+        role: "ADMIN"
+      }
+    })
     await GroupChats.create({
-      adminId: userId,
+      adminId: admin.id,
       image: img,
       groupId: task.id,
       name: name_en,
@@ -512,27 +517,218 @@ const addMember = async (req, res) => {
   }
 };
 
-const SingleUserStstic = async (req, res) => {
+const SingleUserStatics = async (req, res) => {
   try {
     const { id, userId } = req.query;
 
-    const group = await Groups.findOne({
+    // const group = await Groups.findOne({
+    //   where: {
+    //     id,
+    //   },
+    // });
+
+    // const userInfo = await UserCourses.findOne({
+    //   where: { GroupCourseId: group.assignCourseId, UserId: userId },
+    //   include: {
+    //     model: Users,
+    //     attributes: ['firstName', 'lastName', 'image']
+    //   },
+    // });
+
+    // if (!userInfo) return res.status(404).json({ success: false, message: 'Invalid id or userId' });
+
+    // return res.status(200).json({ success: true, userInfo });
+    let course = await Groups.findByPk(id, {
+      include: [
+        {
+          model: GroupCourses,
+          include: {
+            model: CoursesContents,
+          },
+        },
+      ],
+    });
+
+    const isIndividual = await UserCourses.findOne({
       where: {
-        id,
+        UserId: userId,
+        GroupCourseId: course.assignCourseId,
+      },
+      include: [CoursesContents],
+    });
+    const userCoursPoints = +isIndividual.totalPoints
+    const userCoursQuizzPoints = +isIndividual.takenQuizzes
+    const userCoursHomeworkPoints = +isIndividual.takenHomework
+
+    if (
+      isIndividual &&
+      isIndividual.CoursesContent &&
+      isIndividual.CoursesContent.courseType == 'Individual'
+    ) {
+
+      let course = await GroupCourses.findByPk(id, {
+        include: {
+          model: CoursesContents,
+        },
+      });
+      const students = await UserCourses.count({
+        where: { GroupCourseId: course.assignCourseId },
+      });
+
+      const lessons = await CoursesPerLessons.count({
+        where: {
+          courseId: course.assignCourseId,
+        },
+      });
+
+      const mySkils = await Skills.findAll({
+        where: { userId },
+      })
+
+      let charts = await LessonTime.findAll({
+        where: {
+          userId,
+        },
+      });
+
+      charts = charts.map((e) => e.time);
+      const allQuizz = await CoursesPerLessons.count({
+        where: { courseId: course.assignCourseId },
+        include: [
+          {
+            model: Lesson,
+            include: [
+              {
+                model: Quizz,
+                as: 'quizz',
+                required: true,
+              },
+            ],
+            required: true,
+          },
+        ],
+      });
+      //const language = "am";
+      const allHomework = await CoursesPerLessons.count({
+        where: { courseId: course.assignCourseId },
+        include: [
+          {
+            model: Lesson,
+            include: [
+              {
+                model: Homework,
+                as: 'homework',
+                through: {
+                  attributes: [],
+                },
+                attributes: [
+                  'id',
+                  [`title_${language}`, 'title'],
+                  [`description_${language}`, 'description'],
+                ],
+              },
+            ],
+            required: true,
+          },
+        ],
+      });
+
+      const userSubmitedHomework = 5;
+      const response = {
+        lesson: 0,
+        homework: {
+          taken: 1,
+          all: allQuizz,
+          percent: 100,
+        },
+        quizzes: {
+          taken: userSubmitedHomework,
+          all: allHomework,
+          percent: (userSubmitedHomework / allHomework) * 100,
+        },
+        // totalPoints: (group.lessons + group.homeWork + group.quizzes) / 3,
+        totalPoints: 0,
+        mySkils,
+        charts,
+        course: {
+          students,
+          lessons,
+          lessonType: isIndividual.CoursesContent.level,
+        },
+      };
+
+      return res.json(response);
+    }
+
+    const group = await GroupsPerUsers.findOne({
+      where: {
+        userId,
+        groupId: id,
+      },
+    });
+    const students = await GroupsPerUsers.count({
+      where: { groupId: id, userRole: 'STUDENT' },
+    });
+
+    const lessons = await CoursesPerLessons.count({
+      where: {
+        courseId: course.assignCourseId ? course.assignCourseId : 1,
       },
     });
 
-    const userInfo = await UserCourses.findOne({
-      where: { GroupCourseId: group.assignCourseId, UserId: userId },
-      include: {
-        model: Users,
-        attributes: ['firstName', 'lastName', 'image']
+    const maxPoint = await CoursesContents.findOne({
+      where: {
+        courseId: course.assignCourseId
+      }
+    })
+    console.log(maxPoint.maxQuizzPoint, maxPoint.maxInterviewPoint, maxPoint.maxHomeworkPoint);
+
+
+
+    if (!group) {
+      return res.status(403).json({
+        success: false,
+        message: "Group not found or user doesn't in group",
+      });
+    }
+    // const mySkils = await Skills.findAll({
+    //   where: { userId },
+    // });
+
+    // let charts = await LessonTime.findAll({
+    //   where: {
+    //     userId,
+    //   },
+    // });
+
+    // charts = charts.map((e) => e.time);
+
+    const response = {
+      lesson: 0,
+      homework: {
+        maxHomevorkPoint: +maxPoint.maxHomeworkPoint,
+        userCoursHomeworkPoints: parseFloat(userCoursHomeworkPoints.toFixed(2)),
       },
-    });
+      quizzes: {
+        maxQuizzPoint: +maxPoint.maxQuizzPoint,
+        userCoursQuizzPoints: parseFloat(userCoursQuizzPoints.toFixed(2)),
+      },
+      interview: {
+        maxInterviewPoint: +maxPoint.maxInterviewPoint,
+        userCoursInterviewPoint: 0
+      },
 
-    if (!userInfo) return res.status(404).json({ success: false, message: 'Invalid id or userId' });
-
-    return res.status(200).json({ success: true, userInfo });
+      totalPoints: parseFloat(userCoursPoints.toFixed(2)),
+      maxTotalPoints: +maxPoint.maxInterviewPoint + +maxPoint.maxQuizzPoint + +maxPoint.maxHomeworkPoint,
+      // mySkils,
+      // charts,
+      course: {
+        students,
+        lessons: lessons,
+        lessonType: course.GroupCourse.CoursesContents[0].level,
+      },
+    };
+    return res.json(response);
   } catch (error) {
     console.log(error.message, error.name);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -630,7 +826,7 @@ const finishGroup = async (req, res) => {
         }
       }
 
-      const date = Group.endDate.toISOString()    
+      const date = Group.endDate.toISOString()
       Certificates.create({
         userId: user.id,
         courseName,
@@ -926,7 +1122,7 @@ module.exports = {
   findAll,
   update,
   addMember,
-  SingleUserStstic,
+  SingleUserStatics,
   recordUserStatics,
   getUserStaticChart,
   finishGroup,

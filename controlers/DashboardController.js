@@ -161,39 +161,6 @@ const getUserStatictis = async (req, res) => {
       },
     });
 
-
-    // const lessons = await CoursesPerLessons.findAll({
-    //   where: {
-    //     courseId: course.assignCourseId ? course.assignCourseId : 1,
-    //   },
-    //   include: {
-    //     model: Lesson,
-    //     include: [
-    //       {
-    //         model: Homework,
-    //         as: 'homework',
-    //       },
-    //       {
-    //         model: Quizz,
-    //         as: 'quizz',
-    //         include: [
-    //           {
-    //             model: Question,
-    //             order: [['id', 'ASC']],
-    //           },
-    //         ],
-    //       }
-    //     ],
-    //   }
-    // });
-
-    // const maxPoint = lessons.reduce((aggr, value, index) => {
-
-    //   aggr.maxQuizzPoint = +aggr.maxQuizzPoint + +(value.Lesson.quizz.length > 0 ? value.Lesson.quizz[0].Questions.length * +value.Lesson.quizz[0].Questions[0].points : 0)
-    //   aggr.maxHomeworkPoint = +aggr.maxHomeworkPoint + +(value.Lesson.homework.length > 0 ? +value.Lesson.homework[0].point : 0)
-    //   return aggr
-    // }, { maxQuizzPoint: 0, maxHomeworkPoint: 0 })
-
     const maxPoint = await CoursesContents.findOne({
       where: {
         courseId: course.assignCourseId
@@ -218,7 +185,7 @@ const getUserStatictis = async (req, res) => {
         userId,
       },
     });
-    // console.log(course);
+
     charts = charts.map((e) => e.time);
 
     const response = {

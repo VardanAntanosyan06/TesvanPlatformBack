@@ -91,7 +91,7 @@ const downloadCertificate = async (req, res) => {
   try {
     // Fetch the certificate data from the database
     const certificate = await Certificates.findOne({
-      where: { id },
+      where: { id: id },
       attributes: ["id", "userId", "status", "giveDate", "courseName", "url"],
       include: { model: Users, attributes: ["firstName", "lastName"] },
     });
