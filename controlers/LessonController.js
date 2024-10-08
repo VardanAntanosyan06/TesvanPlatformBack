@@ -191,7 +191,7 @@ const getLesson = async (req, res) => {
 
     let homeworkPoint
     if (lesson.Lesson.homework.length > 0) {
-      point = await UserHomework.findAll({
+      homeworkPoint = await UserHomework.findOne({
         where: {
           LessonId: id,
           UserId: userId,
@@ -199,9 +199,6 @@ const getLesson = async (req, res) => {
           GroupCourseId: courseId
         },
       });
-      homeworkPoint = point.reduce((aggr, value) => {
-        return aggr =  aggr + +value.point
-      }, 0)
     }
 
     let userPoint = null;
@@ -234,7 +231,7 @@ const getLesson = async (req, res) => {
         pointsOfPercent: Math.round((lessonPoints * 100) / maxPoints),
         quizzPoint: userPoint ? parseFloat(quizPoints.toFixed(2)) : null,
         maxQuizzPoints: maxQuizzPoints ? maxQuizzPoints : 0,
-        homeworkPoint: homeworkPoint ? homeworkPoint : null,
+        homeworkPoint: homeworkPoint ? (+homeworkPoint.points !== 0 ? homeworkPoint.points : null) : null,
         maxHomeworkPoints: maxHomeworkPoints,
         attempt: lesson.attempt,
         time: lessonTime ? lessonTime.time : null,
