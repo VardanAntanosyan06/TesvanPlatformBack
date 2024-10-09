@@ -467,7 +467,7 @@ const homeworkPoints = async (req, res) => {
   try {
     const { userId, homeworkId, points, feedback } = req.body;
     const { courseId } = req.query;
-    const { lessonId } = await HomeworkPerLesson.findOne({ where: { homeworkId } });
+    // const { lessonId } = await HomeworkPerLesson.findOne({ where: { homeworkId } });
     // const { maxPoints } = await Lesson.findByPk(lessonId);
 
     const [status] = await UserHomework.update(
@@ -480,7 +480,6 @@ const homeworkPoints = async (req, res) => {
           GroupCourseId: courseId,
           UserId: userId,
           HomeworkId: homeworkId,
-          LessonId: lessonId,
         },
       },
     );
@@ -488,8 +487,6 @@ const homeworkPoints = async (req, res) => {
     const userCourse = await UserCourses.findOne({
       where: { UserId: +userId, GroupCourseId: courseId },
     });
-
-    console.log(userCourse, 1);
 
     userCourse.totalPoints = +userCourse.totalPoints + +points;
     userCourse.takenHomework = +userCourse.takenHomework + +points;

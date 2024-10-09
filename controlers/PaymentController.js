@@ -604,6 +604,7 @@ const getUserPayment = async (req, res) => {
     if (payments.length === 0) {
       return res.status(400).json({ success: false, message: 'Bad request1.' });
     };
+
     // if (payments.length === 0) {
     //   const responsData = {
     //     payments: [],
@@ -618,6 +619,7 @@ const getUserPayment = async (req, res) => {
     //   });
     //   // return res.status(400).json({ success: false, message: 'Bad request.' });
     // };
+    
     const fullPaid = payments.find(value => value.type === "full");
 
     if (fullPaid) {
