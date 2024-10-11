@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       Users.hasMany(models.ChatMessages, { foreignKey: "senderId" })
       Users.hasMany(models.GroupChatMessages, { foreignKey: "senderId", onDelete: 'CASCADE' }) //+
       Users.hasOne(models.GroupChatReads, { foreignKey: "userId", onDelete: 'CASCADE' }) //+
+      Users.hasMany(models.Payment, { foreignKey: "userId" })
     }
   }
   Users.init(
@@ -137,7 +138,7 @@ module.exports = (sequelize, DataTypes) => {
 
   const UserCourses = sequelize.define('UserCourses');
   const Groups = sequelize.define('Groups');
-  Users.hasMany(UserCourses, {foreignKey: "UserId", onDelete: 'CASCADE' }); //+
+  Users.hasMany(UserCourses, { foreignKey: "UserId", onDelete: 'CASCADE' }); //+
 
   Users.belongsToMany(Groups, {
     through: 'GroupsPerUsers',

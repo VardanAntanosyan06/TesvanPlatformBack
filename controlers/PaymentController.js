@@ -619,7 +619,7 @@ const getUserPayment = async (req, res) => {
     //   });
     //   // return res.status(400).json({ success: false, message: 'Bad request.' });
     // };
-    
+
     const fullPaid = payments.find(value => value.type === "full");
 
     if (fullPaid) {
@@ -716,91 +716,33 @@ const monthlyPaymentUrl = async (req, res, next) => {
   }
 };
 
-// const monthlyPaymentIdram = async (req, res, next) => {
-//   try {
-//     const { user_id: userId } = req.user;
-//     const { groupId } = req.query;
-//     const { paymentWay } = req.body;
-//     const type = "monthly";
-
-//     const paymentWays = await PaymentWays.findOne({
-//       where: {
-//         groupId,
-//         type
-//       }
-//     });
-
-//     const priceCourse = paymentWays.price * (1 - paymentWays.discount / 100) * paymentWays.durationMonths
-
-//     const payment = await Payment.findAll({
-//       where: {
-//         userId,
-//         groupId,
-//         status: "Success",
-//         type
-//       },
-//       attributes: ['paymentWay', 'status', 'type', 'amount', 'createdAt'],
-//     });
-
-//     const userPaymentSum = payment.reduce((aggr, value) => {
-//       return aggr = aggr + +value.amount
-//     }, 0)
-
-//     if (userPaymentSum <= priceCourse && paymentWay === "IDRAM") {
-//       req.body.monthlyPayment = true;
-//       next()
-//     } else {
-//       return res.status(500).send('Bad request.');
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).send('Internal Server Error');
-//   }
-// };
-
-// const monthlyPaymentArca = async (req, res, next) => {
-//   try {
-
-//     const { user_id: userId } = req.user;
-//     const { groupId } = req.query;
-//     const { paymentWay, orderKey } = req.body;
-//     const type = "monthly";
-
-//     const paymentWays = await PaymentWays.findOne({
-//       where: {
-//         groupId,
-//         type
-//       }
-//     });
-
-//     const priceCourse = paymentWays.price * (1 - paymentWays.discount / 100) * paymentWays.durationMonths
-
-//     const payment = await Payment.findAll({
-//       where: {
-//         userId,
-//         groupId,
-//         status: "Success",
-//         type
-//       },
-//       attributes: ['paymentWay', 'status', 'type', 'amount', 'createdAt'],
-//     });
-
-//     const userPaymentSum = payment.reduce((aggr, value) => {
-//       return aggr = aggr + +value.amount
-//     }, 0)
-
-//     if (userPaymentSum <= priceCourse && paymentWay === "ARCA") {
-//       req.body.monthlyPayment = true;
-//       req.body.orderKey = orderKey;
-//       next()
-//     } else {
-//       return res.status(500).send('Bad request.');
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).send('Internal Server Error');
-//   }
-// };
+const getAllPayment = (req, res) => {
+  try {
+    const { groupId } = req.query;
+    // ASC | DESC
+    const payments = Payment.findAll({
+      where: {
+        groupId,
+        status: "Success"
+      },
+      include: [
+        {
+          module: Users,
+          as: "user",
+          attributes: ["id", "firstName", "lastName", "image"],
+        }
+      ],
+      order: [["id", "ASC"]]
+    });
+    return res.status(200).json({
+      success: true,
+      payments
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Internal Server Error');
+  }
+};
 
 module.exports = {
   paymentUrl,
@@ -808,6 +750,5 @@ module.exports = {
   paymentIdram,
   getUserPayment,
   monthlyPaymentUrl,
-  // monthlyPaymentArca,
-  // monthlyPaymentIdram
+  getAllPayment
 };

@@ -35,7 +35,7 @@
 .month {
     position: relative;
     text-align: center;
-    top: 119.8mm;
+    top: 119.9mm;
     left: 18mm;
 }
 
@@ -49,7 +49,7 @@
 
 .year {
     position: relative;
-    top: 121mm;
+    top: 120.5mm;
     right: 17mm;
 }
 
@@ -57,7 +57,7 @@
     font-family: 'Fira Sans', sans-serif;
     font-weight: 500;
     color: #143E59;
-    font-size: 30px;
+    font-size: 29px;
     font-weight: bold;
 }
 

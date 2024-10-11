@@ -201,6 +201,10 @@ const getLesson = async (req, res) => {
       });
     }
 
+    // const allHomeworkPointsSum = homeworkPoint.reduce((aggr, value) => {
+    //   return aggr = aggr + +value.points
+    // },0)
+
     let userPoint = null;
 
     if (lesson.Lesson.quizz.length > 0) {
@@ -213,9 +217,9 @@ const getLesson = async (req, res) => {
         },
       });
     }
-    const maxHomeworkPoint = lesson.Lesson.homework.reduce((aggr, value)=>{
+    const maxHomeworkPoint = lesson.Lesson.homework.reduce((aggr, value) => {
       return aggr = aggr + +value.point
-    }, 0)
+    }, 0);
     
     const maxQuizzPoints =
       lesson.Lesson.quizz[0]?.Questions[0]?.points * lesson.Lesson.quizz[0]?.Questions?.length;

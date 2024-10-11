@@ -265,7 +265,7 @@ const submitQuizz = async (req, res) => {
       questionId,
       optionId,
       courseId,
-      lessonId,
+      lessonId: +lessonId ? +lessonId : 0,
       questionTitle_en: quizz.Questions[0].title_en,
       questionTitle_am: quizz.Questions[0].title_am,
       questionTitle_ru: quizz.Questions[0].title_ru,
@@ -312,7 +312,7 @@ const finishQuizz = async (req, res) => {
       where: {
         courseId,
         userId,
-        lessonId
+        lessonId: lessonId ? lessonId : 0
       }
     })
     if (userPoint) {
@@ -708,7 +708,7 @@ const getUserQuizzAnswers = async (req, res) => {
 
     const userAnswersQuizz = await UserAnswersQuizz.findAll({
       where: {
-        lessonId,
+        lessonId: lessonId ? lessonId : 0,
         userId,
         courseId,
       },

@@ -15,6 +15,7 @@ const {
   UserInterview,
   HomeworkPerLesson,
   UserHomework,
+  Question
 } = require('../models');
 
 const { CoursesContents } = require('../models');
@@ -526,9 +527,17 @@ const getUserCourse = async (req, res) => {
           model: Quizz,
           attributes: ['id', [`title_${language}`, 'title'], ['description_en', 'description']],
           through: { attributes: [] },
+          include: [
+            {
+              model: Question,
+              attributes: ['id', 'quizzId', 'title_ru', 'title_en', 'title_am', 'points'],
+            },
+          ],
         },
       ],
     });
+    
+    const maxFinalQuizPoint = Quizzs[0].Questions[0].points * Quizzs[0].Questions.length
     // const lessonsHaveQuizz = await CoursesPerLessons.count({
     //   where: { courseId },
     //   include: [
@@ -558,7 +567,8 @@ const getUserCourse = async (req, res) => {
       title: Quizzs[0].dataValues.title,
       description: Quizzs[0].dataValues.description,
       points: userPoint ? userPoint.point : null,
-      isOpen: false,
+      isOpen: courseId == 12 ? true : false,
+      maxFinalQuizPoint
     };
 
     let groups = await GroupCourses.findOne({
