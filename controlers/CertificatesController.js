@@ -120,7 +120,7 @@ const downloadCertificate = async (req, res) => {
 
     // Pipe the certificate PDF stream to the response
     // certificateStream.pipe(res)
-    res.end(certificateStream);
+    res.send(certificateStream);
 
   } catch (error) {
     console.error('Error generating or downloading certificate:', error);
