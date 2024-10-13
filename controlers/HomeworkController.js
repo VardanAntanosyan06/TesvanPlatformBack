@@ -162,12 +162,12 @@ const getHomework = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id: userId, role } = req.user;
-    const { language, courseId } = req.query;
+    const { language, courseId, lessonId } = req.query;
 
     await UserHomework.findOrCreate({
-      where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId },
+      where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
       default: {
-        HomeworkId: id, UserId: userId, GroupCourseId: courseId
+        HomeworkId: id, UserId: userId, GroupCourseId: courseId, LessonId: lessonId
       }
     });
 

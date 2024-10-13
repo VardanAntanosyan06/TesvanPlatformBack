@@ -191,19 +191,18 @@ const getLesson = async (req, res) => {
 
     let homeworkPoint
     if (lesson.Lesson.homework.length > 0) {
-      homeworkPoint = await UserHomework.findOne({
+      homeworkPoint = await UserHomework.findAll({
         where: {
           LessonId: id,
           UserId: userId,
-          HomeworkId: lesson.Lesson.homework[0].id,
           GroupCourseId: courseId
         },
+        attributes: [["HomeworkId", "homeworkId"], "points"]
       });
     }
-
-    // const allHomeworkPointsSum = homeworkPoint.reduce((aggr, value) => {
-    //   return aggr = aggr + +value.points
-    // },0)
+    const homeworkPointSum = homeworkPoint.reduce((aggr, value) => {
+      return aggr = aggr + +value.points
+    }, 0)  
 
     let userPoint = null;
 
@@ -220,13 +219,12 @@ const getLesson = async (req, res) => {
     const maxHomeworkPoint = lesson.Lesson.homework.reduce((aggr, value) => {
       return aggr = aggr + +value.point
     }, 0);
-    
+
     const maxQuizzPoints =
       lesson.Lesson.quizz[0]?.Questions[0]?.points * lesson.Lesson.quizz[0]?.Questions?.length;
     const maxHomeworkPoints = +lesson.Lesson.homework.length > 0 ? maxHomeworkPoint : 0
     const maxPoints = +maxHomeworkPoints + +maxQuizzPoints;
-    const lessonPoints =
-      +(homeworkPoint ? homeworkPoint.points : 0) + +(userPoint ? userPoint.point : 0);
+    const lessonPoints = homeworkPointSum + +(userPoint ? userPoint.point : 0);
 
     let quizPoints;
     userPoint ? (quizPoints = +userPoint.point) : false,
@@ -238,7 +236,7 @@ const getLesson = async (req, res) => {
         pointsOfPercent: Math.round((lessonPoints * 100) / maxPoints),
         quizzPoint: userPoint ? parseFloat(quizPoints.toFixed(2)) : null,
         maxQuizzPoints: maxQuizzPoints ? maxQuizzPoints : 0,
-        homeworkPoint: homeworkPoint ? (+homeworkPoint.points !== 0 ? homeworkPoint.points : null) : null,
+        homeworkPoint: homeworkPoint,
         maxHomeworkPoints: maxHomeworkPoints,
         attempt: lesson.attempt,
         time: lessonTime ? lessonTime.time : null,

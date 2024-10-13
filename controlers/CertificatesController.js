@@ -84,7 +84,8 @@ const getUserCertificates = async (req, res) => {
   }
 }
 
-const { generateCertificate } = require('../generateCertificate/generateCertificate')
+const { generateCertificate } = require('../generateCertificate/generateCertificate');
+
 const downloadCertificate = async (req, res) => {
   const { id } = req.params;
 
@@ -102,24 +103,40 @@ const downloadCertificate = async (req, res) => {
 
     const userName = `${certificate.User.firstName} ${certificate.User.lastName}`;
     const courseName = certificate.courseName;
-    const giveDate = certificate.giveDate.toString().split(" ")
-    const date = `${giveDate[1]} ${giveDate[2]} ${giveDate[3]}`
-    const year = giveDate[3]
+    const giveDate = certificate.giveDate.toString().split(" ");
+    const date = `${giveDate[1]} ${giveDate[2]} ${giveDate[3]}`;
+    const year = giveDate[3];
 
     // Generate the certificate stream
     const certificateStream = await generateCertificate(certificate.status, userName, courseName, date, year);
+
+    if (!certificateStream) {
+      return res.status(500).send('Error generating certificate stream');
+    }
 
     // Set headers for downloading the file
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename=Certificate_${certificate.id}.pdf`);
 
+    // Handle stream errors
+    certificateStream.on('error', (err) => {
+      console.error('Error in certificate stream:', err);
+      return res.status(500).send('Error generating certificate.');
+    });
+
     // Pipe the certificate PDF stream to the response
     certificateStream.pipe(res);
+
+    // End the response after the stream finishes
+    certificateStream.on('end', () => {
+      res.end();
+    });
   } catch (error) {
     console.error('Error generating or downloading certificate:', error);
     res.status(500).send('Internal server error');
   }
 };
+
 module.exports = {
   findAllStudents,
   changeStatus,

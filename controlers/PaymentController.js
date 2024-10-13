@@ -65,6 +65,7 @@ const paymentUrl = async (req, res) => {
       success: true,
       formUrl: paymentResponse.formUrl,
       id: orderNumber,
+      amount: thisCoursePrice
     });
   } catch (error) {
     console.log(error);
@@ -602,23 +603,19 @@ const getUserPayment = async (req, res) => {
     });
 
     if (payments.length === 0) {
-      return res.status(400).json({ success: false, message: 'Bad request1.' });
+      const responsData = {
+        payments,
+        nextPayment: true,
+        userPaidSum: 0,
+        userUnpaidSum: +priceCourse,
+        nextPaymentDate: paymentWays.group.startDate
+      };
+      return res.status(200).json({
+        success: true,
+        responsData
+      });
+      // return res.status(400).json({ success: false, message: 'Bad request.' });
     };
-
-    // if (payments.length === 0) {
-    //   const responsData = {
-    //     payments: [],
-    //     nextPayment: true,
-    //     userPaidSum: 0,
-    //     userUnpaidSum: +priceCourse,
-    //     nextPaymentDate: paymentWays.group.startDate
-    //   };
-    //   return res.status(200).json({
-    //     success: true,
-    //     responsData
-    //   });
-    //   // return res.status(400).json({ success: false, message: 'Bad request.' });
-    // };
 
     const fullPaid = payments.find(value => value.type === "full");
 
