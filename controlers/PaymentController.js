@@ -589,6 +589,7 @@ const getUserPayment = async (req, res) => {
     nextPaymentDate.setDate(nextPaymentDate.getDate() + (durationMonths * 30));
 
     const priceCourse = paymentWays.price * (1 - paymentWays.discount / 100) * paymentWays.durationMonths
+    const userUnpaidSum = priceCourse / paymentWays.durationMonths
 
     const payments = await Payment.findAll({
       where: {
@@ -602,12 +603,18 @@ const getUserPayment = async (req, res) => {
       order: [['createdAt', 'DESC']]
     });
 
+    const userPaidSum = payments.reduce((aggr, value) => {
+      if (value.status === "Success") {
+        return aggr = aggr + +value.amount
+      };
+    }, 0);
+
     if (payments.length === 0) {
       const responsData = {
         payments,
         nextPayment: true,
-        userPaidSum: 0,
-        userUnpaidSum: +priceCourse,
+        userPaidSum,
+        userUnpaidSum,
         nextPaymentDate: paymentWays.group.startDate
       };
       return res.status(200).json({
@@ -631,12 +638,8 @@ const getUserPayment = async (req, res) => {
       });
     };
 
-    const userPaidSum = payments.reduce((aggr, value) => {
-      if (value.status === "Success") {
-        return aggr = aggr + +value.amount
-      };
-    }, 0);
-    const userUnpaidSum = priceCourse - userPaidSum;
+
+
 
     if (+priceCourse === +userPaidSum) {
       const responsData = {

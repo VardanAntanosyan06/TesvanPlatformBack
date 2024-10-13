@@ -114,12 +114,7 @@ const downloadCertificate = async (req, res) => {
       return res.status(500).send('Error generating certificate stream');
     }
 
-    // Set headers for downloading the file
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=Certificate_${certificate.id}.pdf`);
-
     // Pipe the certificate PDF stream to the response
-    // certificateStream.pipe(res)
     res.send(certificateStream);
 
   } catch (error) {

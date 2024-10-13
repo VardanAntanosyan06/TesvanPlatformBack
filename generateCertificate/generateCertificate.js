@@ -64,15 +64,28 @@ async function generateCertificate(status, userName, courseName, date, year) {
             orientation: 'landscape',
         };
 
-        // Wrap the PDF creation in a Promise to handle it with async/await
-        return  new Promise((resolve, reject) => {
-            pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
+        const fileName = `${userName}_${date}.pdf`
+        const filePath = path.join(__dirname, '../static', fileName);
+        return new Promise((resolve, reject) => {
+            pdf.create(htmlWithStyles, options).toFile(filePath, (err) => {
                 if (err) {
                     return reject(err);
                 }
-                resolve(buffer);  // Return the stream for the response
-            });
+                resolve(fileName);
+            })
         });
+
+
+
+        // // Wrap the PDF creation in a Promise to handle it with async/await
+        // return new Promise((resolve, reject) => {
+        //     pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
+        //         if (err) {
+        //             return reject(err);
+        //         }
+        //         resolve(buffer);  // Return the stream for the response
+        //     });
+        // });
 
     } catch (error) {
         console.log('Error generating certificate:', error);
