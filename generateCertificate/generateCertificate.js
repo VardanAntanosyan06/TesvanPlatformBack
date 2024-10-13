@@ -65,12 +65,12 @@ async function generateCertificate(status, userName, courseName, date, year) {
         };
 
         // Wrap the PDF creation in a Promise to handle it with async/await
-        return new Promise((resolve, reject) => {
-            pdf.create(htmlWithStyles, options).toStream((err, stream) => {
+        return  new Promise((resolve, reject) => {
+            pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
                 if (err) {
                     return reject(err);
                 }
-                resolve(stream);  // Return the stream for the response
+                resolve(buffer);  // Return the stream for the response
             });
         });
 
