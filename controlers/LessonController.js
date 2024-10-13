@@ -200,7 +200,7 @@ const getLesson = async (req, res) => {
         attributes: [["HomeworkId", "homeworkId"], "points"]
       });
     }
-    const homeworkPointSum = homeworkPoint.reduce((aggr, value) => {
+    const homeworkPointSum = homeworkPoint?.reduce((aggr, value) => {
       return aggr = aggr + +value.points
     }, 0)  
 
