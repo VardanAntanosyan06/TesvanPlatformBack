@@ -202,7 +202,7 @@ const getLesson = async (req, res) => {
     }
     const homeworkPointSum = homeworkPoint?.reduce((aggr, value) => {
       return aggr = aggr + +value.points
-    }, 0)  
+    }, 0)
 
     let userPoint = null;
 
@@ -224,7 +224,7 @@ const getLesson = async (req, res) => {
       lesson.Lesson.quizz[0]?.Questions[0]?.points * lesson.Lesson.quizz[0]?.Questions?.length;
     const maxHomeworkPoints = +lesson.Lesson.homework.length > 0 ? maxHomeworkPoint : 0
     const maxPoints = +maxHomeworkPoints + +maxQuizzPoints;
-    const lessonPoints = homeworkPointSum + +(userPoint ? userPoint.point : 0);
+    const lessonPoints = (homeworkPointSum ? homeworkPointSum : 0) + +(userPoint ? userPoint.point : 0);
 
     let quizPoints;
     userPoint ? (quizPoints = +userPoint.point) : false,
