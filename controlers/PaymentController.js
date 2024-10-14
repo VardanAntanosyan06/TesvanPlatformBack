@@ -38,7 +38,8 @@ const paymentUrl = async (req, res) => {
     }
     const thisCoursePrice = thisCourse.price * (1 - thisCourse.discount / 100);
     const orderNumber = Math.floor(Date.now() * Math.random());
-    let amount = +thisCoursePrice * 100;
+    let amount = Math.ceil(+thisCoursePrice * 100);
+    
     const data = `userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}&amount=${amount}&currency=${process.env.CURRENCY}&language=en&orderNumber=${orderNumber}&returnUrl=${process.env.RETURNURL}&failUrl=${process.env.FAILURL}&pageView=DESKTOP&description='Payment Tesvan Platform'`;
     let { data: paymentResponse } = await axios.post(
       `https://ipay.arca.am/payment/rest/register.do?${data}`,

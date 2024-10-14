@@ -64,7 +64,7 @@ async function generateCertificate(status, userName, courseName, date, year) {
             orientation: 'landscape',
         };
 
-        const fileName = `Certificate.pdf`
+        const fileName = `Tesvan_Certificate.pdf`
         const filePath = path.join(__dirname, '../static', fileName);
         return new Promise((resolve, reject) => {
             pdf.create(htmlWithStyles, options).toFile(filePath, (err) => {
