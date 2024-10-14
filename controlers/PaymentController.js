@@ -356,24 +356,7 @@ const paymentIdram = async (req, res) => {
           payment.status = 'Success';
           await payment.save();
 
-          // const monthlyPaid = await Payment.count({
-          //   where: {
-          //     id: {
-          //       [Op.not]: payment.id
-          //     },
-          //     userId: payment.userId,
-          //     groupId: payment.groupId,
-          //     status: 'Success'
-          //   }
-          // });
-          // if(+monthlyPaid !== 0){
-          //   return res.json({
-          //     success: true,
-          //     message: "Monthly payment"
-          //   });
-          // }
-
-          if (payment.type === 'Group') {
+        
             const user = await Users.findOne({ where: { id: payment.userId } });
             const group = await Groups.findByPk(payment.groupId);
             if (!group) {
@@ -480,7 +463,7 @@ const paymentIdram = async (req, res) => {
             groupChats.members = uniqueUsers;
 
             await groupChats.save();
-          } else if (payment.type === 'Individual') {
+          if (payment.type === 'Individual') {
             const user = await Users.findOne({ where: { id: payment.userId } });
             const course = await GroupCourses.findByPk(payment.groupId);
             if (!course) {
