@@ -39,7 +39,7 @@ const paymentUrl = async (req, res) => {
     const thisCoursePrice = thisCourse.price * (1 - thisCourse.discount / 100);
     const orderNumber = Math.floor(Date.now() * Math.random());
     let amount = Math.ceil(+thisCoursePrice * 100);
-    
+
     const data = `userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}&amount=${amount}&currency=${process.env.CURRENCY}&language=en&orderNumber=${orderNumber}&returnUrl=${process.env.RETURNURL}&failUrl=${process.env.FAILURL}&pageView=DESKTOP&description='Payment Tesvan Platform'`;
     let { data: paymentResponse } = await axios.post(
       `https://ipay.arca.am/payment/rest/register.do?${data}`,
@@ -356,113 +356,112 @@ const paymentIdram = async (req, res) => {
           payment.status = 'Success';
           await payment.save();
 
-        
-            const user = await Users.findOne({ where: { id: payment.userId } });
-            const group = await Groups.findByPk(payment.groupId);
-            if (!group) {
-              return res.json({ success: false, message: 'Group not found' });
-            }
+          const user = await Users.findOne({ where: { id: payment.userId } });
+          const group = await Groups.findByPk(payment.groupId);
+          if (!group) {
+            return res.json({ success: false, message: 'Group not found' });
+          }
 
-            if (!user) {
-              return res.status(404).json({ message: 'User not found' });
-            }
-            const { role } = await Users.findByPk(payment.userId);
-            await GroupsPerUsers.findOrCreate({
-              where: {
-                groupId: payment.groupId,
-                userId: payment.userId,
-              },
-              defaults: {
-                groupId: payment.groupId,
-                userId: payment.userId,
-                userRole: role,
-              },
-            });
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+          const { role } = await Users.findByPk(payment.userId);
+          await GroupsPerUsers.findOrCreate({
+            where: {
+              groupId: payment.groupId,
+              userId: payment.userId,
+            },
+            defaults: {
+              groupId: payment.groupId,
+              userId: payment.userId,
+              userRole: role,
+            },
+          });
 
-            await UserCourses.create({
+          await UserCourses.create({
+            GroupCourseId: group.assignCourseId,
+            UserId: payment.userId,
+          });
+          const lessons = await CoursesPerLessons.findAll({
+            where: { courseId: group.assignCourseId },
+          });
+          // await UserPoints.findOrCreate({
+          //   where: {
+          //     userId: payment.userId,
+          //   },
+          //   defaults: {
+          //     userId: payment.userId,
+          //     lesson: 0,
+          //     quizz: 0,
+          //     finalInterview: 0,
+          //   },
+          // });
+          lessons.forEach(async (e) => {
+            await UserLesson.create({
               GroupCourseId: group.assignCourseId,
               UserId: payment.userId,
+              LessonId: e.lessonId,
             });
-            const lessons = await CoursesPerLessons.findAll({
-              where: { courseId: group.assignCourseId },
-            });
-            // await UserPoints.findOrCreate({
-            //   where: {
-            //     userId: payment.userId,
-            //   },
-            //   defaults: {
-            //     userId: payment.userId,
-            //     lesson: 0,
-            //     quizz: 0,
-            //     finalInterview: 0,
-            //   },
-            // });
-            lessons.forEach(async (e) => {
-              await UserLesson.create({
+          });
+
+          const Course = await GroupCourses.findOne({
+            where: { id: group.assignCourseId },
+            include: [
+              {
+                model: Lesson,
+                include: [
+                  {
+                    model: Homework,
+                    as: 'homework',
+                  },
+                ],
+                required: true,
+              },
+            ],
+          });
+
+          Course.Lessons.forEach(async (lesson) => {
+            if (lesson.homework.length > 0) {
+              await UserHomework.create({
                 GroupCourseId: group.assignCourseId,
                 UserId: payment.userId,
-                LessonId: e.lessonId,
+                HomeworkId: lesson.homework[0].id,
+                points: 0,
+                LessonId: lesson.id,
               });
-            });
+            }
+          });
 
-            const Course = await GroupCourses.findOne({
-              where: { id: group.assignCourseId },
-              include: [
-                {
-                  model: Lesson,
-                  include: [
-                    {
-                      model: Homework,
-                      as: 'homework',
-                    },
-                  ],
-                  required: true,
-                },
-              ],
-            });
+          const boughtTests = await Tests.findAll({
+            where: {
+              [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
+            },
+          });
 
-            Course.Lessons.forEach(async (lesson) => {
-              if (lesson.homework.length > 0) {
-                await UserHomework.create({
-                  GroupCourseId: group.assignCourseId,
-                  UserId: payment.userId,
-                  HomeworkId: lesson.homework[0].id,
-                  points: 0,
-                  LessonId: lesson.id,
-                });
-              }
-            });
-
-            const boughtTests = await Tests.findAll({
+          boughtTests.forEach(async (test) => {
+            await UserTests.findOrCreate({
               where: {
-                [sequelize.Op.or]: [{ courseId: group.assignCourseId }, { courseId: null }],
+                testId: test.id,
+                userId: payment.userId,
+                courseId: test.courseId,
+                language: test.language,
+                type: 'Group',
+              },
+              defaults: {
+                testId: test.id,
+                userId: payment.userId,
               },
             });
+          });
 
-            boughtTests.forEach(async (test) => {
-              await UserTests.findOrCreate({
-                where: {
-                  testId: test.id,
-                  userId: payment.userId,
-                  courseId: test.courseId,
-                  language: test.language,
-                  type: 'Group',
-                },
-                defaults: {
-                  testId: test.id,
-                  userId: payment.userId,
-                },
-              });
-            });
+          const groupChats = await GroupChats.findOne({
+            where: { groupId: payment.groupId },
+          });
+          const newMembers = [payment.userId, ...groupChats.members];
+          const uniqueUsers = [...new Set(newMembers)];
+          groupChats.members = uniqueUsers;
 
-            const groupChats = await GroupChats.findOne({
-              where: { groupId: payment.groupId },
-            });
-            const newMembers = [payment.userId, ...groupChats.members];
-            const uniqueUsers = [...new Set(newMembers)];
-            groupChats.members = uniqueUsers;
-
-            await groupChats.save();
+          await groupChats.save();
           if (payment.type === 'Individual') {
             const user = await Users.findOne({ where: { id: payment.userId } });
             const course = await GroupCourses.findByPk(payment.groupId);

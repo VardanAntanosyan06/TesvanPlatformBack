@@ -2,7 +2,7 @@ const pdf = require('html-pdf');
 const fs = require('fs').promises;
 const path = require('path');
 
-async function generateCertificate(status, userName, courseName, date, year) {
+const generateCertificate = async (status, userName, courseName, date, year) => {
     try {
         const htmlFilePath = path.join(__dirname, '.', 'certificate.html');
         const cssFilePath = path.join(__dirname, '.', 'styles.css');
@@ -66,14 +66,14 @@ async function generateCertificate(status, userName, courseName, date, year) {
 
         const fileName = `Tesvan_Certificate.pdf`
         const filePath = path.join(__dirname, '../static', fileName);
-        return new Promise((resolve, reject) => {
-            pdf.create(htmlWithStyles, options).toFile(filePath, (err) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(fileName);
-            })
-        });
+        pdf.create(htmlWithStyles, options).toFile(filePath, (err, file) => {
+            if (err) {
+                console.log(err);
+            }
+        })
+
+        return fileName
+
 
 
 
