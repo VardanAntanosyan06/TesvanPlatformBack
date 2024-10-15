@@ -101,23 +101,6 @@ const paymentArca = async (req, res) => {
         groupId: payment.groupId,
       });
 
-    // const monthlyPaid = await Payment.count({
-    //   where: {
-    //     id: {
-    //       [Op.not]: payment.id
-    //     },
-    //     userId: payment.userId,
-    //     groupId: payment.groupId,
-    //     status: 'Success'
-    //   }
-    // });
-    // if(+monthlyPaid !== 0){
-    //   return res.json({
-    //     success: true,
-    //     message: "Monthly payment"
-    //   });
-    // }
-
     const user = await Users.findOne({ where: { id: payment.userId } });
     const group = await Groups.findByPk(payment.groupId);
     if (!group) {

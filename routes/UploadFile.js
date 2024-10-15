@@ -15,7 +15,8 @@ const allowedFormats = [
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx files
   'application/vnd.ms-excel',     // .xls files
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
-  'application/json' //.json files
+  'application/json', //.json files
+  'text/plain' 
 ];
 
 router.post('/file', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), async (req, res) => {
