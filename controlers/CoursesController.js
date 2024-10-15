@@ -1037,7 +1037,7 @@ const getOneGroup = async (req, res) => {
       ],
     });
 
-    const { price, discount } = await PaymentWays.findByPk(priceId, [["id", "ASC"]]);
+    const { price, discount } = await PaymentWays.findByPk(priceId);
 
     Courses = Courses.toJSON();
     delete Courses.dataValues;
