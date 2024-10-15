@@ -536,7 +536,7 @@ const getUserCourse = async (req, res) => {
         },
       ],
     });
-    
+
     const maxFinalQuizPoint = Quizzs[0].Questions[0].points * Quizzs[0].Questions.length
     // const lessonsHaveQuizz = await CoursesPerLessons.count({
     //   where: { courseId },
@@ -1037,7 +1037,7 @@ const getOneGroup = async (req, res) => {
       ],
     });
 
-    const { price, discount } = await PaymentWays.findByPk(priceId);
+    const { price, discount } = await PaymentWays.findByPk(priceId, [["id", "ASC"]]);
 
     Courses = Courses.toJSON();
     delete Courses.dataValues;
