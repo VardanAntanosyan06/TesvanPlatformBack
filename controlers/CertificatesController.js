@@ -89,6 +89,7 @@ const downloadCertificate = async (req, res) => {
   const { id } = req.params;
 
   try {
+    // Fetch the certificate data from the database
     const certificate = await Certificates.findOne({
       where: { id: id },
       attributes: ['id', 'userId', 'status', 'giveDate', 'courseName', 'url'],
@@ -105,7 +106,7 @@ const downloadCertificate = async (req, res) => {
     const date = `${giveDate[1]} ${giveDate[2]} ${giveDate[3]}`;
     const year = giveDate[3];
 
-    // Генерация сертификата (поток PDF)
+    // Generate the certificate stream
     const certificateStream = await generateCertificate(
       certificate.status,
       userName,
@@ -118,12 +119,8 @@ const downloadCertificate = async (req, res) => {
       return res.status(500).send('Error generating certificate stream');
     }
 
-    // Установка заголовков для отправки PDF
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${userName}-certificate.pdf"`);
-
-    // Отправка потока
-    certificateStream.pipe(res);
+    // Pipe the certificate PDF stream to the response
+    res.send(certificateStream);
   } catch (error) {
     console.error('Error generating or downloading certificate:', error);
     res.status(500).send('Internal server error');
