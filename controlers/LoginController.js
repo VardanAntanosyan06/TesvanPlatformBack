@@ -277,7 +277,7 @@ const authMe = async (req, res) => {
           attributes: ['id'],
         },
       ],
-      attributes: ["id", "firstName", "lastName", "image"]
+      attributes: ["id", "firstName", "lastName", "image", "email", "role"]
     });
     if (!User) {
       return res.send({ succes: false });
