@@ -127,6 +127,18 @@ const paymentArca = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+
+    const course = await UserCourses.findOne({
+      where: {
+        GroupCourseId: group.assignCourseId,
+        UserId: user.id,
+      }
+    });
+
+    if (course) {
+      return res.send({ success: true });
+    };
+
     const { role } = await Users.findByPk(payment.userId);
     await GroupsPerUsers.findOrCreate({
       where: {
@@ -139,6 +151,7 @@ const paymentArca = async (req, res) => {
         userRole: role,
       },
     });
+    console.log(2);
 
     await UserCourses.create({
       GroupCourseId: group.assignCourseId,
@@ -356,6 +369,7 @@ const paymentIdram = async (req, res) => {
 
           const user = await Users.findOne({ where: { id: payment.userId } });
           const group = await Groups.findByPk(payment.groupId);
+
           if (!group) {
             return res.json({ success: false, message: 'Group not found' });
           }
@@ -363,6 +377,18 @@ const paymentIdram = async (req, res) => {
           if (!user) {
             return res.status(404).json({ message: 'User not found' });
           }
+
+          const course = await UserCourses.findOne({
+            where: {
+              GroupCourseId: group.assignCourseId,
+              UserId: user.id,
+            }
+          });
+
+          if (course) {
+            return res.send({ success: true });
+          }
+
           const { role } = await Users.findByPk(payment.userId);
           await GroupsPerUsers.findOrCreate({
             where: {
