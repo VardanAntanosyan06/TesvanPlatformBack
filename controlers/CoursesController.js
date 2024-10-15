@@ -282,6 +282,7 @@ const getOne = async (req, res) => {
         'price',
         'discount',
       ],
+      order: [["id", "ASC"]]
     });
 
     const duration = moment(groups.endDate).diff(moment(groups.startDate), 'days');
