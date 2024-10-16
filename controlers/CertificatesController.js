@@ -119,8 +119,12 @@ const downloadCertificate = async (req, res) => {
       return res.status(500).send('Error generating certificate stream');
     }
 
+    const fileName = `Tesvan_Certificate.pdf`;
     // Pipe the certificate PDF stream to the response
-    res.json(certificateStream)
+    setTimeout(() => {
+      res.json(fileName)
+    }, 10000);
+    
   } catch (error) {
     console.error('Error generating or downloading certificate:', error);
     res.status(500).send('Internal server error');
