@@ -139,23 +139,23 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
 
     const fileName = `Tesvan_Certificate.pdf`;
     const filePath = path.join(__dirname, '../static', fileName);
-    pdf.create(htmlWithStyles, options).toFile(filePath, (err, file) => {
-      if (err) {
-        console.log(err);
-      }
-    });
+    // pdf.create(htmlWithStyles, options).toFile(filePath, (err, file) => {
+    //   if (err) {
+    //     console.log(err);
+    //   }
+    // });
 
-    return fileName;
+    // return fileName;
 
     // Wrap the PDF creation in a Promise to handle it with async/await
-    // return new Promise((resolve, reject) => {
-    //     pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
-    //         if (err) {
-    //             return reject(err);
-    //         }
-    //         resolve(buffer);  // Return the stream for the response
-    //     });
-    // });
+    return new Promise((resolve, reject) => {
+        pdf.create(htmlWithStyles, options).toFile(filePath,(err, buffer) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(fileName);  // Return the stream for the response
+        });
+    });
   } catch (error) {
     console.log('Error generating certificate:', error);
     throw error;
