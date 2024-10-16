@@ -24,7 +24,6 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-           
                 <title>Certificate of Excellence</title>
                 <style>
                     * {
@@ -107,7 +106,7 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
                     .certificate {
                         width: 372mm;
                         height: 262mm;
-                      
+                        background-image: url('data:image/png;base64,${imgBase64}');
                         background-size: 372mm 262mm;
                         position: relative;
                         display: flex;
