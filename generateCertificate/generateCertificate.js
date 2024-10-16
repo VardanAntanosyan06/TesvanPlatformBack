@@ -107,7 +107,7 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
                     .certificate {
                         width: 372mm;
                         height: 262mm;
-                      
+                        background-image: url('data:image/png;base64,${imgBase64}');
                         background-size: 372mm 262mm;
                         position: relative;
                         display: flex;
