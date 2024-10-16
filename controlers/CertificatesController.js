@@ -183,6 +183,11 @@ const downloadCertificate = async (req, res) => {
       if (err) {
         return reject(err);
       }
+
+      res.on('error', (err) => {
+        console.error('Error sending response:', err);
+      });
+      
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename=certificate-${id}.pdf`);
       res.send(buffer);
