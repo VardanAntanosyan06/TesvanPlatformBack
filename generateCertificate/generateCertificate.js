@@ -24,7 +24,7 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-         
+           
                 <title>Certificate of Excellence</title>
                 <style>
                     * {
@@ -107,7 +107,7 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
                     .certificate {
                         width: 372mm;
                         height: 262mm;
-
+                        background-image: url('data:image/png;base64,${imgBase64}');
                         background-size: 372mm 262mm;
                         position: relative;
                         display: flex;
@@ -137,25 +137,25 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
       orientation: 'landscape',
     };
 
-    const fileName = `Tesvan_Certificate.pdf`;
-    const filePath = path.join(__dirname, '../static', fileName);
-    pdf.create(htmlWithStyles, options).toFile(filePath, (err, file) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-
-    return fileName;
-
-    // // Wrap the PDF creation in a Promise to handle it with async/await
-    // return new Promise((resolve, reject) => {
-    //     pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
-    //         if (err) {
-    //             return reject(err);
-    //         }
-    //         resolve(buffer);  // Return the stream for the response
-    //     });
+    // const fileName = `Tesvan_Certificate.pdf`;
+    // const filePath = path.join(__dirname, '../static', fileName);
+    // pdf.create(htmlWithStyles, options).toFile(filePath, (err, file) => {
+    //   if (err) {
+    //     console.log(err);
+    //   }
     // });
+
+    // return fileName;
+
+    // Wrap the PDF creation in a Promise to handle it with async/await
+    return new Promise((resolve, reject) => {
+        pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(buffer);  // Return the stream for the response
+        });
+    });
   } catch (error) {
     console.log('Error generating certificate:', error);
     throw error;
