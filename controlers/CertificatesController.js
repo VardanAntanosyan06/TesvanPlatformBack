@@ -83,7 +83,6 @@ const getUserCertificates = async (req, res) => {
   }
 };
 
-const { generateCertificate } = require('../generateCertificate/generateCertificate');
 const pdf = require('html-pdf');
 const fs = require('fs').promises;
 const path = require('path');
@@ -109,16 +108,6 @@ const downloadCertificate = async (req, res) => {
     const date = `${giveDate[1]} ${giveDate[2]} ${giveDate[3]}`;
     const year = giveDate[3];
 
-
-    // // Generate the certificate buffer
-    // const certificateBuffer = await generateCertificate(
-    //   certificate.status,
-    //   userName,
-    //   courseName,
-    //   date,
-    //   year
-    // );
-
     // Define paths
     const htmlFilePath = path.join(__dirname, '../generateCertificate', 'certificate.html');
     const cssFilePath = path.join(__dirname, '../generateCertificate', 'styles.css');
@@ -129,6 +118,7 @@ const downloadCertificate = async (req, res) => {
         certificate.status === 2 ? 'Basic Skills.png' : 'Participation.png'
     );
 
+    // Read HTML, CSS, and Image files
     const [cssData, htmlData, imgBuffer] = await Promise.all([
       fs.readFile(cssFilePath, 'utf-8'),
       fs.readFile(htmlFilePath, 'utf-8'),
@@ -138,6 +128,7 @@ const downloadCertificate = async (req, res) => {
     // Convert image to base64
     const imgBase64 = imgBuffer.toString('base64');
 
+    // Construct HTML with injected data and styles
     const htmlWithStyles = `
       <html lang="en">
       <head>
@@ -179,25 +170,37 @@ const downloadCertificate = async (req, res) => {
       orientation: 'landscape',
     };
 
-    pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
-      if (err) {
-        return reject(err);
-      }
-
-      res.on('error', (err) => {
-        console.error('Error sending response:', err);
-      });
-      
-      res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `attachment; filename=certificate-${id}.pdf`);
-      res.send(buffer);
+    // Handle client disconnection
+    req.on('close', () => {
+      console.log('Client closed the connection');
     });
+
+    // Generate PDF buffer
+    const createPdfBuffer = (htmlWithStyles, options) => {
+      return new Promise((resolve, reject) => {
+        pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(buffer);
+        });
+      });
+    };
+
+    const certificateBuffer = await createPdfBuffer(htmlWithStyles, options);
+
+    // Send the PDF response
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=certificate-${id}.pdf`);
+
+    res.send(certificateBuffer);
 
   } catch (error) {
     console.error('Error generating or downloading certificate:', error);
     res.status(500).send('Internal server error');
   }
 };
+
 
 
 module.exports = {
