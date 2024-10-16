@@ -120,8 +120,8 @@ const downloadCertificate = async (req, res) => {
     }
 
     // // // Send the PDF response
-    // res.setHeader('Content-Type', 'application/pdf');
-    // res.setHeader('Content-Disposition', `attachment; filename=certificate-${id}.pdf`);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=certificate-${id}.pdf`);
 
     res.send(certificateStream)
 
