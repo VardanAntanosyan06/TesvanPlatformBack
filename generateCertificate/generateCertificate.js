@@ -4,8 +4,6 @@ const path = require('path');
 
 const generateCertificate = async (status, userName, courseName, date, year) => {
   try {
-    const htmlFilePath = path.join(__dirname, '.', 'certificate.html');
-    const cssFilePath = path.join(__dirname, '.', 'styles.css');
     let imagePath;
 
     if (status === 3) {
@@ -17,8 +15,6 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
     }
 
     // Read files using async/await
-    const cssData = await fs.readFile(cssFilePath, 'utf-8');
-    const htmlData = await fs.readFile(htmlFilePath, 'utf-8');
     const imgBuffer = await fs.readFile(imagePath);
     const imgBase64 = imgBuffer.toString('base64'); // Convert to base64
 
@@ -28,14 +24,90 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500&display=swap" rel="stylesheet">
+         
                 <title>Certificate of Excellence</title>
                 <style>
-                    ${cssData}
+                    * {
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    .userName {
+                        position: relative;
+                        text-align: center;
+                        top: 130mm;
+                    }
+
+                    .userName {
+                        font-family: 'Teko', sans-serif;
+                        font-size: 65px;
+                        color: #12222D;
+                        font-weight: 500;
+                    }
+
+                    .courseName {
+                        position: relative;
+                        text-align: left;
+                        top: 129.3mm;
+                        left: 240mm;
+
+                    }
+
+                    .courseName {
+                        font-family: 'Fira Sans', sans-serif;
+                        font-weight: 500;
+                        color: #143E59;
+                        font-size: 30px;
+                        font-weight: bold;
+                    }
+
+                    .month {
+                        position: relative;
+                        text-align: center;
+                        top: 119.9mm;
+                        left: 18mm;
+                    }
+
+                    .month {
+                        font-family: 'Fira Sans', sans-serif;
+                        font-weight: 500;
+                        color: #143E59;
+                        font-size: 30px;
+                        font-weight: bold;
+                    }
+
+                    .year {
+                        position: relative;
+                        top: 120.5mm;
+                        right: 17mm;
+                    }
+
+                    .year {
+                        font-family: 'Fira Sans', sans-serif;
+                        font-weight: 500;
+                        color: #143E59;
+                        font-size: 29px;
+                        font-weight: bold;
+                    }
+
+                    .date {
+                        position: relative;
+                        text-align: center;
+                        top: 189mm;
+                        right: 72mm
+                    }
+
+                    .date {
+                        font-family: 'Fira Sans', sans-serif;
+                        font-weight: 400;
+                        color: #12222D;
+                        font-size: 28px;
+                        font-weight: bold;
+                    }
                     .certificate {
                         width: 372mm;
                         height: 262mm;
-                        background-image: url('data:image/png;base64,${imgBase64}');
+
                         background-size: 372mm 262mm;
                         position: relative;
                         display: flex;
@@ -47,14 +119,15 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
                 </style>
             </head>
             <body>
-                ${htmlData}
-                <script>
-                    document.querySelector(".userName").innerHTML = "${userName}";
-                    document.querySelector(".date").innerHTML = "${date}";
-                    document.querySelector(".courseName").innerHTML = "${courseName}";
-                    document.querySelector(".month").innerHTML = "${3}";
-                    document.querySelector(".year").innerHTML = "${year}";
-                </script>
+                <div class="certificate-container">
+                  <div class="certificate">
+                    <p class="userName">${userName}</p>
+                    <p class="date">${date}</p>
+                    <p class="courseName">${courseName}</p>
+                    <p class="month">${3}</p>
+                    <p class="year">${year}</p>
+                  </div>
+              </div>
             </body>
             </html>
         `;
@@ -66,15 +139,13 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
 
     const fileName = `Tesvan_Certificate.pdf`;
     const filePath = path.join(__dirname, '../static', fileName);
-    return new Promise((resolve, reject) => {
-      pdf.create(htmlWithStyles, options).toFile(filePath, (err, file) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(fileName);
-      });
-    })
+    pdf.create(htmlWithStyles, options).toFile(filePath, (err, file) => {
+      if (err) {
+        console.log(err);
+      }
+    });
 
+    return fileName;
 
     // // Wrap the PDF creation in a Promise to handle it with async/await
     // return new Promise((resolve, reject) => {
