@@ -83,9 +83,7 @@ const getUserCertificates = async (req, res) => {
   }
 };
 
-const pdf = require('html-pdf');
-const fs = require('fs').promises;
-const path = require('path');
+const { generateCertificate } = require('../generateCertificate/generateCertificate');
 
 const downloadCertificate = async (req, res) => {
   const { id } = req.params;
@@ -108,100 +106,26 @@ const downloadCertificate = async (req, res) => {
     const date = `${giveDate[1]} ${giveDate[2]} ${giveDate[3]}`;
     const year = giveDate[3];
 
-    // Define paths
-    const htmlFilePath = path.join(__dirname, '../generateCertificate', 'certificate.html');
-    const cssFilePath = path.join(__dirname, '../generateCertificate', 'styles.css');
-
-    // Choose the image based on status
-    const imagePath = path.join(__dirname, '../generateCertificate',
-      certificate.status === 3 ? 'Excellence.png' :
-        certificate.status === 2 ? 'Basic Skills.png' : 'Participation.png'
+    // Generate the certificate stream
+    const certificateStream = await generateCertificate(
+      certificate.status,
+      userName,
+      courseName,
+      date,
+      year,
     );
 
-    // Read HTML, CSS, and Image files
-    const [cssData, htmlData, imgBuffer] = await Promise.all([
-      fs.readFile(cssFilePath, 'utf-8'),
-      fs.readFile(htmlFilePath, 'utf-8'),
-      fs.readFile(imagePath)
-    ]);
+    if (!certificateStream) {
+      return res.status(500).send('Error generating certificate stream');
+    }
 
-    // Convert image to base64
-    const imgBase64 = imgBuffer.toString('base64');
-
-    // Construct HTML with injected data and styles
-    const htmlWithStyles = `
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500&display=swap" rel="stylesheet">
-        <title>Certificate of Excellence</title>
-        <style>
-          ${cssData}
-          .certificate {
-            width: 372mm;
-            height: 262mm;
-            background-image: url('data:image/png;base64,${imgBase64}');
-            background-size: 372mm 262mm;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-          }
-        </style>
-      </head>
-      <body>
-        ${htmlData}
-        <script>
-          document.querySelector(".userName").innerHTML = "${userName}";
-          document.querySelector(".date").innerHTML = "${date}";
-          document.querySelector(".courseName").innerHTML = "${courseName}";
-          document.querySelector(".month").innerHTML = "${new Date().getMonth() + 1}"; // Dynamic month
-          document.querySelector(".year").innerHTML = "${year}";
-        </script>
-      </body>
-      </html>
-    `;
-
-    const options = {
-      format: 'A4',
-      orientation: 'landscape',
-    };
-
-    // Handle client disconnection
-    req.on('close', () => {
-      console.log('Client closed the connection');
-    });
-
-    // Generate PDF buffer
-    const createPdfBuffer = (htmlWithStyles, options) => {
-      return new Promise((resolve, reject) => {
-        pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve(buffer);
-        });
-      });
-    };
-
-    const certificateBuffer = await createPdfBuffer(htmlWithStyles, options);
-
-    // Send the PDF response
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=certificate-${id}.pdf`);
-
-    res.send(certificateBuffer);
-
+    // Pipe the certificate PDF stream to the response
+    res.json(certificateStream)
   } catch (error) {
     console.error('Error generating or downloading certificate:', error);
     res.status(500).send('Internal server error');
   }
 };
-
-
 
 module.exports = {
   findAllStudents,
