@@ -70,9 +70,9 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
       if (err) {
         console.log(err);
       }
+      return fileName;
     });
 
-    return fileName;
 
     // // Wrap the PDF creation in a Promise to handle it with async/await
     // return new Promise((resolve, reject) => {
