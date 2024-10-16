@@ -149,12 +149,12 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
 
     // Wrap the PDF creation in a Promise to handle it with async/await
     return new Promise((resolve, reject) => {
-        pdf.create(htmlWithStyles, options).toFile(filePath,(err, buffer) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(fileName);  // Return the stream for the response
-        });
+      pdf.create(htmlWithStyles, options).toFile(filePath, (err, buffer) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(fileName);  // Return the stream for the response
+      });
     });
   } catch (error) {
     console.log('Error generating certificate:', error);
@@ -162,6 +162,41 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
   }
 };
 
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const newPdf = () => {
+  const PDFDocument = require('pdfkit');
+  const fs = require('fs');
+
+  // Create a PDF document
+  const doc = new PDFDocument();
+
+  // Pipe its output somewhere, like to a file
+  const writeStream = fs.createWriteStream('output.pdf');
+  doc.pipe(writeStream);
+
+  // Add some text
+  doc.fontSize(25).text('Hello, this is a PDF with text and an image!', 100, 80);
+
+  // Add an image
+  // Ensure you have an image named 'image.jpg' in the same directory
+  doc.image('image.jpg', {
+    fit: [300, 300], // Resize the image
+    align: 'center',  // Align the image in the center
+    valign: 'center'  // Vertical alignment
+  });
+
+  // Finalize the PDF and end the stream
+  doc.end();
+
+  // Log when the PDF is finished writing
+  writeStream.on('finish', () => {
+    console.log('PDF generated successfully!');
+  });
+
+}
+
 module.exports = {
   generateCertificate,
+  newPdf
 };
