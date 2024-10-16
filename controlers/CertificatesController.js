@@ -106,26 +106,31 @@ const downloadCertificate = async (req, res) => {
     const date = `${giveDate[1]} ${giveDate[2]} ${giveDate[3]}`;
     const year = giveDate[3];
 
-    // Generate the certificate stream
-    const certificateStream = await generateCertificate(
+    // Generate the certificate buffer
+    const certificateBuffer = await generateCertificate(
       certificate.status,
       userName,
       courseName,
       date,
-      year,
+      year
     );
 
-    if (!certificateStream) {
-      return res.status(500).send('Error generating certificate stream');
+    if (!certificateBuffer) {
+      return res.status(500).send('Error generating certificate');
     }
 
-    // Pipe the certificate PDF stream to the response
-    res.send(certificateStream);
+    // Set headers for the response to indicate that it's a PDF file
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=certificate-${id}.pdf`);
+
+    // Send the buffer as a response
+    res.send(certificateBuffer);
   } catch (error) {
     console.error('Error generating or downloading certificate:', error);
     res.status(500).send('Internal server error');
   }
 };
+
 
 module.exports = {
   findAllStudents,
