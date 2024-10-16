@@ -16,7 +16,7 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
 
     // Read files using async/await
     const imgBuffer = await fs.readFile(imagePath);
-    const imgBase64 = await imgBuffer.toString('base64'); // Convert to base64
+    const imgBase64 = imgBuffer.toString('base64'); // Convert to base64
 
     // Inject CSS into HTML
     const htmlWithStyles = `
@@ -24,7 +24,7 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500&display=swap" rel="stylesheet">
+
                 <title>Certificate of Excellence</title>
                 <style>
                     * {
@@ -107,7 +107,7 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
                     .certificate {
                         width: 372mm;
                         height: 262mm;
-               
+                        background-image: url('data:image/png;base64,${imgBase64}');
                         background-size: 372mm 262mm;
                         position: relative;
                         display: flex;
@@ -121,7 +121,6 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
             <body>
                 <div class="certificate-container">
                   <div class="certificate">
-                  <img class="certificate" src="data:image/png;base64,${imgBase64}" alt="Certificate Background">
                     <p class="userName">${userName}</p>
                     <p class="date">${date}</p>
                     <p class="courseName">${courseName}</p>
@@ -138,25 +137,25 @@ const generateCertificate = async (status, userName, courseName, date, year) => 
       orientation: 'landscape',
     };
 
-    // const fileName = `Tesvan_Certificate.pdf`;
-    // const filePath = path.join(__dirname, '../static', fileName);
-    // pdf.create(htmlWithStyles, options).toFile(filePath, (err, file) => {
-    //   if (err) {
-    //     console.log(err);
-    //   }
-    // });
+    const fileName = `Tesvan_Certificate.pdf`;
+    const filePath = path.join(__dirname, '../static', fileName);
+    pdf.create(htmlWithStyles, options).toFile(filePath, (err, file) => {
+      if (err) {
+        console.log(err);
+      }
+    });
 
-    // return fileName;
+    return fileName;
 
     // Wrap the PDF creation in a Promise to handle it with async/await
-    return new Promise((resolve, reject) => {
-        pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(buffer);  // Return the stream for the response
-        });
-    });
+    // return new Promise((resolve, reject) => {
+    //     pdf.create(htmlWithStyles, options).toBuffer((err, buffer) => {
+    //         if (err) {
+    //             return reject(err);
+    //         }
+    //         resolve(buffer);  // Return the stream for the response
+    //     });
+    // });
   } catch (error) {
     console.log('Error generating certificate:', error);
     throw error;
