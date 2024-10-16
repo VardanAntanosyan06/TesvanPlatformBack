@@ -83,84 +83,8 @@ const getUserCertificates = async (req, res) => {
   }
 };
 
-// const { generateCertificate } = require('../generateCertificate/generateCertificate');
-// const PDFDocument = require('pdfkit');
-// const fs = require('fs');
-// const downloadCertificate = async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     // Fetch the certificate data from the database
-//     const certificate = await Certificates.findOne({
-//       where: { id: id },
-//       attributes: ['id', 'userId', 'status', 'giveDate', 'courseName', 'url'],
-//       include: { model: Users, attributes: ['firstName', 'lastName'] },
-//     });
-
-//     if (!certificate) {
-//       return res.status(404).send('Certificate not found');
-//     }
-
-//     const userName = `${certificate.User.firstName} ${certificate.User.lastName}`;
-//     const courseName = certificate.courseName;
-//     const giveDate = certificate.giveDate.toString().split(' ');
-//     const date = `${giveDate[1]} ${giveDate[2]} ${giveDate[3]}`;
-//     const year = giveDate[3];
-
-//     // Generate the certificate stream
-//     // const certificateStream = await generateCertificate(
-//     //   certificate.status,
-//     //   userName,
-//     //   courseName,
-//     //   date,
-//     //   year,
-//     // );
-
-//     // if (!certificateStream) {
-//     //   return res.status(500).send('Error generating certificate stream');
-//     // }
-
-//     // // // // Send the PDF response
-//     // res.setHeader('Content-Type', 'application/pdf');
-//     // res.setHeader('Content-Disposition', `attachment; filename=certificate-${id}.pdf`);
-
-//     // res.send(certificateStream)
-
-  
-//     // Create a PDF document
-//     const doc = new PDFDocument();
-  
-//     // Pipe its output somewhere, like to a file
-//     const writeStream = fs.createWriteStream('output.pdf');
-//     doc.pipe(writeStream);
-  
-//     // Add some text
-//     doc.fontSize(25).text('Hello, this is a PDF with text and an image!', 100, 80);
-  
-//     // Add an image
-//     // Ensure you have an image named 'image.jpg' in the same directory
-//     doc.image('image.jpg', {
-//       fit: [300, 300], // Resize the image
-//       align: 'center',  // Align the image in the center
-//       valign: 'center'  // Vertical alignment
-//     });
-  
-//     // Finalize the PDF and end the stream
-//     doc.end();
-  
-//     // Log when the PDF is finished writing
-//     writeStream.on('finish', () => {
-//       console.log('PDF generated successfully!');
-//     });
-
-//   } catch (error) {
-//     console.error('Error generating or downloading certificate:', error);
-//     res.status(500).send('Internal server error');
-//   }
-// };
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
-// const { Certificates, Users } = require('./models'); // Adjust the import path based on your project structure
 
 const downloadCertificate = async (req, res) => {
   const { id } = req.params;
@@ -180,11 +104,16 @@ const downloadCertificate = async (req, res) => {
     const userName = `${certificate.User.firstName} ${certificate.User.lastName}`;
     const courseName = certificate.courseName;
     const giveDate = new Date(certificate.giveDate);
-    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    const years = giveDate.toString().split(" ")[3]
+    const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
     const formattedDate = giveDate.toLocaleDateString('en-US', dateOptions);
+    const month = 3
 
-    // Create a PDF document
-    const doc = new PDFDocument();
+    // Create a PDF document with A4 format and landscape orientation
+    const doc = new PDFDocument({
+      size: 'A4',
+      layout: 'landscape',
+    });
 
     // Set headers for PDF response
     res.setHeader('Content-Type', 'application/pdf');
@@ -193,30 +122,44 @@ const downloadCertificate = async (req, res) => {
     // Pipe the PDF output to the response
     doc.pipe(res);
 
-    // Add content to the PDF
-    doc.fontSize(25).text('Certificate of Completion', { align: 'center' });
-    doc.moveDown();
-    doc.fontSize(16).text('This is to certify that', { align: 'center' });
-    doc.moveDown();
-    doc.fontSize(20).text(userName, { align: 'center' });
-    doc.moveDown();
-    doc.fontSize(16).text('has completed the course:', { align: 'center' });
-    doc.moveDown();
-    doc.fontSize(20).text(courseName, { align: 'center' });
-    doc.moveDown();
-    doc.fontSize(16).text(`on ${formattedDate}`, { align: 'center' });
-
     // Optional: Add an image
-    const imagePath = './generateCertificate/Participation.png'; // Adjust the path to your image
+    let imagePath;
+
+    if (certificate.status === 3) {
+      imagePath = './generateCertificate/Excellence.png'
+    } else if (certificate.status === 2) {
+      imagePath = './generateCertificate/Basic Skills.png'
+    } else {
+      imagePath = './generateCertificate/Participation.png'
+    }
+
     if (fs.existsSync(imagePath)) {
-      doc.image(imagePath, {
-        fit: [300, 300],
-        align: 'center',
-        valign: 'center'
+      doc.image(imagePath, 0, 0, {
+        width: doc.page.width,
+        height: doc.page.height,
       });
     } else {
-      console.error('Image file does not exist:', imagePath);
+      console.error('Image file does not exist:', imagePath, 55);
     }
+
+    // Set a custom bold font or use Helvetica-Bold
+    const customBoldFontPath = './fonts/CustomFont-Bold.ttf'; // Update this to your custom bold font path
+    if (fs.existsSync(customBoldFontPath)) {
+      doc.font(customBoldFontPath); // Use custom bold font
+    } else {
+      console.error('Custom bold font file does not exist, using Helvetica-Bold');
+      doc.font('Helvetica-Bold'); // Fallback to Helvetica-Bold if custom font is not found
+    }
+
+    // Add content to the PDF
+    doc.moveDown(16);
+    doc.fillColor('#0000FF').fontSize(36).text(userName, { align: 'center', bold: true });
+    doc.moveDown(0.68);
+    doc.fontSize(20).text(`                                                                     ${month}             ${courseName}`, { align: 'left', bold: true });
+    doc.moveDown(0.07);
+    doc.fontSize(20).text(`                                                    ${years}`, { align: 'left', bold: true });
+    doc.moveDown(2.8);
+    doc.fillColor('black').fontSize(16).text(`                               ${formattedDate}`, { align: 'left', bold: true });
 
     // Finalize the PDF
     doc.end();
