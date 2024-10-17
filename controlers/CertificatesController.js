@@ -143,23 +143,24 @@ const downloadCertificate = async (req, res) => {
     }
 
     // Set a custom bold font or use Helvetica-Bold
-    const customBoldFontPath = './fonts/CustomFont-Bold.ttf'; // Update this to your custom bold font path
+    const customBoldFontPath = './generateCertificate/FiraSans-Bold.ttf'; // Update this to your custom bold font path
     if (fs.existsSync(customBoldFontPath)) {
       doc.font(customBoldFontPath); // Use custom bold font
     } else {
       console.error('Custom bold font file does not exist, using Helvetica-Bold');
       doc.font('Helvetica-Bold'); // Fallback to Helvetica-Bold if custom font is not found
     }
-
+    // Set the text color to #1b405a (deep blue)
+    const textColor = '#1b405a';
     // Add content to the PDF
     doc.moveDown(16);
-    doc.fillColor('#0000FF').fontSize(36).text(userName, { align: 'center', bold: true });
-    doc.moveDown(0.68);
-    doc.fontSize(20).text(`                                                                     ${month}             ${courseName}`, { align: 'left', bold: true });
-    doc.moveDown(0.07);
-    doc.fontSize(20).text(`                                                    ${years}`, { align: 'left', bold: true });
-    doc.moveDown(2.8);
-    doc.fillColor('black').fontSize(16).text(`                               ${formattedDate}`, { align: 'left', bold: true });
+    doc.fillColor('#0f1f2a').fontSize(36).text(userName, { align: 'center', bold: true });
+    doc.moveDown(0.54);
+    doc.fillColor('#1b405a').fontSize(19).text(`                                                                                     ${month}                 ${courseName}`, { align: 'left', bold: true });
+    doc.moveDown(0.06);
+    doc.fillColor('#1b405a').fontSize(19).text(`                                                                 ${years}`, { align: 'left', bold: true });
+    doc.moveDown(3);
+    doc.fillColor('#0f1f2a').fontSize(16).text(`                                    ${formattedDate}`, { align: 'left', bold: true });
 
     // Finalize the PDF
     doc.end();
