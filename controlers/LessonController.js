@@ -114,6 +114,7 @@ const getLesson = async (req, res) => {
     const lessonTime = await LessonTime.findOne({
       where: {
         lessonId: id,
+        courseId,
         userId,
       },
     });
