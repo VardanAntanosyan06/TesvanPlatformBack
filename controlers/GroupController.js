@@ -21,7 +21,7 @@ const {
   HomeworkPerLesson
 } = require('../models');
 const { v4 } = require('uuid');
-const sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
 const { Op } = require('sequelize');
 
 const CreateGroup = async (req, res) => {
@@ -150,89 +150,110 @@ const CreateGroup = async (req, res) => {
 const findOne = async (req, res) => {
   try {
     const { id } = req.params;
+    const { language, order } = req.query;
     const group = await Groups.findOne({
       where: { id },
+      attributes: [[`name_${language}`, "name"], "finished", "startDate", "endDate", "assignCourseId"]
+    });
+
+    const users = await Users.findAll({
       include: [
         {
-          model: GroupsPerUsers,
-          attributes: ['id', 'userId'],
-          include: {
-            model: Users,
-            attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
-          },
-        },
-        {
-          model: PaymentWays,
-          as: 'payment',
-          // attributes: ['title', 'description', 'price', 'discount'],
-        },
-      ],
-    });
-
-    if (!group) return res.status(404).json({ success: false, message: 'Group not found' });
-    const course = await CoursesContents.findOne({
-      where: { courseId: group.assignCourseId },
-      attributes: [['courseId', 'id'], 'title'],
-    });
-
-    const payment_en = [];
-    const payment_ru = [];
-    const payment_am = [];
-    const payment = group.payment.forEach((pay) => {
-      payment_en.push({
-        title_en: pay.title_en,
-        description_en: pay.description_en,
-        price_en: pay.price,
-        discount_en: pay.discount,
-      });
-      payment_ru.push({
-        title_ru: pay.title_ru,
-        description_ru: pay.description_ru,
-        price_ru: pay.price,
-        discount_ru: pay.discount,
-      });
-      payment_am.push({
-        title_am: pay.title_am,
-        description_am: pay.description_am,
-        price_am: pay.price,
-        discount_am: pay.discount,
-      });
-    });
-    const groupedUsers = {
-      id: group.id,
-      name_en: group.name_en,
-      name_ru: group.name_ru,
-      name_am: group.name_am,
-      finished: group.finished,
-      startDate: group.startDate,
-      endDate: group.endDate,
-      price: group.price,
-      sale: group.sale,
-      payment: group.payment,
-      payment_am,
-      payment_en,
-      payment_ru,
-      course: course,
-      TEACHER: [],
-      STUDENT: [],
-    };
-    // console.log(course)
-    // console.log(group.assignCourseId);
-    group.GroupsPerUsers.forEach((userCourse) => {
-      const user = userCourse.User;
-      if (user) {
-        if (!groupedUsers[user.role]) {
-          groupedUsers[user.role] = [];
+          model: UserCourses,
+          attributes: ["takenQuizzes", "takenHomework", "takenInterview"],
+          where: {
+            GroupCourseId: group.assignCourseId // Use the appropriate reference for the UserId
+          }
         }
-        groupedUsers[user.role].push({
-          id: user.id,
-          image: user.image,
-          title: user.firstName + ' ' + user.lastName,
-        });
-      }
+      ],
+      attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
+      order: [["id", order]]
     });
 
-    return res.status(200).json({ success: true, group: groupedUsers });
+
+    // const group = await Groups.findOne({
+    //   where: { id },
+    //   include: [
+    //     {
+    //       model: GroupsPerUsers,
+    //       attributes: ['id', 'userId'],
+    //       include: {
+    //         model: Users,
+    //         attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
+    //       },
+    //     },
+    //     {
+    //       model: PaymentWays,
+    //       as: 'payment',
+    //       // attributes: ['title', 'description', 'price', 'discount'],
+    //     },
+    //   ],
+    // });
+
+    // if (!group) return res.status(404).json({ success: false, message: 'Group not found' });
+    // const course = await CoursesContents.findOne({
+    //   where: { courseId: group.assignCourseId },
+    //   attributes: [['courseId', 'id'], 'title'],
+    // });
+
+    // const payment_en = [];
+    // const payment_ru = [];
+    // const payment_am = [];
+    // const payment = group.payment.forEach((pay) => {
+    //   payment_en.push({
+    //     title_en: pay.title_en,
+    //     description_en: pay.description_en,
+    //     price_en: pay.price,
+    //     discount_en: pay.discount,
+    //   });
+    //   payment_ru.push({
+    //     title_ru: pay.title_ru,
+    //     description_ru: pay.description_ru,
+    //     price_ru: pay.price,
+    //     discount_ru: pay.discount,
+    //   });
+    //   payment_am.push({
+    //     title_am: pay.title_am,
+    //     description_am: pay.description_am,
+    //     price_am: pay.price,
+    //     discount_am: pay.discount,
+    //   });
+    // });
+    // const groupedUsers = {
+    //   id: group.id,
+    //   name_en: group.name_en,
+    //   name_ru: group.name_ru,
+    //   name_am: group.name_am,
+    //   finished: group.finished,
+    //   startDate: group.startDate,
+    //   endDate: group.endDate,
+    //   price: group.price,
+    //   sale: group.sale,
+    //   payment: group.payment,
+    //   payment_am,
+    //   payment_en,
+    //   payment_ru,
+    //   course: course,
+    //   TEACHER: [],
+    //   STUDENT: [],
+    // };
+    // // console.log(course)
+    // // console.log(group.assignCourseId);
+    // group.GroupsPerUsers.forEach((userCourse) => {
+    //   const user = userCourse.User;
+    //   if (user) {
+    //     if (!groupedUsers[user.role]) {
+    //       groupedUsers[user.role] = [];
+    //     }
+    //     groupedUsers[user.role].push({
+    //       id: user.id,
+    //       image: user.image,
+    //       title: user.firstName + ' ' + user.lastName,
+    //     });
+    //   }
+    // });
+
+    return res.status(200).json({ success: true, users });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });

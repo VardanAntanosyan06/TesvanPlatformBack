@@ -710,7 +710,7 @@ const monthlyPaymentUrl = async (req, res, next) => {
 const getAllPayment = (req, res) => {
   try {
     const { groupId } = req.query;
-    // ASC | DESC
+    // ASC | DESC| time| success
     const payments = Payment.findAll({
       where: {
         groupId,

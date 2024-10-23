@@ -41,6 +41,9 @@ module.exports = {
       takenHomework: {
         type: Sequelize.DECIMAL,
       },
+      takenInterview: {
+        type: Sequelize.DECIMAL,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       takenQuizzes: DataTypes.DECIMAL,
       certification: DataTypes.STRING,
       takenHomework: DataTypes.DECIMAL,
+      takenInterview: DataTypes.DECIMAL
     },
     {
       sequelize,

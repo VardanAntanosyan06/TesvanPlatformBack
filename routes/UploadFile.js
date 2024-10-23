@@ -1,14 +1,14 @@
 const uuid = require('uuid');
 const path = require('path');
 var express = require('express');
-const { Users } = require('../models');
+const { Users, Video } = require('../models');
 const checkAuth = require('../middleware/checkAuth');
 var router = express.Router();
 var fs = require('fs');
 
 const allowedFormats = [
-  'image/jpeg', 
-  'image/png', 
+  'image/jpeg',
+  'image/png',
   'image/gif',
   'application/pdf',              // PDF files
   'application/msword',           // .doc files
@@ -16,7 +16,7 @@ const allowedFormats = [
   'application/vnd.ms-excel',     // .xls files
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
   'application/json', //.json files
-  'text/plain' 
+  'text/plain'
 ];
 
 router.post('/file', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), async (req, res) => {

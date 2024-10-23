@@ -12,7 +12,7 @@ router.post(
   controller.recordUserStatics,
 );
 
-router.get('/findOne/:id', checkAuth(['TEACHER', 'ADMIN', 'STUDENT']), controller.findOne);
+router.get('/findOne/:id',  controller.findOne);
 router.get('/getStudents', checkAuth(['ADMIN']), controller.getStudents);
 router.get('/getTeachers', checkAuth(['ADMIN']), controller.getTeachers);
 

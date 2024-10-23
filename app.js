@@ -50,11 +50,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors());
 app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(express.static(path.resolve(__dirname, 'messageFiles')));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -83,7 +83,7 @@ app.use('/api/v2/quizz', QuizzRouter);
 app.use('/api/v2/dashboard', DashboardRouter);
 app.use('/api/v2/skill', SkillRouter);
 app.use('/api/v2/payment', PaymentRouter);
-app.use('/api/v2/chat', ChatRouter); 
+app.use('/api/v2/chat', ChatRouter);
 app.use('/api/v2/groupChat', GroupChatRouter);
 app.use('/api/v2/chatMessage', ChatMessageRouter);
 app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
@@ -128,20 +128,20 @@ io.on('connection', (socket) => {
       const userId = decoded.user_id;
       socket.userRooms = [] //user rooms: for offline emit 
       userSockets.set(userId, socket);
-      console.log(`=== ${userId} Connected ===`) 
+      console.log(`=== ${userId} Connected ===`)
 
       socket.on('disconnect', () => {
         const userSocket = userSockets.get(userId)
         userSocket?.userRooms?.forEach(room => {
           console.log("offline", room);
-          socket.to(room).emit('offline', { userId }) 
+          socket.to(room).emit('offline', { userId })
         });
         userSockets.delete(userId);
-        console.log(`=== ${userId} Disconnected ===`); 
+        console.log(`=== ${userId} Disconnected ===`);
       });
     } else {
       console.log("Failed to decode token, socket disconnected");
-      socket.disconnect(); 
+      socket.disconnect();
     };
 
   } else {
