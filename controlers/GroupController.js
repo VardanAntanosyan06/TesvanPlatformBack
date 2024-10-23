@@ -150,13 +150,20 @@ const CreateGroup = async (req, res) => {
 const findOne = async (req, res) => {
   try {
     const { id } = req.params;
-    const { language, order = "ASC", orderName = "totalPoints" } = req.query;
+    const { language, order = "DESC", orderName = "totalPoints" } = req.query;
+
+    if (orderName != "totalPoints") {
+      orderName = "totalPoints"
+    }
     const group = await Groups.findOne({
       where: { id },
       attributes: [[`name_${language}`, "name"], "finished", "startDate", "endDate", "assignCourseId"]
     });
 
     const users = await Users.findAll({
+      where: {
+        role: "STUDENT"
+      },
       include: [
         {
           model: UserCourses,
@@ -164,14 +171,29 @@ const findOne = async (req, res) => {
           where: {
             GroupCourseId: group.assignCourseId // Use the appropriate reference for the UserId
           }
-        }
+        },
+        // {
+        //   model: LessonTime,
+        //   attributes: ["time"]
+        // }
       ],
       attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
       order: [
-        // [UserCourses, orderName, order],
-        ["id", order]
+        [UserCourses, orderName, order],
+        // ["id", order]
       ]
     });
+
+    // const user = users.reduce((aggr, value) => {
+    //   aggr.push({
+    //     ...value,
+    //     quizPoint: value.UserCourses[0].takenQuizzes,
+    //     homeworkPoint: value.UserCourses[0].takenHomework,
+    //     interviewPoint: value.UserCourses[0].takenInterview,
+    //     totalPoints: value.UserCourses[0].totalPoints,
+
+    //   })
+    // }, [])
 
     // const group = await Groups.findOne({
     //   where: { id },
