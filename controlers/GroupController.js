@@ -152,9 +152,6 @@ const findOne = async (req, res) => {
     const { id } = req.params;
     const { language, order = "DESC", orderName = "totalPoints" } = req.query;
 
-    if (orderName != "totalPoints") {
-      orderName = "totalPoints"
-    }
     const group = await Groups.findOne({
       where: { id },
       attributes: [[`name_${language}`, "name"], "finished", "startDate", "endDate", "assignCourseId"]
@@ -179,21 +176,29 @@ const findOne = async (req, res) => {
       ],
       attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
       order: [
-        [UserCourses, orderName, order],
-        // ["id", order]
+        // [UserCourses, orderName, order],
+        ["id", order]
       ]
     });
 
-    // const user = users.reduce((aggr, value) => {
-    //   aggr.push({
-    //     ...value,
-    //     quizPoint: value.UserCourses[0].takenQuizzes,
-    //     homeworkPoint: value.UserCourses[0].takenHomework,
-    //     interviewPoint: value.UserCourses[0].takenInterview,
-    //     totalPoints: value.UserCourses[0].totalPoints,
+    const usersWithPoints = users.reduce((aggr, value) => {
+      value = value.toJSON(); // Convert Sequelize instance to plain object
 
-    //   })
-    // }, [])
+      // Create the transformed user object
+      const userObj = {
+        ...value, // Spread the original user object
+        quizPoint: value.UserCourses[0]?.takenQuizzes || 0, // Optional chaining to avoid errors if UserCourses is empty
+        homeworkPoint: value.UserCourses[0]?.takenHomework || 0,
+        interviewPoint: value.UserCourses[0]?.takenInterview || 0,
+        totalPoints: value.UserCourses[0]?.totalPoints || 0,
+      };
+
+      // Delete the UserCourses property after creating the object
+      delete userObj.UserCourses;
+
+      aggr.push(userObj); // Push the transformed object to the accumulator
+      return aggr; // Return the accumulator
+    }, []);
 
     // const group = await Groups.findOne({
     //   where: { id },
@@ -277,7 +282,7 @@ const findOne = async (req, res) => {
     //   }
     // });
 
-    return res.status(200).json({ success: true, users });
+    return res.status(200).json({ success: true, users: usersWithPoints });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
