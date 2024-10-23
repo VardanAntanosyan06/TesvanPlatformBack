@@ -150,7 +150,7 @@ const CreateGroup = async (req, res) => {
 const findOne = async (req, res) => {
   try {
     const { id } = req.params;
-    const { language, order } = req.query;
+    const { language, order = "ASC" } = req.query;
     const group = await Groups.findOne({
       where: { id },
       attributes: [[`name_${language}`, "name"], "finished", "startDate", "endDate", "assignCourseId"]
