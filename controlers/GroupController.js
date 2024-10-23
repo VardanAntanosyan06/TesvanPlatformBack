@@ -150,7 +150,7 @@ const CreateGroup = async (req, res) => {
 const findOne = async (req, res) => {
   try {
     const { id } = req.params;
-    const { language, order = "ASC" } = req.query;
+    const { language, order = "ASC", orderName = "totalPoints" } = req.query;
     const group = await Groups.findOne({
       where: { id },
       attributes: [[`name_${language}`, "name"], "finished", "startDate", "endDate", "assignCourseId"]
@@ -160,16 +160,18 @@ const findOne = async (req, res) => {
       include: [
         {
           model: UserCourses,
-          attributes: ["takenQuizzes", "takenHomework", "takenInterview"],
+          attributes: ["takenQuizzes", "takenHomework", "takenInterview", "totalPoints"],
           where: {
             GroupCourseId: group.assignCourseId // Use the appropriate reference for the UserId
           }
         }
       ],
       attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
-      order: [["id", order]]
+      order: [
+        // [UserCourses, orderName, order],
+        ["id", order]
+      ]
     });
-
 
     // const group = await Groups.findOne({
     //   where: { id },
