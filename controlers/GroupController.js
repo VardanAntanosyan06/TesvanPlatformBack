@@ -175,10 +175,10 @@ const findOne = async (req, res) => {
     let groupData = group.toJSON();
     groupData = {
       ...groupData,
-      maxHomeworkPoint: +groupData.CoursesContent.maxHomeworkPoint,
-      maxQuizzPoint: +groupData.CoursesContent.maxQuizzPoint,
-      maxInterviewPoint: +groupData.CoursesContent.maxInterviewPoint,
-      maxTotalPoint: +groupData.CoursesContent.maxInterviewPoint + +groupData.CoursesContent.maxQuizzPoint + +groupData.CoursesContent.maxHomeworkPoint
+      maxHomeworkPoint: +groupData.CoursesContent.maxHomeworkPoint || 0,
+      maxQuizzPoint: +groupData.CoursesContent.maxQuizzPoint || 0,
+      maxInterviewPoint: +groupData.CoursesContent.maxInterviewPoint || 0,
+      maxTotalPoint: +groupData.CoursesContent.maxInterviewPoint || 0 + +groupData.CoursesContent.maxQuizzPoint || 0 + +groupData.CoursesContent.maxHomeworkPoint || 0
     };
     delete groupData.CoursesContent;
 
