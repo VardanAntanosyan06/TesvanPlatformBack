@@ -18,11 +18,13 @@ const {
   Homework,
   UserPoints,
   UserHomework,
+  LessonTime,
   HomeworkPerLesson
 } = require('../models');
 const { v4 } = require('uuid');
 const { Sequelize } = require('sequelize');
 const { Op } = require('sequelize');
+const lessontime = require('../models/lessontime');
 
 const CreateGroup = async (req, res) => {
   try {
@@ -154,8 +156,32 @@ const findOne = async (req, res) => {
 
     const group = await Groups.findOne({
       where: { id },
-      attributes: [[`name_${language}`, "name"], "finished", "startDate", "endDate", "assignCourseId"]
+      include: {
+        model: CoursesContents,
+        attributes: ["maxHomeworkPoint", "maxQuizzPoint", "maxInterviewPoint"]
+      },
+      attributes: [
+        [`name_${language}`, "name"],
+        "finished",
+        "startDate",
+        "endDate",
+        "assignCourseId"
+      ]
     });
+
+    if (!group) return res.status(404).json({ message: 'Group not found' });
+
+    // Convert the Sequelize instance to a plain JavaScript object
+    let groupData = group.toJSON();
+    groupData = {
+      ...groupData,
+      maxHomeworkPoint: +groupData.CoursesContent.maxHomeworkPoint,
+      maxQuizzPoint: +groupData.CoursesContent.maxQuizzPoint,
+      maxInterviewPoint: +groupData.CoursesContent.maxInterviewPoint,
+      maxTotalPoint: +groupData.CoursesContent.maxInterviewPoint + +groupData.CoursesContent.maxQuizzPoint + +groupData.CoursesContent.maxHomeworkPoint
+    };
+    delete groupData.CoursesContent;
+
 
     const users = await Users.findAll({
       where: {
@@ -166,24 +192,35 @@ const findOne = async (req, res) => {
           model: UserCourses,
           attributes: ["takenQuizzes", "takenHomework", "takenInterview", "totalPoints"],
           where: {
-            GroupCourseId: group.assignCourseId // Use the appropriate reference for the UserId
+            GroupCourseId: group.assignCourseId
           }
         },
-        // {
-        //   model: LessonTime,
-        //   attributes: ["time"]
-        // }
+        {
+          model: LessonTime,
+          as: "lessonTime",
+          attributes: [
+            "time"
+          ]
+        }
       ],
-      attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
+      attributes: [
+        'id',
+        'firstName',
+        'lastName',
+        'role',
+        'image',
+      ],
       order: [
-        // [UserCourses, orderName, order],
-        ["id", order]
+        orderName == "name" ? ["lastName", order] : [UserCourses, orderName, order]
       ]
     });
 
+
     const usersWithPoints = users.reduce((aggr, value) => {
       value = value.toJSON(); // Convert Sequelize instance to plain object
-
+      const totalTime = value.lessonTime.reduce((aggr, value) => {
+        return aggr = aggr + +value.time
+      }, 0)
       // Create the transformed user object
       const userObj = {
         ...value, // Spread the original user object
@@ -191,98 +228,16 @@ const findOne = async (req, res) => {
         homeworkPoint: value.UserCourses[0]?.takenHomework || 0,
         interviewPoint: value.UserCourses[0]?.takenInterview || 0,
         totalPoints: value.UserCourses[0]?.totalPoints || 0,
+        totalTime: totalTime
       };
-
       // Delete the UserCourses property after creating the object
+      delete userObj.lessonTime;
       delete userObj.UserCourses;
-
       aggr.push(userObj); // Push the transformed object to the accumulator
       return aggr; // Return the accumulator
     }, []);
 
-    // const group = await Groups.findOne({
-    //   where: { id },
-    //   include: [
-    //     {
-    //       model: GroupsPerUsers,
-    //       attributes: ['id', 'userId'],
-    //       include: {
-    //         model: Users,
-    //         attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
-    //       },
-    //     },
-    //     {
-    //       model: PaymentWays,
-    //       as: 'payment',
-    //       // attributes: ['title', 'description', 'price', 'discount'],
-    //     },
-    //   ],
-    // });
-
-    // if (!group) return res.status(404).json({ success: false, message: 'Group not found' });
-    // const course = await CoursesContents.findOne({
-    //   where: { courseId: group.assignCourseId },
-    //   attributes: [['courseId', 'id'], 'title'],
-    // });
-
-    // const payment_en = [];
-    // const payment_ru = [];
-    // const payment_am = [];
-    // const payment = group.payment.forEach((pay) => {
-    //   payment_en.push({
-    //     title_en: pay.title_en,
-    //     description_en: pay.description_en,
-    //     price_en: pay.price,
-    //     discount_en: pay.discount,
-    //   });
-    //   payment_ru.push({
-    //     title_ru: pay.title_ru,
-    //     description_ru: pay.description_ru,
-    //     price_ru: pay.price,
-    //     discount_ru: pay.discount,
-    //   });
-    //   payment_am.push({
-    //     title_am: pay.title_am,
-    //     description_am: pay.description_am,
-    //     price_am: pay.price,
-    //     discount_am: pay.discount,
-    //   });
-    // });
-    // const groupedUsers = {
-    //   id: group.id,
-    //   name_en: group.name_en,
-    //   name_ru: group.name_ru,
-    //   name_am: group.name_am,
-    //   finished: group.finished,
-    //   startDate: group.startDate,
-    //   endDate: group.endDate,
-    //   price: group.price,
-    //   sale: group.sale,
-    //   payment: group.payment,
-    //   payment_am,
-    //   payment_en,
-    //   payment_ru,
-    //   course: course,
-    //   TEACHER: [],
-    //   STUDENT: [],
-    // };
-    // // console.log(course)
-    // // console.log(group.assignCourseId);
-    // group.GroupsPerUsers.forEach((userCourse) => {
-    //   const user = userCourse.User;
-    //   if (user) {
-    //     if (!groupedUsers[user.role]) {
-    //       groupedUsers[user.role] = [];
-    //     }
-    //     groupedUsers[user.role].push({
-    //       id: user.id,
-    //       image: user.image,
-    //       title: user.firstName + ' ' + user.lastName,
-    //     });
-    //   }
-    // });
-
-    return res.status(200).json({ success: true, users: usersWithPoints });
+    return res.status(200).json({ success: true, users: usersWithPoints, group: groupData });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
