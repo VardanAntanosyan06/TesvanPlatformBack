@@ -22,9 +22,8 @@ const {
   HomeworkPerLesson
 } = require('../models');
 const { v4 } = require('uuid');
-const { Sequelize } = require('sequelize');
+const { sequelize } = require('sequelize'); // Make sure the path is correct
 const { Op } = require('sequelize');
-const lessontime = require('../models/lessontime');
 
 const CreateGroup = async (req, res) => {
   try {
@@ -1072,7 +1071,7 @@ const getUsers = async (req, res) => {
       ],
       where: {
         role: {
-          [sequelize.Op.or]: ['STUDENT', 'TEACHER'],
+          [Op.or]: ['STUDENT', 'TEACHER'],
         },
       },
       attributes: ['id', 'firstName', 'lastName', 'role'],
