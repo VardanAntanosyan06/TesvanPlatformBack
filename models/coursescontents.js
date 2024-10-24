@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      CoursesContents.hasOne(models.Groups, { foreignKey: 'assignCourseId'})
     }
   }
   CoursesContents.init(

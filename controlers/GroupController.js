@@ -156,10 +156,6 @@ const findOne = async (req, res) => {
 
     const group = await Groups.findOne({
       where: { id },
-      include: {
-        model: CoursesContents,
-        attributes: ["maxHomeworkPoint", "maxQuizzPoint", "maxInterviewPoint"]
-      },
       attributes: [
         [`name_${language}`, "name"],
         "finished",
@@ -169,20 +165,24 @@ const findOne = async (req, res) => {
       ]
     });
 
+    const course = await CoursesContents.findOne({
+      where: {
+        courseId: group.assignCourseId
+      }
+    })
+
     if (!group) return res.status(404).json({ message: 'Group not found' });
 
     // Convert the Sequelize instance to a plain JavaScript object
     let groupData = group.toJSON();
     groupData = {
       ...groupData,
-      maxHomeworkPoint: +groupData.CoursesContent.maxHomeworkPoint || 0,
-      maxQuizzPoint: +groupData.CoursesContent.maxQuizzPoint || 0,
-      maxInterviewPoint: +groupData.CoursesContent.maxInterviewPoint || 0,
-      maxTotalPoint: +groupData.CoursesContent.maxInterviewPoint || 0 + +groupData.CoursesContent.maxQuizzPoint || 0 + +groupData.CoursesContent.maxHomeworkPoint || 0
+      maxHomeworkPoint: +course.maxHomeworkPoint || 0,
+      maxQuizzPoint: +course.maxQuizzPoint || 0,
+      maxInterviewPoint: +course.maxInterviewPoint || 0,
+      maxTotalPoint: +course?.maxInterviewPoint || 0 + +course?.maxQuizzPoint || 0 + +course?.maxHomeworkPoint || 0
     };
     delete groupData.CoursesContent;
-
-
     const users = await Users.findAll({
       where: {
         role: "STUDENT"
