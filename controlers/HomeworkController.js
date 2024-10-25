@@ -150,7 +150,12 @@ const getHomeworks = async (req, res) => {
       ],
     });
 
-    homeworks = homeworks.Lessons.map((lesson) => lesson.homework[0]);
+    console.log(homeworks.toJSON(), 555);
+
+    homeworks = homeworks.Lessons.reduce((aggr, lesson) => {
+      aggr = [...lesson.homework, ...aggr]
+      return aggr
+    }, [])
     return res.json(homeworks);
   } catch (error) {
     console.log(error);
