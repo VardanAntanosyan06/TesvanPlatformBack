@@ -329,12 +329,13 @@ const findOneTeacher = async (req, res) => {
       // Create the transformed user object
       const userObj = {
         ...value, // Spread the original user object
-        quizPoint: value.UserCourses[0]?.takenQuizzes || 0, // Optional chaining to avoid errors if UserCourses is empty
-        homeworkPoint: value.UserCourses[0]?.takenHomework || 0,
-        interviewPoint: value.UserCourses[0]?.takenInterview || 0,
-        totalPoints: value.UserCourses[0]?.totalPoints || 0,
-        totalTime: totalTime
+        quizPoint: +(Number(value.UserCourses[0]?.takenQuizzes).toFixed(2)) || 0, // Optional chaining to avoid errors if UserCourses is empty
+        homeworkPoint: +(Number(value.UserCourses[0]?.takenHomework).toFixed(2)) || 0,
+        interviewPoint: +(Number(value.UserCourses[0]?.takenInterview).toFixed(2)) || 0,
+        totalPoints: +(Number(value.UserCourses[0]?.totalPoints).toFixed(2)) || 0,
+        totalTime: +(Number(totalTime).toFixed(2))
       };
+      // +(Number(e.point).toFixed(2));
       // Delete the UserCourses property after creating the object
       delete userObj.lessonTime;
       delete userObj.UserCourses;
