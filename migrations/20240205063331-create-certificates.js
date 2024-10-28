@@ -19,13 +19,17 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       url: {
-        type:Sequelize.STRING
+        type: Sequelize.STRING
       },
       giveDate: {
         type: Sequelize.DATE
       },
-      courseName:{
-        type:Sequelize.STRING
+      courseName: {
+        type: Sequelize.STRING
+      },
+      point: {
+        type: Sequelize.DECIMAL,
+        defaultValue: 0
       },
       createdAt: {
         allowNull: false,

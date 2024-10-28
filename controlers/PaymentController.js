@@ -720,6 +720,12 @@ const getAllPayment = (req, res) => {
         {
           module: Users,
           as: "user",
+          where: {
+            [Op.or]: [
+              { firstName: { [Op.like]: `%${userName}%` } },
+              { lastName: { [Op.like]: `%${userName}%` } }
+            ]
+          },
           attributes: ["id", "firstName", "lastName", "image"],
         }
       ],

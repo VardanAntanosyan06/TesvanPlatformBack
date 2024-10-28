@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     url: DataTypes.STRING,
+    point: DataTypes.DECIMAL,
     giveDate: DataTypes.DATE,
     courseName: DataTypes.STRING
   }, {

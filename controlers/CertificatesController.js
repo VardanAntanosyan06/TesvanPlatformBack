@@ -1,12 +1,19 @@
-const { Groups, Users, Certificates } = require('../models');
+const { Groups, Users, Certificates, UserCourses } = require('../models');
 const { Op } = require('sequelize');
 
 const findAllStudents = async (req, res) => {
   try {
     let certificates = await Certificates.findAll({
-      include: { model: Users, attributes: ['firstName', 'lastName', 'image'] },
-      attributes: ['id', 'userId', 'status', 'giveDate'],
+      include: [
+        {
+          model: Users,
+          attributes: ['firstName', 'lastName', 'image']
+        }
+      ],
+      attributes: ['id', 'userId', 'status', 'giveDate', 'point'],
     });
+
+
 
     let status;
     if (+certificates.status === 1) {
@@ -19,16 +26,20 @@ const findAllStudents = async (req, res) => {
 
     certificates = certificates.map((e) => {
       e = e.toJSON();
+      console.log(e, 444);
       delete e.dataValues;
       e['id'] = e.id;
       e['name'] = e.User.firstName + ' ' + e.User.lastName;
       e['image'] = e.User.image;
-      e['points'] = 100;
+      e['points'] = +(Number(e.point).toFixed(2));
       e['type'] = status;
-
       delete e.User;
+
+
       return e;
     });
+
+
     return res.status(200).json(certificates);
   } catch (error) {
     console.log(error);

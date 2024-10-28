@@ -22,7 +22,7 @@ const {
   HomeworkPerLesson
 } = require('../models');
 const { v4 } = require('uuid');
-const { sequelize } = require('sequelize'); // Make sure the path is correct
+const sequelize = require('sequelize'); // Make sure the path is correct
 const { Op } = require('sequelize');
 
 const CreateGroup = async (req, res) => {
@@ -930,6 +930,7 @@ const finishGroup = async (req, res) => {
         courseName,
         status,
         giveDate: date,
+        point: +userPoints[user.id]
       });
       return;
     });
