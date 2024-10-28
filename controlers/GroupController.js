@@ -251,7 +251,7 @@ const findOneTeacher = async (req, res) => {
       orderName = "takenQuizzes"
     } else if (orderName === "homework") {
       orderName = "takenHomework"
-    } else if (orderName = "interview") {
+    } else if (orderName === "interview") {
       orderName = "takenInterview"
     }
 
@@ -312,7 +312,11 @@ const findOneTeacher = async (req, res) => {
         'image',
       ],
       order: [
-        orderName == "name" ? ["lastName", order] : [UserCourses, orderName, order]
+        orderName === "name"
+          ? ["lastName", order]
+          : orderName === "time"
+            ? [{ model: LessonTime, as: "lessonTime", }, orderName, order]
+            : [UserCourses, orderName, order]
       ]
     });
 
