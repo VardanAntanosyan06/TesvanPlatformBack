@@ -245,7 +245,15 @@ const findOne = async (req, res) => {
 const findOneTeacher = async (req, res) => {
   try {
     const { id } = req.params;
-    const { language, order = "DESC", orderName = "totalPoints" } = req.query;
+    let { language, order = "DESC", orderName = "totalPoints" } = req.query;
+
+    if (orderName === "quizz") {
+      orderName = "takenQuizzes"
+    } else if (orderName === "homework") {
+      orderName = "takenHomework"
+    } else if (orderName = "interview") {
+      orderName = "takenInterview"
+    }
 
     const group = await Groups.findOne({
       where: { id },
