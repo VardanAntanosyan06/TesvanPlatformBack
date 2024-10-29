@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       Users.hasMany(models.GroupChatMessages, { foreignKey: "senderId", onDelete: 'CASCADE' }) //+
       Users.hasOne(models.GroupChatReads, { foreignKey: "userId", onDelete: 'CASCADE' }) //+
       Users.hasMany(models.Payment, { foreignKey: "userId" })
-      Users.hasMany(models.LessonTime, { foreignKey: "userId" , as: 'lessonTime'})
+      Users.hasMany(models.LessonTime, { foreignKey: "userId", as: 'lessonTime' })
     }
   }
   Users.init(
@@ -93,7 +93,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         validate: {
           isIn: {
-            args: [['STUDENT']],
+            args: [['STUDENT', 'TEACHER']],
             msg: "Role must be 'STUDENT'",
           },
         },
