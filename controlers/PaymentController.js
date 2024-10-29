@@ -707,39 +707,58 @@ const monthlyPaymentUrl = async (req, res, next) => {
   }
 };
 
-const getAllPayment = (req, res) => {
+const getAllPayment = async (req, res) => {
   try {
-    const { groupId } = req.query;
-    // ASC | DESC| time| success
-    const payments = Payment.findAll({
+    const { groupId, userName, order = "DESC" } = req.query;
+
+    // Validate required parameters
+    if (!groupId) {
+      return res.status(400).json({ success: false, message: "groupId is required" });
+    }
+
+    // Define where condition for the user, if userName is provided
+    const whereCondition = userName
+      ? {
+        [Op.or]: [
+          { firstName: { [Op.like]: `%${userName}%` } },
+          { lastName: { [Op.like]: `%${userName}%` } }
+        ]
+      }
+      : null; // Use `null` to ignore `where` condition if not needed
+
+    // Define the order option, allowing ASC, DESC, or additional options in the future
+    const orderOption = [["id", order.toUpperCase() === "DESC" ? "DESC" : "ASC"]];
+
+    // Execute query
+    const payments = await Payment.findAll({
       where: {
         groupId,
         status: "Success"
       },
       include: [
         {
-          module: Users,
+          model: Users,
           as: "user",
-          where: {
-            [Op.or]: [
-              { firstName: { [Op.like]: `%${userName}%` } },
-              { lastName: { [Op.like]: `%${userName}%` } }
-            ]
-          },
+          where: whereCondition,
           attributes: ["id", "firstName", "lastName", "image"],
         }
       ],
-      order: [["id", "ASC"]]
+      attributes: { exclude: ["orderKey", "orderNumber", "createdAt"] },
+      order: orderOption
     });
+
+    // Respond with the query result
     return res.status(200).json({
       success: true,
       payments
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).send('Internal Server Error');
+    console.error("Error fetching payments:", error);
+    return res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
+
+
 
 module.exports = {
   paymentUrl,
