@@ -557,7 +557,7 @@ const getUserPayment = async (req, res) => {
       ]
     });
 
-    function getMonthCount(startDate, endDate) {
+    function getMonthCount(startDate, endDate, paymentCount) {
       const nowDate = new Date()
       const start = new Date(startDate);
       const end = new Date(endDate);
@@ -569,19 +569,12 @@ const getUserPayment = async (req, res) => {
 
       // Total number of months between the two dates
       const totalMonths = (yearsDifference * 12) + monthsDifference;
-      const totalMonthsNow = (yearsDifferenceNow * 12) + monthsDifferenceNow;
-
-      return totalMonths - totalMonthsNow
+      // let totalMonthsNow = (yearsDifferenceNow * 12) + monthsDifferenceNow;
+      // if (totalMonthsNow > totalMonths) {
+      //   totalMonthsNow = totalMonths
+      // }
+      return totalMonths - (totalMonths - paymentCount)
     }
-
-    const durationMonths = getMonthCount(paymentWays.group.startDate, paymentWays.group.endDate)
-
-    let nextPaymentDate = new Date(paymentWays.group.startDate);
-    nextPaymentDate.setDate(nextPaymentDate.getDate() + (durationMonths * 30));
-
-    const priceCourse = paymentWays.price * (1 - paymentWays.discount / 100) * paymentWays.durationMonths
-    const userUnpaidSum = priceCourse / paymentWays.durationMonths
-
     const payments = await Payment.findAll({
       where: {
         userId,
@@ -593,6 +586,18 @@ const getUserPayment = async (req, res) => {
       attributes: ['paymentWay', 'status', 'type', 'amount', 'createdAt'],
       order: [['createdAt', 'DESC']]
     });
+
+
+    const paymentCount = payments.filter((payment) => payment.status === "Success")
+    const durationMonths = getMonthCount(paymentWays.group.startDate, paymentWays.group.endDate, paymentCount.length)
+
+    let nextPaymentDate = new Date(paymentWays.group.startDate);
+    nextPaymentDate.setDate(nextPaymentDate.getDate() + (durationMonths * 30));
+
+    const priceCourse = paymentWays.price * (1 - paymentWays.discount / 100) * paymentWays.durationMonths
+    const userUnpaidSum = priceCourse / paymentWays.durationMonths
+
+
 
     const userPaidSum = payments.reduce((aggr, value) => {
       if (value.status === "Success") {
@@ -628,9 +633,6 @@ const getUserPayment = async (req, res) => {
         responsData
       });
     };
-
-
-
 
     if (+priceCourse === +userPaidSum) {
       const responsData = {

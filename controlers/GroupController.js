@@ -173,6 +173,7 @@ const findOne = async (req, res) => {
     });
 
     if (!group) return res.status(404).json({ success: false, message: 'Group not found' });
+
     const course = await CoursesContents.findOne({
       where: { courseId: group.assignCourseId },
       attributes: [['courseId', 'id'], 'title'],
@@ -265,14 +266,13 @@ const findOneTeacher = async (req, res) => {
         "assignCourseId"
       ]
     });
+    if (!group) return res.status(404).json({ message: 'Group not found' });
 
     const course = await CoursesContents.findOne({
       where: {
         courseId: group.assignCourseId
       }
     })
-
-    if (!group) return res.status(404).json({ message: 'Group not found' });
 
     // Convert the Sequelize instance to a plain JavaScript object
     let groupData = group.toJSON();
