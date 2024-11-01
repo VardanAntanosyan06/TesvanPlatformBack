@@ -19,6 +19,7 @@ const {
   PaymentWays,
 } = require('../models');
 var CryptoJS = require('crypto-js');
+const Sequelize = require('sequelize')
 const { Op } = require('sequelize');
 
 const sequelize = require('sequelize');
@@ -134,7 +135,6 @@ const paymentArca = async (req, res) => {
         userRole: role,
       },
     });
-    console.log(2);
 
     await UserCourses.create({
       GroupCourseId: group.assignCourseId,
@@ -222,7 +222,7 @@ const paymentArca = async (req, res) => {
 
     await groupChats.save();
 
-    res.send({ success: true });
+    res.send({ success: true, count: 1 });
     //////////////
     if (payment.type == 'Individual') {
       const user = await Users.findOne({ where: { id: payment.userId } });
@@ -281,7 +281,7 @@ const paymentArca = async (req, res) => {
           },
         });
       });
-      res.send({ success: true });
+      res.send({ success: true, count: 1 });
     }
   } catch (error) {
     console.log(error);
@@ -718,15 +718,35 @@ const getAllPayment = async (req, res) => {
       return res.status(400).json({ success: false, message: "groupId is required" });
     }
 
-    // Define where condition for the user, if userName is provided
-    const whereCondition = userName
+    const searchTerms = userName ? userName.trim().split(" ") : [];
+    const whereCondition = searchTerms.length
       ? {
         [Op.or]: [
-          { firstName: { [Op.like]: `%${userName}%` } },
-          { lastName: { [Op.like]: `%${userName}%` } }
+          // Single search term: match either first or last name
+          ...(searchTerms.length === 1
+            ? [
+              { firstName: { [Op.iLike]: `%${searchTerms[0]}%` } },
+              { lastName: { [Op.iLike]: `%${searchTerms[0]}%` } }
+            ]
+            : [
+              // Two terms: assume firstName and lastName separately
+              {
+                [Op.and]: [
+                  { firstName: { [Op.iLike]: `%${searchTerms[0]}%` } },
+                  { lastName: { [Op.iLike]: `%${searchTerms[1]}%` } }
+                ]
+              },
+              // Try the reverse case in case they typed last name first
+              {
+                [Op.and]: [
+                  { firstName: { [Op.iLike]: `%${searchTerms[1]}%` } },
+                  { lastName: { [Op.iLike]: `%${searchTerms[0]}%` } }
+                ]
+              }
+            ])
         ]
       }
-      : null; // Use `null` to ignore `where` condition if not needed
+      : null;
 
     // Define the order option, allowing ASC, DESC, or additional options in the future
     const orderOption = [["id", order.toUpperCase() === "DESC" ? "DESC" : "ASC"]];
