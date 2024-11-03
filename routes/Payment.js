@@ -12,7 +12,9 @@ router.get("/getUserPayment", checkAuth(["TEACHER", "ADMIN", "STUDENT"]), contro
 
 router.post("/monthlyPaymentUrl", checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controller.monthlyPaymentUrl, controller.paymentUrl);
 
-router.get("/getAllPayment",  controller.getAllPayment);
+router.get("/getAllPayment", checkAuth(["TEACHER", "ADMIN"]), controller.getAllPayment);
+
+router.get("/paymentCount", checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controller.paymentCount)
 
 // router.post("/monthlyPaymentIdram", controller.monthlyPaymentIdram, controller.paymentIdram);
 

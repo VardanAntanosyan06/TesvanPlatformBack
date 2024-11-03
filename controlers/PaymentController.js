@@ -780,6 +780,23 @@ const getAllPayment = async (req, res) => {
   }
 };
 
+const paymentCount = async (req, res) => {
+  const { groupId } = req.query;
+  const { user_id: userId } = req.user;
+
+  const count = await Payment.findAll({
+    where: {
+      userId,
+      groupId,
+      status: "Success"
+    }
+  })
+
+  return res.status(200).json({
+    success: true,
+    count: count.length
+  });
+}
 
 
 module.exports = {
@@ -788,5 +805,6 @@ module.exports = {
   paymentIdram,
   getUserPayment,
   monthlyPaymentUrl,
-  getAllPayment
+  getAllPayment,
+  paymentCount
 };
