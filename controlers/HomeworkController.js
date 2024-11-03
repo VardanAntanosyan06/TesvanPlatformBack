@@ -323,11 +323,11 @@ const getHomeWorkForTeacher = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id: userId } = req.user;
-    const { language } = req.query;
+    const { language, courseId } = req.query;
     // const { filterType } = req.query;
 
     let users = await UserHomework.findAll({
-      where: { HomeworkId: id },
+      where: { HomeworkId: id, GroupCourseId: courseId },
       attributes: ['startDate', 'points', 'status'],
       include: [{ model: Users, attributes: ['firstName', 'lastName', 'id', 'image'] }],
     });
