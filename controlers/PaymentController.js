@@ -120,7 +120,7 @@ const paymentArca = async (req, res) => {
     });
 
     if (course) {
-      return res.send({ success: true });
+      return res.send({ success: true, id: payment.groupId });
     };
 
     const { role } = await Users.findByPk(payment.userId);
@@ -222,7 +222,7 @@ const paymentArca = async (req, res) => {
 
     await groupChats.save();
 
-    res.send({ success: true, count: 1 });
+    res.send({ success: true, count: 1, id: payment.groupId });
     //////////////
     if (payment.type == 'Individual') {
       const user = await Users.findOne({ where: { id: payment.userId } });
@@ -351,7 +351,7 @@ const paymentIdram = async (req, res) => {
           await payment.save();
 
           const user = await Users.findOne({ where: { id: payment.userId } });
-          const group = await Groups.findByPk(payment.groupId);
+          const group = await Groups.findOne({where: {id: payment.groupId}});
 
           if (!group) {
             return res.json({ success: false, message: 'Group not found' });
@@ -369,7 +369,7 @@ const paymentIdram = async (req, res) => {
           });
 
           if (course) {
-            return res.send({ success: true });
+            return res.send('OK');
           }
 
           const { role } = await Users.findByPk(payment.userId);
