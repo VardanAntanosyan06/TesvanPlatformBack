@@ -437,6 +437,8 @@ const getUserCourses = async (req, res) => {
       return res.status(500).json({ message: 'User not found' });
     }
 
+    //919 907
+
     let courses = await UserCourses.findAll({
       where: { UserId: id },
       attributes: ['id', ['UserId', 'userId']],
@@ -605,6 +607,11 @@ const getUserCourse = async (req, res) => {
       delete e.Lessons;
       return e;
     });
+
+    //919 907//////////////////////////////////////////
+    if (id == 919 || id == 907) {
+      return res.json({ lessons: [], quizz, finalInterview });
+    }
 
     return res.json({ lessons, quizz, finalInterview });
   } catch (error) {

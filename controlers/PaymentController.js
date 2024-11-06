@@ -351,7 +351,7 @@ const paymentIdram = async (req, res) => {
           await payment.save();
 
           const user = await Users.findOne({ where: { id: payment.userId } });
-          const group = await Groups.findOne({where: {id: payment.groupId}});
+          const group = await Groups.findOne({ where: { id: payment.groupId } });
 
           if (!group) {
             return res.json({ success: false, message: 'Group not found' });
