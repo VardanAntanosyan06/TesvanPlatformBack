@@ -824,19 +824,20 @@ const downloadInvoice = async (req, res) => {
 
 
     const userName = `${user.firstName} ${user.lastName}`;
-    const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
-    const formattedDate = payment.updatedAt.toLocaleDateString('en-US', dateOptions);
+    const dateOptions = { year: '2-digit', month: '2-digit', day: '2-digit' };
+    const formattedDate = payment.updatedAt.toLocaleDateString('hy-AM', dateOptions);
     const courseName = group.dataValues.name;
-    const status = payment.status;
+    const status = payment.status === "Success"? payment.status: payment.status = "Fail"
     const paymentMethod = payment.paymentWay
-    const type = payment.type
+    const type = payment.type === "full" ? payment.type = "Full" : payment.type = "Monthly"
 
     if (!payment) {
       return res.status(404).send('Payment not found');
     }
 
-    // Create a PDF document with A4 format
-    const doc = new PDFDocument({ size: 'A4' });
+    const doc = new PDFDocument({
+      size: [498, 639], // Custom size in points
+    });
 
     // Set headers for PDF response
     res.setHeader('Content-Type', 'application/pdf');
@@ -849,19 +850,18 @@ const downloadInvoice = async (req, res) => {
     const imagePath = path.resolve(__dirname, '../documents/PaymentInvoice.png');
     if (fs.existsSync(imagePath)) {
       doc.image(imagePath, 0, 0, {
-        width: 595,
+        width: doc.page.width,
         height: doc.page.height,
       });
     } else {
       console.error('Image file does not exist:', imagePath);
     }
-    console.log(doc.page.width, 887);
-    
 
     // Custom bold font path
-    const customBoldFontPath = path.resolve(__dirname, '../documents/Teko-Medium.ttf');
-    if (fs.existsSync(customBoldFontPath)) {
-      doc.font(customBoldFontPath);
+    const teko = path.resolve(__dirname, '../documents/Teko-Medium.ttf');
+    const firaSans = path.resolve(__dirname, '../documents/FiraSans-Regular.ttf');
+    if (fs.existsSync(teko)) {
+      doc.font(teko);
     } else {
       console.error('Custom bold font file does not exist, using Helvetica-Bold');
       doc.font('Helvetica-Bold');
@@ -869,16 +869,23 @@ const downloadInvoice = async (req, res) => {
 
     // Add content to the PDF (example text, payment details, etc.)
 
-    doc.moveUp(4);
-    doc.fillColor('#FFC038').fontSize(80).text(`                      ${type}`, { align: 'left' });
-    doc.moveDown(0.18);
-    doc.fillColor('#FFC038').fontSize(16).text(`                                                                                                                                               ${courseName}`, { align: 'left' });
-    doc.moveDown(11);
-    doc.fillColor('#12222D').fontSize(16).text(`${userName}`, 40, 435, { align: 'left' });
-    doc.text(`${paymentMethod}`, 200, 437, { align: 'left' });
-    doc.text(`${formattedDate}`, 330, 437, { align: 'left' });
-    doc.text(`${payment.amount}`, 410, 437, { align: 'left' });
-    doc.text(`${status}`, 500, 437, { align: 'right' });
+    
+    doc.fillColor('#FFC038').fontSize(30).text(type, 300.5, 30, { align: 'left' });
+    doc.fillColor('#FFC038').fontSize(12).text(courseName, 365, 105.5, { align: 'left' });
+    if (fs.existsSync(firaSans)) {
+      doc.font(firaSans);
+    } else {
+      console.error('Custom bold font file does not exist, using Helvetica-Bold');
+      doc.font('Helvetica-Bold');
+    }
+    doc.fillColor('#12222D').fontSize(12).text(userName, 38, 335, { align: 'centre' });
+    doc.text(paymentMethod, 185, 335, { align: 'left' });
+    doc.text(formattedDate, 280, 335, { align: 'left' });
+    doc.text(payment.amount, 355, 335, { align: 'left' });
+    doc.text(status, 426, 335, { align: 'left' });
+    doc.moveTo(270, 292)
+   .lineTo(270, 360)
+   .stroke();
 
     // Finalize the PDF and send it
     doc.end();

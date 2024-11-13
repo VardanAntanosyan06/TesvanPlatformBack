@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       title_am: DataTypes.STRING,
       description_am: DataTypes.TEXT('long'),
       point: DataTypes.DECIMAL,
-      creatorId: DataTypes.INTEGER
+      creatorId: DataTypes.INTEGER,
+      dueDate: DataTypes.DATE,
     },
     {
       sequelize,
