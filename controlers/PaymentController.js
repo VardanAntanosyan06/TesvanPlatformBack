@@ -883,9 +883,9 @@ const downloadInvoice = async (req, res) => {
     doc.text(formattedDate, 280, 335, { align: 'left' });
     doc.text(payment.amount, 355, 335, { align: 'left' });
     doc.text(status, 426, 335, { align: 'left' });
-    doc.moveTo(270, 292)
-   .lineTo(270, 360)
-   .stroke();
+  //   doc.moveTo(270, 292)
+  //  .lineTo(270, 360)
+  //  .stroke();
 
     // Finalize the PDF and send it
     doc.end();
