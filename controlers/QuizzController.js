@@ -16,6 +16,7 @@ const {
 
 const createQuizz = async (req, res) => {
   try {
+    const { user_id: userId } = req.user;
     const {
       title_en,
       title_ru,
@@ -40,6 +41,7 @@ const createQuizz = async (req, res) => {
       description_am,
       time,
       percent,
+      creatorId: userId
     });
 
     questions.forEach(async (question) => {

@@ -114,6 +114,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ARRAY(DataTypes.INTEGER),
         defaultValue: [],
       },
+      creatorId: DataTypes.INTEGER
     },
 
     {

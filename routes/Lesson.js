@@ -14,7 +14,7 @@ router.get('/getLessonTitles', controller.getLessonTitles);
 
 router.get('/getLessonTitles', controller.getLessonTitles);
 router.get('/getLesson/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getLesson);
-router.get('/getLessonForAdmin/:id', checkAuth(['ADMIN']), controller.getLessonForAdmin);
+router.get('/getLessonForAdmin/:id', checkAuth(['ADMIN', 'TEACHER']), controller.getLessonForAdmin);
 
 router.get('/getLesson/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getLesson);
 
@@ -23,9 +23,9 @@ router.post('/createLesson', checkAuth(['TEACHER', 'ADMIN']), controller.createL
 router.post('/submitQuizz/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.submitQuizz);
 router.patch('/openLesson/', checkAuth(['TEACHER', 'ADMIN']), controller.openLesson);
 
-router.put('/update', checkAuth(['ADMIN']), controller.updateLesson);
+router.put('/update', checkAuth(['ADMIN', 'TEACHER']), controller.updateLesson);
 
-router.delete('/delete/:id', checkAuth(['ADMIN']), controller.deleteLesson);
+router.delete('/delete/:id', checkAuth(['ADMIN', 'TEACHER']), controller.deleteLesson);
 
 router.post(
   '/time/:lessonId',

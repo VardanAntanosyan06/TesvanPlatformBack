@@ -254,7 +254,9 @@ const findOneTeacher = async (req, res) => {
       orderName = "takenHomework"
     } else if (orderName === "interview") {
       orderName = "takenInterview"
-    }
+    } else if (orderName === "total") {
+      orderName = "totalPoints"
+    };
 
     const group = await Groups.findOne({
       where: { id },

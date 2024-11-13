@@ -13,7 +13,7 @@ router.get('/getByFilter', controller.getCoursesByFilter);
 router.post('/createCourse', checkAuth(['TEACHER', 'ADMIN']), controller.createCourse);
 router.get('/individualGetOne/:id', controller.IndividualGetOne);
 
-router.get('/getCourseForAdmin/:id', checkAuth(['ADMIN']), controller.getCourseForAdmin);
+router.get('/getCourseForAdmin/:id', checkAuth(['ADMIN', 'TEACHER']), controller.getCourseForAdmin);
 
 router.get('/getOne/:id', controller.getOne);
 router.get('/like/:courseId', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.like);

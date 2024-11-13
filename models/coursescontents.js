@@ -43,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       maxQuizzPoint: DataTypes.STRING,
       maxHomeworkPoint: DataTypes.STRING,
       maxInterviewPoint: DataTypes.STRING,
+      creatorId: DataTypes.INTEGER
     },
     {
       sequelize,

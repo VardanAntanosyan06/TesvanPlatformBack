@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       htmlContent_en: DataTypes.TEXT('long'),
       htmlContent_ru: DataTypes.TEXT('long'),
       htmlContent_am: DataTypes.TEXT('long'),
+      creatorId: DataTypes.INTEGER
     },
     {
       sequelize,

@@ -4,7 +4,7 @@ var router = express.Router();
 const controller = require('../controlers/GroupController');
 const checkAuth = require('../middleware/checkAuth');
 
-router.post('/create', checkAuth(['ADMIN']), controller.CreateGroup);
+router.post('/create', checkAuth(['ADMIN', 'TEACHER']), controller.CreateGroup);
 router.post('/addMember', checkAuth(['ADMIN']), controller.addMember);
 router.post(
   '/recordUserStatics',
@@ -32,10 +32,10 @@ router.get(
   controller.getGroupesForTeacher,
 );
 
-router.put('/update/:groupId', checkAuth(['ADMIN']), controller.update);
+router.put('/update/:groupId', checkAuth(['ADMIN', 'TEACHER']), controller.update);
 router.patch('/finishGroup/:id', checkAuth(['TEACHER', 'ADMIN']), controller.finishGroup);
 
 router.delete('/deleteMember', checkAuth(['ADMIN']), controller.deleteMember);
-router.delete('/delete/:id', checkAuth(['ADMIN']), controller.deleteGroup);
+router.delete('/delete/:id', checkAuth(['ADMIN', 'TEACHER']), controller.deleteGroup);
 router.get('/groupInfo/:id', checkAuth(['TEACHER', 'ADMIN']), controller.groupInfo)
 module.exports = router;

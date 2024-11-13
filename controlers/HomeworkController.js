@@ -18,13 +18,13 @@ const { Op } = require('sequelize');
 const Sequelize = require('sequelize');
 const { assign } = require('nodemailer/lib/shared');
 
+////////////////////////////creator id code off
+
 const create = async (req, res) => {
-  /////body mej avelacnel point
   try {
-    const { title_en, title_ru, title_am, description_en, description_ru, description_am, point } =
+    const { user_id: userId } = req.user;
+    const { title_en, title_ru, title_am, description_en, description_ru, description_am, point, dueDate } =
       req.body;
-    /////////////////////////
-    ////////////////////////////
 
     await Homework.create({
       title_en,
@@ -34,6 +34,8 @@ const create = async (req, res) => {
       description_ru,
       description_am,
       point,
+      creatorId: userId,
+      dueDate
     });
     return res.send({ success: true });
   } catch (error) {
@@ -149,8 +151,6 @@ const getHomeworks = async (req, res) => {
         },
       ],
     });
-
-    console.log(homeworks.toJSON(), 555);
 
     homeworks = homeworks.Lessons.reduce((aggr, lesson) => {
       aggr = [...lesson.homework, ...aggr]
@@ -458,7 +458,7 @@ const priceHomeWork = async (req, res) => {
 const getHomeworkTitles = async (req, res) => {
   try {
     const homeworks = await Homework.findAll({
-      attributes: ['id', ['title_en', 'title']],
+      attributes: ['id', ['title_en', 'title'], 'dueDate'],
     });
 
     return res.json(homeworks);

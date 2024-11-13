@@ -622,6 +622,7 @@ const getUserCourse = async (req, res) => {
 
 const createCourse = async (req, res) => {
   try {
+    const { user_id: userId } = req.user;
     let {
       title_en,
       title_am,
@@ -696,7 +697,8 @@ const createCourse = async (req, res) => {
           discount: 0,
           maxQuizzPoint,
           maxHomeworkPoint,
-          maxInterviewPoint
+          maxInterviewPoint,
+          creatorId: userId
         });
       }),
     );

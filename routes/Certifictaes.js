@@ -12,7 +12,7 @@ router.get(
 );
 router.get(
   "/getUserCertificates",
-  checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.getUserCertificates
 );
 
@@ -24,7 +24,7 @@ router.patch(
 
 router.post(
   "/:id",
-  // checkAuth(["ADMIN"]),
+  checkAuth(["STUDENT", "TEACHER", "ADMIN"]),
   controller.downloadCertificate
 )
 

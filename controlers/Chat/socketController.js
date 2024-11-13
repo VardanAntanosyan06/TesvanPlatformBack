@@ -51,19 +51,7 @@ const socketController = (io, socket) => {
             users.splice(index, 1);
             socket.to(`room_${data.groupChatId}`).emit('stopTypingGroup', {userNames: users, chatId: data.groupChatId})
         }
-    })
-
-    // socket.on("getNotifications", (data) => {
-    //     console.log(data);
-    //     if (data.userId) {
-    //         const userSocket = userSockets.get(+data.userId)
-    //         if (userSocket) {
-    //             io.to(userSocket.id).emit('chatNotifications', getMessageNotifications(data.userId).chatNotification)
-    //             io.to(userSocket.id).emit('groupChatNotifications', getMessageNotifications(data.userId).groupChatNotification)
-    //         }
-
-    //     }
-    // })
+    });
 
     socket.on('join', (data) => {
         const userSocket = userSockets.get(+data.userId);

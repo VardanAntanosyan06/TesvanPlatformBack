@@ -15,14 +15,20 @@ const {
   Lesson,
   Homework,
   Users,
+  CoursesContents,
   HomeworkPerLesson,
   PaymentWays,
 } = require('../models');
 var CryptoJS = require('crypto-js');
 const Sequelize = require('sequelize')
 const { Op } = require('sequelize');
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const path = require('path');
+
 
 const sequelize = require('sequelize');
+const { atob } = require('buffer');
 
 const paymentUrl = async (req, res) => {
   try {
@@ -781,22 +787,107 @@ const getAllPayment = async (req, res) => {
 };
 
 const paymentCount = async (req, res) => {
-  const { groupId } = req.query;
-  const { user_id: userId } = req.user;
+  try {
+    const { groupId } = req.query;
+    const { user_id: userId } = req.user;
 
-  const count = await Payment.findAll({
-    where: {
-      userId,
-      groupId,
-      status: "Success"
-    }
-  })
+    const count = await Payment.findAll({
+      where: {
+        userId,
+        groupId,
+        status: "Success"
+      }
+    })
 
-  return res.status(200).json({
-    success: true,
-    count: count.length
-  });
+    return res.status(200).json({
+      success: true,
+      count: count.length
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+
 }
+
+const downloadInvoice = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { paymentId, language } = req.query;
+
+    const payment = await Payment.findByPk(paymentId);
+    const user = await Users.findByPk(userId);
+    const group = await Groups.findOne({
+      where: { id: payment.groupId },
+      attributes: [[`name_${language}`, 'name']]
+    })
+
+
+    const userName = `${user.firstName} ${user.lastName}`;
+    const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+    const formattedDate = payment.updatedAt.toLocaleDateString('en-US', dateOptions);
+    const courseName = group.dataValues.name;
+    const status = payment.status;
+    const paymentMethod = payment.paymentWay
+    const type = payment.type
+
+    if (!payment) {
+      return res.status(404).send('Payment not found');
+    }
+
+    // Create a PDF document with A4 format
+    const doc = new PDFDocument({ size: 'A4' });
+
+    // Set headers for PDF response
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=payment-${paymentId}.pdf`);
+
+    // Pipe the PDF output to the response
+    doc.pipe(res);
+
+    // Image path and check if it exists
+    const imagePath = path.resolve(__dirname, '../documents/PaymentInvoice.png');
+    if (fs.existsSync(imagePath)) {
+      doc.image(imagePath, 0, 0, {
+        width: 595,
+        height: doc.page.height,
+      });
+    } else {
+      console.error('Image file does not exist:', imagePath);
+    }
+    console.log(doc.page.width, 887);
+    
+
+    // Custom bold font path
+    const customBoldFontPath = path.resolve(__dirname, '../documents/Teko-Medium.ttf');
+    if (fs.existsSync(customBoldFontPath)) {
+      doc.font(customBoldFontPath);
+    } else {
+      console.error('Custom bold font file does not exist, using Helvetica-Bold');
+      doc.font('Helvetica-Bold');
+    }
+
+    // Add content to the PDF (example text, payment details, etc.)
+
+    doc.moveUp(4);
+    doc.fillColor('#FFC038').fontSize(80).text(`                      ${type}`, { align: 'left' });
+    doc.moveDown(0.18);
+    doc.fillColor('#FFC038').fontSize(16).text(`                                                                                                                                               ${courseName}`, { align: 'left' });
+    doc.moveDown(11);
+    doc.fillColor('#12222D').fontSize(16).text(`${userName}`, 40, 435, { align: 'left' });
+    doc.text(`${paymentMethod}`, 200, 437, { align: 'left' });
+    doc.text(`${formattedDate}`, 330, 437, { align: 'left' });
+    doc.text(`${payment.amount}`, 410, 437, { align: 'left' });
+    doc.text(`${status}`, 500, 437, { align: 'right' });
+
+    // Finalize the PDF and send it
+    doc.end();
+
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
 
 
 module.exports = {
@@ -806,5 +897,6 @@ module.exports = {
   getUserPayment,
   monthlyPaymentUrl,
   getAllPayment,
-  paymentCount
+  paymentCount,
+  downloadInvoice
 };

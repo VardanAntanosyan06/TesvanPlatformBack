@@ -441,8 +441,10 @@ const openLesson = async (req, res) => {
   }
 };
 
+
 const createLesson = async (req, res) => {
   try {
+    const { user_id: userId } = req.user;
     const {
       title_en,
       title_ru,
@@ -492,6 +494,7 @@ const createLesson = async (req, res) => {
         htmlContent_en,
         htmlContent_ru,
         htmlContent_am,
+        creatorId: userId
       });
 
       await Presentations.create({

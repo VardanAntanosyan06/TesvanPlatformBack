@@ -199,6 +199,7 @@ const UserRegistartionVerification = async (req, res) => {
 };
 const AddMember = async (req, res) => {
   try {
+    const { user_id: userId } = req.user;
     const { role, firstName, lastName, email, phoneNumber, birthday, gender, city, country } =
       req.body;
       
@@ -219,6 +220,7 @@ const AddMember = async (req, res) => {
       education: '',
       backgroundInQA: 'true',
       tokenCreatedAt: new Date().toISOString(),
+      creatorId: userId
     });
 
     User.token = jwt.sign({ user_id: User.id, email:User.email, role: User.role }, process.env.SECRET);
