@@ -340,6 +340,14 @@ const paymentIdram = async (req, res) => {
         request.EDP_TRANS_DATE;
 
       if (request.EDP_CHECKSUM.toUpperCase() !== CryptoJS.MD5(txtToHash).toString().toUpperCase()) {
+        let payment = await Payment.findOne({
+          where: { orderNumber: request.EDP_BILL_NO },
+        });
+        if (!payment) {
+          return res.status(400).json({ success: false, message: 'Payment does not exist' });
+        };
+        payment.status = 'Payment is declined';
+        await payment.save();
         res.send('Error');
       } else {
         const amount = request.EDP_AMOUNT;
@@ -756,13 +764,15 @@ const getAllPayment = async (req, res) => {
       : null;
 
     // Define the order option, allowing ASC, DESC, or additional options in the future
-    const orderOption = [["id", order.toUpperCase() === "DESC" ? "DESC" : "ASC"]];
+    const orderOption = order.toUpperCase() === "DESC" ? "DESC" : "ASC";
 
     // Execute query
     const payments = await Payment.findAll({
       where: {
         groupId,
-        status: "Success"
+        status: {
+          [Op.or]: ["Success", "Payment is declined"]
+        }
       },
       include: [
         {
@@ -778,46 +788,41 @@ const getAllPayment = async (req, res) => {
 
     const orders = payments.reduce((aggr, value) => {
       value = value.toJSON()
-      console.log(value);
-
       if (!aggr[value.userId]) {
-        value.order = []
+        value.orderStatus = []
         aggr[value.userId] = value
+        aggr[value.userId].updatedAt = value.updatedAt;
         if (value.status === "Success") {
-          value.order.push("Success")
+          value.orderStatus.push("Success")
         } else {
-          value.order.push("Failed")
+          value.orderStatus.push("Failed")
         }
       } else {
         if (value.status === "Success") {
-          if (aggr[value.userId].order[aggr[value.userId].order.length - 1] === "Failed") {
-            aggr[value.userId].order[aggr[value.userId].order.length - 1] = "Success"
+          if (aggr[value.userId].orderStatus[aggr[value.userId].orderStatus.length - 1] === "Failed") {
+            aggr[value.userId].orderStatus[aggr[value.userId].orderStatus.length - 1] = "Success"
           } else {
-            aggr[value.userId].order.push("Success")
+            aggr[value.userId].orderStatus.push("Success")
           }
+          aggr[value.userId].updatedAt = value.updatedAt;
         } else {
-          aggr[value.userId].order.push("Failed")
+          if (aggr[value.userId].orderStatus[aggr[value.userId].orderStatus.length - 1] === "Failed") {
+            aggr[value.userId].updatedAt = value.updatedAt;
+          } else {
+            aggr[value.userId].orderStatus.push("Failed")
+            aggr[value.userId].updatedAt = value.updatedAt;
+          }
         }
       }
       return aggr;
-    }, {})
-    console.log(orders, 55);
+    }, {});
 
-
-    // const userOrders = payments.reduce((aggr, value ) => {
-    //   if(){
-    //     aggr.push(value)
-    //   }
-    //   return aggr;
-    // }, [])
-
-
-
+    const userOrders = orderOption === "DESC" ? Object.values(orders).reverse() : Object.values(orders)
 
     // Respond with the query result
     return res.status(200).json({
       success: true,
-      payments
+      payments: userOrders
     });
   } catch (error) {
     console.error("Error fetching payments:", error);
@@ -852,9 +857,17 @@ const paymentCount = async (req, res) => {
 const downloadInvoice = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { paymentId, language } = req.query;
-
-    const payment = await Payment.findByPk(paymentId);
+    const { paymentId, language, orderKey } = req.query;
+    let payment;
+    if (paymentId) {
+      payment = await Payment.findByPk(paymentId);
+    } else {
+      payment = await Payment.findOne({
+        where: {
+          orderKey
+        }
+      });
+    }
     const user = await Users.findByPk(userId);
     const group = await Groups.findOne({
       where: { id: payment.groupId },

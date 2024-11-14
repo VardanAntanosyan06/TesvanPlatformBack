@@ -46,7 +46,7 @@ const UserRegistartion = async (req, res) => {
     const userEmail = email.toLowerCase()
     const isUser = await Users.findOne({ where: { email: userEmail, isVerified: true } });
     if (isUser) return res.status(403).json({ message: 'Email must be unique.' });
-    const hashedPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT); 
+    const hashedPassword = await bcrypt.hash(password, BCRYPT_HASH_SALT);
 
     const newUser = await Users.create({
       firstName,
@@ -159,9 +159,9 @@ const EmailExist = async (req, res) => {
         success: false,
         message: 'This email address is already used',
       });
-    const userNotVerified = Users.findOne({ where: { email:userEmail, isVerified: false } })
+    const userNotVerified = Users.findOne({ where: { email: userEmail, isVerified: false } })
     if (userNotVerified) {
-      await Users.destroy({ where: { email:userEmail, isVerified: false } })
+      await Users.destroy({ where: { email: userEmail, isVerified: false } })
     }
 
     return res.status(200).json({ success: true });
@@ -202,7 +202,7 @@ const AddMember = async (req, res) => {
     const { user_id: userId } = req.user;
     const { role, firstName, lastName, email, phoneNumber, birthday, gender, city, country } =
       req.body;
-      
+
     const hashPassword = await bcrypt.hash(v4(), BCRYPT_HASH_SALT);
 
     const User = await Users.create({
@@ -223,7 +223,7 @@ const AddMember = async (req, res) => {
       creatorId: userId
     });
 
-    User.token = jwt.sign({ user_id: User.id, email:User.email, role: User.role }, process.env.SECRET);
+    User.token = jwt.sign({ user_id: User.id, email: User.email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 
@@ -306,6 +306,39 @@ const AddMember = async (req, res) => {
 
 const getMembers = async (req, res) => {
   try {
+    const { userName, order = "DESC" } = req.query;
+    const searchTerms = userName ? userName.trim().split(" ") : [];
+    const whereCondition = searchTerms.length
+      ? {
+        role: 'STUDENT',
+        [Op.or]: [
+          // Single search term: match either first or last name
+          ...(searchTerms.length === 1
+            ? [
+              { firstName: { [Op.iLike]: `%${searchTerms[0]}%` } },
+              { lastName: { [Op.iLike]: `%${searchTerms[0]}%` } }
+            ]
+            : [
+              // Two terms: assume firstName and lastName separately
+              {
+                [Op.and]: [
+                  { firstName: { [Op.iLike]: `%${searchTerms[0]}%` } },
+                  { lastName: { [Op.iLike]: `%${searchTerms[1]}%` } }
+                ]
+              },
+              // Try the reverse case in case they typed last name first
+              {
+                [Op.and]: [
+                  { firstName: { [Op.iLike]: `%${searchTerms[1]}%` } },
+                  { lastName: { [Op.iLike]: `%${searchTerms[0]}%` } }
+                ]
+              }
+            ])
+        ]
+      }
+      : {
+        role: 'STUDENT',
+      };
     const teachers = await Users.findAll({
       where: {
         role: 'TEACHER',
@@ -313,9 +346,7 @@ const getMembers = async (req, res) => {
       order: [['id', 'DESC']],
     });
     const students = await Users.findAll({
-      where: {
-        role: 'STUDENT',
-      },
+      where: whereCondition,
       order: [['id', 'DESC']],
     });
     const members = {
@@ -459,7 +490,7 @@ const deleteAccount = async (req, res) => {
           userId: id
         }
       });
-      
+
       await Users.destroy({
         where: {
           id,
@@ -557,7 +588,7 @@ const changeEmail = async (req, res) => {
     const User = await Users.findOne({ where: { id: userId } });
 
     User.email = email.toLowerCase();
-    User.token = jwt.sign({ user_id: User.id, email:User.email, role: User.role }, process.env.SECRET);
+    User.token = jwt.sign({ user_id: User.id, email: User.email, role: User.role }, process.env.SECRET);
     User.tokenCreatedAt = moment();
     await User.save();
 

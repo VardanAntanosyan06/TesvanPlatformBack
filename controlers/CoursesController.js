@@ -1187,6 +1187,14 @@ const updateCourse = async (req, res) => {
       lessonIds.flatMap(async (lessonId, i) => {
         const homework = await HomeworkPerLesson.findOne({ where: { lessonId: lessonId } })
 
+        await CoursesPerLessons.destroy({
+          where: {
+            courseId,
+            lessonId: {
+              [Op.notIn]: lessonIds ? lessonIds : null
+            }
+          }
+        });
         CoursesPerLessons.findOrCreate({
           where: {
             courseId, lessonId
