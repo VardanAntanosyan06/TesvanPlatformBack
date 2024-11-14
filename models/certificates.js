@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
     url: DataTypes.STRING,
     point: DataTypes.DECIMAL,
     giveDate: DataTypes.DATE,
-    courseName: DataTypes.STRING
+    courseName: DataTypes.STRING,
+    groupId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Certificates',

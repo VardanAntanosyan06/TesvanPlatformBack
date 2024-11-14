@@ -58,7 +58,7 @@ const paymentUrl = async (req, res) => {
         errorMessage: paymentResponse.errorMessage,
       });
 
-    Payment.create({
+    const { id } = Payment.create({
       orderKey: paymentResponse.orderId,
       orderNumber,
       paymentWay,
@@ -73,7 +73,8 @@ const paymentUrl = async (req, res) => {
       success: true,
       formUrl: paymentResponse.formUrl,
       id: orderNumber,
-      amount: thisCoursePrice
+      amount: thisCoursePrice,
+      invoiceId: id
     });
   } catch (error) {
     console.log(error);
@@ -589,7 +590,7 @@ const getUserPayment = async (req, res) => {
           [Op.not]: "Pending"
         }
       },
-      attributes: ['id','paymentWay', 'status', 'type', 'amount', 'createdAt'],
+      attributes: ['id', 'paymentWay', 'status', 'type', 'amount', 'createdAt'],
       order: [['createdAt', 'DESC']]
     });
 
@@ -772,8 +773,46 @@ const getAllPayment = async (req, res) => {
         }
       ],
       attributes: { exclude: ["orderKey", "orderNumber", "createdAt"] },
-      order: orderOption
+      order: [["id", "ASC"]]
     });
+
+    const orders = payments.reduce((aggr, value) => {
+      value = value.toJSON()
+      console.log(value);
+
+      if (!aggr[value.userId]) {
+        value.order = []
+        aggr[value.userId] = value
+        if (value.status === "Success") {
+          value.order.push("Success")
+        } else {
+          value.order.push("Failed")
+        }
+      } else {
+        if (value.status === "Success") {
+          if (aggr[value.userId].order[aggr[value.userId].order.length - 1] === "Failed") {
+            aggr[value.userId].order[aggr[value.userId].order.length - 1] = "Success"
+          } else {
+            aggr[value.userId].order.push("Success")
+          }
+        } else {
+          aggr[value.userId].order.push("Failed")
+        }
+      }
+      return aggr;
+    }, {})
+    console.log(orders, 55);
+
+
+    // const userOrders = payments.reduce((aggr, value ) => {
+    //   if(){
+    //     aggr.push(value)
+    //   }
+    //   return aggr;
+    // }, [])
+
+
+
 
     // Respond with the query result
     return res.status(200).json({
@@ -827,7 +866,7 @@ const downloadInvoice = async (req, res) => {
     const dateOptions = { year: '2-digit', month: '2-digit', day: '2-digit' };
     const formattedDate = payment.updatedAt.toLocaleDateString('hy-AM', dateOptions);
     const courseName = group.dataValues.name;
-    const status = payment.status === "Success"? payment.status: payment.status = "Fail"
+    const status = payment.status === "Success" ? payment.status : payment.status = "Fail"
     const paymentMethod = payment.paymentWay
     const type = payment.type === "full" ? payment.type = "Full" : payment.type = "Monthly"
 
@@ -869,7 +908,7 @@ const downloadInvoice = async (req, res) => {
 
     // Add content to the PDF (example text, payment details, etc.)
 
-    
+
     doc.fillColor('#FFC038').fontSize(30).text(type, 300.5, 30, { align: 'left' });
     doc.fillColor('#FFC038').fontSize(12).text(courseName, 365, 105.5, { align: 'left' });
     if (fs.existsSync(firaSans)) {

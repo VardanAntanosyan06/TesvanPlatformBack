@@ -945,7 +945,8 @@ const finishGroup = async (req, res) => {
         courseName,
         status,
         giveDate: date,
-        point: +userPoints[user.id]
+        point: +userPoints[user.id],
+        groupId: Group.id
       });
       return;
     });

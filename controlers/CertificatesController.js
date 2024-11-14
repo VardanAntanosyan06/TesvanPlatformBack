@@ -104,13 +104,26 @@ const downloadCertificate = async (req, res) => {
     // Fetch the certificate data from the database
     const certificate = await Certificates.findOne({
       where: { id: id },
-      attributes: ['id', 'userId', 'status', 'giveDate', 'courseName', 'url'],
+      attributes: ['id', 'userId', 'status', 'giveDate', 'courseName', 'url', 'groupId'],
       include: { model: Users, attributes: ['firstName', 'lastName'] },
     });
+
+    const group = await Groups.findByPk(certificate.groupId)
 
     if (!certificate) {
       return res.status(404).send('Certificate not found');
     }
+
+    function getMonthCount(startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      const yearsDifference = end.getFullYear() - start.getFullYear();
+      const monthsDifference = end.getMonth() - start.getMonth();
+      const totalMonths = (yearsDifference * 12) + monthsDifference;
+
+      return totalMonths
+    };
 
     const userName = `${certificate.User.firstName} ${certificate.User.lastName}`;
     const courseName = certificate.courseName;
@@ -118,7 +131,7 @@ const downloadCertificate = async (req, res) => {
     const years = giveDate.toString().split(" ")[3]
     const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
     const formattedDate = giveDate.toLocaleDateString('en-US', dateOptions);
-    const month = 3
+    const month = getMonthCount(group.startDate, group.endDate)
 
     // Create a PDF document with A4 format and landscape orientation
     const doc = new PDFDocument({
