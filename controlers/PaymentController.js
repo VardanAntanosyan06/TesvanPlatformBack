@@ -871,8 +871,8 @@ const downloadInvoice = async (req, res) => {
     const user = await Users.findByPk(userId);
     const group = await Groups.findOne({
       where: { id: payment.groupId },
-      attributes: [[`name_${language}`, 'name']]
-    })
+      attributes: [[`name_en`, 'name']]
+    });
 
 
     const userName = `${user.firstName} ${user.lastName}`;
