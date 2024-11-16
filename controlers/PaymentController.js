@@ -348,7 +348,7 @@ const paymentIdram = async (req, res) => {
         };
         payment.status = 'Payment is declined';
         await payment.save();
-        res.send('Error');
+        return res.send('Error');
       } else {
         const amount = request.EDP_AMOUNT;
         if (amount > 0) {
@@ -922,19 +922,25 @@ const downloadInvoice = async (req, res) => {
     // Add content to the PDF (example text, payment details, etc.)
 
 
-    doc.fillColor('#FFC038').fontSize(30).text(type, 300.5, 30, { align: 'left' });
-    doc.fillColor('#FFC038').fontSize(12).text(courseName, 365, 105.5, { align: 'left' });
+    doc.fillColor('#FFC038').fontSize(30).text(type, 308, 30, { align: 'left' });
+    doc.fillColor('#FFC038').fontSize(11).text(courseName, 372, 106, { align: 'left' });
     if (fs.existsSync(firaSans)) {
       doc.font(firaSans);
     } else {
       console.error('Custom bold font file does not exist, using Helvetica-Bold');
       doc.font('Helvetica-Bold');
     }
-    doc.fillColor('#12222D').fontSize(12).text(userName, 38, 335, { align: 'centre' });
+    doc.fillColor('#12222D').fontSize(12).text(userName, 33, 335, { align: 'centre' });
     doc.text(paymentMethod, 185, 335, { align: 'left' });
     doc.text(formattedDate, 280, 335, { align: 'left' });
     doc.text(payment.amount, 355, 335, { align: 'left' });
-    doc.text(status, 426, 335, { align: 'left' });
+    if(status === "Success"){
+      doc.fillColor('green')
+      doc.text(status, 426, 335, { align: 'left' });
+    } else {
+      doc.fillColor('red')
+      doc.text(status, 435, 335, { align: 'left' });
+    }
 
     // Finalize the PDF and send it
     doc.end();
