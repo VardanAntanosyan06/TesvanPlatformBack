@@ -359,7 +359,7 @@ const paymentIdram = async (req, res) => {
             where: { orderNumber: request.EDP_BILL_NO },
           });
           if (!payment) {
-            return res.status(400).json({ success: false, message: 'Payment does not exist' });
+            return res.send('Error');
           }
 
           payment.status = 'Success';
@@ -385,7 +385,7 @@ const paymentIdram = async (req, res) => {
 
           if (course) {
             return res.send('OK');
-          }
+          };
 
           const { role } = await Users.findByPk(payment.userId);
           await GroupsPerUsers.findOrCreate({
