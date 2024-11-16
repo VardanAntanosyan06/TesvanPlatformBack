@@ -344,7 +344,7 @@ const paymentIdram = async (req, res) => {
           where: { orderNumber: request.EDP_BILL_NO },
         });
         if (!payment) {
-          return res.status(400).json({ success: false, message: 'Payment does not exist' });
+          return res.send('Error');
         };
         payment.status = 'Payment is declined';
         await payment.save();
@@ -934,7 +934,7 @@ const downloadInvoice = async (req, res) => {
     doc.text(paymentMethod, 185, 335, { align: 'left' });
     doc.text(formattedDate, 280, 335, { align: 'left' });
     doc.text(payment.amount, 355, 335, { align: 'left' });
-    if(status === "Success"){
+    if (status === "Success") {
       doc.fillColor('green')
       doc.text(status, 426, 335, { align: 'left' });
     } else {
