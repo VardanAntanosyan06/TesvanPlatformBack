@@ -351,7 +351,12 @@ const paymentIdram = async (req, res) => {
         return res.send('Error');
       } else {
         const amount = request.EDP_AMOUNT;
-        if (amount > 0) {
+        let payment = await Payment.findOne({
+          where: { orderNumber: request.EDP_BILL_NO },
+        });
+        console.log("//////", amount, "//////", 5);
+        
+        if (+amount > +payment.amount) {
           let currentDate = new Date();
           currentDate.setFullYear(currentDate.getFullYear() + 1);
           currentDate = currentDate.toISOString();
@@ -543,6 +548,16 @@ const paymentIdram = async (req, res) => {
               });
             });
           }
+        } else {
+          let payment = await Payment.findOne({
+            where: { orderNumber: request.EDP_BILL_NO },
+          });
+          if (!payment) {
+            return res.send('Error');
+          };
+          payment.status = 'Payment is declined';
+          await payment.save();
+          return res.send('Error');
         }
       }
       return res.send('OK');
