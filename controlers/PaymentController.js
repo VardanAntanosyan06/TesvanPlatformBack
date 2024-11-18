@@ -12,7 +12,6 @@ const {
   GroupCourses,
   UserPoints,
   GroupChats,
-  Groups,
   Lesson,
   Homework,
   Users,
