@@ -12,6 +12,7 @@ const {
   GroupCourses,
   UserPoints,
   GroupChats,
+  Groups,
   Lesson,
   Homework,
   Users,
@@ -746,6 +747,21 @@ const getAllPayment = async (req, res) => {
       return res.status(400).json({ success: false, message: "groupId is required" });
     }
 
+    const group = await Groups.findByPk(groupId)
+
+    function getMonthCount(startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      const yearsDifference = end.getFullYear() - start.getFullYear();
+      const monthsDifference = end.getMonth() - start.getMonth();
+      const totalMonths = (yearsDifference * 12) + monthsDifference;
+
+      return totalMonths
+    };
+
+    const month = getMonthCount(group.startDate, group.endDate)
+
     const searchTerms = userName ? userName.trim().split(" ") : [];
     const whereCondition = searchTerms.length
       ? {
@@ -835,7 +851,8 @@ const getAllPayment = async (req, res) => {
     // Respond with the query result
     return res.status(200).json({
       success: true,
-      payments: userOrders
+      payments: userOrders,
+      paymentCount: +month
     });
   } catch (error) {
     console.error("Error fetching payments:", error);

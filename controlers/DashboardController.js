@@ -273,11 +273,11 @@ const getInvidualCourseStatics = async (req, res) => {
 
 const adminDashboard = async (req, res) => {
   try {
-    // const { user_id: userId } = req.user;
+    const { user_id: userId } = req.user;
     const teacher = await Users.findAll({
       where: {
         role: "TEACHER",
-        creatorId: 5
+        creatorId: +userId
       },
       attributes: ["id", "firstName", "lastName", "image", "role"]
     });
@@ -289,7 +289,7 @@ const adminDashboard = async (req, res) => {
 
     const groups = await Groups.findAll({
       where: {
-        creatorId: [5, ...teacherIds]
+        creatorId: [+userId, ...teacherIds]
       },
       include: [
         {
@@ -300,12 +300,17 @@ const adminDashboard = async (req, res) => {
       ],
       attributes: ["id"]
     })
-    // res.send(groups)
+
+    const students = groups.reduce((aggr, value) => {
+      value.GroupsPerUsers.length
+      return aggr += value.GroupsPerUsers.length
+    }, 0)
+
     return res.status(200).json({
       success: true,
-      // userCount: groups.GroupsPerUsers.length,
-      teacherCount: teacher.length,
-      groupCount: groups.length
+      studentsCount: students,
+      teachersCount: teacher.length,
+      groupsCount: groups.length
     });
 
   } catch (error) {
