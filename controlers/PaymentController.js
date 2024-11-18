@@ -43,7 +43,7 @@ const paymentUrl = async (req, res) => {
     if (!thisCourse) {
       return res.status(409).json({ success: false });
     }
-    const thisCoursePrice = thisCourse.price * (1 - thisCourse.discount / 100);
+    const thisCoursePrice = Math.round(thisCourse.price * (1 - thisCourse.discount / 100));
     const orderNumber = Math.floor(Date.now() * Math.random());
     let amount = Math.ceil(+thisCoursePrice * 100);
 
@@ -354,8 +354,6 @@ const paymentIdram = async (req, res) => {
         let payment = await Payment.findOne({
           where: { orderNumber: request.EDP_BILL_NO },
         });
-        console.log("//////", +amount === 1, "//////", 5);
-        
         if (+amount > +payment.amount) {
           let currentDate = new Date();
           currentDate.setFullYear(currentDate.getFullYear() + 1);

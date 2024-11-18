@@ -10,4 +10,7 @@ router.get(
   checkAuth(['STUDENT', 'TEACHER']),
   controller.getInvidualCourseStatics,
 );
+
+router.get('/adminDashboard', controller.adminDashboard);
+
 module.exports = router;

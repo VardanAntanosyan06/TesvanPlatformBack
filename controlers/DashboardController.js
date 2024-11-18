@@ -202,7 +202,7 @@ const getUserStatictis = async (req, res) => {
         maxInterviewPoint: +maxPoint.maxInterviewPoint,
         userCoursInterviewPoint: 0
       },
-      
+
       totalPoints: parseFloat(userCoursPoints.toFixed(2)),
       maxTotalPoints: +maxPoint.maxInterviewPoint + +maxPoint.maxQuizzPoint + +maxPoint.maxHomeworkPoint,
       mySkils,
@@ -271,7 +271,51 @@ const getInvidualCourseStatics = async (req, res) => {
   }
 };
 
+const adminDashboard = async (req, res) => {
+  try {
+    // const { user_id: userId } = req.user;
+    const teacher = await Users.findAll({
+      where: {
+        role: "TEACHER",
+        creatorId: 5
+      },
+      attributes: ["id", "firstName", "lastName", "image", "role"]
+    });
+
+    const teacherIds = teacher.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, [])
+
+    const groups = await Groups.findAll({
+      where: {
+        creatorId: [5, ...teacherIds]
+      },
+      include: [
+        {
+          model: GroupsPerUsers,
+          required: true,
+          attributes: ["id"]
+        },
+      ],
+      attributes: ["id"]
+    })
+    // res.send(groups)
+    return res.status(200).json({
+      success: true,
+      // userCount: groups.GroupsPerUsers.length,
+      teacherCount: teacher.length,
+      groupCount: groups.length
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong .' });
+  }
+}
+
 module.exports = {
   getUserStatictis,
   getInvidualCourseStatics,
+  adminDashboard
 };
