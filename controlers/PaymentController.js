@@ -354,7 +354,7 @@ const paymentIdram = async (req, res) => {
         let payment = await Payment.findOne({
           where: { orderNumber: request.EDP_BILL_NO },
         });
-        if (+amount > +payment.amount) {
+        if (+amount >= +payment.amount - 1 && +amount <= +payment.amount + 1) {
           let currentDate = new Date();
           currentDate.setFullYear(currentDate.getFullYear() + 1);
           currentDate = currentDate.toISOString();
