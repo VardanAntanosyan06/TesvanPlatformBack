@@ -886,14 +886,14 @@ const paymentCount = async (req, res) => {
 const downloadInvoice = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { paymentId, language, orderKey } = req.query;
+    const { paymentId, language, orderId } = req.query;
     let payment;
     if (paymentId) {
       payment = await Payment.findByPk(paymentId);
     } else {
       payment = await Payment.findOne({
         where: {
-          orderKey
+          orderKey: orderId
         }
       });
     }
