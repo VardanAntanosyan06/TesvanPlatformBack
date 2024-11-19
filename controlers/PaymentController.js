@@ -816,6 +816,11 @@ const getAllPayment = async (req, res) => {
 
     const orders = payments.reduce((aggr, value) => {
       value = value.toJSON()
+      if(value.paymentIds){
+        value.paymentIds.push(+value.id)
+      } else {
+        value.paymentIds = []
+      }
       if (!aggr[value.userId]) {
         value.orderStatus = []
         aggr[value.userId] = value
@@ -886,7 +891,7 @@ const paymentCount = async (req, res) => {
 const downloadInvoice = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { paymentId, language, orderId } = req.query;
+    const { paymentId, orderId } = req.query;
     let payment;
     if (paymentId) {
       payment = await Payment.findByPk(paymentId);
@@ -896,13 +901,21 @@ const downloadInvoice = async (req, res) => {
           orderKey: orderId
         }
       });
-    }
+    };
+
+    if (!payment) {
+      return res.status(404).send('Payment not found');
+    };
+
     const user = await Users.findByPk(userId);
+
+
     const group = await Groups.findOne({
       where: { id: payment.groupId },
       attributes: [[`name_en`, 'name']]
     });
 
+    for (const pay of payment) {}
 
     const userName = `${user.firstName} ${user.lastName}`;
     const dateOptions = { year: '2-digit', month: '2-digit', day: '2-digit' };
@@ -911,10 +924,6 @@ const downloadInvoice = async (req, res) => {
     const status = payment.status === "Success" ? payment.status : payment.status = "Fail"
     const paymentMethod = payment.paymentWay
     const type = payment.type === "full" ? payment.type = "Full" : payment.type = "Monthly"
-
-    if (!payment) {
-      return res.status(404).send('Payment not found');
-    }
 
     const doc = new PDFDocument({
       size: [498, 639], // Custom size in points

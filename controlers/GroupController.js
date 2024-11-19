@@ -243,10 +243,11 @@ const findOne = async (req, res) => {
   }
 };
 
-const findOneTeacher = async (req, res) => {
+const findOneTeacherAdmin = async (req, res) => {
   try {
     const { id } = req.params;
     let { language, order = "DESC", orderName = "totalPoints" } = req.query;
+    const { user_id: userId } = req.user;
 
     if (orderName === "quizz") {
       orderName = "takenQuizzes"
@@ -270,11 +271,29 @@ const findOneTeacher = async (req, res) => {
     });
     if (!group) return res.status(404).json({ message: 'Group not found' });
 
+    const user = await Users.findOne({
+      where: {
+        id: userId
+      },
+      include: [
+        {
+          model: UserCourses,
+          attributes: ["id"],
+          where: {
+            GroupCourseId: group.assignCourseId
+          },
+          require: false
+        },
+      ]
+    });
+
+    if (!user) return res.status(404).json({ message: 'Group not found' });
+
     const course = await CoursesContents.findOne({
       where: {
         courseId: group.assignCourseId
       }
-    })
+    });
 
     // Convert the Sequelize instance to a plain JavaScript object
     let groupData = group.toJSON();
@@ -337,7 +356,6 @@ const findOneTeacher = async (req, res) => {
         totalPoints: +(Number(value.UserCourses[0]?.totalPoints).toFixed(2)) || 0,
         totalTime: +(Number(totalTime).toFixed(2))
       };
-      // +(Number(e.point).toFixed(2));
       // Delete the UserCourses property after creating the object
       delete userObj.lessonTime;
       delete userObj.UserCourses;
@@ -1231,10 +1249,59 @@ const groupInfo = async (req, res) => {
   }
 };
 
+const getAllAdmin = async (req, res) => {
+  try {
+    const { language } = req.query;
+    const { user_id: userId } = req.user;
+
+    const teacher = await Users.findAll({
+      where: {
+        role: "TEACHER",
+        creatorId: +userId
+      },
+      attributes: ["id"]
+    });
+
+    const teacherIds = teacher.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, [])
+
+    const groups = await Groups.findAll({
+      where: {
+        creatorId: [+userId, ...teacherIds]
+      },
+
+      include: [
+        {
+          model: GroupsPerUsers,
+          required: false,
+          attributes: ['id'],
+        },
+      ],
+      attributes: ['id', [`name_${language}`, 'name'], "createdAt"],
+      order: [['id', 'DESC']],
+    });
+
+    const resGroups = groups.reduce((aggr, value) => {
+      value = value.toJSON()
+      value.studentCount = value.GroupsPerUsers.length
+      delete value.GroupsPerUsers
+      aggr.push(value)
+      return aggr
+    }, [])
+
+    return res.status(200).json({ success: true, groups: resGroups });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong !' });
+  }
+};
+
 module.exports = {
   CreateGroup,
   findOne,
-  findOneTeacher,
+  findOneTeacherAdmin,
   findAll,
   update,
   addMember,
@@ -1250,4 +1317,5 @@ module.exports = {
   deleteGroup,
   deleteMember,
   groupInfo,
+  getAllAdmin
 };

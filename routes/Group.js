@@ -13,7 +13,7 @@ router.post(
 );
 
 router.get('/findOne/:id', controller.findOne);
-router.get('/findOneTeacher/:id', controller.findOneTeacher);
+router.get('/findOneTeacher/:id', checkAuth(['ADMIN', 'TEACHER']), controller.findOneTeacherAdmin);
 router.get('/getStudents', checkAuth(['ADMIN']), controller.getStudents);
 router.get('/getTeachers', checkAuth(['ADMIN']), controller.getTeachers);
 
@@ -38,4 +38,5 @@ router.patch('/finishGroup/:id', checkAuth(['TEACHER', 'ADMIN']), controller.fin
 router.delete('/deleteMember', checkAuth(['ADMIN']), controller.deleteMember);
 router.delete('/delete/:id', checkAuth(['ADMIN', 'TEACHER']), controller.deleteGroup);
 router.get('/groupInfo/:id', checkAuth(['TEACHER', 'ADMIN']), controller.groupInfo)
+router.get('/getAllAdmin', checkAuth(['ADMIN']), controller.getAllAdmin);
 module.exports = router;
