@@ -145,7 +145,6 @@ const paymentArca = async (req, res) => {
 
     await UserCourses.create({
       GroupCourseId: group.assignCourseId,
-
       UserId: payment.userId,
     });
     const lessons = await CoursesPerLessons.findAll({
@@ -891,8 +890,8 @@ const downloadInvoice = async (req, res) => {
     const { paymentId, orderId, paymentIds } = req.query;
     if (paymentIds) {
       const paymentIdsArray = Array.isArray(paymentIds)
-      ? paymentIds
-      : JSON.parse(paymentIds);
+        ? paymentIds
+        : JSON.parse(paymentIds);
       const payments = await Payment.findAll({
         where: {
           id: {
@@ -900,10 +899,11 @@ const downloadInvoice = async (req, res) => {
           }
         }
       });
-      if (payments.length) {
+
+      if (!paymentIdsArray.length) {
         return res.status(404).send('Payment not found');
       };
-      const user = await Users.findByPk(userId);
+      const user = await Users.findByPk(payments[0].userId);
       const group = await Groups.findOne({
         where: { id: payments[0].groupId },
         attributes: [[`name_en`, 'name']]
@@ -915,7 +915,7 @@ const downloadInvoice = async (req, res) => {
 
       // Set headers for PDF response
       res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', `attachment; filename=payment-${paymentId}.pdf`);
+      res.setHeader('Content-Disposition', `attachment; filename=payment-${payments[0].userId}.pdf`);
 
       // Pipe the PDF output to the response
       doc.pipe(res);
@@ -929,6 +929,12 @@ const downloadInvoice = async (req, res) => {
         const paymentMethod = payment.paymentWay
         const type = payment.type === "full" ? payment.type = "Full" : payment.type = "Monthly"
 
+        // Add a new page for each payment, except for the first iteration
+        if (payment !== payments[0]) {
+          doc.addPage({
+            size: [498, 639], // Optional: custom size for new pages
+          });
+        }
         // Image path and check if it exists
         const imagePath = path.resolve(__dirname, '../documents/PaymentInvoice.png');
         if (fs.existsSync(imagePath)) {
