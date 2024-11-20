@@ -23,10 +23,10 @@ const { v4 } = require('uuid');
 const path = require('path');
 const uuid = require('uuid');
 const fs = require('fs');
+const { Op } = require('sequelize');
 
 const lessonsperquizz = require('../models/lessonsperquizz');
 const { userSockets } = require('../userSockets');
-const { where } = require('sequelize');
 
 const allowedFormats = [
   "video/mp4",
@@ -613,7 +613,6 @@ const updateLesson = async (req, res) => {
     const file_en = req.files?.file_en
     const file_ru = req.files?.file_ru
     const file_am = req.files?.file_am
-    console.log(videos, 55);
 
     const updateVideoLogic = async (video) => {
 
@@ -762,8 +761,16 @@ const updateLesson = async (req, res) => {
     }
 
     if (homeworkId?.length > 0) {
-      homeworkId.forEach(async (id) => {
+      await UserHomework.destroy({
+        where: {
+          LessonId: lessonId,
+          HomeworkId: {
+            [Op.notIn]: homeworkId ? homeworkId : null
+          }
+        }
+      });
 
+      homeworkId.forEach(async (id) => {
 
         const courses = await CoursesPerLessons.findAll({
           where: {

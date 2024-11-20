@@ -200,8 +200,7 @@ const UserRegistartionVerification = async (req, res) => {
 const AddMember = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { role, firstName, lastName, email, phoneNumber, birthday, gender, city, country } =
-      req.body;
+    const { role, firstName, lastName, email, phoneNumber, birthday, gender, city, country } = req.body;
 
     const hashPassword = await bcrypt.hash(v4(), BCRYPT_HASH_SALT);
 
@@ -228,7 +227,6 @@ const AddMember = async (req, res) => {
     await User.save();
 
     // Initialize Mailgun client
-
     const data = {
       from: 'verification@tesvan.com',
       to: email.toLowerCase(),
@@ -290,6 +288,7 @@ const AddMember = async (req, res) => {
       console.log('Email sent:', body);
       return res.status(200).json({ success: true });
     });
+    
   } catch (error) {
     console.error(error);
     if (
