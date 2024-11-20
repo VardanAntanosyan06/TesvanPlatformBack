@@ -823,11 +823,13 @@ const getAllPayment = async (req, res) => {
         if (value.status === "Success") {
           value.orderStatus.push("Success")
         } else {
+          aggr[value.userId].amount = 0
           value.orderStatus.push("Failed")
         }
       } else {
         aggr[value.userId].paymentIds.push(+value.id)
         if (value.status === "Success") {
+          aggr[value.userId].amount = +aggr[value.userId].amount + +value.amount
           if (aggr[value.userId].orderStatus[aggr[value.userId].orderStatus.length - 1] === "Failed") {
             aggr[value.userId].orderStatus[aggr[value.userId].orderStatus.length - 1] = "Success"
           } else {
