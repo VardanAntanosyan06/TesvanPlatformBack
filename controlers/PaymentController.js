@@ -897,7 +897,8 @@ const downloadInvoice = async (req, res) => {
           id: {
             [Op.in]: paymentIdsArray,
           }
-        }
+        },
+        order: [["id", "ASC"]]
       });
 
       if (!paymentIdsArray.length) {
@@ -966,8 +967,17 @@ const downloadInvoice = async (req, res) => {
         } else {
           console.error('Custom bold font file does not exist, using Helvetica-Bold');
           doc.font('Helvetica-Bold');
-        }
-        doc.fillColor('#12222D').fontSize(12).text(userName, 33, 335, { align: 'centre' });
+        };
+        doc.fillColor('#12222D');
+        doc.fontSize(12);
+        if (userName.split("").length <= 18) {
+          doc.text(userName, 28, 335);
+        } else {
+          const firstName = userName.split(" ")[0];
+          const lastName = userName.split(" ")[1];
+          doc.text(firstName, 28, 329);
+          doc.text(lastName, 28, 342);
+        };
         doc.text(paymentMethod, 185, 335, { align: 'left' });
         doc.text(formattedDate, 280, 335, { align: 'left' });
         doc.text(payment.amount, 355, 335, { align: 'left' });
@@ -1055,7 +1065,16 @@ const downloadInvoice = async (req, res) => {
         console.error('Custom bold font file does not exist, using Helvetica-Bold');
         doc.font('Helvetica-Bold');
       }
-      doc.fillColor('#12222D').fontSize(12).text(userName, 33, 335, { align: 'centre' });
+      doc.fillColor('#12222D')
+      doc.fontSize(12)
+      if (userName.split("").length <= 18) {
+        doc.text(userName, 28, 335);
+      } else {
+        const firstName = userName.split(" ")[0];
+        const lastName = userName.split(" ")[1];
+        doc.text(firstName, 28, 329);
+        doc.text(lastName, 28, 342);
+      }
       doc.text(paymentMethod, 185, 335, { align: 'left' });
       doc.text(formattedDate, 280, 335, { align: 'left' });
       doc.text(payment.amount, 355, 335, { align: 'left' });
