@@ -816,13 +816,9 @@ const getAllPayment = async (req, res) => {
 
     const orders = payments.reduce((aggr, value) => {
       value = value.toJSON()
-      if(value.paymentIds){
-        value.paymentIds.push(+value.id)
-      } else {
-        value.paymentIds = []
-      }
       if (!aggr[value.userId]) {
         value.orderStatus = []
+        value.paymentIds = [+value.id];
         aggr[value.userId] = value
         aggr[value.userId].updatedAt = value.updatedAt;
         if (value.status === "Success") {
@@ -831,6 +827,7 @@ const getAllPayment = async (req, res) => {
           value.orderStatus.push("Failed")
         }
       } else {
+        aggr[value.userId].paymentIds.push(+value.id)
         if (value.status === "Success") {
           if (aggr[value.userId].orderStatus[aggr[value.userId].orderStatus.length - 1] === "Failed") {
             aggr[value.userId].orderStatus[aggr[value.userId].orderStatus.length - 1] = "Success"
@@ -891,98 +888,177 @@ const paymentCount = async (req, res) => {
 const downloadInvoice = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { paymentId, orderId } = req.query;
-    let payment;
-    if (paymentId) {
-      payment = await Payment.findByPk(paymentId);
-    } else {
-      payment = await Payment.findOne({
+    const { paymentId, orderId, paymentIds } = req.query;
+    if (paymentIds) {
+      const payments = await Payment.findAll({
         where: {
-          orderKey: orderId
+          id: paymentIds
         }
       });
-    };
-
-    if (!payment) {
-      return res.status(404).send('Payment not found');
-    };
-
-    const user = await Users.findByPk(userId);
-
-
-    const group = await Groups.findOne({
-      where: { id: payment.groupId },
-      attributes: [[`name_en`, 'name']]
-    });
-
-    for (const pay of payment) {}
-
-    const userName = `${user.firstName} ${user.lastName}`;
-    const dateOptions = { year: '2-digit', month: '2-digit', day: '2-digit' };
-    const formattedDate = payment.updatedAt.toLocaleDateString('hy-AM', dateOptions);
-    const courseName = group.dataValues.name;
-    const status = payment.status === "Success" ? payment.status : payment.status = "Fail"
-    const paymentMethod = payment.paymentWay
-    const type = payment.type === "full" ? payment.type = "Full" : payment.type = "Monthly"
-
-    const doc = new PDFDocument({
-      size: [498, 639], // Custom size in points
-    });
-
-    // Set headers for PDF response
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename=payment-${paymentId}.pdf`);
-
-    // Pipe the PDF output to the response
-    doc.pipe(res);
-
-    // Image path and check if it exists
-    const imagePath = path.resolve(__dirname, '../documents/PaymentInvoice.png');
-    if (fs.existsSync(imagePath)) {
-      doc.image(imagePath, 0, 0, {
-        width: doc.page.width,
-        height: doc.page.height,
+      if (payments.length) {
+        return res.status(404).send('Payment not found');
+      };
+      const user = await Users.findByPk(userId);
+      const group = await Groups.findOne({
+        where: { id: payments[0].groupId },
+        attributes: [[`name_en`, 'name']]
       });
+
+      const doc = new PDFDocument({
+        size: [498, 639], // Custom size in points
+      });
+
+      // Set headers for PDF response
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename=payment-${paymentId}.pdf`);
+
+      // Pipe the PDF output to the response
+      doc.pipe(res);
+
+      for (const payment of payments) {
+        const userName = `${user.firstName} ${user.lastName}`;
+        const dateOptions = { year: '2-digit', month: '2-digit', day: '2-digit' };
+        const formattedDate = payment.updatedAt.toLocaleDateString('hy-AM', dateOptions);
+        const courseName = group.dataValues.name;
+        const status = payment.status === "Success" ? payment.status : payment.status = "Fail"
+        const paymentMethod = payment.paymentWay
+        const type = payment.type === "full" ? payment.type = "Full" : payment.type = "Monthly"
+
+        // Image path and check if it exists
+        const imagePath = path.resolve(__dirname, '../documents/PaymentInvoice.png');
+        if (fs.existsSync(imagePath)) {
+          doc.image(imagePath, 0, 0, {
+            width: doc.page.width,
+            height: doc.page.height,
+          });
+        } else {
+          console.error('Image file does not exist:', imagePath);
+        }
+
+        // Custom bold font path
+        const teko = path.resolve(__dirname, '../documents/Teko-Medium.ttf');
+        const firaSans = path.resolve(__dirname, '../documents/FiraSans-Regular.ttf');
+        if (fs.existsSync(teko)) {
+          doc.font(teko);
+        } else {
+          console.error('Custom bold font file does not exist, using Helvetica-Bold');
+          doc.font('Helvetica-Bold');
+        }
+
+        // Add content to the PDF (example text, payment details, etc.)
+
+
+        doc.fillColor('#FFC038').fontSize(30).text(type, 308, 30, { align: 'left' });
+        doc.fillColor('#FFC038').fontSize(11).text(courseName, 372, 106, { align: 'left' });
+        if (fs.existsSync(firaSans)) {
+          doc.font(firaSans);
+        } else {
+          console.error('Custom bold font file does not exist, using Helvetica-Bold');
+          doc.font('Helvetica-Bold');
+        }
+        doc.fillColor('#12222D').fontSize(12).text(userName, 33, 335, { align: 'centre' });
+        doc.text(paymentMethod, 185, 335, { align: 'left' });
+        doc.text(formattedDate, 280, 335, { align: 'left' });
+        doc.text(payment.amount, 355, 335, { align: 'left' });
+        if (status === "Success") {
+          doc.fillColor('green')
+          doc.text(status, 426, 335, { align: 'left' });
+        } else {
+          doc.fillColor('red')
+          doc.text(status, 435, 335, { align: 'left' });
+        }
+      }
+      // Finalize the PDF and send it
+      doc.end();
     } else {
-      console.error('Image file does not exist:', imagePath);
+      let payment;
+      if (paymentId) {
+        payment = await Payment.findByPk(paymentId);
+      } else {
+        payment = await Payment.findOne({
+          where: {
+            orderKey: orderId
+          }
+        });
+      };
+
+      if (!payment) {
+        return res.status(404).send('Payment not found');
+      };
+
+      const user = await Users.findByPk(userId);
+
+      const group = await Groups.findOne({
+        where: { id: payment.groupId },
+        attributes: [[`name_en`, 'name']]
+      });
+
+      const userName = `${user.firstName} ${user.lastName}`;
+      const dateOptions = { year: '2-digit', month: '2-digit', day: '2-digit' };
+      const formattedDate = payment.updatedAt.toLocaleDateString('hy-AM', dateOptions);
+      const courseName = group.dataValues.name;
+      const status = payment.status === "Success" ? payment.status : payment.status = "Fail"
+      const paymentMethod = payment.paymentWay
+      const type = payment.type === "full" ? payment.type = "Full" : payment.type = "Monthly"
+
+      const doc = new PDFDocument({
+        size: [498, 639], // Custom size in points
+      });
+
+      // Set headers for PDF response
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename=payment-${paymentId}.pdf`);
+
+      // Pipe the PDF output to the response
+      doc.pipe(res);
+
+      // Image path and check if it exists
+      const imagePath = path.resolve(__dirname, '../documents/PaymentInvoice.png');
+      if (fs.existsSync(imagePath)) {
+        doc.image(imagePath, 0, 0, {
+          width: doc.page.width,
+          height: doc.page.height,
+        });
+      } else {
+        console.error('Image file does not exist:', imagePath);
+      }
+
+      // Custom bold font path
+      const teko = path.resolve(__dirname, '../documents/Teko-Medium.ttf');
+      const firaSans = path.resolve(__dirname, '../documents/FiraSans-Regular.ttf');
+      if (fs.existsSync(teko)) {
+        doc.font(teko);
+      } else {
+        console.error('Custom bold font file does not exist, using Helvetica-Bold');
+        doc.font('Helvetica-Bold');
+      }
+
+      // Add content to the PDF (example text, payment details, etc.)
+
+
+      doc.fillColor('#FFC038').fontSize(30).text(type, 308, 30, { align: 'left' });
+      doc.fillColor('#FFC038').fontSize(11).text(courseName, 372, 106, { align: 'left' });
+      if (fs.existsSync(firaSans)) {
+        doc.font(firaSans);
+      } else {
+        console.error('Custom bold font file does not exist, using Helvetica-Bold');
+        doc.font('Helvetica-Bold');
+      }
+      doc.fillColor('#12222D').fontSize(12).text(userName, 33, 335, { align: 'centre' });
+      doc.text(paymentMethod, 185, 335, { align: 'left' });
+      doc.text(formattedDate, 280, 335, { align: 'left' });
+      doc.text(payment.amount, 355, 335, { align: 'left' });
+      if (status === "Success") {
+        doc.fillColor('green')
+        doc.text(status, 426, 335, { align: 'left' });
+      } else {
+        doc.fillColor('red')
+        doc.text(status, 435, 335, { align: 'left' });
+      }
+
+      // Finalize the PDF and send it
+      doc.end();
     }
-
-    // Custom bold font path
-    const teko = path.resolve(__dirname, '../documents/Teko-Medium.ttf');
-    const firaSans = path.resolve(__dirname, '../documents/FiraSans-Regular.ttf');
-    if (fs.existsSync(teko)) {
-      doc.font(teko);
-    } else {
-      console.error('Custom bold font file does not exist, using Helvetica-Bold');
-      doc.font('Helvetica-Bold');
-    }
-
-    // Add content to the PDF (example text, payment details, etc.)
-
-
-    doc.fillColor('#FFC038').fontSize(30).text(type, 308, 30, { align: 'left' });
-    doc.fillColor('#FFC038').fontSize(11).text(courseName, 372, 106, { align: 'left' });
-    if (fs.existsSync(firaSans)) {
-      doc.font(firaSans);
-    } else {
-      console.error('Custom bold font file does not exist, using Helvetica-Bold');
-      doc.font('Helvetica-Bold');
-    }
-    doc.fillColor('#12222D').fontSize(12).text(userName, 33, 335, { align: 'centre' });
-    doc.text(paymentMethod, 185, 335, { align: 'left' });
-    doc.text(formattedDate, 280, 335, { align: 'left' });
-    doc.text(payment.amount, 355, 335, { align: 'left' });
-    if (status === "Success") {
-      doc.fillColor('green')
-      doc.text(status, 426, 335, { align: 'left' });
-    } else {
-      doc.fillColor('red')
-      doc.text(status, 435, 335, { align: 'left' });
-    }
-
-    // Finalize the PDF and send it
-    doc.end();
-
   } catch (error) {
     console.error('Error generating invoice:', error);
     return res.status(500).json({ message: 'Something went wrong.' });
