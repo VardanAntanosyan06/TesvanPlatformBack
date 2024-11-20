@@ -890,9 +890,14 @@ const downloadInvoice = async (req, res) => {
     const { user_id: userId } = req.user;
     const { paymentId, orderId, paymentIds } = req.query;
     if (paymentIds) {
+      const paymentIdsArray = Array.isArray(paymentIds)
+      ? paymentIds
+      : JSON.parse(paymentIds);
       const payments = await Payment.findAll({
         where: {
-          id: paymentIds
+          id: {
+            [Op.in]: paymentIdsArray,
+          }
         }
       });
       if (payments.length) {
