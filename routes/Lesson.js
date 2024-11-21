@@ -10,9 +10,8 @@ router.get(
   controller.getLessons,
 );
 
-router.get('/getLessonTitles', controller.getLessonTitles);
+router.get('/getLessonTitles', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getLessonTitles);
 
-router.get('/getLessonTitles', controller.getLessonTitles);
 router.get('/getLesson/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getLesson);
 router.get('/getLessonForAdmin/:id', checkAuth(['ADMIN', 'TEACHER']), controller.getLessonForAdmin);
 

@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   GroupCourses.init(
     {
       img: DataTypes.STRING,
+      creatorId: DataTypes.INTEGER,
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,

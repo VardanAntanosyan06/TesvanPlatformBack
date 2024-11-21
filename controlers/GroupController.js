@@ -980,7 +980,12 @@ const finishGroup = async (req, res) => {
 
 const findGroups = async (req, res) => {
   try {
+    const { user_id: userId } = req.user;
+    const { creatorId } = await Users.findByPk(userId)
     let group = await Groups.findAll({
+      where: {
+        creatorId: [userId, creatorId]
+      },
       attributes: ['id', ['name_en', 'name'], 'assignCourseId'],
       order: [['id', 'DESC']],
       include: [

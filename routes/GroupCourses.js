@@ -5,7 +5,7 @@ const controller = require('../controlers/CoursesController');
 const checkAuth = require('../middleware/checkAuth');
 
 router.get('/getAll', controller.getAllCourses);
-router.get('/getCourseTitles', controller.getCourseTitles);
+router.get('/getCourseTitles',checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getCourseTitles);
 router.get('/getOneGroup/', controller.getOneGroup);
 
 router.get('/getByFilter', controller.getCoursesByFilter);

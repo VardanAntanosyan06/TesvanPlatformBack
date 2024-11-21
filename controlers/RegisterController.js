@@ -4,6 +4,7 @@ const {
   Certificates,
   Calendar,
   Chats,
+  GroupCourses,
   UserTests,
   UserAnswersTests,
   UserAnswersQuizz,
@@ -288,7 +289,7 @@ const AddMember = async (req, res) => {
       console.log('Email sent:', body);
       return res.status(200).json({ success: true });
     });
-    
+
   } catch (error) {
     console.error(error);
     if (
@@ -304,6 +305,91 @@ const AddMember = async (req, res) => {
 };
 
 const getMembers = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { userName, order = "DESC" } = req.query;
+    const searchTerms = userName ? userName.trim().split(" ") : [];
+
+    const teachers = await Users.findAll({
+      where: {
+        creatorId: userId,
+        role: 'TEACHER',
+      },
+      order: [['id', 'DESC']],
+    });
+
+    const teacherIds = teachers.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, [])
+
+    const whereCondition = searchTerms.length
+      ? {
+        role: 'STUDENT',
+        [Op.or]: [
+          // Single search term: match either first or last name
+          ...(searchTerms.length === 1
+            ? [
+              { firstName: { [Op.iLike]: `%${searchTerms[0]}%` } },
+              { lastName: { [Op.iLike]: `%${searchTerms[0]}%` } }
+            ]
+            : [
+              // Two terms: assume firstName and lastName separately
+              {
+                [Op.and]: [
+                  { firstName: { [Op.iLike]: `%${searchTerms[0]}%` } },
+                  { lastName: { [Op.iLike]: `%${searchTerms[1]}%` } }
+                ]
+              },
+              // Try the reverse case in case they typed last name first
+              {
+                [Op.and]: [
+                  { firstName: { [Op.iLike]: `%${searchTerms[1]}%` } },
+                  { lastName: { [Op.iLike]: `%${searchTerms[0]}%` } }
+                ]
+              }
+            ])
+        ]
+      }
+      : {
+        role: 'STUDENT',
+      };
+
+    const groupCoursUsers = await GroupCourses.findAll({
+      where: {
+        creatorId: [...teacherIds, userId]
+      },
+      include: {
+        model: Users,
+        as: 'courses',
+        where: whereCondition,
+        attributes: ["id", "firstName", "lastName", "image", "role", "createdAt"]
+      }
+    });
+
+    const students = groupCoursUsers.reduce((aggr, value) => {
+      aggr = [...aggr, ...value.courses]
+      return aggr
+    }, [])
+
+    // Make objects unique based on the 'id' property
+    const uniqueStudents = Array.from(
+      new Map(students.map((obj) => [obj.id, obj])).values()
+    );
+
+    const members = {
+      teachers,
+      students: uniqueStudents,
+    };
+    res.send(members);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
+const getMembersSuperAdmin = async (req, res) => {
+
   try {
     const { userName, order = "DESC" } = req.query;
     const searchTerms = userName ? userName.trim().split(" ") : [];

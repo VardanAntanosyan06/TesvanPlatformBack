@@ -458,7 +458,13 @@ const priceHomeWork = async (req, res) => {
 
 const getHomeworkTitles = async (req, res) => {
   try {
+    const { user_id: userId } = req.user;
+
+    const { creatorId } = await Users.findByPk(userId)
     const homeworks = await Homework.findAll({
+      where: {
+        creatorId: [userId, creatorId]
+      },
       attributes: ['id', ['title_en', 'title'], 'dueDate'],
     });
 

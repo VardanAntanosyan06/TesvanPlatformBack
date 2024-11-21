@@ -18,6 +18,7 @@ const {
   LessonTime,
   UserHomework,
   CoursesPerLessons,
+  Users
 } = require('../models');
 const { v4 } = require('uuid');
 const path = require('path');
@@ -80,9 +81,14 @@ const getLessons = async (req, res) => {
 
 const getLessonTitles = async (req, res) => {
   try {
+    const { user_id: userId } = req.user;
     const { language } = req.query;
-
+    const { creatorId } = await Users.findByPk(userId)
+    
     let lessons = await Lesson.findAll({
+      where: {
+        creatorId: [userId, creatorId]
+      },
       attributes: [
         'id',
         [`title_${language}`, 'title'],
@@ -90,13 +96,6 @@ const getLessonTitles = async (req, res) => {
       ],
       order: [['id', 'DESC']],
     });
-
-    if (!lessons.length) {
-      return res.status(403).json({
-        message: 'Lessons not found',
-      });
-    }
-
     return res.send(lessons);
   } catch (error) {
     console.log(error);
@@ -771,7 +770,6 @@ const updateLesson = async (req, res) => {
       });
 
       homeworkId.forEach(async (id) => {
-
         const courses = await CoursesPerLessons.findAll({
           where: {
             lessonId,

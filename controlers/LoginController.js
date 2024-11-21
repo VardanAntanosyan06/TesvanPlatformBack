@@ -43,8 +43,8 @@ const LoginUsers = async (req, res) => {
       });
       User.setDataValue('groupChats', groupChats);
       await User.save();
-
-      return res.status(200).json({ User });
+      const { password, ...sendData } = User.dataValues;
+      return res.status(200).json({ User: sendData });
     }
 
     return res.status(403).json({ message: 'Invalid email or password' });

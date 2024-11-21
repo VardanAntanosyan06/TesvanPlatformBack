@@ -532,7 +532,12 @@ const finishQuizz = async (req, res) => {
 
 const getAll = async (req, res) => {
   try {
+    const { user_id: userId } = req.user;
+    const { creatorId } = await Users.findByPk(userId)
     const quizzes = await Quizz.findAll({
+      where: {
+        creatorId: [userId, creatorId]
+      },
       attributes: ['id', ['title_en', 'title']],
     });
 

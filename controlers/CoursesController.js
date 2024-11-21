@@ -94,16 +94,21 @@ const getAllCourses = async (req, res) => {
 };
 
 const getCourseTitles = async (req, res) => {
+  const { user_id: userId } = req.user;
   try {
     const { language } = req.query;
     let months = 'months';
     let days = 'days';
+    const { creatorId } = await Users.findByPk(userId)
 
     if (!['en', 'ru', 'am'].includes(language)) {
       return res.status(403).json({ message: 'The language must be am, ru, or en.' });
     }
 
     let Courses = await GroupCourses.findAll({
+      where: {
+        creatorId: [userId, creatorId]
+      },
       include: [
         {
           model: CoursesContents,
@@ -672,7 +677,7 @@ const createCourse = async (req, res) => {
     const imgFileName = v4() + '.' + imgType;
     img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
 
-    let { id: courseId } = await GroupCourses.create({ img: imgFileName });
+    let { id: courseId } = await GroupCourses.create({ img: imgFileName, creatorId: userId });
 
     if (!Array.isArray(lessons)) lessons = [lessons];
     if (!Array.isArray(trainersImages)) trainersImages = [trainersImages];
@@ -1082,7 +1087,7 @@ const getOneGroup = async (req, res) => {
 const updateCourse = async (req, res) => {
   try {
     const { courseId } = req.params;
-
+    const { user_id: userId } = req.user;
     const {
       title_en,
       title_am,
@@ -1151,7 +1156,7 @@ const updateCourse = async (req, res) => {
     }
 
     // Update course in the database
-    await GroupCourses.update(updatedCourse, { where: { id: courseId } });
+    await GroupCourses.update(updatedCourse, { where: { id: courseId, creatorId: userId } });
 
     // Update course contents in multiple languages
     const languages = ['en', 'am', 'ru'];
@@ -1326,9 +1331,11 @@ const deleteCourse = async (req, res) => {
 const getCourseForAdmin = async (req, res) => {
   try {
     const { id } = req.params;
+    const { user_id: userId } = req.user;
     const { language } = req.query;
+    const { creatorId } = await Users.findByPk(userId)
     let course = await GroupCourses.findOne({
-      where: { id },
+      where: { id, creatorId: [userId, creatorId] },
       include: [
         {
           model: CoursesContents,
@@ -1358,7 +1365,7 @@ const getCourseForAdmin = async (req, res) => {
       ]
     });
 
-    if (!course) return res.json({ success: false, message: 'Course not found' });
+    if (!course) return res.status(404).json({ success: false, message: 'Course not found' });
 
     const trainers = await Trainer.findAll({
       where: { courseId: id },
