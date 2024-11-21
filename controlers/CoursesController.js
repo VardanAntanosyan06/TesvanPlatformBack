@@ -566,7 +566,12 @@ const getUserCourse = async (req, res) => {
     // const userSubmited = await UserPoints.count({
     //   where: { userId: id, courseId },
     // });
-
+    const isOpenQuiz = await CoursesPerQuizz.findOne({
+      where: {
+        courseId,
+        quizzId: Quizzs[0].id
+      }
+    })
     const userPoint = await UserPoints.findOne({
       where: { userId: id, isFinal: true, courseId },
     });
@@ -575,7 +580,7 @@ const getUserCourse = async (req, res) => {
       title: Quizzs[0].dataValues.title,
       description: Quizzs[0].dataValues.description,
       points: userPoint ? userPoint.point : null,
-      isOpen: courseId == 12 ? true : false,
+      isOpen: isOpenQuiz ? isOpenQuiz.isOpen : false,
       maxFinalQuizPoint
     };
 
@@ -616,6 +621,10 @@ const getUserCourse = async (req, res) => {
     //919 907//////////////////////////////////////////
     if (id == 919 || id == 907) {
       return res.json({ lessons: [], quizz, finalInterview });
+    }
+    if (id == 927) {
+      const newLesson = lessons.slice(0, 8);
+      return res.json({ lessons: newLesson, quizz, finalInterview });
     }
 
     return res.json({ lessons, quizz, finalInterview });
@@ -1181,7 +1190,19 @@ const updateCourse = async (req, res) => {
     );
 
     if (quizzId) {
-      await CoursesPerQuizz.update({ quizzId }, { where: { courseId } });
+      const [record, created] = await CoursesPerQuizz.findOrCreate({
+        where: {
+          courseId,
+        },
+        defaults: {
+          courseId,
+          type: "Group",
+          quizzId,
+        },
+      });
+      if (!created) {
+        await CoursesPerQuizz.update({ quizzId }, { where: { courseId } });
+      }
     }
     const usersHaveACourse = await UserCourses.findAll({ where: { GroupCourseId: courseId } });
     const userIds = [...new Set(usersHaveACourse.map((user) => user.UserId))];

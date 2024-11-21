@@ -11,7 +11,8 @@ const {
   UserCourses,
   UserPoints,
   UserLesson,
-  UserAnswersOption
+  UserAnswersOption,
+  Users
 } = require('../models');
 
 const createQuizz = async (req, res) => {
