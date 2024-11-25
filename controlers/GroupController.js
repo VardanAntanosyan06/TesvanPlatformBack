@@ -982,9 +982,21 @@ const findGroups = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { creatorId } = await Users.findByPk(userId)
+    const teacher = await Users.findAll({
+      where: {
+        role: "TEACHER",
+        creatorId: +userId
+      },
+      attributes: ["id", "firstName", "lastName", "image", "role"]
+    });
+
+    const teacherIds = teacher.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, []);
     let group = await Groups.findAll({
       where: {
-        creatorId: [userId, creatorId]
+        creatorId: [userId, creatorId, ...teacherIds]
       },
       attributes: ['id', ['name_en', 'name'], 'assignCourseId'],
       order: [['id', 'DESC']],

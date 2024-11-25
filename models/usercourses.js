@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
   UserCourses.belongsTo(Groups, { foreignKey: 'GroupCourseId' });
   UserCourses.belongsTo(Groups, { foreignKey: 'GroupCourseId' });
 
-  UserCourses.belongsTo(GroupCourses);
+  UserCourses.belongsTo(GroupCourses, { foreignKey: 'GroupCourseId' });
   UserCourses.belongsTo(CoursesContents, { foreignKey: 'GroupCourseId' });
 
   return UserCourses;

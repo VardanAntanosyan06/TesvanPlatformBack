@@ -93,6 +93,7 @@ const getAllCourses = async (req, res) => {
   }
 };
 
+
 const getCourseTitles = async (req, res) => {
   const { user_id: userId } = req.user;
   try {
@@ -101,13 +102,26 @@ const getCourseTitles = async (req, res) => {
     let days = 'days';
     const { creatorId } = await Users.findByPk(userId)
 
+    const teacher = await Users.findAll({
+      where: {
+        role: "TEACHER",
+        creatorId: +userId
+      },
+      attributes: ["id", "firstName", "lastName", "image", "role"]
+    });
+
+    const teacherIds = teacher.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, []);
+
     if (!['en', 'ru', 'am'].includes(language)) {
       return res.status(403).json({ message: 'The language must be am, ru, or en.' });
     }
 
     let Courses = await GroupCourses.findAll({
       where: {
-        creatorId: [userId, creatorId]
+        creatorId: [userId, creatorId, ...teacherIds]
       },
       include: [
         {
@@ -1353,10 +1367,9 @@ const getCourseForAdmin = async (req, res) => {
   try {
     const { id } = req.params;
     const { user_id: userId } = req.user;
-    const { language } = req.query;
-    const { creatorId } = await Users.findByPk(userId)
+
     let course = await GroupCourses.findOne({
-      where: { id, creatorId: [userId, creatorId] },
+      where: { id },
       include: [
         {
           model: CoursesContents,

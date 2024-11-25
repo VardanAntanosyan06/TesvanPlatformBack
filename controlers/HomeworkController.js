@@ -460,6 +460,8 @@ const getHomeworkTitles = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
+    const { creatorId } = await Users.findByPk(userId)
+
     const teacher = await Users.findAll({
       where: {
         role: "TEACHER",
@@ -471,9 +473,8 @@ const getHomeworkTitles = async (req, res) => {
     const teacherIds = teacher.reduce((aggr, value) => {
       aggr.push(value.id)
       return aggr;
-    }, [])
+    }, []);
 
-    const { creatorId } = await Users.findByPk(userId)
     const homeworks = await Homework.findAll({
       where: {
         creatorId: [userId, creatorId, ...teacherIds]
@@ -623,6 +624,75 @@ const getUserHomeworkPoints = async (req, res) => {
   }
 };
 
+const deleteHomework = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { homeworkId } = req.params;
+    const deleteHomwork = await Homework.destroy({
+      where: {
+        id: homeworkId,
+        creatorId: userId
+      }
+    });
+    if (deleteHomwork === 0) return res.status(400).json({ message: "Homework do not deleted" })
+    if (deleteHomwork === 1) {
+      await UserHomework.destroy({
+        where: {
+          HomeworkId: homeworkId
+        }
+      })
+    };
+    res.status(200).json({ success: true })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong .' });
+  }
+}
+
+const updateHomework = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { homeworkId } = req.params;
+    const {
+      title_en,
+      description_en,
+      title_am,
+      description_am,
+      title_ru,
+      description_ru,
+      point,
+      dueDate
+    } = req.body
+
+    const updateData = {
+      title_en,
+      description_en,
+      title_am,
+      description_am,
+      title_ru,
+      description_ru,
+      point,
+      dueDate
+    }
+
+    const updateHomework = Homework.update(
+      {
+        updateData
+      },
+      {
+        where: {
+          id: homeworkId,
+          creatorId: userId
+        }
+      }
+    )
+    if (updateHomework[0] === 0) return res.status(400).json({ message: "Homework do not deleted" })
+    res.status(200).json({ success: true })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong .' });
+  }
+}
 module.exports = {
   create,
   open,
@@ -638,4 +708,6 @@ module.exports = {
   getHomeworkTitles,
   homeworkPoints,
   getUserHomeworkPoints,
+  deleteHomework,
+  updateHomework
 };
