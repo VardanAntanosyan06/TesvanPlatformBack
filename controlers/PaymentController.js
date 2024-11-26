@@ -972,7 +972,7 @@ const downloadInvoice = async (req, res) => {
         };
         doc.fillColor('#12222D');
         doc.fontSize(12);
-        if (userName.split("").length < 18) {
+        if (userName.split("").length <= 18) {
           doc.text(userName, 28, 335);
         } else {
           const Name = userName.split(" ");

@@ -116,6 +116,15 @@ const getLessonTitles = async (req, res) => {
   }
 };
 
+const getLessonTitlesforTeacher = async (req, res) => {
+  try {
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+}
+
 const getLesson = async (req, res) => {
 
   try {
@@ -696,20 +705,13 @@ const updateLesson = async (req, res) => {
       });
     }
 
-
-
     if (!homeworkId) {
       HomeworkPerLesson.destroy({ where: { lessonId } });
-      await UserHomework.update(
-        {
-          HomeworkId: 0
-        },
-        {
-          where: {
-            LessonId: lessonId
-          }
+      await UserHomework.destroy({
+        where: {
+          LessonId: lessonId
         }
-      )
+      });
     } else {
       // Destroy all records with the matching lessonId
       await HomeworkPerLesson.destroy({ where: { lessonId } });

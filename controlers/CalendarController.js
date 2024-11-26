@@ -1,10 +1,21 @@
-const { Calendar, Groups, Users, GroupsPerUsers, UserInterview } = require('../models');
+const { Calendar, Groups, Users, GroupsPerUsers, UserInterview, UserCourses, GroupCourses, CoursesContents } = require('../models');
 const { Op, where } = require('sequelize');
 
 const create = async (req, res) => {
   try {
     const { user_id } = req.user;
     let { title, start, end, description, format, link, type, userId, groupId } = req.body;
+
+    const teacher = Users.findOne({
+      where: {
+        cretorId: user_id,
+        role: "TEACHER"
+      }
+    });
+
+    if (teacher) {
+      userId.push(teacher.cretorId);
+    };
 
     userId.push(user_id);
     let calendar = await Calendar.create({
@@ -265,7 +276,26 @@ const getUsers = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { language } = req.query;
+
+    const { creatorId } = await Users.findByPk(userId)
+
+    const teacher = await Users.findAll({
+      where: {
+        role: "TEACHER",
+        creatorId: +userId
+      },
+      attributes: ["id", "firstName", "lastName", "image", "role"]
+    });
+
+    const teacherIds = teacher.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, []);
+
     let Group = await Groups.findAll({
+      where: {
+        creatorId: [userId, creatorId, ...teacherIds]
+      },
       include: [
         {
           attributes: ['id'],
@@ -279,6 +309,7 @@ const getUsers = async (req, res) => {
       ],
       attributes: ['id', [`name_${language}`, 'name']],
     });
+
     Group = await Promise.all(
       Group.map(async (grp) => {
         console.log(grp);
@@ -308,6 +339,53 @@ const getUsers = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
+const getUsersforTeacher = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { language } = req.query;
+
+    let groups = await UserCourses.findAll({
+      where: { UserId: userId },
+      attributes: ['id', ['UserId', 'userId']],
+      include: [
+        {
+          model: GroupCourses,
+          include: [
+            {
+              model: CoursesContents,
+              where: { language },
+              attributes: ['title', 'description', 'level', 'courseType'],
+            },
+            {
+              model: Groups,
+              include: [
+                {
+                  model: Users,
+                  attributes: ['id', 'firstName', 'lastName'],
+                },
+              ],
+              attributes: ['id', [`name_${language}`, 'name']],
+            },
+          ],
+        },
+      ],
+    });
+
+    groups = groups.reduce((aggr, value) => {
+      const groupPars = value.GroupCourse.Groups[0].toJSON()
+      const group = { ...groupPars, GroupsPerUsers: [...groupPars.Users] };
+      delete group.Users
+      aggr.push(group);
+      return aggr
+    }, []);
+
+    return res.send(groups)
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+}
 
 module.exports = {
   create,
