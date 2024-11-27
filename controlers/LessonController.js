@@ -18,7 +18,8 @@ const {
   LessonTime,
   UserHomework,
   CoursesPerLessons,
-  Users
+  Users,
+  GroupCourses
 } = require('../models');
 const { v4 } = require('uuid');
 const path = require('path');
@@ -118,7 +119,51 @@ const getLessonTitles = async (req, res) => {
 
 const getLessonTitlesforTeacher = async (req, res) => {
   try {
+    const { user_id: userId } = req.user;
+    const { language } = req.query;
+    let lessons = await UserCourses.findAll({
+      where: { UserId: userId },
+      attributes: ['id', ['UserId', 'userId']],
+      include: [
+        {
+          model: GroupCourses,
+          include: [
+            {
+              model: Lesson,
+              attributes: ["id", [`title_${language}`, "title"]],
+              order: [['id', 'DESC']],
+              through: {
+                attributes: []
+              }
+            },
+          ],
+        },
+      ],
+    });
 
+    let coursLessons = lessons.reduce((aggr, value) => {
+      const lesson = value.GroupCourse.Lessons
+      aggr = [...aggr, ...lesson]
+      return aggr;
+    }, []);
+
+    let teacherLessons = await Lesson.findAll({
+      where: {
+        creatorId: [userId]
+      },
+      attributes: [
+        'id',
+        [`title_${language}`, 'title'],
+      ],
+      order: [['id', 'DESC']],
+    });
+
+    const allLessons = [...teacherLessons, ...coursLessons];
+    const uniqueLesson = allLessons.filter((value, index, self) =>
+      index === self.findIndex((t) => t.id === value.id)
+    );
+
+    return res.send(uniqueLesson);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
@@ -916,6 +961,7 @@ module.exports = {
   getLessons,
   getLesson,
   getLessonTitles,
+  getLessonTitlesforTeacher,
   submitQuizz,
   openLesson,
   createLesson,

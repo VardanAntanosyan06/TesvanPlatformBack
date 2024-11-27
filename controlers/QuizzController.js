@@ -6,6 +6,7 @@ const {
   CoursesPerQuizz,
   UserAnswersQuizz,
   CoursesPerLessons,
+  GroupCourses,
   Lesson,
   LessonsPerQuizz,
   UserCourses,
@@ -561,6 +562,67 @@ const getAll = async (req, res) => {
   }
 };
 
+const getAllTitleForTeacher = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { language } = req.query;
+    
+    let lessons = await UserCourses.findAll({
+      where: { UserId: userId },
+      attributes: ['id', ['UserId', 'userId']],
+      include: [
+        {
+          model: GroupCourses,
+          include: [
+            {
+              model: Lesson,
+              include: {
+                model: Quizz,
+                as: 'quizz',
+                attributes: ["id", [`title_${language}`, "title"]]
+              },
+              attributes: ["id", [`title_${language}`, "title"]],
+              order: [['id', 'DESC']],
+              through: {
+                attributes: []
+              }
+            },
+          ],
+        },
+      ],
+    });
+
+    let coursLessons = lessons.reduce((aggr, value) => {
+      const lesson = value.GroupCourse.Lessons
+      aggr = [...aggr, ...lesson]
+      return aggr;
+    }, []);
+
+    const quizz = coursLessons.reduce((aggr, value) => {
+      aggr = [...aggr, ...value.quizz]
+      return aggr
+    }, [])
+
+    const teacherQuizz = await Quizz.findAll({
+      where: {
+        creatorId: userId
+      },
+      attributes: ['id', [`title_${language}`, "title"]],
+    });
+
+    
+    const uniqueQuizz = [...quizz, ...teacherQuizz].filter(
+      (item, index, self) =>
+        index === self.findIndex((hw) => hw.id === item.id)
+    );
+
+    return res.json(uniqueQuizz);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
 const deleteQuizz = async (req, res) => {
   try {
     const { id } = req.params;
@@ -771,4 +833,5 @@ module.exports = {
   updateQuizz,
   getQuizzesAdmin,
   getUserQuizzAnswers,
+  getAllTitleForTeacher
 };

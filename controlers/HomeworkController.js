@@ -265,6 +265,7 @@ const submitHomework = async (req, res) => {
         fileLink: e.link,
         homeWorkId: id,
         userId,
+        courseId
       });
     }),
 
@@ -489,6 +490,67 @@ const getHomeworkTitles = async (req, res) => {
   }
 };
 
+const getHomeworkTitlesForTeacher = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { language } = req.query;
+
+    let lessons = await UserCourses.findAll({
+      where: { UserId: userId },
+      attributes: ['id', ['UserId', 'userId']],
+      include: [
+        {
+          model: GroupCourses,
+          include: [
+            {
+              model: Lesson,
+              include: {
+                model: Homework,
+                as: 'homework',
+                attributes: ["id", [`title_${language}`, "title"], "dueDate"]
+              },
+              attributes: ["id", [`title_${language}`, "title"]],
+              order: [['id', 'DESC']],
+              through: {
+                attributes: []
+              }
+            },
+          ],
+        },
+      ],
+    });
+
+    let coursLessons = lessons.reduce((aggr, value) => {
+      const lesson = value.GroupCourse.Lessons
+      aggr = [...aggr, ...lesson]
+      return aggr;
+    }, []);
+
+    const homeworks = coursLessons.reduce((aggr, value) => {
+      aggr = [...aggr, ...value.homework]
+      return aggr
+    }, [])
+
+    const teacherHomework = await Homework.findAll({
+      where: {
+        creatorId: userId
+      },
+      attributes: ['id', [`title_${language}`, "title"], 'dueDate'],
+    });
+
+    const uniqueHomework = [...homeworks, ...teacherHomework].filter(
+      (item, index, self) =>
+        index === self.findIndex((hw) => hw.id === item.id)
+    );
+
+    return res.json(uniqueHomework);
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+}
+
 const homeworkPoints = async (req, res) => {
   try {
     const { userId, homeworkId, points, feedback } = req.body;
@@ -708,6 +770,7 @@ module.exports = {
   getHomeworkTitles,
   homeworkPoints,
   getUserHomeworkPoints,
+  getHomeworkTitlesForTeacher,
   deleteHomework,
   updateHomework
 };

@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     fileName: DataTypes.STRING,
     fileLink: DataTypes.STRING,
     homeWorkId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER
+    userId: DataTypes.INTEGER,
+    courseId: DataTypes.INTEGER
   },{
     sequelize,
     modelName: 'HomeWorkFiles',

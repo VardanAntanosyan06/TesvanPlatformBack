@@ -11,6 +11,7 @@ router.get(
 );
 
 router.get('/getLessonTitles', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getLessonTitles);
+router.get('/getLessonTitlesforTeacher', checkAuth(['TEACHER']), controller.getLessonTitlesforTeacher);
 
 router.get('/getLesson/:id', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getLesson);
 router.get('/getLessonForAdmin/:id', checkAuth(['ADMIN', 'TEACHER']), controller.getLessonForAdmin);

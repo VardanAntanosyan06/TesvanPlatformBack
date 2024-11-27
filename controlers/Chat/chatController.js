@@ -64,7 +64,7 @@ const createChat = async (req, res) => {
                 delete Chat.dataValues.firstIds;
                 delete Chat.dataValues.secondIds;
                 await Chat.save()
-            } else { 
+            } else {
                 Chat.setDataValue('receiver', Chat.dataValues.firstIds);
                 delete Chat.dataValues.secondIds;
                 delete Chat.dataValues.firstIds;
@@ -158,6 +158,57 @@ const deleteChat = async (req, res) => {
         return res.status(500).json(error.message)
     }
 };
+
+const getAdminChats = async (req, res) => {
+    try {
+        const { user_id: userId } = req.user;
+        const { language } = req.query;
+
+        const teacher = await Users.findAll({
+            where: {
+                role: "TEACHER",
+                creatorId: +userId
+            },
+            attributes: ["id", "firstName", "lastName", "image", "role"]
+        });
+
+        const teacherIds = teacher.reduce((aggr, value) => {
+            aggr.push(value.id)
+            return aggr;
+        }, []);
+
+        let courses = await GroupCourses.findAll({
+            where: {
+                creatorId: teacherIds
+            },
+            include: [
+                {
+                    model: Users,
+                    as: 'courses',
+                    attributes: ["id", "firstName", "lastName", "image", "role"]
+                }
+            ]
+        });
+
+        // const members = courses.reduce((aggr, value) => {
+        //     aggr = [...aggr, ...value.courses]
+        //     return aggr
+        // }, []);
+
+        courses = courses.reduce((aggr, value) => {
+            value.toJson()
+            value.members = value.courses;
+            delete value.courses
+            return [...aggr, value]
+        }, []);
+
+        return res.status(200).json(courses)
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error.message)
+    }
+}
 
 module.exports = {
     createChat,
