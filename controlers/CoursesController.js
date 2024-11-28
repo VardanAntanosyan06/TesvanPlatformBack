@@ -147,6 +147,46 @@ const getCourseTitles = async (req, res) => {
   }
 };
 
+const getCourseTitleForTeacher = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { language } = req.query;
+    let courses = await UserCourses.findAll({
+      where: { UserId: userId },
+      attributes: ['id', ['UserId', 'userId']],
+      include: [
+        {
+          model: GroupCourses,
+          include: [
+            {
+              model: CoursesContents,
+              where: { language },
+              attributes: ["courseId", "title", "description"]
+            }
+          ],
+        },
+      ],
+
+    });
+
+    courses = courses.reduce((aggr, value) => {
+
+      const content = {
+        id: value.GroupCourse.CoursesContents[0].courseId,
+        title: value.GroupCourse.CoursesContents[0].title,
+        description: value.GroupCourse.CoursesContents[0].description,
+      };
+      aggr.push(content)
+      return aggr
+    }, [])
+
+    return res.status(200).json(courses);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+}
+
 const getOne = async (req, res) => {
   try {
     const { id } = req.params;
@@ -1557,6 +1597,7 @@ module.exports = {
   getUserCourses,
   getUserCourse,
   getCourseTitles,
+  getCourseTitleForTeacher,
   createTest,
   createCourse,
   updateCourse,
