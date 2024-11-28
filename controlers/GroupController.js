@@ -1315,6 +1315,49 @@ const getAllAdmin = async (req, res) => {
   }
 };
 
+const getAllForTeacher = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { language } = req.query;
+    let group = await UserCourses.findAll({
+      where: { UserId: userId },
+      attributes: ['id', ['UserId', 'userId']],
+      include: [
+        {
+          model: GroupCourses,
+          include: [
+            {
+              model: Groups,
+              include: [
+                {
+                  model: Users,
+                  where: { role: 'STUDENT' },
+                  attributes: ['firstName', 'lastName', 'image', 'role'],
+                },
+              ],
+              attributes: ["id", [`name_${language}`, 'name'], "assignCourseId"]
+            }
+          ],
+        },
+      ],
+    });
+
+    group = group.reduce((aggr, value) => {
+      value.GroupCourse.Groups[0].setDataValue('usersCount', value.GroupCourse.Groups[0].Users.length);
+      const users = value.GroupCourse.Groups[0].Users.slice(0, 3)
+      value.GroupCourse.Groups[0].setDataValue('GroupsPerUsers', users);
+      delete value.GroupCourse.Groups[0].dataValues.Users
+      aggr.push(value.GroupCourse.Groups[0])
+      return aggr
+    }, []);
+
+    return res.status(200).json({ success: true, group });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong !' });
+  }
+}
+
 module.exports = {
   CreateGroup,
   findOne,
@@ -1334,5 +1377,6 @@ module.exports = {
   deleteGroup,
   deleteMember,
   groupInfo,
-  getAllAdmin
+  getAllAdmin,
+  getAllForTeacher
 };

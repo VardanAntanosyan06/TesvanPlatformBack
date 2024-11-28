@@ -190,11 +190,6 @@ const getAdminChats = async (req, res) => {
             ]
         });
 
-        // const members = courses.reduce((aggr, value) => {
-        //     aggr = [...aggr, ...value.courses]
-        //     return aggr
-        // }, []);
-
         courses = courses.reduce((aggr, value) => {
             value.toJson()
             value.members = value.courses;
