@@ -1335,7 +1335,7 @@ const getAllForTeacher = async (req, res) => {
                   attributes: ['firstName', 'lastName', 'image', 'role'],
                 },
               ],
-              attributes: ["id", [`name_${language}`, 'name'], "assignCourseId"]
+              attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished"]
             }
           ],
         },

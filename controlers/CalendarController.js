@@ -340,7 +340,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-const getUsersforTeacher = async (req, res) => {
+const getUsersForTeacher = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { language } = req.query;
