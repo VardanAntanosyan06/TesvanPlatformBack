@@ -177,7 +177,7 @@ const getHomework = async (req, res) => {
     });
 
     let homework = await UserHomework.findOne({
-      where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId },
+      where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId, LessonId: lessonId },
       include: [
         {
           model: Homework,
