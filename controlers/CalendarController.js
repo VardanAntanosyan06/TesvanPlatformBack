@@ -6,18 +6,18 @@ const create = async (req, res) => {
     const { user_id } = req.user;
     let { title, start, end, description, format, link, type, userId, groupId } = req.body;
 
-    const teacher = Users.findOne({
-      where: {
-        cretorId: user_id,
-        role: "TEACHER"
-      }
-    });
+    // const teacher = Users.findOne({
+    //   where: {
+    //     cretorId: user_id,
+    //     role: "TEACHER"
+    //   }
+    // });
 
-    if (teacher) {
-      userId.push(teacher.cretorId);
-    };
+    // if (teacher) {
+    //   userId.push(teacher.cretorId);
+    // };
 
-    userId.push(user_id);
+    // userId.push(user_id);
     let calendar = await Calendar.create({
       title,
       start,
