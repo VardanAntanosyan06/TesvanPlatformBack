@@ -211,7 +211,7 @@ const getHomework = async (req, res) => {
     // });
     const Files = await HomeWorkFiles.findAll({
       attributes: ['id', ['fileName', 'name'], ['fileLink', 'link']],
-      where: { userId, homeWorkId: id },
+      where: { userId, homeWorkId: id, courseId },
     });
 
     const response = {
@@ -255,9 +255,6 @@ const submitHomework = async (req, res) => {
       });
     }
 
-    homework.answer = answer.value;
-    homework.status = 2;
-    await homework.save();
 
     answer.links.forEach(async (e) => {
       await HomeWorkFiles.create({
@@ -267,12 +264,16 @@ const submitHomework = async (req, res) => {
         userId,
         courseId
       });
-    }),
+    })
 
-      homework = {
-        ...homework.dataValues,
-        answer,
-      };
+    homework.answer = answer.value;
+    homework.status = 2;
+    await homework.save();
+
+    homework = {
+      ...homework.dataValues,
+      answer,
+    };
     res.send(homework);
   } catch (error) {
     console.log(error);
@@ -368,16 +369,16 @@ const getHomeWorkForTeacher = async (req, res) => {
 
 const getHomeWorkForTeacherForSingleUser = async (req, res) => {
   try {
-    const { id, userId, language } = req.query;
+    const { id, userId, language, courseId } = req.query;
 
     let user = await UserHomework.findOne({
-      where: { HomeworkId: id, UserId: userId },
+      where: { HomeworkId: id, UserId: userId, GroupCourseId: courseId },
       attributes: ['startDate', 'points', 'status', 'answer', 'feedback'],
       include: [{ model: Users, attributes: ['firstName', 'lastName', 'id', 'image'] }],
     });
     if (!user) return res.status(403).json({ success: false, message: 'Invalid userId' });
     const Files = await HomeWorkFiles.findAll({
-      where: { userId, homeWorkId: id },
+      where: { userId, homeWorkId: id, courseId },
     });
     user = user.toJSON();
     delete user.dataValues;
