@@ -17,7 +17,7 @@ const create = async (req, res) => {
     //   userId.push(teacher.cretorId);
     // };
 
-    // userId.push(user_id);
+    userId.push(user_id);
     let calendar = await Calendar.create({
       title,
       start,
