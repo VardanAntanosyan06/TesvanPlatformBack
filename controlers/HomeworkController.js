@@ -260,9 +260,9 @@ const submitHomework = async (req, res) => {
       await HomeWorkFiles.create({
         fileName: e.name,
         fileLink: e.link,
-        homeWorkId: id,
+        homeWorkId: homework.HomeworkId,
         userId,
-        courseId
+        courseId: homework.GroupCourseId
       });
     })
 
