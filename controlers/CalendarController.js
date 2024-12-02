@@ -8,13 +8,13 @@ const create = async (req, res) => {
 
     // const teacher = Users.findOne({
     //   where: {
-    //     cretorId: user_id,
+    //     id: user_id,
     //     role: "TEACHER"
     //   }
     // });
 
     // if (teacher) {
-    //   userId.push(teacher.cretorId);
+    //   userId.push(+teacher.cretorId);
     // };
 
     userId.push(user_id);

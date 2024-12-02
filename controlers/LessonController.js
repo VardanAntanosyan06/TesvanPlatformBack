@@ -585,7 +585,7 @@ const createLesson = async (req, res) => {
         }
       };
 
-      if (video.length > 0) {
+      if (video?.length > 0) {
         for (const value of video) {
 
           if (!allowedFormats.includes(value.mimetype)) {
