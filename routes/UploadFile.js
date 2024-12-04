@@ -17,17 +17,23 @@ const allowedFormats = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
   'application/json', //.json files
   'text/plain',
-  'application/sql',
-  'application/x-sql' 
 ];
 
 router.post('/file', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), async (req, res) => {
   try {
     const { file } = req.files;
 
+    const allowedExtensions = ['.sql'];
+    if (!file.name) {
+      return res.status(400).json({ success: false, message: 'File name is missing.' });
+    }
+  
+    const fileExtension = path.extname(file.name).toLowerCase();
 
     if (!allowedFormats.includes(file.mimetype)) {
-      return res.status(400).json({ success: false, message: 'Unsupported file format' });
+      if (!allowedExtensions.includes(fileExtension)) {
+        return res.status(400).json({ success: false, message: 'Unsupported file format' });
+      }
     }
 
     const type = file.mimetype.split('/')[1];
