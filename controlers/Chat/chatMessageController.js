@@ -14,6 +14,7 @@ const allowedFormats = [
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx files
     'application/vnd.ms-excel',     // .xls files
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
+    'application/sql'
 ];
 
 const getMessageNotifications = async (req, res) => {

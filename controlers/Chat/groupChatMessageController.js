@@ -6,15 +6,16 @@ const fs = require("fs");
 const { getMessageNotifications } = require('./chatMessageController')
 
 const allowedFormats = [
-    'image/jpeg', 
-    'image/png', 
+    'image/jpeg',
+    'image/png',
     'image/gif',
     'application/pdf',              // PDF files
     'application/msword',           // .doc files
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx files
     'application/vnd.ms-excel',     // .xls files
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
-  ];
+    'application/sql'
+];
 
 const createGroupChatMessage = async (req, res) => {
     try {

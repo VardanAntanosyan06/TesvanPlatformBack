@@ -41,7 +41,6 @@ module.exports = {
       },
       points: {
         type: Sequelize.INTEGER,
-        defaultValue: 0,
       },
       answer: {
         type: Sequelize.TEXT('long'),
