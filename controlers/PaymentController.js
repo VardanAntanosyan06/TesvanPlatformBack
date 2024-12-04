@@ -371,11 +371,11 @@ const paymentIdram = async (req, res) => {
           const group = await Groups.findOne({ where: { id: payment.groupId } });
 
           if (!group) {
-            return res.json({ success: false, message: 'Group not found' });
+            return res.send('Error');
           }
 
           if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.send('Error');
           }
 
           const course = await UserCourses.findOne({

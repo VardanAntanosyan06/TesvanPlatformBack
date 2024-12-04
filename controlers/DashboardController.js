@@ -271,7 +271,7 @@ const getInvidualCourseStatics = async (req, res) => {
   }
 };
 
-const adminDashboard = async (req, res) => {
+const getAdminStatistics = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const teacher = await Users.findAll({
@@ -322,5 +322,5 @@ const adminDashboard = async (req, res) => {
 module.exports = {
   getUserStatictis,
   getInvidualCourseStatics,
-  adminDashboard
+  getAdminStatistics
 };

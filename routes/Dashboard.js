@@ -11,6 +11,6 @@ router.get(
   controller.getInvidualCourseStatics,
 );
 
-router.get('/adminDashboard', controller.adminDashboard);
+router.get('/getAdminStatistics', checkAuth(['ADMIN']), controller.getAdminStatistics);
 
 module.exports = router;
