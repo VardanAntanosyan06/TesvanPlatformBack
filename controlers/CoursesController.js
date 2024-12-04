@@ -1311,7 +1311,6 @@ const updateCourse = async (req, res) => {
                   GroupCourseId: courseId,
                   UserId: userId,
                   HomeworkId: homework ? homework.homeworkId : 0,
-                  points: 0,
                   LessonId: lessonId,
                 }
               });

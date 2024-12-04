@@ -603,7 +603,6 @@ const addMember = async (req, res) => {
             GroupCourseId: group.assignCourseId,
             UserId: user.id,
             HomeworkId: lesson.Lesson.homework.length > 0 ? lesson.Lesson.homework[0].id : 0,
-            points: 0,
             LessonId: lesson.lessonId,
           });
 

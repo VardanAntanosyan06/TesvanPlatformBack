@@ -191,7 +191,6 @@ const paymentArca = async (req, res) => {
           GroupCourseId: group.assignCourseId,
           UserId: payment.userId,
           HomeworkId: lesson.homework[0].id,
-          points: 0,
           LessonId: lesson.id,
         });
       }
@@ -450,7 +449,6 @@ const paymentIdram = async (req, res) => {
                 GroupCourseId: group.assignCourseId,
                 UserId: payment.userId,
                 HomeworkId: lesson.homework[0].id,
-                points: 0,
                 LessonId: lesson.id,
               });
             }
