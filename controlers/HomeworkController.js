@@ -144,6 +144,7 @@ const getHomeworks = async (req, res) => {
                 [`title_${language}`, 'title'],
                 [`description_${language}`, 'description'],
                 'point',
+                'dueDate'
               ],
               through: { attributes: [] },
             },
@@ -357,6 +358,7 @@ const getHomeWorkForTeacher = async (req, res) => {
         [`title_${language}`, 'title'],
         [`description_${language}`, 'description'],
         'point',
+        'dueDate'
       ],
     });
 
