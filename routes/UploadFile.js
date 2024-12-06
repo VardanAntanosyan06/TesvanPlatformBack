@@ -28,16 +28,20 @@ router.post('/file', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), async (req, res
       return res.status(400).json({ success: false, message: 'File name is missing.' });
     }
   
-    const fileExtension = path.extname(file.name).toLowerCase();
+    const fileExtension = path.extname(file.name).toLowerCase();  
 
     if (!allowedFormats.includes(file.mimetype)) {
       if (!allowedExtensions.includes(fileExtension)) {
         return res.status(400).json({ success: false, message: 'Unsupported file format' });
       }
-    }
+    };
 
-    const type = file.mimetype.split('/')[1];
+    let type = file.mimetype.split('/')[1];
+    if(fileExtension === ".sql"){
+      type = "sql"
+    };
     const fileName = uuid.v4() + '.' + type;
+    
     file.mv(path.resolve(__dirname, '..', 'static', fileName));
 
     return res.json({ url: fileName });

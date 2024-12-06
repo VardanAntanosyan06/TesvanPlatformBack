@@ -18,6 +18,7 @@ const {
   CoursesContents,
   HomeworkPerLesson,
   PaymentWays,
+  UserStatus
 } = require('../models');
 var CryptoJS = require('crypto-js');
 const Sequelize = require('sequelize')
@@ -29,6 +30,103 @@ const path = require('path');
 
 const sequelize = require('sequelize');
 const { atob } = require('buffer');
+
+const paymentUrlForAdmin = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { paymentWay, creatorId: adminId, type } = req.body;
+
+    if (paymentWay === "ARCA" || paymentWay === "IDRAM") return res.status(400).json({ success: false });
+
+    const paymentWayAdmin = await PaymentWays.findOne({
+      where: {
+        adminId,
+        type,
+      },
+    });
+    if (!paymentWayAdmin) return res.status(404).json({ success: false });
+
+    const thisCoursePrice = paymentWayAdmin.price * (1 - paymentWayAdmin.discount / 100);
+    const orderNumber = Math.floor(Date.now() * Math.random());
+    let amount = Math.ceil(+Math.round(thisCoursePrice) * 100);
+
+    let paymentResponse
+    if (paymentWay === "ARCA") {
+      const data = `userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}&amount=${amount}&currency=${process.env.CURRENCY}&language=en&orderNumber=${orderNumber}&returnUrl=${process.env.RETURNURL}&failUrl=${process.env.FAILURL}&pageView=DESKTOP&description='Payment Tesvan Platform'`;
+      const response = await axios.post(
+        `https://ipay.arca.am/payment/rest/register.do?${data}`,
+      );
+      paymentResponse = response.data;
+
+      if (paymentResponse.errorCode)
+        return res.status(400).json({
+          success: false,
+          errorMessage: paymentResponse.errorMessage,
+        });
+    };
+
+    const { id } = Payment.create({
+      orderKey: paymentResponse ? paymentResponse.orderId : null,
+      orderNumber,
+      paymentWay,
+      status: 'Pending',
+      groupId,
+      userId,
+      type,
+      amount: Math.round(thisCoursePrice)
+    });
+
+    return res.json({
+      success: true,
+      formUrl: paymentResponse ? paymentResponse.formUrl : null,
+      id: orderNumber,
+      amount: Math.round(thisCoursePrice),
+      invoiceId: id
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong' });
+  }
+};
+
+const paymentArcaForAdmin = async (req, res) => {
+  try {
+    const { orderKey } = req.body;
+    const data = `orderId=${orderKey}&language=en&userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}`;
+
+    const { data: paymentResponse } = await axios.post(
+      `https://ipay.arca.am/payment/rest/getOrderStatus.do?${data}`,
+    );
+
+    const payment = await Payment.findOne({
+      where: { orderKey },
+    });
+
+    if (!payment) return res.status(404).json({ success: false, message: 'Payment does not exist' });
+    payment.status = paymentResponse.errorMessage;
+    payment.save();
+
+    if (paymentResponse.error && paymentResponse.orderStatus !== 2) {
+      return res.json({
+        success: false,
+        errorMessage: paymentResponse.errorMessage,
+        adminId: payment.adminId,
+      });
+    };
+
+    const adminStatus = await UserStatus.findOne({
+      where: {
+        userId: payment.userId,
+      }
+    });
+    adminStatus.isActive = true;
+    await adminStatus.save()
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong' });
+  }
+}
 
 const paymentUrl = async (req, res) => {
   try {

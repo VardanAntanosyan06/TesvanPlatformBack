@@ -24,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
       groupId: DataTypes.INTEGER,
       discount: DataTypes.FLOAT,
       type: DataTypes.STRING,
-      durationMonths: DataTypes.INTEGER
+      durationMonths: DataTypes.INTEGER,
+      adminId: DataTypes.INTEGER
     },
     {
       sequelize,

@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       Users.hasOne(models.GroupChatReads, { foreignKey: "userId", onDelete: 'CASCADE' }) //+
       Users.hasMany(models.Payment, { foreignKey: "userId" })
       Users.hasMany(models.LessonTime, { foreignKey: "userId", as: 'lessonTime' })
+      Users.hasOne(models.UserStatus, {foreignKey: "userId", as: "userStatus", onDelete: 'CASCADE'})
     }
   }
   Users.init(
