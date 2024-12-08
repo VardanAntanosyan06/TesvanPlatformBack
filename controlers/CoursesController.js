@@ -1219,7 +1219,8 @@ const updateCourse = async (req, res) => {
     }
 
     // Update course in the database
-    await GroupCourses.update(updatedCourse, { where: { id: courseId, creatorId: userId } });
+    const updateCourse = await GroupCourses.update(updatedCourse, { where: { id: courseId, creatorId: userId } });
+    if (updateCourse[0] === 0) return res.status(400).json({ message: "You do not have permission to update this course." })
 
     // Update course contents in multiple languages
     const languages = ['en', 'am', 'ru'];
@@ -1370,6 +1371,7 @@ const updateCourse = async (req, res) => {
 const deleteCourse = async (req, res) => {
   try {
     const { id } = req.params;
+    const { user_id: userId } = req.user;
 
     const assignCourse = await Groups.findOne({
       where: {
@@ -1383,7 +1385,8 @@ const deleteCourse = async (req, res) => {
       });
     }
 
-    GroupCourses.destroy({ where: { id } });
+    const deleteCourse = await GroupCourses.destroy({ where: { id, creatorId: userId } });
+    if (deleteCourse === 0) return res.status(400).json({ message: "You do not have permission to delete this course." })
     CoursesContents.destroy({
       where: { courseId: id },
     });

@@ -642,8 +642,15 @@ const getAllLessons = async (req, res) => {
 const deleteLesson = async (req, res) => {
   try {
     const { id } = req.params;
+    const { user_id: userId } = req.user;
 
-    await Lesson.destroy({ where: { id } });
+    const deleteLesson = await Lesson.destroy({
+      where: {
+        id,
+        creatorId: userId
+      }
+    });
+    if (deleteLesson === 0) return res.status(400).json({ message: "You do not have permission to delete this lessson." })
 
     return res.status(200).json({ success: true });
   } catch (error) {
@@ -679,6 +686,15 @@ const updateLesson = async (req, res) => {
     const file_en = req.files?.file_en
     const file_ru = req.files?.file_ru
     const file_am = req.files?.file_am
+    const { user_id: userId } = req.user;
+
+    const { creatorId } = await Lesson.findOne({
+      where: {
+        id: lessonId
+      }
+    })
+
+    if (+creatorId !== +userId) return res.status(400).json({ success: false, message: "You do not have permission to update this lesson." });
 
     const updateVideoLogic = async (video) => {
 

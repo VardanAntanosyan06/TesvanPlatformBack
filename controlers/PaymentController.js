@@ -944,7 +944,9 @@ const getAllPayment = async (req, res) => {
       return aggr;
     }, {});
 
-    const userOrders = orderOption === "DESC" ? Object.values(orders).reverse() : Object.values(orders)
+    const userOrders = orderOption === "DESC"
+      ? Object.values(orders).reverse().sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+      : Object.values(orders).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
 
     // Respond with the query result
     return res.status(200).json({

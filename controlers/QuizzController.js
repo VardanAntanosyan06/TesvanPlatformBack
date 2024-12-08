@@ -566,7 +566,7 @@ const getAllTitleForTeacher = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { language } = req.query;
-    
+
     let lessons = await UserCourses.findAll({
       where: { UserId: userId },
       attributes: ['id', ['UserId', 'userId']],
@@ -610,7 +610,7 @@ const getAllTitleForTeacher = async (req, res) => {
       attributes: ['id', [`title_${language}`, "title"]],
     });
 
-    
+
     const uniqueQuizz = [...quizz, ...teacherQuizz].filter(
       (item, index, self) =>
         index === self.findIndex((hw) => hw.id === item.id)
@@ -626,6 +626,15 @@ const getAllTitleForTeacher = async (req, res) => {
 const deleteQuizz = async (req, res) => {
   try {
     const { id } = req.params;
+    const { user_id: userId } = req.user;
+
+    const { creatorId } = await Quizz.findOne({
+      where: {
+        id
+      }
+    })
+
+    if (+creatorId !== +userId) return res.status(400).json({ success: false, message: "You do not have permission to delete this quiz." });
 
     const questions = await Question.findAll({ where: { quizzId: id } });
 
@@ -659,6 +668,16 @@ const updateQuizz = async (req, res) => {
       point,
     } = req.body;
 
+    const { user_id: userId } = req.user;
+
+    const { creatorId } = await Quizz.findOne({
+      where: {
+        id
+      }
+    });
+
+    if (+creatorId !== +userId) return res.status(400).json({ success: false, message: "You do not have permission to update this quiz." });
+
     const questionCount = await Question.findAll({
       where: {
         quizzId: id,
@@ -680,9 +699,6 @@ const updateQuizz = async (req, res) => {
       },
       { where: { id: id } },
     );
-
-
-
 
     questions.forEach(async (question) => {
       await Question.update(
@@ -715,36 +731,6 @@ const updateQuizz = async (req, res) => {
         )
       });
     });
-
-
-
-    // await Question.destroy({
-    //   where: {
-    //     quizzId: id,
-    //   },
-    // });
-
-    // await Promise.all(
-    //   questions.map(async (question, i) => {
-    //     const createdQuestion = await Question.create({
-    //       title_en: question.title_en,
-    //       title_am: question.title_am,
-    //       title_ru: question.title_ru,
-    //       quizzId: id,
-    //       points: +point / questions.length,
-    //     });
-
-    //     const options = question.options.map((option) => ({
-    //       title_en: option.title_en,
-    //       title_ru: option.title_ru,
-    //       title_am: option.title_am,
-    //       isCorrect: option.isCorrect,
-    //       questionId: createdQuestion.id,
-    //     }));
-
-    //     await Option.bulkCreate(options);
-    //   }),
-    // );
 
     res.status(200).json({ success: true });
   } catch (error) {
