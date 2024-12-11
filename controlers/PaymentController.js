@@ -461,19 +461,50 @@ const paymentIdram = async (req, res) => {
             return res.send('Error');
           }
 
-          payment.status = 'Success';
-          await payment.save();
+          // For Admin subscription to a service
+          if (payment.adminId) {
+            const admin = await Users.findOne({ where: { id: payment.userId, role: "ADMIN" } });
+            if (!admin) {
+              return res.send('Error');
+            }
+
+            const teachers = await Users.findAll({
+              where: {
+                creatorId: admin.id
+              }
+            })
+            const teacherIds = teachers.reduce((aggr, value) => {
+              aggr.push(value.id)
+              return aggr;
+            }, []);
+
+            await UserStatus.update(
+              { isActive: true },
+              {
+                where: {
+                  userId: [admin.id, ...teacherIds]
+                }
+              }
+            );
+
+            payment.status = 'Success';
+            await payment.save();
+
+            return res.send('OK');
+          }
 
           const user = await Users.findOne({ where: { id: payment.userId } });
-          const group = await Groups.findOne({ where: { id: payment.groupId } });
-
-          if (!group) {
-            return res.send('Error');
-          }
-
           if (!user) {
             return res.send('Error');
-          }
+          };
+
+          const group = await Groups.findOne({ where: { id: payment.groupId } });
+          if (!group) {
+            return res.send('Error');
+          };
+
+          payment.status = 'Success';
+          await payment.save();
 
           const course = await UserCourses.findOne({
             where: {
@@ -941,12 +972,13 @@ const getAllPayment = async (req, res) => {
           }
         }
       }
+      aggr[value.userId].type = value.type
       return aggr;
     }, {});
 
     const userOrders = orderOption === "DESC"
-      ? Object.values(orders).reverse().sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-      : Object.values(orders).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+      ? Object.values(orders).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+      : Object.values(orders).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)).reverse()
 
     // Respond with the query result
     return res.status(200).json({

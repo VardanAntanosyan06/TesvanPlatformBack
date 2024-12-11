@@ -1183,7 +1183,8 @@ const updateCourse = async (req, res) => {
       quizzId,
       maxQuizzPoint,
       maxHomeworkPoint,
-      maxInterviewPoint
+      maxInterviewPoint,
+      image
     } = req.body;
 
     const updatedCourse = {
@@ -1210,17 +1211,31 @@ const updateCourse = async (req, res) => {
       shortDescription_am,
     };
 
-    if (req.files && req.files.img) {
+    if (req.files && req.files.image) {
       const img = req.files.img;
       const imgType = img.mimetype.split('/')[1];
       const imgFileName = `${v4()}.${imgType}`;
       await img.mv(path.resolve(__dirname, '..', 'static', imgFileName));
       updatedCourse.img = imgFileName;
+
+    }
+
+    const course = await GroupCourses.findOne({
+      where: { id: courseId, creatorId: userId }
+    });
+  
+    if (!course) {
+      return res.status(400).json({
+        success: false,
+        message: "You do not have permission to update this course."
+      });
     }
 
     // Update course in the database
-    const updateCourse = await GroupCourses.update(updatedCourse, { where: { id: courseId, creatorId: userId } });
-    if (updateCourse[0] === 0) return res.status(400).json({ message: "You do not have permission to update this course." })
+    await GroupCourses.update(
+      { img: image[0].url },
+      { where: { id: courseId, creatorId: userId } }
+    );
 
     // Update course contents in multiple languages
     const languages = ['en', 'am', 'ru'];
@@ -1386,7 +1401,7 @@ const deleteCourse = async (req, res) => {
     }
 
     const deleteCourse = await GroupCourses.destroy({ where: { id, creatorId: userId } });
-    if (deleteCourse === 0) return res.status(400).json({ message: "You do not have permission to delete this course." })
+    if (deleteCourse === 0) return res.status(400).json({success: false, message: "You do not have permission to delete this course." })
     CoursesContents.destroy({
       where: { courseId: id },
     });

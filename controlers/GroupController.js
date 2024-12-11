@@ -444,6 +444,7 @@ const findAll = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { groupId } = req.params;
+    const { user_id: userId } = req.user;
 
     const {
       name_en,
@@ -465,7 +466,38 @@ const update = async (req, res) => {
       (min, item) => (item.price_en < min.price_en ? item : min),
       payment,
     );
+    const group = await Groups.findOne({
+      where: {
+        id: groupId,
+        creatorId: userId
+      },
+      include: [
+        {
+          model: Users,
+          where: { role: 'STUDENT' },
+          attributes: ["id"],
+        },
+      ],
+    })
 
+    const studentIds = group.Users.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, []);
+
+    if (!group) return res.status(400).json({ success: false, message: "You do not have permission to update this groupe." })
+
+    function getMonthCount(startDate, endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      const yearsDifference = end.getFullYear() - start.getFullYear();
+      const monthsDifference = end.getMonth() - start.getMonth();
+      const totalMonths = (yearsDifference * 12) + monthsDifference;
+
+      return totalMonths
+    };
+    const month = getMonthCount(startDate, endDate)
     await Groups.update(
       {
         name_am,
@@ -480,6 +512,7 @@ const update = async (req, res) => {
       },
       { where: { id: groupId } },
     );
+
     await PaymentWays.destroy({
       where: { groupId },
     });
@@ -494,13 +527,26 @@ const update = async (req, res) => {
         price: e.price,
         discount: e.discount,
         groupId,
+        durationMonths: month
       });
     });
+
+    await UserCourses.destroy({
+      where: {
+        GroupCourseId: group.assignCourseId
+      }
+    })
+
+    await UserLesson.destroy({
+      where: {
+        GroupCourseId: group.assignCourseId
+      }
+    })
 
     await GroupsPerUsers.destroy({ where: { groupId } });
 
     await Promise.all(
-      users.map(async (userId) => {
+      [...studentIds, ...users].map(async (userId) => {
 
         const user = await Users.findByPk(userId);
         await UserCourses.create({
@@ -512,10 +558,17 @@ const update = async (req, res) => {
         });
         await Promise.all(
           lessons.map(async (e) => {
-            await UserLesson.create({
-              GroupCourseId: assignCourseId,
-              UserId: userId,
-              LessonId: e.lessonId,
+            await UserLesson.findOrCreate({
+              where: {
+                GroupCourseId: assignCourseId,
+                UserId: userId,
+                LessonId: e.lessonId
+              },
+              default: {
+                GroupCourseId: assignCourseId,
+                UserId: userId,
+                LessonId: e.lessonId
+              }
             });
           }),
         );
@@ -1334,7 +1387,7 @@ const getAllForTeacher = async (req, res) => {
                   attributes: ['firstName', 'lastName', 'image', 'role'],
                 },
               ],
-              attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished","createdAt"]
+              attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt"]
             }
           ],
         },

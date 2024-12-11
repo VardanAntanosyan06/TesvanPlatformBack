@@ -650,7 +650,7 @@ const deleteLesson = async (req, res) => {
         creatorId: userId
       }
     });
-    if (deleteLesson === 0) return res.status(400).json({ message: "You do not have permission to delete this lessson." })
+    if (deleteLesson === 0) return res.status(400).json({ success: false, message: "You do not have permission to delete this lessson." })
 
     return res.status(200).json({ success: true });
   } catch (error) {

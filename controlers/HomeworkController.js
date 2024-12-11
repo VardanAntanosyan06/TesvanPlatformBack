@@ -699,7 +699,7 @@ const deleteHomework = async (req, res) => {
         creatorId: userId
       }
     });
-    if (deleteHomwork === 0) return res.status(400).json({ message: "You do not have permission to delete this homework." })
+    if (deleteHomwork === 0) return res.status(400).json({ success: false, message: "You do not have permission to delete this homework." })
     if (deleteHomwork === 1) {
       await UserHomework.destroy({
         where: {
@@ -740,6 +740,13 @@ const updateHomework = async (req, res) => {
       dueDate
     }
 
+    const homework = await Homework.findOne({
+      where: {
+        id: homeworkId,
+        creatorId: userId
+      }
+    })
+    if (!homework) return res.status(400).json({ success: false, message: "You do not have permission to update this homework." })
     const updateHomework = await Homework.update(
       {
         updateData
@@ -751,7 +758,7 @@ const updateHomework = async (req, res) => {
         }
       }
     )
-    if (updateHomework[0] === 0) return res.status(400).json({ message: "You do not have permission to update this homework." })
+
     res.status(200).json({ success: true })
   } catch (error) {
     console.log(error);

@@ -1,4 +1,4 @@
-const { Users, UserCourses, Email, GroupChats } = require('../models');
+const { Users, UserCourses, Email, GroupChats, UserStatus, Payment } = require('../models');
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -25,6 +25,12 @@ const LoginUsers = async (req, res) => {
           model: UserCourses,
           attributes: ['id'],
         },
+        {
+          model: UserStatus,
+          as: "userStatus",
+          attributes: ["isActive"],
+
+        }
       ],
     });
 
@@ -269,6 +275,7 @@ const changeUserImage = async (req, res) => {
 const authMe = async (req, res) => {
   try {
     const { user_id: id } = req.user;
+
     const User = await Users.findOne({
       where: { id },
       include: [
@@ -276,8 +283,13 @@ const authMe = async (req, res) => {
           model: UserCourses,
           attributes: ['id'],
         },
+        {
+          model: UserStatus,
+          as: "userStatus",
+          attributes: ["isActive"],
+        }
       ],
-      attributes: ["id", "firstName", "lastName", "image", "email", "role"]
+      attributes: ["id", "firstName", "lastName", "image", "email", "role", "creatorId"]
     });
     if (!User) {
       return res.send({ succes: false });
@@ -292,6 +304,28 @@ const authMe = async (req, res) => {
     })
     User.setDataValue('groupChats', groupChats);
     await User.save();
+
+    // if (User.role === "TEACHER") {
+    //   const admin = Users.findOne({
+    //     where: { id: User.creatorId },
+    //     include: [
+    //       {
+    //         model: UserStatus,
+    //         as: "userStatus",
+    //         attributes: ["isActive"],
+    //       }
+    //     ],
+    //   })
+    //   User.userStatus.isActive = admin.userStatus.isActive
+    //   await User.save();
+    // } else if (User.role === "ADMIN") {
+    //   // const payment = Payment.findOne({
+    //   //   where: {
+    //   //     adminId: 
+    //   //   }
+    //   // })
+    // }
+
     res.json({ User });
   } catch (e) {
     res.status(500).json({ succes: false });
@@ -305,7 +339,7 @@ const changeEmail = async (req, res) => {
 
     const thisUser = await Users.findOne({ where: { id } });
     const { email } = req.body;
-    
+
     if (thisUser.email === email.toLowerCase()) {
       return res.status(400).json({ succes: false });
     }
