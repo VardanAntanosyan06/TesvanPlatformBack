@@ -33,6 +33,6 @@ router.get(
 router.post('/createTest/', checkAuth(['STUDENT']), controller.createTest);
 
 router.delete('/delete/:id', checkAuth(['ADMIN']), controller.deleteCourse);
-router.put('/update/:courseId', checkAuth(['ADMIN']), controller.updateCourse);
+router.put('/update/:courseId', checkAuth(['ADMIN', 'TEACHER']), controller.updateCourse);
 
 module.exports = router;
