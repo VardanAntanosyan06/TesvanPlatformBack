@@ -389,6 +389,7 @@ const getHomeWorkForTeacherForSingleUser = async (req, res) => {
     user['userId'] = user.User.id;
     user['image'] = user.User.image;
     user['files'] = Files;
+    user.points = +user.points !== 0 ? user.points : null
     delete user.User;
 
     let homeWorkInfo = await Homework.findOne({
