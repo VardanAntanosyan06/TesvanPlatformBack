@@ -104,7 +104,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       token: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: true,
       },
       tokenCreatedAt: {
