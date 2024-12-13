@@ -128,6 +128,22 @@ const paymentArcaForAdmin = async (req, res) => {
   }
 }
 
+const getAdminPayment = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const adminPayment = await Payment.findAll({
+      where: {
+        userId
+      },
+      attributes: ['id', 'paymentWay', 'status', 'type', 'amount', 'createdAt'],
+      order: [['createdAt', 'DESC']]
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong' });
+  }
+}
+
 const paymentUrl = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
@@ -723,10 +739,6 @@ const getUserPayment = async (req, res) => {
 
       // Total number of months between the two dates
       const totalMonths = (yearsDifference * 12) + monthsDifference;
-      // let totalMonthsNow = (yearsDifferenceNow * 12) + monthsDifferenceNow;
-      // if (totalMonthsNow > totalMonths) {
-      //   totalMonthsNow = totalMonths
-      // }
       return totalMonths - (totalMonths - paymentCount)
     }
     const payments = await Payment.findAll({
@@ -771,7 +783,6 @@ const getUserPayment = async (req, res) => {
         success: true,
         responsData
       });
-      // return res.status(400).json({ success: false, message: 'Bad request.' });
     };
 
     const fullPaid = payments.find(value => value.type === "full");

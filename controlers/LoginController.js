@@ -29,7 +29,6 @@ const LoginUsers = async (req, res) => {
           model: UserStatus,
           as: "userStatus",
           attributes: ["isActive"],
-
         }
       ],
     });
@@ -48,11 +47,86 @@ const LoginUsers = async (req, res) => {
         attributes: ['id', 'name', 'image'],
       });
       User.setDataValue('groupChats', groupChats);
+
+      if (User.role === "TEACHER") {
+        const admin = await Users.findOne({
+          where: { id: User.creatorId },
+        });
+        const payment = await Payment.findOne({
+          where: {
+            adminId: admin.creatorId,
+            status: "Success"
+          },
+          order: [["id", "DESC"]]
+        })
+        if (!payment) {
+          User.userStatus.isActive = false
+        } else if (payment.type === "full") {
+          function isOneYearPassed(updatedAt) {
+            // Add one year to the updatedAt date
+            const oneYearLater = new Date();
+            oneYearLater.setFullYear(oneYearLater.getFullYear() - 1);
+
+            // Compare with the current date
+            return new Date(updatedAt) >= oneYearLater;
+          };
+          User.userStatus.isActive = isOneYearPassed(payment.updatedAt)
+        } else if (payment.type === "monthly") {
+          function isOneMonthPassed(updatedAt) {
+            // Add one month to the updatedAt date
+            const oneMonthLater = new Date();
+            oneMonthLater.setMonth(oneMonthLater.getMonth() - 1);
+            // Compare with the current date
+            return new Date(updatedAt) >= oneMonthLater;
+          }
+          User.userStatus.isActive = isOneMonthPassed(payment.updatedAt)
+        }
+      } else if (User.role === "ADMIN") {
+        const payment = await Payment.findOne({
+          where: {
+            adminId: User.creatorId,
+            status: "Success"
+          },
+          order: [["id", "DESC"]]
+        })
+        if (!payment) {
+          User.userStatus.isActive = false
+        } else if (payment.type === "full") {
+          function isOneYearPassed(updatedAt) {
+            // Add one year to the updatedAt date
+            const oneYearLater = new Date();
+            oneYearLater.setFullYear(oneYearLater.getFullYear() - 1);
+
+            // Compare with the current date
+            return new Date(updatedAt) >= oneYearLater;
+          };
+          User.userStatus.isActive = isOneYearPassed(payment.updatedAt)
+        } else if (payment.type === "monthly") {
+          function isOneMonthPassed(updatedAt) {
+            // Add one month to the updatedAt date
+            const oneMonthLater = new Date();
+            oneMonthLater.setMonth(oneMonthLater.getMonth() - 1);
+            // Compare with the current date
+            return new Date(updatedAt) >= oneMonthLater;
+          }
+          User.userStatus.isActive = isOneMonthPassed(payment.updatedAt)
+        }
+      };
       await User.save();
+
+      const oneMonthInSeconds = 30 * 24 * 60 * 60;
+      User.token = jwt.sign(
+        { user_id: User.id, email: User.email, role: User.role, isActive: User.userStatus?.isActive },
+        process.env.SECRET,
+        {
+          expiresIn: oneMonthInSeconds // Sets expiration to 1 month
+        }
+      );
+      User.tokenCreatedAt = moment();
+      await User.save()
       const { password, ...sendData } = User.dataValues;
       return res.status(200).json({ User: sendData });
     }
-
     return res.status(403).json({ message: 'Invalid email or password' });
   } catch (error) {
     console.log(error);
@@ -305,26 +379,82 @@ const authMe = async (req, res) => {
     User.setDataValue('groupChats', groupChats);
     await User.save();
 
-    // if (User.role === "TEACHER") {
-    //   const admin = Users.findOne({
-    //     where: { id: User.creatorId },
-    //     include: [
-    //       {
-    //         model: UserStatus,
-    //         as: "userStatus",
-    //         attributes: ["isActive"],
-    //       }
-    //     ],
-    //   })
-    //   User.userStatus.isActive = admin.userStatus.isActive
-    //   await User.save();
-    // } else if (User.role === "ADMIN") {
-    //   // const payment = Payment.findOne({
-    //   //   where: {
-    //   //     adminId: 
-    //   //   }
-    //   // })
-    // }
+    if (User.role === "TEACHER") {
+      const admin = await Users.findOne({
+        where: { id: User.creatorId },
+      });
+      const payment = await Payment.findOne({
+        where: {
+          adminId: admin.creatorId,
+          status: "Success"
+        },
+        order: [["id", "DESC"]]
+      })
+      if (!payment) {
+        User.userStatus.isActive = false
+      } else if (payment.type === "full") {
+        function isOneYearPassed(updatedAt) {
+          // Add one year to the updatedAt date
+          const oneYearLater = new Date();
+          oneYearLater.setFullYear(oneYearLater.getFullYear() - 1);
+
+          // Compare with the current date
+          return new Date(updatedAt) >= oneYearLater;
+        };
+        User.userStatus.isActive = isOneYearPassed(payment.updatedAt)
+      } else if (payment.type === "monthly") {
+        function isOneMonthPassed(updatedAt) {
+          // Add one month to the updatedAt date
+          const oneMonthLater = new Date();
+          oneMonthLater.setMonth(oneMonthLater.getMonth() - 1);
+          // Compare with the current date
+          return new Date(updatedAt) >= oneMonthLater;
+        }
+        User.userStatus.isActive = isOneMonthPassed(payment.updatedAt)
+      }
+    } else if (User.role === "ADMIN") {
+      const payment = await Payment.findOne({
+        where: {
+          adminId: User.creatorId,
+          status: "Success"
+        },
+        order: [["id", "DESC"]]
+      })
+      if (!payment) {
+        User.userStatus.isActive = false
+      } else if (payment.type === "full") {
+        function isOneYearPassed(updatedAt) {
+          // Add one year to the updatedAt date
+          const oneYearLater = new Date();
+          oneYearLater.setFullYear(oneYearLater.getFullYear() - 1);
+
+          // Compare with the current date
+          return new Date(updatedAt) >= oneYearLater;
+        };
+        User.userStatus.isActive = isOneYearPassed(payment.updatedAt)
+      } else if (payment.type === "monthly") {
+        function isOneMonthPassed(updatedAt) {
+          // Add one month to the updatedAt date
+          const oneMonthLater = new Date();
+          oneMonthLater.setMonth(oneMonthLater.getMonth() - 1);
+          // Compare with the current date
+          return new Date(updatedAt) >= oneMonthLater;
+        }
+        User.userStatus.isActive = isOneMonthPassed(payment.updatedAt)
+      }
+    };
+    await User.save();
+
+    const oneMonthInSeconds = 30 * 24 * 60 * 60;
+    User.token = jwt.sign(
+      { user_id: User.id, email: User.email, role: User.role, isActive: User.userStatus?.isActive },
+      process.env.SECRET,
+      {
+        expiresIn: oneMonthInSeconds // Sets expiration to 1 month
+      }
+    );
+    User.tokenCreatedAt = moment();
+    await User.save()
 
     res.json({ User });
   } catch (e) {

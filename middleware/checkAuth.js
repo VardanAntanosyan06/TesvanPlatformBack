@@ -14,6 +14,9 @@ module.exports = function (roles) {
       if (!roles?.includes(decoded.role)) {
         return res.status(401).json({ message: "You don't have access" });
       }
+      if(decoded.isActive === false){
+        return res.status(401).json({ message: "Your account is inactive due to payment." });
+      }
       req.user = decoded;
       next();
     } catch (e) {

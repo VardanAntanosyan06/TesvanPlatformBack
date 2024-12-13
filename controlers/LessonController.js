@@ -256,7 +256,9 @@ const getLesson = async (req, res) => {
       });
     }
 
-    let homeworkPoint
+    lesson.Lesson.homework = lesson.Lesson.homework.sort((a, b) => a.id - b.id);
+
+    let homeworkPoint = []
     if (lesson.Lesson.homework.length > 0) {
       homeworkPoint = await UserHomework.findAll({
         where: {
@@ -267,6 +269,18 @@ const getLesson = async (req, res) => {
         attributes: [["HomeworkId", "homeworkId"], "points"]
       });
     }
+
+    const userHomeworkIds = homeworkPoint.reduce((aggr, value) => {
+      aggr.push(value.homeworkId)
+      return aggr;
+    }, []);
+
+    lesson.Lesson.homework.forEach((value) => {
+      if (!userHomeworkIds?.includes(value.id)) {
+        homeworkPoint.push({ homeworkId: value.id, points: "0" })
+      }
+    })
+
     const homeworkPointSum = homeworkPoint?.reduce((aggr, value) => {
       return aggr = aggr + +value.points
     }, 0)
