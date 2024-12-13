@@ -548,34 +548,43 @@ const createLesson = async (req, res) => {
 
     const video = req.files?.video;
 
-
-    if (req.files) {
+    let fileNameEn
+    if (req.files?.file_en) {
       const { file_en, file_ru, file_am } = req.files;
       const fileEnType = file_en.mimetype.split('/')[1];
-      const fileNameEn = v4() + '.' + fileEnType;
+      fileNameEn = v4() + '.' + fileEnType;
       file_en.mv(path.resolve(__dirname, '..', 'static', fileNameEn));
+    };
 
-      const fileRuType = file_en.mimetype.split('/')[1];
-      const fileNameRu = v4() + '.' + fileRuType;
+    let fileNameRu
+    if (req.files?.file_ru) {
+      const { file_en, file_ru, file_am } = req.files;
+      const fileRuType = file_ru.mimetype.split('/')[1];
+      fileNameRu = v4() + '.' + fileRuType;
       file_ru.mv(path.resolve(__dirname, '..', 'static', fileNameRu));
+    };
 
-      const fileAmType = file_en.mimetype.split('/')[1];
-      const fileNameAm = v4() + '.' + fileAmType;
+    let fileNameAm
+    if (req.files?.file_am) {
+      const { file_en, file_ru, file_am } = req.files;
+      const fileAmType = file_am.mimetype.split('/')[1];
+      fileNameAm = v4() + '.' + fileAmType;
       file_am.mv(path.resolve(__dirname, '..', 'static', fileNameAm));
+    };
 
-      const { id: lessonId } = await Lesson.create({
-        title_en,
-        title_ru,
-        title_am,
-        description_ru,
-        description_am,
-        description_en,
-        maxPoints: 0,
-        htmlContent_en,
-        htmlContent_ru,
-        htmlContent_am,
-        creatorId: userId
-      });
+    const { id: lessonId } = await Lesson.create({
+      title_en,
+      title_ru,
+      title_am,
+      description_ru,
+      description_am,
+      description_en,
+      maxPoints: 0,
+      htmlContent_en,
+      htmlContent_ru,
+      htmlContent_am,
+      creatorId: userId
+    });
 
       await Presentations.create({
         title_en: presentationTitle_en,
@@ -590,50 +599,48 @@ const createLesson = async (req, res) => {
         lessonId,
       });
 
-      if (homeworkId.length > 0) {
-        for (const id of homeworkId) {
-          await HomeworkPerLesson.create({
-            lessonId,
-            homeworkId: id
-          })
-        }
-      };
-
-      if (video?.length > 0) {
-        for (const value of video) {
-
-          if (!allowedFormats.includes(value.mimetype)) {
-            return res.status(400).json({ success: false, message: 'Unsupported file format' });
-          };
-
-          const type = value.mimetype.split('/')[1];
-          const videoFilename = uuid.v4() + '.' + type;
-          await value.mv(path.resolve(__dirname, '../', 'static', videoFilename));
-
-          await Video.create({
-            lessonId,
-            url: videoFilename,
-            title_am: videoTitle,
-            title_en: videoTitle,
-            title_ru: videoTitle,
-            description_am,
-            description_en,
-            description_ru
-          });
-        }
-      }
-
-      if (!isNaN(+quizzId)) {
-        await LessonsPerQuizz.create({
+    if (homeworkId.length > 0) {
+      for (const id of homeworkId) {
+        await HomeworkPerLesson.create({
           lessonId,
-          quizzId,
+          homeworkId: id
+        })
+      }
+    };
+
+    if (video?.length > 0) {
+      for (const value of video) {
+
+        if (!allowedFormats.includes(value.mimetype)) {
+          return res.status(400).json({ success: false, message: 'Unsupported file format' });
+        };
+
+        const type = value.mimetype.split('/')[1];
+        const videoFilename = uuid.v4() + '.' + type;
+        await value.mv(path.resolve(__dirname, '../', 'static', videoFilename));
+
+        await Video.create({
+          lessonId,
+          url: videoFilename,
+          title_am: videoTitle,
+          title_en: videoTitle,
+          title_ru: videoTitle,
+          description_am,
+          description_en,
+          description_ru
         });
       }
-
-      return res.status(200).json({ success: true });
-    } else {
-      res.status(400).json({ message: "You didn't specify a presentation" });
     }
+
+    if (!isNaN(+quizzId)) {
+      await LessonsPerQuizz.create({
+        lessonId,
+        quizzId,
+      });
+    }
+
+    return res.status(200).json({ success: true });
+
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });

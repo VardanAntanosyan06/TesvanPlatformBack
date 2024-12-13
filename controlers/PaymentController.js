@@ -122,6 +122,8 @@ const paymentArcaForAdmin = async (req, res) => {
     adminStatus.isActive = true;
     await adminStatus.save()
 
+    return res.status(200).json({ success: true });
+
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something Went Wrong' });
@@ -131,13 +133,15 @@ const paymentArcaForAdmin = async (req, res) => {
 const getAdminPayment = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const adminPayment = await Payment.findAll({
+    const adminPayments = await Payment.findAll({
       where: {
         userId
       },
       attributes: ['id', 'paymentWay', 'status', 'type', 'amount', 'createdAt'],
       order: [['createdAt', 'DESC']]
     })
+
+    return res.status(200).json({ success: true, adminPayments });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something Went Wrong' });
