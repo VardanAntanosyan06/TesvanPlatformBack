@@ -114,6 +114,101 @@ const LoginUsers = async (req, res) => {
       };
       await User.save();
 
+      // //////////////////////
+      // function paymentIsActive(payment) {
+      //   function isOneYearPassed(updatedAt) {
+      //     // Add one year to the updatedAt date
+      //     const oneYearLater = new Date();
+      //     oneYearLater.setFullYear(oneYearLater.getFullYear() - 1);
+
+      //     // Compare with the current date
+      //     return new Date(updatedAt) >= oneYearLater;
+      //   };
+
+      //   function isOneMonthPassed(updatedAt) {
+      //     // Add one month to the updatedAt date
+      //     const oneMonthLater = new Date();
+      //     oneMonthLater.setMonth(oneMonthLater.getMonth() - 1);
+      //     // Compare with the current date
+      //     return new Date(updatedAt) >= oneMonthLater;
+      //   }
+
+      //   function dateDifferenceInDays(date1, date2) {
+      //     const diffInTime = date2.getTime() - date1.getTime();
+      //     const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
+      //     return diffInDays;
+      //   }
+
+      //   if (payment.length === 0) {
+      //     User.userStatus.isActive = false
+      //   } else if (payment[0].type === "monthly") {
+      //     if (payment[1].type === "monthly") {
+      //       const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
+      //       if (daysOlder >= 30) {
+      //         User.userStatus.isActive = isOneMonthPassed(payment[0].updatedAt)
+      //       } else {
+      //         const paymentDate = new Date(payment[0].updatedAt);
+      //         paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
+      //         User.userStatus.isActive = isOneMonthPassed(paymentDate);
+      //       }
+      //     } else if (payment[1].type === "full") {
+      //       const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
+      //       if (daysOlder >= 365) {
+      //         User.userStatus.isActive = isOneMonthPassed(payment[0].updatedAt)
+      //       } else {
+      //         const paymentDate = new Date(payment[0].updatedAt);
+      //         paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
+      //         User.userStatus.isActive = isOneMonthPassed(paymentDate);
+      //       }
+      //     };
+      //   } else if (payment[0].type === "full") {
+      //     if (payment[1].type === "monthly") {
+      //       const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
+      //       if (daysOlder >= 30) {
+      //         User.userStatus.isActive = isOneYearPassed(payment[0].updatedAt);
+      //       } else {
+      //         const paymentDate = new Date(payment[0].updatedAt);
+      //         paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
+      //         User.userStatus.isActive = isOneYearPassed(paymentDate);
+      //       };
+      //     } else if (payment[1].type === "full") {
+      //       const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
+      //       if (daysOlder >= 365) {
+      //         User.userStatus.isActive = isOneYearPassed(payment[0].updatedAt);
+      //       } else {
+      //         const paymentDate = new Date(payment[0].updatedAt);
+      //         paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
+      //         User.userStatus.isActive = isOneYearPassed(payment[0].updatedAt);
+      //       }
+      //     }
+      //   };
+      // }
+
+      // if (User.role === "ADMIN") {
+      //   const payment = await Payment.findAll({
+      //     where: {
+      //       adminId: User.creatorId,
+      //       status: "Success"
+      //     },
+      //     order: [["id", "DESC"]]
+      //   });
+      //   paymentIsActive(payment)
+      // } else if (User.role === "TEACHER") {
+      //   const admin = await Users.findOne({
+      //     where: { id: User.creatorId },
+      //   });
+      //   const payment = await Payment.findAll({
+      //     where: {
+      //       adminId: admin.creatorId,
+      //       status: "Success"
+      //     },
+      //     order: [["id", "DESC"]]
+      //   });
+      //   paymentIsActive(payment)
+      // };
+      // await User.save()
+      // /////////////////////////////
+
       const oneMonthInSeconds = 30 * 24 * 60 * 60;
       User.token = jwt.sign(
         { user_id: User.id, email: User.email, role: User.role, isActive: User.userStatus?.isActive },

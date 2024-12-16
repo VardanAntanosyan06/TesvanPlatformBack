@@ -959,6 +959,18 @@ const getCoursesByFilter = async (req, res) => {
         [sequelize.fn('max', sequelize.col('price')), 'maxPrice'],
       ],
     });
+
+    function dateDifferenceInDays(date) {
+      const moment = new Date()
+      const diffInTime = date.getTime() - moment.getTime();
+      const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
+      if (diffInDays >= 0) {
+        return "active"
+      } else {
+        return "inProgress"
+      }
+    };
+
     Courses = Courses.map((e) => {
       e = e.toJSON();
       delete e.dataValues;
@@ -977,6 +989,7 @@ const getCoursesByFilter = async (req, res) => {
       (e.saledValue = e.price > 0 ? e.price - Math.round(e.price * e.sale) / 100 : e.price),
         (e.bought = e.GroupsPerUsers.length);
       delete e.GroupCourse;
+      e.status = dateDifferenceInDays(e.startDate)
       return e;
     });
 
@@ -1223,7 +1236,7 @@ const updateCourse = async (req, res) => {
     const course = await GroupCourses.findOne({
       where: { id: courseId, creatorId: userId }
     });
-  
+
     if (!course) {
       return res.status(400).json({
         success: false,
@@ -1401,7 +1414,7 @@ const deleteCourse = async (req, res) => {
     }
 
     const deleteCourse = await GroupCourses.destroy({ where: { id, creatorId: userId } });
-    if (deleteCourse === 0) return res.status(400).json({success: false, message: "You do not have permission to delete this course." })
+    if (deleteCourse === 0) return res.status(400).json({ success: false, message: "You do not have permission to delete this course." })
     CoursesContents.destroy({
       where: { courseId: id },
     });
