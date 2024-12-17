@@ -1350,7 +1350,7 @@ const getAllSubscriptionsForSuperAdmin = async (req, res) => {
     });
 
     const uniqueSubscriptions = Array.from(
-      new Map(subscriptions.map(sub => [sub.id, sub])).values()
+      new Map(subscriptions.map(sub => [sub.userId, sub])).values()
     );
 
     return res.status(200).json({

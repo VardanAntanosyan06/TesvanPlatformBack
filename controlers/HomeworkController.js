@@ -767,27 +767,27 @@ const updateHomework = async (req, res) => {
   }
 }
 
-const getHomeworkForTeacher = async (req, res) => {
-  try {
-    const { homeworkId } = req.params;
+// const getHomeworkForTeacher = async (req, res) => {
+//   try {
+//     const { homeworkId } = req.params;
 
-    const homework = await Homework.findOne({
-      where: {
-        id: homeworkId
-      }
-    })
+//     const homework = await Homework.findOne({
+//       where: {
+//         id: homeworkId
+//       }
+//     })
 
-    if (!homework) {
-      return res.status(404).json({ success: false, message: "Homework not found" })
-    }
+//     if (!homework) {
+//       return res.status(404).json({ success: false, message: "Homework not found" })
+//     }
 
-    return res.status(200).json({ success: true, homework })
+//     return res.status(200).json({ success: true, homework })
 
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: 'Something Went Wrong .' });
-  }
-}
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: 'Something Went Wrong .' });
+//   }
+// }
 
 module.exports = {
   create,
@@ -807,5 +807,5 @@ module.exports = {
   getHomeworkTitlesForTeacher,
   deleteHomework,
   updateHomework,
-  getHomeworkForTeacher,
+  // getHomeworkForTeacher,
 };

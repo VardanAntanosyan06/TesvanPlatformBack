@@ -14,7 +14,7 @@ router.get(
   controller.getHomeworks,
 );
 
-router.get('/getHomeworkForTeacher/:homeworkId', checkAuth(['TEACHER', 'ADMIN']), controller.getHomeworkForTeacher);
+// router.get('/getHomeworkForTeacher/:homeworkId', checkAuth(['TEACHER', 'ADMIN']), controller.getHomeworkForTeacher);
 
 
 router.get('/titles', checkAuth(['TEACHER', 'ADMIN']), controller.getHomeworkTitles);
