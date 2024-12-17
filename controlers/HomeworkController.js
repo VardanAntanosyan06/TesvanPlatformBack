@@ -777,6 +777,10 @@ const getHomeworkForTeacher = async (req, res) => {
       }
     })
 
+    if (!homework) {
+      return res.status(404).json({ success: false, message: "Homework not found" })
+    }
+
     return res.status(200).json({ success: true, homework })
 
   } catch (error) {
