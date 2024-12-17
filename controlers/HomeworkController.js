@@ -748,14 +748,11 @@ const updateHomework = async (req, res) => {
       }
     })
     if (!homework) return res.status(400).json({ success: false, message: "You do not have permission to update this homework." })
-    const updateHomework = await Homework.update(
-      {
-        updateData
-      },
+    await Homework.update(
+      updateData,
       {
         where: {
           id: homeworkId,
-          creatorId: userId
         }
       }
     )
