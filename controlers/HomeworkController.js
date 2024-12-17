@@ -766,6 +766,25 @@ const updateHomework = async (req, res) => {
     return res.status(500).json({ message: 'Something Went Wrong .' });
   }
 }
+
+const getHomeworkForTeacher = async (req, res) => {
+  try {
+    const { homeworkId } = req.params;
+
+    const homework = await Homework.findOne({
+      where: {
+        id: homeworkId
+      }
+    })
+
+    return res.status(200).json({ success: true, homework })
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong .' });
+  }
+}
+
 module.exports = {
   create,
   open,
@@ -783,5 +802,6 @@ module.exports = {
   getUserHomeworkPoints,
   getHomeworkTitlesForTeacher,
   deleteHomework,
-  updateHomework
+  updateHomework,
+  getHomeworkForTeacher,
 };

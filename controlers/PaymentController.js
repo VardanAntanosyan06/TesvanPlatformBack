@@ -135,7 +135,10 @@ const getAdminPayment = async (req, res) => {
     const { user_id: userId } = req.user;
     const adminPayments = await Payment.findAll({
       where: {
-        userId
+        userId,
+        status: {
+          [Op.or]: ["Success", "Payment is declined"]
+        }
       },
       attributes: ['id', 'paymentWay', 'status', 'type', 'amount', 'createdAt'],
       order: [['createdAt', 'DESC']]
@@ -147,6 +150,98 @@ const getAdminPayment = async (req, res) => {
     return res.status(500).json({ message: 'Something Went Wrong' });
   }
 }
+
+const nextPaymentAdmin = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const adminPayments = await Payment.findAll({
+      where: {
+        userId
+      },
+      order: [['updatedAt', 'DESC']]
+    })
+
+    let nextPaymentDate
+
+    function dateDifferenceInDays(date1, date2) {
+      const diffInTime = date1.getTime() - date2.getTime();
+      const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
+      return diffInDays;
+    }
+
+    if (adminPayments[0].type === "monthly") {
+      if (adminPayments[1].type === "monthly") {
+        const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
+        if (daysOlder >= 30) {
+          const paymentDate = new Date(adminPayments[0].updatedAt);
+          paymentDate.setMonth(paymentDate.getMonth() + 1);
+          nextPaymentDate = paymentDate
+        } else {
+          const paymentDate = new Date(adminPayments[0].updatedAt);
+          paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
+          paymentDate.setMonth(paymentDate.getMonth() + 1);
+          nextPaymentDate = paymentDate
+        }
+      } else if (adminPayments[1].type === "full") {
+        const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
+        if (daysOlder >= 365) {
+          const paymentDate = new Date(adminPayments[0].updatedAt);
+          paymentDate.setMonth(paymentDate.getMonth() + 1);
+          nextPaymentDate = paymentDate
+        } else {
+          const paymentDate = new Date(adminPayments[0].updatedAt);
+          paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
+          paymentDate.setMonth(paymentDate.getMonth() + 1);
+          nextPaymentDate = paymentDate
+        }
+      }
+    } else if (adminPayments[0].type === "full") {
+      if (adminPayments[1].type === "monthly") {
+        const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
+        if (daysOlder >= 30) {
+          const paymentDate = new Date(adminPayments[0].updatedAt);
+          paymentDate.setFullYear(paymentDate.getFullYear() + 1);
+          nextPaymentDate = paymentDate
+        } else {
+          const paymentDate = new Date(adminPayments[0].updatedAt);
+          paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
+          paymentDate.setFullYear(paymentDate.getFullYear() + 1);
+          nextPaymentDate = paymentDate
+        }
+      } else if (adminPayments[1].type === "full") {
+        const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt);
+        if (daysOlder >= 365) {
+          const paymentDate = new Date(adminPayments[0].updatedAt);
+          paymentDate.setFullYear(paymentDate.getFullYear() + 1);
+          nextPaymentDate = paymentDate
+        } else {
+          const paymentDate = new Date(adminPayments[0].updatedAt);
+          paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
+          paymentDate.setFullYear(paymentDate.getFullYear() + 1);
+          nextPaymentDate = paymentDate
+        }
+      }
+    };
+
+    let paymentActive = true
+
+    if (adminPayments[1].type === "monthly") {
+      const oneMonthLater = new Date(adminPayments[1].updatedAt);
+      oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+      paymentActive = oneMonthLater <= new Date()
+    } else if (adminPayments[1].type === "monthly") {
+      const oneYearLater = new Date(adminPayments[1].updatedAt);
+      oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+      paymentActive = oneMonthLater <= new Date()
+    }
+
+    return res.status(200).json({ success: true, nextPaymentDate, paymentActive });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong' });
+  }
+};
 
 const paymentUrl = async (req, res) => {
   try {
@@ -1234,6 +1329,35 @@ const downloadInvoice = async (req, res) => {
       // Finalize the PDF and send it
       doc.end();
     }
+  } catch (error) {
+    console.error('Error generating invoice:', error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
+const getAllSubscriptionsForSuperAdmin = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const subscriptions = await Payment.findAll({
+      where: {
+        adminId: userId,
+        status: {
+          [Op.or]: ["Success", "Payment is declined"]
+        }
+      },
+      attributes: ['id', 'paymentWay', 'status', 'type', 'amount', 'createdAt'],
+      order: [['createdAt', 'ASC']]
+    });
+
+    const uniqueSubscriptions = Array.from(
+      new Map(subscriptions.map(sub => [sub.id, sub])).values()
+    );
+
+    return res.status(200).json({
+      success: true,
+      subscriptions: uniqueSubscriptions
+    });
+
   } catch (error) {
     console.error('Error generating invoice:', error);
     return res.status(500).json({ message: 'Something went wrong.' });
