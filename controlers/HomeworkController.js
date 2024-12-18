@@ -562,6 +562,20 @@ const homeworkPoints = async (req, res) => {
     // const { lessonId } = await HomeworkPerLesson.findOne({ where: { homeworkId } });
     // const { maxPoints } = await Lesson.findByPk(lessonId);
 
+    const homework = await UserHomework.findOne({
+      where: {
+        GroupCourseId: courseId,
+        UserId: userId,
+        HomeworkId: homeworkId,
+      }
+    });
+
+    if (homework.status !== 2) {
+      return res.status(403).json({
+        message: 'Homwork not answered',
+      });
+    }
+
     const [status] = await UserHomework.update(
       {
         points,

@@ -5,6 +5,7 @@ const controller = require('../controlers/RegisterController');
 const checkAuth = require('../middleware/checkAuth');
 
 router.post('/', controller.UserRegistartion);
+router.post('/createAdmin', checkAuth(['SUPERADMIN']), controller.createAdmin);
 router.get('/emailExist/:email', controller.EmailExist);
 router.get('/sendEmail', controller.UserRegistartionSendEmail);
 router.patch('/verification', controller.UserRegistartionVerification);

@@ -1359,7 +1359,7 @@ const getAllSubscriptionsForSuperAdmin = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error generating invoice:', error);
+    console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
@@ -1373,5 +1373,10 @@ module.exports = {
   monthlyPaymentUrl,
   getAllPayment,
   paymentCount,
-  downloadInvoice
+  downloadInvoice,
+  paymentUrlForAdmin,
+  paymentArcaForAdmin,
+  getAdminPayment,
+  nextPaymentAdmin,
+  getAllSubscriptionsForSuperAdmin
 };

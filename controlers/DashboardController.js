@@ -319,6 +319,23 @@ const getAdminStatistics = async (req, res) => {
   }
 }
 
+const getSuperAdminStatistics = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+
+    const admins = await Users.findAll({
+      where: {
+        creatorId: userId,
+        role: "TEACHER"
+      }
+    })
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong .' });
+  }
+}
+
 module.exports = {
   getUserStatictis,
   getInvidualCourseStatics,
