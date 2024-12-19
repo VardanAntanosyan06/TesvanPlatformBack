@@ -344,26 +344,51 @@ const getSuperAdminStatistics = async (req, res) => {
       ]
     })
 
-    let teacherIds = admins.reduce((aggr, value) => {
+    const teacherdate = admins.reduce((aggr, value) => {
       aggr = [...aggr, ...value.teachers]
       return aggr;
     }, []);
 
+    const teacherIds = Array.from(
+      new Map(teacherdate.map(value => [value.id, value])).keys()
+    )
 
-    const groups = await UserCourses.findAll({
-      where: {
-        UserId: userId,
-      },
-      attributes: ['GroupCourseId'],
+    const adminIds = Array.from(
+      new Map(admins.map(value => [value.id, value])).keys()
+    )
+
+    const groups = await Groups.findAll({
+      where: { creatorId: [...teacherIds, userId, ...adminIds] },
       include: [
         {
-          model: Groups,
-          attributes: ['name', 'finished', 'createdAt'],
+          model: GroupsPerUsers,
+          where: {
+            userRole: "STUDENT"
+          },
+          attributes: ['id', 'userId'],
+          include: {
+            model: Users,
+            attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
+          },
         },
       ],
     });
 
-    return res.send(admins, groups)
+    const userData = groups.reduce((aggr, value) => {
+      aggr = [...aggr, ...value.GroupsPerUsers]
+      return aggr;
+    }, []);
+
+    const userIds = Array.from(
+      new Map(userData.map(value => [value.User.id, value.User])).keys()
+    );
+
+    return res.status(200).json({
+      adminCount: adminIds.length,
+      teacherCount: teacherIds.length,
+      groupCount: groups.length,
+      studentCount: userIds.length
+    })
 
 
   } catch (error) {

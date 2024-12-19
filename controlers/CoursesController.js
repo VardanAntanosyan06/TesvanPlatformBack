@@ -15,7 +15,7 @@ const {
   UserInterview,
   HomeworkPerLesson,
   UserHomework,
-  Question
+  Question,
 } = require('../models');
 
 const { CoursesContents } = require('../models');
@@ -1346,21 +1346,6 @@ const updateCourse = async (req, res) => {
                 UserId: userId,
               },
             });
-            if (user.role == "STUDENT") {
-              UserHomework.findOrCreate({
-                where: {
-                  GroupCourseId: courseId,
-                  UserId: userId,
-                  LessonId: lessonId,
-                },
-                defaults: {
-                  GroupCourseId: courseId,
-                  UserId: userId,
-                  HomeworkId: homework ? homework.homeworkId : 0,
-                  LessonId: lessonId,
-                }
-              });
-            }
           })
       }),
     );
@@ -1430,24 +1415,55 @@ const deleteCourse = async (req, res) => {
       });
     }
 
-    UserCourses.destroy({
+    const groupCourses = await GroupCourses.findOne({
+      where: {
+        id,
+        creatorId: userId
+      }
+    });
+
+    if (!groupCourses) {
+      return res.status(400).json({
+        success: false,
+        message: "You do not have permission to delete this course."
+      });
+    };
+
+    await UserCourses.destroy({
       where: { GroupCourseId: id }
     })
 
-    CoursesContents.destroy({
+    await CoursesContents.destroy({
       where: { courseId: id },
     });
 
-    CoursesPerLessons.destroy({
+    await CoursesPerLessons.destroy({
       where: { courseId: id },
     });
 
-    Trainer.destroy({
+    await Trainer.destroy({
       where: { courseId: id },
     });
 
-    const deleteCourse = await GroupCourses.destroy({ where: { id, creatorId: userId } });
-    if (deleteCourse === 0) return res.status(400).json({ success: false, message: "You do not have permission to delete this course." })
+    await UserHomework.destroy({
+      where: { GroupCourseId: id }
+    })
+
+    await UserLesson.destroy({
+      where: { GroupCourseId: id }
+    })
+
+    await UserPoints.destroy({
+      where: { courseId: id }
+    })
+
+    await CoursesPerQuizz.destroy({
+      where: { courseId: id }
+    })
+
+    await GroupCourses.destroy({
+      where: { id: id }
+    });
 
     res.status(200).json({ success: true });
   } catch (error) {

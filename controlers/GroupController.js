@@ -1144,7 +1144,18 @@ const getTeachers = async (req, res) => {
 
 const deleteGroup = async (req, res) => {
   try {
+    const { user_id: userId } = req.user
     const { id } = req.params;
+
+    const group = await Groups.findOne({ where: { id, creatorId: userId } });
+    if (!group) {
+      return res.status(400).json({
+        success: false,
+        message: "You do not have permission to delete this group."
+      });
+    };
+
+    await Certificates.destroy({ where: { groupId: id } });
 
     await Groups.destroy({ where: { id } });
 
