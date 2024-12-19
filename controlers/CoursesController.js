@@ -186,7 +186,8 @@ const getCourseTitleForTeacher = async (req, res) => {
 
     const teacherCourses = await CoursesContents.findAll({
       where: {
-        creatorId: userId
+        creatorId: userId,
+        language
       }
     });
 
