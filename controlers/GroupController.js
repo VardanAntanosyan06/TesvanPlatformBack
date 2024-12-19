@@ -480,10 +480,10 @@ const update = async (req, res) => {
       ],
     })
 
-    const studentIds = group.Users.reduce((aggr, value) => {
-      aggr.push(value.id)
-      return aggr;
-    }, []);
+    // const studentIds = group.Users.reduce((aggr, value) => {
+    //   aggr.push(value.id)
+    //   return aggr;
+    // }, []);
 
     if (!group) return res.status(400).json({ success: false, message: "You do not have permission to update this groupe." })
 
@@ -531,61 +531,61 @@ const update = async (req, res) => {
       });
     });
 
-    await UserCourses.destroy({
-      where: {
-        GroupCourseId: group.assignCourseId
-      }
-    })
+    // await UserCourses.destroy({
+    //   where: {
+    //     GroupCourseId: group.assignCourseId
+    //   }
+    // })
 
-    await UserLesson.destroy({
-      where: {
-        GroupCourseId: group.assignCourseId
-      }
-    })
+    // await UserLesson.destroy({
+    //   where: {
+    //     GroupCourseId: group.assignCourseId
+    //   }
+    // })
 
-    await GroupsPerUsers.destroy({ where: { groupId } });
+    // await GroupsPerUsers.destroy({ where: { groupId } });
 
-    await Promise.all(
-      [...studentIds, ...users].map(async (userId) => {
+    // await Promise.all(
+    //   [...studentIds, ...users].map(async (userId) => {
 
-        const user = await Users.findByPk(userId);
-        await UserCourses.create({
-          GroupCourseId: assignCourseId,
-          UserId: userId,
-        });
-        const lessons = await CoursesPerLessons.findAll({
-          where: { courseId: assignCourseId },
-        });
-        await Promise.all(
-          lessons.map(async (e) => {
-            await UserLesson.findOrCreate({
-              where: {
-                GroupCourseId: assignCourseId,
-                UserId: userId,
-                LessonId: e.lessonId
-              },
-              default: {
-                GroupCourseId: assignCourseId,
-                UserId: userId,
-                LessonId: e.lessonId
-              }
-            });
-          }),
-        );
-        await GroupsPerUsers.findOrCreate({
-          where: {
-            groupId,
-            userId,
-            userRole: user.role,
-          },
-          defaults: {
-            groupId,
-            userId,
-            userRole: user.role,
-          },
-        });
-      }),
-    );
+    //     const user = await Users.findByPk(userId);
+        // await UserCourses.create({
+        //   GroupCourseId: assignCourseId,
+        //   UserId: userId,
+        // });
+        // const lessons = await CoursesPerLessons.findAll({
+        //   where: { courseId: assignCourseId },
+        // });
+        // await Promise.all(
+          // lessons.map(async (e) => {
+          //   await UserLesson.findOrCreate({
+          //     where: {
+          //       GroupCourseId: assignCourseId,
+          //       UserId: userId,
+          //       LessonId: e.lessonId
+          //     },
+          //     default: {
+          //       GroupCourseId: assignCourseId,
+          //       UserId: userId,
+          //       LessonId: e.lessonId
+          //     }
+          //   });
+          // }),
+        // );
+        // await GroupsPerUsers.findOrCreate({
+        //   where: {
+        //     groupId,
+        //     userId,
+        //     userRole: user.role,
+        //   },
+        //   defaults: {
+        //     groupId,
+        //     userId,
+        //     userRole: user.role,
+        //   },
+        // });
+    //   }),
+    // );
 
     res.status(200).json({ success: true });
   } catch (error) {
