@@ -350,20 +350,20 @@ const getSuperAdminStatistics = async (req, res) => {
     }, []);
 
 
-    // const groups = await UserCourses.findAll({
-    //   where: {
-    //     UserId: userId,
-    //   },
-    //   attributes: ['GroupCourseId'],
-    //   include: [
-    //     {
-    //       model: Groups,
-    //       attributes: ['name', 'finished', 'createdAt'],
-    //     },
-    //   ],
-    // });
+    const groups = await UserCourses.findAll({
+      where: {
+        UserId: userId,
+      },
+      attributes: ['GroupCourseId'],
+      include: [
+        {
+          model: Groups,
+          attributes: ['name', 'finished', 'createdAt'],
+        },
+      ],
+    });
 
-    return res.send(teacherIds.values())
+    return res.send(admins, groups)
 
 
   } catch (error) {

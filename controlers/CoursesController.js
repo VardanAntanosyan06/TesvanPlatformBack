@@ -1430,8 +1430,10 @@ const deleteCourse = async (req, res) => {
       });
     }
 
-    const deleteCourse = await GroupCourses.destroy({ where: { id, creatorId: userId } });
-    if (deleteCourse === 0) return res.status(400).json({ success: false, message: "You do not have permission to delete this course." })
+    UserCourses.destroy({
+      where: { GroupCourseId: id }
+    })
+
     CoursesContents.destroy({
       where: { courseId: id },
     });
@@ -1443,6 +1445,10 @@ const deleteCourse = async (req, res) => {
     Trainer.destroy({
       where: { courseId: id },
     });
+
+    const deleteCourse = await GroupCourses.destroy({ where: { id, creatorId: userId } });
+    if (deleteCourse === 0) return res.status(400).json({ success: false, message: "You do not have permission to delete this course." })
+
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
