@@ -193,6 +193,10 @@ const getCourseTitleForTeacher = async (req, res) => {
     });
 
     courses = [...courses, ...teacherCourses]
+    courses = Array.from(
+      new Map(courses.map(e => [e.id, e])).values()
+    );
+
     return res.status(200).json(courses);
   } catch (error) {
     console.log(error);
@@ -1004,7 +1008,7 @@ const getCoursesByFilter = async (req, res) => {
       delete e.GroupCourse;
       e.status = dateDifferenceInDays(e.startDate)
       return e;
-    });
+    })
 
     if (order === 'highToLow') Courses = Courses.sort((a, b) => b.saledValue - a.saledValue);
     if (order === 'popularity') Courses = Courses.sort((a, b) => b.bought - a.bought);
