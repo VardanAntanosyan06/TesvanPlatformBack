@@ -188,7 +188,8 @@ const getCourseTitleForTeacher = async (req, res) => {
       where: {
         creatorId: userId,
         language
-      }
+      },
+      attributes: [["courseId", "id"], "title", "description"]
     });
 
     courses = [...courses, ...teacherCourses]

@@ -15,7 +15,7 @@ router.post(
 router.get('/findOne/:id', controller.findOne);
 router.get('/findOneTeacher/:id', checkAuth(['ADMIN', 'TEACHER']), controller.findOneTeacherAdmin);
 router.get('/getStudents', checkAuth(['ADMIN']), controller.getStudents);
-router.get('/getTeachers', checkAuth(['ADMIN']), controller.getTeachers);
+router.get('/getTeachers', checkAuth(['ADMIN', "TEACHER"]), controller.getTeachers);
 
 router.get(
   '/getUserStaticChart/:groupId',
