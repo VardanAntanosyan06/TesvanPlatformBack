@@ -40,4 +40,4 @@ router.delete('/deleteMember', checkAuth(['ADMIN']), controller.deleteMember);
 router.delete('/delete/:id', checkAuth(['ADMIN', 'TEACHER']), controller.deleteGroup);
 router.get('/groupInfo/:id', checkAuth(['TEACHER', 'ADMIN']), controller.groupInfo)
 router.get('/getAllAdmin', checkAuth(['ADMIN']), controller.getAllAdmin);
-module.exports = router;
+module.exports = router
