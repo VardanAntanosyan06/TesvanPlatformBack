@@ -149,7 +149,11 @@ const getCourseTitles = async (req, res) => {
 
 const getCourseTitleForTeacher = async (req, res) => {
   try {
+
+
     const { user_id: userId } = req.user;
+
+
     const { language } = req.query;
     let courses = await UserCourses.findAll({
       where: { UserId: userId },
@@ -180,6 +184,13 @@ const getCourseTitleForTeacher = async (req, res) => {
       return aggr
     }, [])
 
+    const teacherCourses = await CoursesContents.findAll({
+      where: {
+        creatorId: userId
+      }
+    });
+
+    courses = [...courses, ...teacherCourses]
     return res.status(200).json(courses);
   } catch (error) {
     console.log(error);

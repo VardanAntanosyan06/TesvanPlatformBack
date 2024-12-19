@@ -15,6 +15,7 @@ const {
   Quizz,
   Question
 } = require('../models');
+const sequelize = require('sequelize');
 
 const getUserStatictis = async (req, res) => {
   try {
@@ -323,12 +324,47 @@ const getSuperAdminStatistics = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
+
+
     const admins = await Users.findAll({
       where: {
         creatorId: userId,
-        role: "TEACHER"
-      }
+        role: "ADMIN"
+      },
+      attributes: ["id"],
+      include: [
+        {
+          model: Users,
+          as: "teachers",
+          where: {
+            role: "TEACHER"
+          },
+          attributes: ["id"],
+        }
+      ]
     })
+
+    let teacherIds = admins.reduce((aggr, value) => {
+      aggr = [...aggr, ...value.teachers]
+      return aggr;
+    }, []);
+
+
+    // const groups = await UserCourses.findAll({
+    //   where: {
+    //     UserId: userId,
+    //   },
+    //   attributes: ['GroupCourseId'],
+    //   include: [
+    //     {
+    //       model: Groups,
+    //       attributes: ['name', 'finished', 'createdAt'],
+    //     },
+    //   ],
+    // });
+
+    return res.send(teacherIds.values())
+
 
   } catch (error) {
     console.log(error);
@@ -339,5 +375,6 @@ const getSuperAdminStatistics = async (req, res) => {
 module.exports = {
   getUserStatictis,
   getInvidualCourseStatics,
-  getAdminStatistics
+  getAdminStatistics,
+  getSuperAdminStatistics
 };

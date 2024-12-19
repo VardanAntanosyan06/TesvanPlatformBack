@@ -13,4 +13,6 @@ router.get(
 
 router.get('/getAdminStatistics', checkAuth(['ADMIN']), controller.getAdminStatistics);
 
+router.get('/getSuperAdminStatistics', checkAuth(['SUPERADMIN']), controller.getSuperAdminStatistics);
+
 module.exports = router;
