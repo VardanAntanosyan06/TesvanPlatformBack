@@ -1054,13 +1054,14 @@ const getCoursesByFilter = async (req, res) => {
     });
 
     if (courseType == 'Group') {
-      return res.status(200).json({ Courses, criticalPrices });
+      const resDate = Courses.sort((a, b) => b.id - a.id)
+      return res.status(200).json({ Courses: resDate, criticalPrices });
     } else if (courseType == 'Individual') {
-
       return res.status(200).json({ Courses: Individual, criticalPrices });
     } else {
       Courses = [...Courses, ...Individual];
-      return res.status(200).json({ Courses, criticalPrices });
+      const resDate = Courses.sort((a, b) => b.id - a.id)
+      return res.status(200).json({ Courses: resDate, criticalPrices });
     }
 
   } catch (error) {

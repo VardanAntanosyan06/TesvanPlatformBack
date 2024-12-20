@@ -451,7 +451,6 @@ const update = async (req, res) => {
       name_am,
       name_ru,
       assignCourseId,
-      users,
       startDate,
       endDate,
       payment,
@@ -549,41 +548,41 @@ const update = async (req, res) => {
     //   [...studentIds, ...users].map(async (userId) => {
 
     //     const user = await Users.findByPk(userId);
-        // await UserCourses.create({
-        //   GroupCourseId: assignCourseId,
-        //   UserId: userId,
-        // });
-        // const lessons = await CoursesPerLessons.findAll({
-        //   where: { courseId: assignCourseId },
-        // });
-        // await Promise.all(
-          // lessons.map(async (e) => {
-          //   await UserLesson.findOrCreate({
-          //     where: {
-          //       GroupCourseId: assignCourseId,
-          //       UserId: userId,
-          //       LessonId: e.lessonId
-          //     },
-          //     default: {
-          //       GroupCourseId: assignCourseId,
-          //       UserId: userId,
-          //       LessonId: e.lessonId
-          //     }
-          //   });
-          // }),
-        // );
-        // await GroupsPerUsers.findOrCreate({
-        //   where: {
-        //     groupId,
-        //     userId,
-        //     userRole: user.role,
-        //   },
-        //   defaults: {
-        //     groupId,
-        //     userId,
-        //     userRole: user.role,
-        //   },
-        // });
+    // await UserCourses.create({
+    //   GroupCourseId: assignCourseId,
+    //   UserId: userId,
+    // });
+    // const lessons = await CoursesPerLessons.findAll({
+    //   where: { courseId: assignCourseId },
+    // });
+    // await Promise.all(
+    // lessons.map(async (e) => {
+    //   await UserLesson.findOrCreate({
+    //     where: {
+    //       GroupCourseId: assignCourseId,
+    //       UserId: userId,
+    //       LessonId: e.lessonId
+    //     },
+    //     default: {
+    //       GroupCourseId: assignCourseId,
+    //       UserId: userId,
+    //       LessonId: e.lessonId
+    //     }
+    //   });
+    // }),
+    // );
+    // await GroupsPerUsers.findOrCreate({
+    //   where: {
+    //     groupId,
+    //     userId,
+    //     userRole: user.role,
+    //   },
+    //   defaults: {
+    //     groupId,
+    //     userId,
+    //     userRole: user.role,
+    //   },
+    // });
     //   }),
     // );
 
