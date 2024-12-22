@@ -459,6 +459,9 @@ const update = async (req, res) => {
       sale,
     } = req.body;
 
+    console.log(groupId, userId);
+
+
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
     let { price, discount } = payment.reduce(
@@ -475,6 +478,7 @@ const update = async (req, res) => {
           model: Users,
           where: { role: 'STUDENT' },
           attributes: ["id"],
+          required: false
         },
       ],
     })
@@ -1377,7 +1381,7 @@ const getAllAdmin = async (req, res) => {
   }
 };
 
-const getAllForTeacher = async (req, res) => {
+const getAllGroupForTeacher = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { language } = req.query;
@@ -1404,16 +1408,55 @@ const getAllForTeacher = async (req, res) => {
       ],
     });
 
+    let creatorGroup = await Groups.findAll({
+      where: {
+        creatorId: userId,
+      },
+      include: [
+        {
+          model: Users,
+          where: { role: 'STUDENT' },
+          attributes: ['firstName', 'lastName', 'image', 'role'],
+        },
+      ],
+      attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt"]
+    });
+
+    creatorGroup = creatorGroup.reduce((aggr, value) => {
+      const firstGroup = value;
+      if (!firstGroup) return aggr;
+
+      const group = firstGroup.toJSON();
+      const users = group?.Users || [];
+
+      group.usersCount = users.length;
+      group.GroupsPerUsers = users.slice(0, 3);
+      delete group?.Users;
+
+      aggr.push(group);
+      return aggr;
+    }, [])
+
     group = group.reduce((aggr, value) => {
-      value.GroupCourse.Groups[0].setDataValue('usersCount', value.GroupCourse.Groups[0].Users.length);
-      const users = value.GroupCourse.Groups[0].Users.slice(0, 3)
-      value.GroupCourse.Groups[0].setDataValue('GroupsPerUsers', users);
-      delete value.GroupCourse.Groups[0].dataValues.Users
-      aggr.push(value.GroupCourse.Groups[0])
-      return aggr
+      const firstGroup = value?.GroupCourse?.Groups?.[0];
+      if (!firstGroup) return aggr; // Skip if no group exists
+
+      const group = firstGroup.toJSON();
+      const users = group?.Users || []; // Default to empty array if Users is undefined
+
+      group.usersCount = users.length; // Count the number of users
+      group.GroupsPerUsers = users.slice(0, 3); // Get first 3 users
+      delete group?.Users; // Remove Users from dataValues
+
+      aggr.push(group);
+      return aggr;
     }, []);
 
-    return res.status(200).json({ success: true, group });
+    const resData = Array.from(
+      new Map([...creatorGroup, ...group].map(e => [e.id, e])).values()
+    );
+
+    return res.status(200).json({ success: true, group: resData });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something Went Wrong !' });
@@ -1440,5 +1483,5 @@ module.exports = {
   deleteMember,
   groupInfo,
   getAllAdmin,
-  getAllForTeacher
+  getAllGroupForTeacher
 };

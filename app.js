@@ -60,7 +60,9 @@ app.use(express.static(path.resolve(__dirname, 'messageFiles')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'messageFiles')));
 
-app.use(fileUpload({}));
+app.use(fileUpload({
+  limits: { fileSize: 400 * 1024 * 1024 }  //400MB
+}));
 
 app.use('/', indexRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
