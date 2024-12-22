@@ -398,4 +398,5 @@ module.exports = {
   getUsers,
   remove,
   update,
+  getUsersForTeacher
 };

@@ -17,13 +17,14 @@ const allowedFormats = [
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
   'application/json', //.json files
   'text/plain',
+  "application/xml"
 ];
 
 router.post('/file', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), async (req, res) => {
   try {
     const { file } = req.files;
 
-    const allowedExtensions = ['.sql'];
+    const allowedExtensions = ['.sql', '.jmx'];
     if (!file.name) {
       return res.status(400).json({ success: false, message: 'File name is missing.' });
     }

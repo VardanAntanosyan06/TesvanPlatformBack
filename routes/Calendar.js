@@ -9,6 +9,7 @@ router.get("/findOne/:id", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controlle
 router.get("/findByDay", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controller.findByDay);
 router.get("/findByWeek", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controller.findByWeek);
 router.get("/getUsers", checkAuth(["TEACHER", "ADMIN"]), controller.getUsers);
+router.get("/getUsersForTeacher", checkAuth(["TEACHER"]), controller.getUsersForTeacher);
 
 router.get("/findByMonth", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controller.findByMonth);
 router.get("/findByYear", checkAuth(["STUDENT", "TEACHER", "ADMIN"]), controller.findByYear);
