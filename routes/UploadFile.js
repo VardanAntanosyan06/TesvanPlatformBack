@@ -83,78 +83,78 @@ router.delete('/file/:fileName', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), asy
   }
 });
 
-const ffmpeg = require('fluent-ffmpeg');
-const ffmpegPath = require('ffmpeg-static');  // Use the ffmpeg-static package
+// const ffmpeg = require('fluent-ffmpeg');
+// const ffmpegPath = require('ffmpeg-static');  // Use the ffmpeg-static package
 
 
-// Set FFmpeg path to the static binary
-ffmpeg.setFfmpegPath(ffmpegPath);
+// // Set FFmpeg path to the static binary
+// ffmpeg.setFfmpegPath(ffmpegPath);
 
-// Function to sanitize filenames to avoid issues with special characters
-const sanitizeFileName = (fileName) => {
-  return fileName.replace(/[^\w\s.-]/gi, '_');  // Replace non-alphanumeric characters with underscores
-};
+// // Function to sanitize filenames to avoid issues with special characters
+// const sanitizeFileName = (fileName) => {
+//   return fileName.replace(/[^\w\s.-]/gi, '_');  // Replace non-alphanumeric characters with underscores
+// };
 
-// Route to handle video upload and compression
-router.post('/uploadVideo', async (req, res) => {
-  try {
-    // Ensure a video file is uploaded
-    const videoFile = req.files?.videoFile;
-    if (!videoFile) {
-      return res.status(400).json({ error: 'No video file uploaded' });
-    }
+// // Route to handle video upload and compression
+// router.post('/uploadVideo', async (req, res) => {
+//   try {
+//     // Ensure a video file is uploaded
+//     const videoFile = req.files?.videoFile;
+//     if (!videoFile) {
+//       return res.status(400).json({ error: 'No video file uploaded' });
+//     }
 
-    // Sanitize filenames to avoid issues with special characters
-    const sanitizedFileName = sanitizeFileName(videoFile.name);
+//     // Sanitize filenames to avoid issues with special characters
+//     const sanitizedFileName = sanitizeFileName(videoFile.name);
 
-    // Define paths for original and compressed video files
-    const uploadPath = path.join(__dirname, '..', 'uploadsVideo', `${Date.now()}-${sanitizedFileName}`);
-    const compressedPath = path.join(__dirname, '..', 'uploadsVideo', `compressed-${Date.now()}-${sanitizedFileName}`);
+//     // Define paths for original and compressed video files
+//     const uploadPath = path.join(__dirname, '..', 'uploadsVideo', `${Date.now()}-${sanitizedFileName}`);
+//     const compressedPath = path.join(__dirname, '..', 'uploadsVideo', `compressed-${Date.now()}-${sanitizedFileName}`);
 
-    // Save the original video file
-    await videoFile.mv(uploadPath);
+//     // Save the original video file
+//     await videoFile.mv(uploadPath);
 
-    // Log the uploaded file's name and size
-    console.log('Uploaded video file:', sanitizedFileName, videoFile.size);
+//     // Log the uploaded file's name and size
+//     console.log('Uploaded video file:', sanitizedFileName, videoFile.size);
 
-    // Compress the video using FFmpeg
-    await new Promise((resolve, reject) => {
-      ffmpeg(uploadPath)
-        .outputOptions([
-          '-vcodec libx264', // Video codec
-          '-crf 35',          // Quality factor (adjust as needed)
-          '-preset fast',     // Compression speed preset
-          '-s 1280x720'       // Set resolution to 720p (1280x720 pixels)
-        ])
-        .save(compressedPath)
-        .on('start', (commandLine) => {
-          console.log('FFmpeg command:', commandLine);
-        })
-        .on('end', () => {
-          console.log('Compression complete.');
-        })
-        .on('stderr', (stderr) => {
-          console.log('FFmpeg stderr:', stderr);
-        })
-        .on('error', (err, stdout, stderr) => {
-          console.error('Error during video compression:', err);
-          console.error('FFmpeg stdout:', stdout);
-          console.error('FFmpeg stderr:', stderr);
-          if (!res.headersSent) {
-            res.status(500).json({ error: 'Failed to compress video' });
-          }
-        });
+//     // Compress the video using FFmpeg
+//     await new Promise((resolve, reject) => {
+//       ffmpeg(uploadPath)
+//         .outputOptions([
+//           '-vcodec libx264', // Video codec
+//           '-crf 35',          // Quality factor (adjust as needed)
+//           '-preset fast',     // Compression speed preset
+//           '-s 1280x720'       // Set resolution to 720p (1280x720 pixels)
+//         ])
+//         .save(compressedPath)
+//         .on('start', (commandLine) => {
+//           console.log('FFmpeg command:', commandLine);
+//         })
+//         .on('end', () => {
+//           console.log('Compression complete.');
+//         })
+//         .on('stderr', (stderr) => {
+//           console.log('FFmpeg stderr:', stderr);
+//         })
+//         .on('error', (err, stdout, stderr) => {
+//           console.error('Error during video compression:', err);
+//           console.error('FFmpeg stdout:', stdout);
+//           console.error('FFmpeg stderr:', stderr);
+//           if (!res.headersSent) {
+//             res.status(500).json({ error: 'Failed to compress video' });
+//           }
+//         });
 
-    });
+//     });
 
-  } catch (error) {
-    console.error('Error:', error);
-    // Ensure only one response is sent
-    if (!res.headersSent) {
-      res.status(500).json({ error: 'An error occurred during the upload' });
-    }
-  }
-});
+//   } catch (error) {
+//     console.error('Error:', error);
+//     // Ensure only one response is sent
+//     if (!res.headersSent) {
+//       res.status(500).json({ error: 'An error occurred during the upload' });
+//     }
+//   }
+// });
 
 
 
