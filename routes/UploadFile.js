@@ -38,9 +38,10 @@ router.post('/file', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), async (req, res
     };
 
     let type = file.mimetype.split('/')[1];
-    if (fileExtension === ".sql") {
-      type = "sql"
+    if (allowedExtensions.includes(fileExtension)) {
+      type = fileExtension.split(".")[1]
     };
+    
     const fileName = uuid.v4() + '.' + type;
 
     file.mv(path.resolve(__dirname, '..', 'static', fileName));
