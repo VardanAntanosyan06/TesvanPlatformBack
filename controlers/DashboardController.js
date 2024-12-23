@@ -324,8 +324,6 @@ const getSuperAdminStatistics = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
-
-
     const admins = await Users.findAll({
       where: {
         creatorId: userId,
@@ -389,7 +387,6 @@ const getSuperAdminStatistics = async (req, res) => {
       groupCount: groups.length,
       studentCount: userIds.length
     })
-
 
   } catch (error) {
     console.log(error);

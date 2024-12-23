@@ -37,6 +37,7 @@ var GroupChatMessageRouter = require('./routes/GroupChatMessage');
 var interviewRouter = require('./routes/Interview');
 var UserRouter = require('./routes/User');
 const VideoRouter = require('./routes/Video');
+const Admin = require('./routes/Admin');
 var app = express();
 var express = require('express');
 var router = express.Router();
@@ -92,7 +93,7 @@ app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
 app.use('/api/v2/interview', interviewRouter);
 app.use('/api/v2/user', UserRouter)
 app.use('/api/v2/video', VideoRouter)
-
+app.use('./api/v2/admin', Admin)
 app.use(router.post("/payment/configidram", paymentController.paymentIdram));
 
 const port = normalizePort(process.env.PORT || '4000');
