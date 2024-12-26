@@ -1308,46 +1308,50 @@ const updateCourse = async (req, res) => {
     const usersHaveACourse = await UserCourses.findAll({ where: { GroupCourseId: courseId } });
     const userIds = [...new Set(usersHaveACourse.map((user) => user.UserId))];
     const lessonIds = Array.isArray(lessons) ? lessons : [lessons];
+    await CoursesPerLessons.destroy({
+      where: {
+        courseId,
+        lessonId: {
+          [Op.notIn]: lessonIds ? lessonIds : null
+        }
+      }
+    });
 
     const sequence = await CoursesPerLessons.findOne({ where: { courseId }, order: [['createdAt', 'DESC']] });
+    let lessonNumber = +sequence?.number
     await Promise.all(
       lessonIds.flatMap(async (lessonId, i) => {
         const homework = await HomeworkPerLesson.findOne({ where: { lessonId: lessonId } })
-
-        await CoursesPerLessons.destroy({
-          where: {
-            courseId,
-            lessonId: {
-              [Op.notIn]: lessonIds ? lessonIds : null
-            }
-          }
-        });
-        CoursesPerLessons.findOrCreate({
+        const coursePerLesson = await CoursesPerLessons.findOne({
           where: {
             courseId, lessonId
           },
-          defaults: {
-            courseId, lessonId, type, number: sequence ? +sequence.number + 1 : 1
-          }
-        }),
+        })
 
-          userIds.map(async (userId) => {
-            const user = await Users.findOne({ where: { id: userId } })
-            await UserLesson.findOrCreate({
-              where: {
-                GroupCourseId: courseId,
-                LessonId: lessonId,
-                UserId: userId,
-              },
-              defaults: {
-                GroupCourseId: courseId,
-                LessonId: lessonId,
-                points: 0,
-                attempt: 1,
-                UserId: userId,
-              },
-            });
-          })
+        if (!coursePerLesson) {
+          lessonNumber = lessonNumber + 1
+          await CoursesPerLessons.create({
+            courseId, lessonId, type, number: lessonNumber ? lessonNumber : 1
+          });
+        }
+
+        userIds.map(async (userId) => {
+          const user = await Users.findOne({ where: { id: userId } })
+          await UserLesson.findOrCreate({
+            where: {
+              GroupCourseId: courseId,
+              LessonId: lessonId,
+              UserId: userId,
+            },
+            defaults: {
+              GroupCourseId: courseId,
+              LessonId: lessonId,
+              points: 0,
+              attempt: 1,
+              UserId: userId,
+            },
+          });
+        })
       }),
     );
 
