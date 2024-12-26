@@ -93,7 +93,7 @@ app.use('/api/v2/groupChatMessage', GroupChatMessageRouter);
 app.use('/api/v2/interview', interviewRouter);
 app.use('/api/v2/user', UserRouter)
 app.use('/api/v2/video', VideoRouter)
-app.use('./api/v2/admin', Admin)
+app.use('/api/v2/admin', Admin)
 app.use(router.post("/payment/configidram", paymentController.paymentIdram));
 
 const port = normalizePort(process.env.PORT || '4000');

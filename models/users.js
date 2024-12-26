@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Users.hasOne(models.UserStatus, { foreignKey: "userId", as: "userStatus", onDelete: 'CASCADE' })
       Users.hasMany(models.Users, { foreignKey: "creatorId", as: "teachers" });
       Users.belongsTo(models.Users, { foreignKey: "creatorId", as: "admin" });
+      Users.hasMany(models.Groups, { foreignKey: "creatorId", as: "teacherGroups" })
 
     }
   }

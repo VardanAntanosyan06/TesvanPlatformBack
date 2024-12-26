@@ -1,7 +1,12 @@
 const {
   Users,
   Groups,
-  GroupsPerUsers
+  UserStatus,
+  GroupCourses,
+  ChatMessages,
+  UserLessons,
+  UserHomeworks,
+  UserPoints
 } = require('../models');
 
 const moment = require('moment');
@@ -11,6 +16,8 @@ const path = require('path');
 const { v4 } = require('uuid');
 require('dotenv').config();
 const { Op } = require('sequelize');
+const { group } = require('console');
+const { image } = require('pdfkit');
 const BCRYPT_HASH_SALT = 10;
 const mailgun = require('mailgun-js')({
   apiKey: process.env.MAILGUN_API_KEY,
@@ -130,12 +137,11 @@ const getAdmins = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
 
-    const admins = await Users.findAll({
+    let admins = await Users.findAll({
       where: {
         creatorId: userId,
         role: "ADMIN"
       },
-      attributes: ["id"],
       include: [
         {
           model: Users,
@@ -143,37 +149,81 @@ const getAdmins = async (req, res) => {
           where: {
             role: "TEACHER"
           },
-          attributes: ["id"],
+          attributes: ["id", "creatorId"]
+        },
+        {
+          model: UserStatus,
+          as: "userStatus",
+          attributes: ["isActive"],
         }
-      ]
+      ],
+      attributes: ["id", 'firstName', 'lastName', 'image', 'role'],
     });
 
-    const teacherdate = admins.reduce((aggr, value) => {
-      aggr = [...aggr, ...value.teachers]
-      return aggr;
-    }, []);
+    const adminIds = Array.from(
+      new Set(admins.map(value => value.id))
+    );
 
-    const teacherIds = Array.from(
-      new Set(teacherdate.map(value => [value.id]))
-    )
-
-    const groups = await Groups.findAll({
-      where: { creatorId: [...teacherIds, userId] },
+    const teachers = await Users.findAll({
+      where: {
+        creatorId: adminIds,
+        role: "TEACHER"
+      },
       include: [
         {
-          model: GroupsPerUsers,
-          where: {
-            userRole: "STUDENT"
-          },
-          attributes: ['id', 'userId'],
-          include: {
-            model: Users,
-            attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
-          },
-        },
+          model: Groups,
+          as: 'teacherGroups',
+          include: [
+            {
+              model: Users,
+              where: { role: 'STUDENT' },
+              attributes: ["id"],
+              required: false
+            },
+          ],
+          attributes: ["id"]
+        }
       ],
-    });
+      attributes: ["id", "creatorId"]
+    })
 
+    const adminDate = teachers.reduce((aggr, value) => {
+      if (!aggr[value.creatorId]) {
+        const uniqueGroups = Array.from(
+          new Map(value.teacherGroups.map(e => [e.id, { id: e.id, users: e.Users.length }])).values()
+        )
+        aggr[value.creatorId] = uniqueGroups
+      }
+      else {
+        const existingGroups = new Map(
+          aggr[value.creatorId].map(e => [e.id, e])
+        );
+        value.teacherGroups.forEach(e => {
+          existingGroups.set(e.id, { id: e.id, users: e.Users.length });
+        });
+        aggr[value.creatorId] = Array.from(existingGroups.values());
+      }
+      return aggr
+    }, {})
+
+    const resAdminDate = admins.reduce((aggr, value) => {
+      aggr.push({
+        id: value.id,
+        firstName: value.firstName,
+        lastName: value.lastName,
+        image: value.image,
+        teacherCount: value.teachers.length,
+        groupCount: adminDate[value.id].length,
+        userCount: adminDate[value.id].reduce((aggr, e) => { return aggr + +e.users }, 0),
+        isActive: value.userStatus.isActive
+      })
+      return aggr
+    }, [])
+
+    return res.status(200).json({
+      success: true,
+      admins: resAdminDate,
+    })
 
   } catch (error) {
     console.log(error);
@@ -181,6 +231,173 @@ const getAdmins = async (req, res) => {
   }
 };
 
+const getAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (isNaN(+id)) {
+      return res.status(400).json({ success: false, message: "Invalid ID. Must be a number." });
+    }
+
+    const admin = await Users.findOne({
+      where: { id: +id, role: "ADMIN" },
+      attributes: { exclude: ["password", "token", "isVerified", "role", "likedCourses", "tokenCreatedAt"] }
+    });
+
+    if (!admin) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin not found"
+      })
+    };
+
+    return res.status(200).json({
+      success: true,
+      admin
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
+const updateAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { firstName, lastName, email, phoneNumber, birthday, gender, city, country } = req.body;
+
+    if (isNaN(+id)) {
+      return res.status(400).json({ success: false, message: "Invalid ID. Must be a number." });
+    };
+
+    const updateDate = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      birthday,
+      gender,
+      city,
+      country
+    };
+
+    const [update] = await Users.update(
+      updateDate,
+      {
+        where: { id: +id }
+      }
+    );
+
+    if (update === 0) {
+      return res.status(204).json({ success: true, message: 'Nothing has changed' });
+    };
+
+    return res.status(200).json({
+      success: true,
+      message: "Admin updated"
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
+const deleteAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (isNaN(+id)) {
+      return res.status(400).json({ success: false, message: "Invalid ID. Must be a number." });
+    }
+
+    const teachers = await Users.findAll({
+      where: {
+        creatorId: id,
+        role: "TEACHER"
+      },
+      attributes: ["id", "creatorId"]
+    });
+
+    const teacherIds = teachers.map(teacher => teacher.id);
+
+    const groupCourses = await GroupCourses.findAll({
+      where: {
+        creatorId: [...teacherIds, id]
+      },
+      attributes: ["id"]
+    });
+
+    const groupCourseIds = groupCourses.map(course => course.id);
+
+    const transaction = await sequelize.transaction();
+    try {
+      await UserHomeworks.destroy({
+        where: { GroupCourseId: groupCourseIds },
+        transaction
+      });
+
+      await UserPoints.destroy({
+        where: { courseId: groupCourseIds },
+        transaction
+      });
+
+      await UserLessons.destroy({
+        where: { UserId: id },
+        transaction
+      });
+
+      await UserCourses.destroy({
+        where: { GroupCourseId: groupCourseIds },
+        transaction
+      });
+
+      await ChatMessages.destroy({
+        where: {
+          [Op.or]: [{ senderId: id }, { receiverId: id }]
+        },
+        transaction
+      });
+
+      await GroupCourses.destroy({
+        where: { creatorId: [...teacherIds, id] },
+        transaction
+      });
+
+      const deleteAdmin = await Users.destroy({
+        where: { id: +id },
+        transaction
+      });
+
+      if (deleteAdmin === 0) {
+        await transaction.rollback();
+        return res.status(404).json({ success: false, message: "No admin found to delete." });
+      }
+
+      // Commit the transaction
+      await transaction.commit();
+
+      return res.status(200).json({
+        success: true,
+        message: "Admin deleted successfully."
+      });
+
+    } catch (error) {
+      // Rollback transaction if any error occurs
+      await transaction.rollback();
+      console.error(error);
+      return res.status(500).json({ message: 'Something went wrong while deleting the admin.' });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
 module.exports = {
-  createAdmin
+  createAdmin,
+  getAdmins,
+  getAdmin,
+  updateAdmin,
+  deleteAdmin
 }

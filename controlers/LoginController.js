@@ -136,6 +136,7 @@ const LoginUsers = async (req, res) => {
         const payment = await Payment.findAll({
           where: {
             adminId: User.creatorId,
+            userId: User.id,
             status: "Success"
           },
           order: [["id", "DESC"]]
@@ -159,6 +160,7 @@ const LoginUsers = async (req, res) => {
         const payment = await Payment.findAll({
           where: {
             adminId: admin.creatorId,
+            userId: admin.id,
             status: "Success"
           },
           order: [["id", "DESC"]]
@@ -177,6 +179,41 @@ const LoginUsers = async (req, res) => {
             }
           }
         )
+      } else if (User.role === "SUPERADMIN") {
+        async function payment(admin) {
+          const payment = await Payment.findAll({
+            where: {
+              adminId: User.id,
+              userId: admin.id,
+              status: "Success"
+            },
+            order: [["id", "DESC"]]
+          });
+          const isActive = paymentIsActive(payment)
+          User.userStatus.isActive = isActive
+          await UserStatus.update(
+            {
+              isActive
+            },
+            {
+              where: {
+                userId: admin.id
+              }
+            }
+          )
+        };
+
+        const admins = await Users.findAll({
+          where: {
+            creatorId: User.id,
+            role: "ADMIN"
+          },
+          attributes: ["id", 'firstName', 'lastName', 'image', 'role'],
+        });
+
+        admins.forEach(async element => {
+          payment(element)
+        });
       };
 
 
@@ -449,6 +486,7 @@ const authMe = async (req, res) => {
       const payment = await Payment.findAll({
         where: {
           adminId: User.creatorId,
+          userId: id,
           status: "Success"
         },
         order: [["id", "DESC"]]
@@ -472,6 +510,7 @@ const authMe = async (req, res) => {
       const payment = await Payment.findAll({
         where: {
           adminId: admin.creatorId,
+          userId: admin.id,
           status: "Success"
         },
         order: [["id", "DESC"]]
@@ -488,6 +527,43 @@ const authMe = async (req, res) => {
           }
         }
       )
+    } else if (User.role === "SUPERADMIN") {
+      async function payment(admin) {
+        const payment = await Payment.findAll({
+          where: {
+            adminId: id,
+            userId: admin.id,
+            status: "Success"
+          },
+          order: [["id", "DESC"]]
+        });
+        const isActive = paymentIsActive(payment)
+        User.userStatus.isActive = isActive
+        UserStatus.update(
+          {
+            isActive
+          },
+          {
+            where: {
+              userId: admin.id
+            }
+          }
+        )
+      };
+
+      const admins = await Users.findAll({
+        where: {
+          creatorId: id,
+          role: "ADMIN"
+        },
+        attributes: ["id", 'firstName', 'lastName', 'image', 'role'],
+      });
+
+      admins.forEach(async element => {
+        payment(element)
+      });
+
+
     };
 
     const oneMonthInSeconds = 30 * 24 * 60 * 60;
