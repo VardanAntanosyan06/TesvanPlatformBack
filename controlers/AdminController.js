@@ -2,12 +2,15 @@ const {
   Users,
   Groups,
   UserStatus,
-  GroupCourses,
   ChatMessages,
-  UserLessons,
-  UserHomeworks,
-  UserPoints
+  UserLesson,
+  UserHomework,
+  UserPoints,
+  UserCourses
 } = require('../models');
+const { sequelize } = require('../models');
+const Sequelize = require('sequelize')
+
 
 const moment = require('moment');
 const bcrypt = require('bcrypt');
@@ -321,51 +324,38 @@ const deleteAdmin = async (req, res) => {
 
     const teacherIds = teachers.map(teacher => teacher.id);
 
-    const groupCourses = await GroupCourses.findAll({
-      where: {
-        creatorId: [...teacherIds, id]
-      },
-      attributes: ["id"]
-    });
-
-    const groupCourseIds = groupCourses.map(course => course.id);
-
     const transaction = await sequelize.transaction();
     try {
-      await UserHomeworks.destroy({
-        where: { GroupCourseId: groupCourseIds },
-        transaction
-      });
 
       await UserPoints.destroy({
-        where: { courseId: groupCourseIds },
+        where: { userId: [+id, ...teacherIds] },
         transaction
       });
 
-      await UserLessons.destroy({
-        where: { UserId: id },
+      await UserHomework.destroy({
+        where: { UserId: [+id, ...teacherIds] },
+        transaction
+      });
+
+      await UserLesson.destroy({
+        where: { UserId: [+id, ...teacherIds] },
         transaction
       });
 
       await UserCourses.destroy({
-        where: { GroupCourseId: groupCourseIds },
+        where: { UserId: [+id, ...teacherIds] },
         transaction
       });
 
       await ChatMessages.destroy({
         where: {
-          [Op.or]: [{ senderId: id }, { receiverId: id }]
+          [Op.or]: [{ senderId: [+id, ...teacherIds] }, { receiverId: [+id, ...teacherIds] }]
         },
         transaction
       });
 
-      await GroupCourses.destroy({
-        where: { creatorId: [...teacherIds, id] },
-        transaction
-      });
-
       const deleteAdmin = await Users.destroy({
-        where: { id: +id },
+        where: { id: [+id, ...teacherIds] },
         transaction
       });
 

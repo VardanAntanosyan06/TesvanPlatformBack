@@ -586,18 +586,18 @@ const createLesson = async (req, res) => {
       creatorId: userId
     });
 
-      await Presentations.create({
-        title_en: presentationTitle_en,
-        url_en: fileNameEn,
-        description_en: presentationDescription_en,
-        title_ru: presentationTitle_ru,
-        url_ru: fileNameRu,
-        description_ru: presentationDescription_ru,
-        title_am: presentationTitle_am,
-        url_am: fileNameAm,
-        description_am: presentationDescription_am,
-        lessonId,
-      });
+    await Presentations.create({
+      title_en: presentationTitle_en,
+      url_en: fileNameEn,
+      description_en: presentationDescription_en,
+      title_ru: presentationTitle_ru,
+      url_ru: fileNameRu,
+      description_ru: presentationDescription_ru,
+      title_am: presentationTitle_am,
+      url_am: fileNameAm,
+      description_am: presentationDescription_am,
+      lessonId,
+    });
 
     if (homeworkId.length > 0) {
       for (const id of homeworkId) {
@@ -671,6 +671,18 @@ const deleteLesson = async (req, res) => {
         creatorId: userId
       }
     });
+
+    await UserLesson.destroy({
+      where: {
+        LessonId: id,
+      }
+    });
+
+    await CoursesPerLessons.destroy({
+      where: {
+        lessonId: id,
+      }
+    })
     if (deleteLesson === 0) return res.status(400).json({ success: false, message: "You do not have permission to delete this lessson." })
 
     return res.status(200).json({ success: true });

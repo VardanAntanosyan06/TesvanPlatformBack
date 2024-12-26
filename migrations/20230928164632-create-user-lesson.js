@@ -20,18 +20,10 @@ module.exports = {
       UserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
       },
       LessonId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
-          model: "Lessons",
-          key: "id",
-        },
       },
       points: {
         type: Sequelize.DECIMAL,

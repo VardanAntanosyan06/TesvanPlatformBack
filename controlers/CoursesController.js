@@ -681,8 +681,8 @@ const getUserCourse = async (req, res) => {
       // console.log();
       e = e.toJSON();
       delete e.dataValues;
-      e['title'] = e.Lesson.title;
-      e['description'] = e.Lesson.description;
+      e['title'] = e.Lesson?.title;
+      e['description'] = e.Lesson?.description;
       e['number'] = e.number;
       e['isOpen'] = true;
       delete e.Lessons;
