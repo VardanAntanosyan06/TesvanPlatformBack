@@ -3,14 +3,15 @@ var router = express.Router();
 
 const controller = require("../controlers/PaymentController");
 const checkAuth = require("../middleware/checkAuth");
+const checkAuthAdminPayment = require("../middleware/checkAuthAdminPayment")
 
 router.post("/payUrl", checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controller.paymentUrl);
 
-router.post("/paymentUrlForAdmin", checkAuth(["ADMIN"]), controller.paymentUrlForAdmin);
+router.post("/paymentUrlForAdmin", checkAuthAdminPayment(["ADMIN"]), controller.paymentUrlForAdmin);
 
 router.post("/buy", controller.paymentArca);
 
-router.post("/paymentArcaForAdmin", checkAuth(["ADMIN"]), controller.paymentArcaForAdmin);
+router.post("/paymentArcaForAdmin", checkAuthAdminPayment(["ADMIN"]), controller.paymentArcaForAdmin);
 
 router.get("/getUserPayment", checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controller.getUserPayment);
 
