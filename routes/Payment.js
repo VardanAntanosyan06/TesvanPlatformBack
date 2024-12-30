@@ -27,6 +27,10 @@ router.get("/paymentCount", checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controll
 router.get('/downloadInvoice', checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controller.downloadInvoice)
 
 router.get('/getAllSubscriptionsForSuperAdmin', checkAuth(["SUPERADMIN"]), controller.getAllSubscriptionsForSuperAdmin)
+
+router.get('/getAdminPaymentsForSuperAdmin', checkAuth(["SUPERADMIN"]), controller.getAdminPaymentsForSuperAdmin)
+
+
 // router.post("/monthlyPaymentIdram", controller.monthlyPaymentIdram, controller.paymentIdram);
 
 // router.post("/monthlyPaymentArca", controller.monthlyPaymentArca, controller.paymentArca);

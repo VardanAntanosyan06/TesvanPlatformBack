@@ -14,88 +14,88 @@ const { v4 } = require('uuid');
 const { UserRegistartionSendEmail } = require('../controlers/RegisterController');
 
 
-//checking payment date for Admin Teacher
-function paymentIsActive(payment) {
-  function isOneYearPassed(updatedAt) {
-    // Add one year to the updatedAt date
-    const oneYearLater = new Date();
-    oneYearLater.setFullYear(oneYearLater.getFullYear() - 1);
+// //checking payment date for Admin Teacher
+// function paymentIsActive(payment) {
+//   function isOneYearPassed(updatedAt) {
+//     // Add one year to the updatedAt date
+//     const oneYearLater = new Date();
+//     oneYearLater.setFullYear(oneYearLater.getFullYear() - 1);
 
-    // Compare with the current date
-    return new Date(updatedAt) >= oneYearLater;
-  };
+//     // Compare with the current date
+//     return new Date(updatedAt) >= oneYearLater;
+//   };
 
-  function isOneMonthPassed(updatedAt) {
-    // Add one month to the updatedAt date
-    // const oneMonthLater = new Date("2026-02-30 10:00:00.765+00");
-    const oneMonthLater = new Date();
-    oneMonthLater.setMonth(oneMonthLater.getMonth() - 1);
-    // Compare with the current date
-    return new Date(updatedAt) >= oneMonthLater;
-  }
+//   function isOneMonthPassed(updatedAt) {
+//     // Add one month to the updatedAt date
+//     // const oneMonthLater = new Date("2026-02-30 10:00:00.765+00");
+//     const oneMonthLater = new Date();
+//     oneMonthLater.setMonth(oneMonthLater.getMonth() - 1);
+//     // Compare with the current date
+//     return new Date(updatedAt) >= oneMonthLater;
+//   }
 
-  function dateDifferenceInDays(date1, date2) {
-    const diffInTime = date1.getTime() - date2.getTime();
-    const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
-    return diffInDays;
-  }
+//   function dateDifferenceInDays(date1, date2) {
+//     const diffInTime = date1.getTime() - date2.getTime();
+//     const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
+//     return diffInDays;
+//   }
 
-  if (payment.length === 0) {
-    return false
-  } else if (payment.length === 1) {
-    if (payment[0].type === "unlimit") {
-      return true
-    } else if (payment[0].type === "full") {
-      return isOneYearPassed(payment[0].updatedAt)
-    } else if (payment[0].type === "monthly") {
-      return isOneMonthPassed(payment[0].updatedAt)
-    };
-  } else if (payment[0].type === "unlimit") {
-    return true
-  } else if (payment[0].type === "monthly") {
-    if (payment[1].type === "monthly") {
-      const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
-      if (daysOlder >= 30) {
-        return isOneMonthPassed(payment[0].updatedAt)
-      } else {
-        const paymentDate = new Date(payment[0].updatedAt);
-        paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
-        return isOneMonthPassed(paymentDate);
-      }
-    } else if (payment[1].type === "full") {
-      const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
-      if (daysOlder >= 365) {
-        return isOneMonthPassed(payment[0].updatedAt)
-      } else {
-        const paymentDate = new Date(payment[0].updatedAt);
-        paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
-        return isOneMonthPassed(paymentDate);
-      }
-    };
-  } else if (payment[0].type === "full") {
-    if (payment[1].type === "monthly") {
-      const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
-      if (daysOlder >= 30) {
-        return isOneYearPassed(payment[0].updatedAt);
-      } else {
-        const paymentDate = new Date(payment[0].updatedAt);
-        paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
-        return isOneYearPassed(paymentDate);
-      };
-    } else if (payment[1].type === "full") {
-      const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
-      if (daysOlder >= 365) {
-        return isOneYearPassed(payment[0].updatedAt);
-      } else {
-        const paymentDate = new Date(payment[0].updatedAt);
-        paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
-        return isOneYearPassed(payment[0].updatedAt);
-      }
-    }
-  } else {
-    return false
-  };
-}
+//   if (payment.length === 0) {
+//     return false
+//   } else if (payment.length === 1) {
+//     if (payment[0].type === "unlimit") {
+//       return true
+//     } else if (payment[0].type === "full") {
+//       return isOneYearPassed(payment[0].updatedAt)
+//     } else if (payment[0].type === "monthly") {
+//       return isOneMonthPassed(payment[0].updatedAt)
+//     };
+//   } else if (payment[0].type === "unlimit") {
+//     return true
+//   } else if (payment[0].type === "monthly") {
+//     if (payment[1].type === "monthly") {
+//       const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
+//       if (daysOlder >= 30) {
+//         return isOneMonthPassed(payment[0].updatedAt)
+//       } else {
+//         const paymentDate = new Date(payment[0].updatedAt);
+//         paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
+//         return isOneMonthPassed(paymentDate);
+//       }
+//     } else if (payment[1].type === "full") {
+//       const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
+//       if (daysOlder >= 365) {
+//         return isOneMonthPassed(payment[0].updatedAt)
+//       } else {
+//         const paymentDate = new Date(payment[0].updatedAt);
+//         paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
+//         return isOneMonthPassed(paymentDate);
+//       }
+//     };
+//   } else if (payment[0].type === "full") {
+//     if (payment[1].type === "monthly") {
+//       const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
+//       if (daysOlder >= 30) {
+//         return isOneYearPassed(payment[0].updatedAt);
+//       } else {
+//         const paymentDate = new Date(payment[0].updatedAt);
+//         paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
+//         return isOneYearPassed(paymentDate);
+//       };
+//     } else if (payment[1].type === "full") {
+//       const daysOlder = dateDifferenceInDays(payment[0].updatedAt, payment[1].updatedAt)
+//       if (daysOlder >= 365) {
+//         return isOneYearPassed(payment[0].updatedAt);
+//       } else {
+//         const paymentDate = new Date(payment[0].updatedAt);
+//         paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
+//         return isOneYearPassed(payment[0].updatedAt);
+//       }
+//     }
+//   } else {
+//     return false
+//   };
+// }
 
 const LoginUsers = async (req, res) => {
   try {
@@ -112,7 +112,7 @@ const LoginUsers = async (req, res) => {
         {
           model: UserStatus,
           as: "userStatus",
-          attributes: ["isActive"],
+          attributes: ["isActive", "endDate"],
         }
       ],
     });
@@ -132,21 +132,96 @@ const LoginUsers = async (req, res) => {
       });
       User.setDataValue('groupChats', groupChats);
 
+      // if (User.role === "ADMIN") {
+      //   const payment = await Payment.findAll({
+      //     where: {
+      //       adminId: User.creatorId,
+      //       userId: User.id,
+      //       status: "Success"
+      //     },
+      //     order: [["id", "DESC"]]
+      //   });
+      //   const isActive = paymentIsActive(payment)
+      //   User.userStatus.isActive = isActive
+      //   UserStatus.update(
+      //     {
+      //       isActive
+      //     },
+      //     {
+      //       where: {
+      //         userId: User.id
+      //       }
+      //     }
+      //   )
+      // } else if (User.role === "TEACHER") {
+      //   const admin = await Users.findOne({
+      //     where: { id: User.creatorId },
+      //   });
+      //   const payment = await Payment.findAll({
+      //     where: {
+      //       adminId: admin.creatorId,
+      //       userId: admin.id,
+      //       status: "Success"
+      //     },
+      //     order: [["id", "DESC"]]
+      //   });
+      //   const isActive = paymentIsActive(payment)
+      //   User.userStatus.isActive = isActive
+      //   console.log(isActive, 44);
+
+      //   UserStatus.update(
+      //     {
+      //       isActive
+      //     },
+      //     {
+      //       where: {
+      //         userId: User.id
+      //       }
+      //     }
+      //   )
+      // } else if (User.role === "SUPERADMIN") {
+      //   async function payment(admin) {
+      //     const payment = await Payment.findAll({
+      //       where: {
+      //         adminId: User.id,
+      //         userId: admin.id,
+      //         status: "Success"
+      //       },
+      //       order: [["id", "DESC"]]
+      //     });
+      //     const isActive = paymentIsActive(payment)
+      //     User.userStatus.isActive = isActive
+      //     await UserStatus.update(
+      //       {
+      //         isActive
+      //       },
+      //       {
+      //         where: {
+      //           userId: admin.id
+      //         }
+      //       }
+      //     )
+      //   };
+
+      //   const admins = await Users.findAll({
+      //     where: {
+      //       creatorId: User.id,
+      //       role: "ADMIN"
+      //     },
+      //     attributes: ["id", 'firstName', 'lastName', 'image', 'role'],
+      //   });
+
+      //   admins.forEach(async element => {
+      //     payment(element)
+      //   });
+      // };
+
+      let isActive
       if (User.role === "ADMIN") {
-        const payment = await Payment.findAll({
-          where: {
-            adminId: User.creatorId,
-            userId: User.id,
-            status: "Success"
-          },
-          order: [["id", "DESC"]]
-        });
-        const isActive = paymentIsActive(payment)
-        User.userStatus.isActive = isActive
+        isActive = new Date() <= new Date(User.userStatus.dataValues.endDate);
+        User.userStatus.isActive = isActive;
         UserStatus.update(
-          {
-            isActive
-          },
+          { isActive },
           {
             where: {
               userId: User.id
@@ -156,70 +231,43 @@ const LoginUsers = async (req, res) => {
       } else if (User.role === "TEACHER") {
         const admin = await Users.findOne({
           where: { id: User.creatorId },
+          include: [
+            {
+              model: UserStatus,
+              as: "userStatus",
+              attributes: ["isActive", "endDate"],
+            }
+          ],
         });
-        const payment = await Payment.findAll({
-          where: {
-            adminId: admin.creatorId,
-            userId: admin.id,
-            status: "Success"
-          },
-          order: [["id", "DESC"]]
-        });
-        const isActive = paymentIsActive(payment)
-        User.userStatus.isActive = isActive
-        console.log(isActive, 44);
-
+        isActive = new Date() <= new Date(admin.userStatus.dataValues.endDate);
+        admin.userStatus.isActive = isActive;
         UserStatus.update(
-          {
-            isActive
-          },
+          { isActive },
           {
             where: {
-              userId: User.id
+              userId: admin.id
             }
           }
         )
+        User.setDataValue('userStatus', admin.userStatus);
       } else if (User.role === "SUPERADMIN") {
-        async function payment(admin) {
-          const payment = await Payment.findAll({
-            where: {
-              adminId: User.id,
-              userId: admin.id,
-              status: "Success"
-            },
-            order: [["id", "DESC"]]
-          });
-          const isActive = paymentIsActive(payment)
-          User.userStatus.isActive = isActive
-          await UserStatus.update(
-            {
-              isActive
-            },
-            {
-              where: {
-                userId: admin.id
-              }
-            }
-          )
-        };
-
-        const admins = await Users.findAll({
-          where: {
-            creatorId: User.id,
-            role: "ADMIN"
+        await UserStatus.update(
+          {
+            isActive: false,
           },
-          attributes: ["id", 'firstName', 'lastName', 'image', 'role'],
-        });
-
-        admins.forEach(async element => {
-          payment(element)
-        });
-      };
-
+          {
+            where: {
+              endDate: {
+                [Op.lt]: new Date(),
+              },
+            },
+          }
+        );
+      }
 
       const oneMonthInSeconds = 30 * 24 * 60 * 60;
       User.token = jwt.sign(
-        { user_id: User.id, email: User.email, role: User.role, isActive: User.userStatus?.isActive },
+        { user_id: User.id, email: User.email, role: User.role, isActive: isActive },
         process.env.SECRET,
         {
           expiresIn: oneMonthInSeconds // Sets expiration to 1 month
@@ -463,7 +511,7 @@ const authMe = async (req, res) => {
         {
           model: UserStatus,
           as: "userStatus",
-          attributes: ["isActive"],
+          attributes: ["isActive", "endDate"],
         }
       ],
       attributes: ["id", "firstName", "lastName", "image", "email", "role", "creatorId"]
@@ -482,93 +530,142 @@ const authMe = async (req, res) => {
     User.setDataValue('groupChats', groupChats);
     await User.save();
 
+    // if (User.role === "ADMIN") {
+    //   const payment = await Payment.findAll({
+    //     where: {
+    //       adminId: User.creatorId,
+    //       userId: id,
+    //       status: "Success"
+    //     },
+    //     order: [["id", "DESC"]]
+    //   });
+    //   const isActive = paymentIsActive(payment)
+    //   User.userStatus.isActive = isActive
+    //   UserStatus.update(
+    //     {
+    //       isActive
+    //     },
+    //     {
+    //       where: {
+    //         userId: id
+    //       }
+    //     }
+    //   )
+    // } else if (User.role === "TEACHER") {
+    //   const admin = await Users.findOne({
+    //     where: { id: User.creatorId },
+    //   });
+    //   const payment = await Payment.findAll({
+    //     where: {
+    //       adminId: admin.creatorId,
+    //       userId: admin.id,
+    //       status: "Success"
+    //     },
+    //     order: [["id", "DESC"]]
+    //   });
+    //   const isActive = paymentIsActive(payment)
+    //   User.userStatus.isActive = isActive
+    //   UserStatus.update(
+    //     {
+    //       isActive
+    //     },
+    //     {
+    //       where: {
+    //         userId: id
+    //       }
+    //     }
+    //   )
+    // } else if (User.role === "SUPERADMIN") {
+    //   async function payment(admin) {
+    //     const payment = await Payment.findAll({
+    //       where: {
+    //         adminId: id,
+    //         userId: admin.id,
+    //         status: "Success"
+    //       },
+    //       order: [["id", "DESC"]]
+    //     });
+    //     const isActive = paymentIsActive(payment)
+    //     User.userStatus.isActive = isActive
+    //     UserStatus.update(
+    //       {
+    //         isActive
+    //       },
+    //       {
+    //         where: {
+    //           userId: admin.id
+    //         }
+    //       }
+    //     )
+    //   };
+
+    //   const admins = await Users.findAll({
+    //     where: {
+    //       creatorId: id,
+    //       role: "ADMIN"
+    //     },
+    //     attributes: ["id", 'firstName', 'lastName', 'image', 'role'],
+    //   });
+
+    //   admins.forEach(async element => {
+    //     payment(element)
+    //   });
+
+
+    // };
+
+
+    let isActive
     if (User.role === "ADMIN") {
-      const payment = await Payment.findAll({
-        where: {
-          adminId: User.creatorId,
-          userId: id,
-          status: "Success"
-        },
-        order: [["id", "DESC"]]
-      });
-      const isActive = paymentIsActive(payment)
-      User.userStatus.isActive = isActive
+      isActive = new Date() <= new Date(User.userStatus.dataValues.endDate);
+      User.userStatus.isActive = isActive;
       UserStatus.update(
-        {
-          isActive
-        },
+        { isActive },
         {
           where: {
-            userId: id
+            userId: User.id
           }
         }
       )
     } else if (User.role === "TEACHER") {
       const admin = await Users.findOne({
         where: { id: User.creatorId },
+        include: [
+          {
+            model: UserStatus,
+            as: "userStatus",
+            attributes: ["isActive", "endDate"],
+          }
+        ],
       });
-      const payment = await Payment.findAll({
-        where: {
-          adminId: admin.creatorId,
-          userId: admin.id,
-          status: "Success"
-        },
-        order: [["id", "DESC"]]
-      });
-      const isActive = paymentIsActive(payment)
-      User.userStatus.isActive = isActive
+      isActive = new Date() <= new Date(admin.userStatus.dataValues.endDate);
+      admin.userStatus.isActive = isActive;
       UserStatus.update(
-        {
-          isActive
-        },
+        { isActive },
         {
           where: {
-            userId: id
+            userId: admin.id
           }
         }
       )
+      User.setDataValue('userStatus', admin.userStatus);
     } else if (User.role === "SUPERADMIN") {
-      async function payment(admin) {
-        const payment = await Payment.findAll({
-          where: {
-            adminId: id,
-            userId: admin.id,
-            status: "Success"
-          },
-          order: [["id", "DESC"]]
-        });
-        const isActive = paymentIsActive(payment)
-        User.userStatus.isActive = isActive
-        UserStatus.update(
-          {
-            isActive
-          },
-          {
-            where: {
-              userId: admin.id
-            }
-          }
-        )
-      };
-
-      const admins = await Users.findAll({
-        where: {
-          creatorId: id,
-          role: "ADMIN"
+      await UserStatus.update(
+        {
+          isActive: false,
         },
-        attributes: ["id", 'firstName', 'lastName', 'image', 'role'],
-      });
-
-      admins.forEach(async element => {
-        payment(element)
-      });
-
-
-    };
-
+        {
+          where: {
+            endDate: {
+              [Op.lt]: new Date(),
+            },
+          },
+        }
+      );
+    }
     const oneMonthInSeconds = 30 * 24 * 60 * 60;
     User.token = jwt.sign(
-      { user_id: User.id, email: User.email, role: User.role, isActive: User.userStatus?.isActive },
+      { user_id: User.id, email: User.email, role: User.role, isActive: isActive },
       process.env.SECRET,
       {
         expiresIn: oneMonthInSeconds // Sets expiration to 1 month

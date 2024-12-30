@@ -26,8 +26,6 @@ const { Op } = require('sequelize');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
-
-
 const sequelize = require('sequelize');
 const { atob } = require('buffer');
 
@@ -119,6 +117,28 @@ const paymentArcaForAdmin = async (req, res) => {
         userId: payment.userId,
       }
     });
+
+    if (!adminStatus.isActive) {
+      if (payment.type === "monthly") {
+        const oneMonthLater = new Date();
+        oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+        adminStatus.endDate = oneMonthLater;
+      } else if (payment.type === "full") {
+        const oneYearLater = new Date();
+        oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+        adminStatus.endDate = oneYearLater;
+      }
+    } else {
+      if (payment.type === "monthly") {
+        const oneMonthLater = new Date(adminStatus.endDate);
+        oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+        adminStatus.endDate = oneMonthLater;
+      } else if (payment.type === "full") {
+        const oneYearLater = new Date(adminStatus.endDate);
+        oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+        adminStatus.endDate = oneYearLater;
+      }
+    }
     adminStatus.isActive = true;
     await adminStatus.save()
 
@@ -154,88 +174,101 @@ const getAdminPayment = async (req, res) => {
 const nextPaymentAdmin = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const adminPayments = await Payment.findAll({
-      where: {
-        userId
-      },
-      order: [['updatedAt', 'DESC']]
-    })
+    // const adminPayments = await Payment.findAll({
+    //   where: {
+    //     userId
+    //   },
+    //   order: [['updatedAt', 'DESC']]
+    // })
 
-    let nextPaymentDate
+    // let nextPaymentDate
 
-    function dateDifferenceInDays(date1, date2) {
-      const diffInTime = date1.getTime() - date2.getTime();
-      const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
-      return diffInDays;
-    }
+    // function dateDifferenceInDays(date1, date2) {
+    //   const diffInTime = date1.getTime() - date2.getTime();
+    //   const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
+    //   return diffInDays;
+    // }
 
-    if (adminPayments[0].type === "monthly") {
-      if (adminPayments[1].type === "monthly") {
-        const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
-        if (daysOlder >= 30) {
-          const paymentDate = new Date(adminPayments[0].updatedAt);
-          paymentDate.setMonth(paymentDate.getMonth() + 1);
-          nextPaymentDate = paymentDate
-        } else {
-          const paymentDate = new Date(adminPayments[0].updatedAt);
-          paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
-          paymentDate.setMonth(paymentDate.getMonth() + 1);
-          nextPaymentDate = paymentDate
+    // if (adminPayments[0].type === "monthly") {
+    //   if (adminPayments[1].type === "monthly") {
+    //     const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
+    //     if (daysOlder >= 30) {
+    //       const paymentDate = new Date(adminPayments[0].updatedAt);
+    //       paymentDate.setMonth(paymentDate.getMonth() + 1);
+    //       nextPaymentDate = paymentDate
+    //     } else {
+    //       const paymentDate = new Date(adminPayments[0].updatedAt);
+    //       paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
+    //       paymentDate.setMonth(paymentDate.getMonth() + 1);
+    //       nextPaymentDate = paymentDate
+    //     }
+    //   } else if (adminPayments[1].type === "full") {
+    //     const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
+    //     if (daysOlder >= 365) {
+    //       const paymentDate = new Date(adminPayments[0].updatedAt);
+    //       paymentDate.setMonth(paymentDate.getMonth() + 1);
+    //       nextPaymentDate = paymentDate
+    //     } else {
+    //       const paymentDate = new Date(adminPayments[0].updatedAt);
+    //       paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
+    //       paymentDate.setMonth(paymentDate.getMonth() + 1);
+    //       nextPaymentDate = paymentDate
+    //     }
+    //   }
+    // } else if (adminPayments[0].type === "full") {
+    //   if (adminPayments[1].type === "monthly") {
+    //     const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
+    //     if (daysOlder >= 30) {
+    //       const paymentDate = new Date(adminPayments[0].updatedAt);
+    //       paymentDate.setFullYear(paymentDate.getFullYear() + 1);
+    //       nextPaymentDate = paymentDate
+    //     } else {
+    //       const paymentDate = new Date(adminPayments[0].updatedAt);
+    //       paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
+    //       paymentDate.setFullYear(paymentDate.getFullYear() + 1);
+    //       nextPaymentDate = paymentDate
+    //     }
+    //   } else if (adminPayments[1].type === "full") {
+    //     const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt);
+    //     if (daysOlder >= 365) {
+    //       const paymentDate = new Date(adminPayments[0].updatedAt);
+    //       paymentDate.setFullYear(paymentDate.getFullYear() + 1);
+    //       nextPaymentDate = paymentDate
+    //     } else {
+    //       const paymentDate = new Date(adminPayments[0].updatedAt);
+    //       paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
+    //       paymentDate.setFullYear(paymentDate.getFullYear() + 1);
+    //       nextPaymentDate = paymentDate
+    //     }
+    //   }
+    // };
+
+    // let paymentActive = true
+
+    // if (adminPayments[1].type === "monthly") {
+    //   const oneMonthLater = new Date(adminPayments[1].updatedAt);
+    //   oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+    //   paymentActive = oneMonthLater <= new Date()
+    // } else if (adminPayments[1].type === "monthly") {
+    //   const oneYearLater = new Date(adminPayments[1].updatedAt);
+    //   oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+    //   paymentActive = oneMonthLater <= new Date()
+    // }
+
+    const admin = await Users.findOne({
+      where: { id: userId },
+      include: [
+        {
+          model: UserStatus,
+          as: "userStatus",
+          attributes: ["isActive", "endDate"],
         }
-      } else if (adminPayments[1].type === "full") {
-        const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
-        if (daysOlder >= 365) {
-          const paymentDate = new Date(adminPayments[0].updatedAt);
-          paymentDate.setMonth(paymentDate.getMonth() + 1);
-          nextPaymentDate = paymentDate
-        } else {
-          const paymentDate = new Date(adminPayments[0].updatedAt);
-          paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
-          paymentDate.setMonth(paymentDate.getMonth() + 1);
-          nextPaymentDate = paymentDate
-        }
-      }
-    } else if (adminPayments[0].type === "full") {
-      if (adminPayments[1].type === "monthly") {
-        const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
-        if (daysOlder >= 30) {
-          const paymentDate = new Date(adminPayments[0].updatedAt);
-          paymentDate.setFullYear(paymentDate.getFullYear() + 1);
-          nextPaymentDate = paymentDate
-        } else {
-          const paymentDate = new Date(adminPayments[0].updatedAt);
-          paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
-          paymentDate.setFullYear(paymentDate.getFullYear() + 1);
-          nextPaymentDate = paymentDate
-        }
-      } else if (adminPayments[1].type === "full") {
-        const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt);
-        if (daysOlder >= 365) {
-          const paymentDate = new Date(adminPayments[0].updatedAt);
-          paymentDate.setFullYear(paymentDate.getFullYear() + 1);
-          nextPaymentDate = paymentDate
-        } else {
-          const paymentDate = new Date(adminPayments[0].updatedAt);
-          paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
-          paymentDate.setFullYear(paymentDate.getFullYear() + 1);
-          nextPaymentDate = paymentDate
-        }
-      }
-    };
+      ],
+    });
 
-    let paymentActive = true
+    const nextPaymentDate = new Date() <= new Date(admin.userStatus.dataValues.endDate) ? admin.userStatus.dataValues.endDate : new Date()
 
-    if (adminPayments[1].type === "monthly") {
-      const oneMonthLater = new Date(adminPayments[1].updatedAt);
-      oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
-      paymentActive = oneMonthLater <= new Date()
-    } else if (adminPayments[1].type === "monthly") {
-      const oneYearLater = new Date(adminPayments[1].updatedAt);
-      oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-      paymentActive = oneMonthLater <= new Date()
-    }
-
-    return res.status(200).json({ success: true, nextPaymentDate, paymentActive });
+    return res.status(200).json({ success: true, nextPaymentDate });
 
   } catch (error) {
     console.log(error);
@@ -583,24 +616,35 @@ const paymentIdram = async (req, res) => {
               return res.send('Error');
             }
 
-            const teachers = await Users.findAll({
+            const adminStatus = await UserStatus.findOne({
               where: {
-                creatorId: admin.id
+                userId: payment.userId,
               }
-            })
-            const teacherIds = teachers.reduce((aggr, value) => {
-              aggr.push(value.id)
-              return aggr;
-            }, []);
+            });
 
-            await UserStatus.update(
-              { isActive: true },
-              {
-                where: {
-                  userId: [admin.id, ...teacherIds]
-                }
+            if (!adminStatus.isActive) {
+              if (payment.type === "monthly") {
+                const oneMonthLater = new Date();
+                oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+                adminStatus.endDate = oneMonthLater;
+              } else if (payment.type === "full") {
+                const oneYearLater = new Date();
+                oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+                adminStatus.endDate = oneYearLater;
               }
-            );
+            } else {
+              if (payment.type === "monthly") {
+                const oneMonthLater = new Date(adminStatus.endDate);
+                oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+                adminStatus.endDate = oneMonthLater;
+              } else if (payment.type === "full") {
+                const oneYearLater = new Date(adminStatus.endDate);
+                oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+                adminStatus.endDate = oneYearLater;
+              }
+            }
+            adminStatus.isActive = true;
+            await adminStatus.save()
 
             payment.status = 'Success';
             await payment.save();
@@ -1333,29 +1377,112 @@ const downloadInvoice = async (req, res) => {
     console.error('Error generating invoice:', error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
-};
+}; const { fn, col } = require("sequelize");
 
 const getAllSubscriptionsForSuperAdmin = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const subscriptions = await Payment.findAll({
-      where: {
-        adminId: userId,
-        status: {
-          [Op.or]: ["Success", "Payment is declined"]
-        }
-      },
-      attributes: ['id', 'paymentWay', 'status', 'type', 'amount', 'createdAt'],
-      order: [['createdAt', 'ASC']]
+    const { userName, order = "DESC" } = req.query;
+
+    const searchTerms = userName ? userName.trim().split(" ") : [];
+
+    const whereCondition = searchTerms.length
+      ? {
+        creatorId: userId,
+        role: "ADMIN",
+        [Op.or]: [
+          // Single search term: match either first or last name
+          ...(searchTerms.length === 1
+            ? [
+              { firstName: { [Op.iLike]: `%${searchTerms[0]}%` } },
+              { lastName: { [Op.iLike]: `%${searchTerms[0]}%` } }
+            ]
+            : [
+              // Two terms: assume firstName and lastName separately
+              {
+                [Op.and]: [
+                  { firstName: { [Op.iLike]: `%${searchTerms[0]}%` } },
+                  { lastName: { [Op.iLike]: `%${searchTerms[1]}%` } }
+                ]
+              },
+              // Try the reverse case in case they typed last name first
+              {
+                [Op.and]: [
+                  { firstName: { [Op.iLike]: `%${searchTerms[1]}%` } },
+                  { lastName: { [Op.iLike]: `%${searchTerms[0]}%` } }
+                ]
+              }
+            ])
+        ]
+      }
+      : {
+        creatorId: userId,
+        role: "ADMIN",
+      };
+    // const subscriptions = await Payment.findAll({
+    //   where: {
+    //     adminId: userId,
+    //     status: "Success"
+    //   },
+    //   include: [
+    //     {
+    //       model: Users,
+    //       as: "user",
+    //       where: whereCondition,
+    //       include: [
+    //         {
+    //           model: UserStatus,
+    //           as: "userStatus",
+    //           attributes: ["isActive", "endDate"],
+    //         }
+    //       ],
+    //       attributes: ["id", "firstName", "lastName", "image"],
+    //     }
+    //   ],
+    //   attributes: ['id', 'paymentWay', 'status', 'type', 'amount', 'createdAt'],
+    //   order: [['createdAt', 'ASC']]
+    // });
+
+    let subscriptions = await Users.findAll({
+      where: whereCondition,
+      include: [
+        {
+          model: UserStatus,
+          as: "userStatus",
+          attributes: ["isActive", "endDate"],
+        },
+        {
+          model: Payment,
+          attributes: [
+            [fn("SUM", col("Payments.amount")), "totalAmount"],
+          ],
+        },
+      ],
+      attributes: ["id", "firstName", "lastName", "image"],
+      group: [
+        "Users.id", // Include all User attributes in the group
+        "userStatus.id", // Include UserStatus attributes in the group
+        "Payments.id", // Include Payment attributes in the group
+      ],
     });
 
-    const uniqueSubscriptions = Array.from(
-      new Map(subscriptions.map(sub => [sub.userId, sub])).values()
-    );
+    subscriptions = Array.from(
+      subscriptions.reduce((aggr, sub) => {
+        const resSub = {
+          id: sub.id,
+          firstName: sub.firstName,
+          lastName: sub.lastName,
+          image: sub.image,
+          amount: sub.Payments[0]?.dataValues.totalAmount,
+          endDate: sub.userStatus?.dataValues.endDate
+        };
+        aggr.add(resSub);
+        return aggr;
+      }, new Set()))
 
     return res.status(200).json({
       success: true,
-      subscriptions: uniqueSubscriptions
+      subscriptions
     });
 
   } catch (error) {
@@ -1363,6 +1490,34 @@ const getAllSubscriptionsForSuperAdmin = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
+const getAdminPaymentsForSuperAdmin = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { id } = req.params
+
+    const payments = await Payment.findAll({
+      where: {
+        adminId: userId,
+        userId: id,
+        status: {
+          [Op.or]: ["Success", "Payment is declined"]
+        }
+      },
+      attributes: { exclude: ["orderKey", "orderNumber", "createdAt"] },
+      order: [["id", "DESC"]]
+    })
+
+    return res.status(200).json({
+      success: true,
+      payments
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+}
 
 
 module.exports = {
@@ -1378,5 +1533,6 @@ module.exports = {
   paymentArcaForAdmin,
   getAdminPayment,
   nextPaymentAdmin,
-  getAllSubscriptionsForSuperAdmin
+  getAllSubscriptionsForSuperAdmin,
+  getAdminPaymentsForSuperAdmin
 };
