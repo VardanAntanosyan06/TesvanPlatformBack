@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Groups.hasMany(models.PaymentWays, { foreignKey: 'groupId', as: 'payment' });
       Groups.belongsTo(models.Users, { foreignKey: "creatorId", as: "creator" })
+      Groups.hasOne(models.continuingGroups, { foreignKey: "groupId", as: "lastGroup", onDelete: 'CASCADE' })
     }
   }
   Groups.init(

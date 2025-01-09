@@ -555,7 +555,7 @@ const getHomeworkTitlesForTeacher = async (req, res) => {
   }
 }
 
-const homeworkPoints = async (req, res) => {
+const homeworkPoints = async (req, res) => { // submit mark
   try {
     const { userId, homeworkId, points, feedback } = req.body;
     const { courseId } = req.query;

@@ -295,7 +295,10 @@ const getAdminStatistics = async (req, res) => {
       include: [
         {
           model: GroupsPerUsers,
-          required: true,
+          where: {
+            userRole: "STUDENT"
+          },
+          required: false,
           attributes: ["id"]
         },
       ],
@@ -303,7 +306,6 @@ const getAdminStatistics = async (req, res) => {
     })
 
     const students = groups.reduce((aggr, value) => {
-      value.GroupsPerUsers.length
       return aggr += value.GroupsPerUsers.length
     }, 0)
 
