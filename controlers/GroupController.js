@@ -1085,12 +1085,7 @@ const findGroups = async (req, res) => {
         );
 
         const usersCount = await GroupsPerUsers.count({
-          where: { groupId: grp.id },
-          include: {
-            model: Users,
-            where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
-          },
-          required: true,
+          where: { groupId: grp.id, userRole: "STUDENT" },
         });
 
         return {
