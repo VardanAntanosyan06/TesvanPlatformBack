@@ -18,7 +18,8 @@ const {
   CoursesContents,
   HomeworkPerLesson,
   PaymentWays,
-  UserStatus
+  UserStatus,
+  continuingGroups
 } = require('../models');
 var CryptoJS = require('crypto-js');
 const Sequelize = require('sequelize')
@@ -34,7 +35,7 @@ const paymentUrlForAdmin = async (req, res) => {
     const { user_id: userId } = req.user;
     const { paymentWay, creatorId: adminId, type } = req.body;
 
-    if (paymentWay === "ARCA" || paymentWay === "IDRAM") return res.status(400).json({ success: false });
+    // if (paymentWay === "ARCA" || paymentWay === "IDRAM") return res.status(400).json({ success: false });
 
     const paymentWayAdmin = await PaymentWays.findOne({
       where: {
@@ -356,7 +357,20 @@ const paymentArca = async (req, res) => {
       });
 
     const user = await Users.findOne({ where: { id: payment.userId } });
-    const group = await Groups.findByPk(payment.groupId);
+
+    const group = await Groups.findOne({
+      where: {
+        id: payment.groupId
+      },
+      include: [
+        {
+          model: continuingGroups,
+          as: "lastGroup",
+          require: false
+        }
+      ]
+    });
+
     if (!group) {
       return res.json({ success: false, message: 'Group not found' });
     }
@@ -389,7 +403,7 @@ const paymentArca = async (req, res) => {
       },
     });
 
-    await UserCourses.create({
+    const userCours = await UserCourses.create({
       GroupCourseId: group.assignCourseId,
       UserId: payment.userId,
     });
@@ -472,6 +486,31 @@ const paymentArca = async (req, res) => {
     groupChats.members = newMembers;
 
     await groupChats.save();
+    //////new    
+    // if (group.lastGroup) {
+    //   const userLastGroup = await GroupsPerUsers.findOne({
+    //     where: {
+    //       groupId: group.lastGroup.groupId,
+    //       userId: payment.userId
+    //     }
+    //   });
+
+    //   if (userLastGroup) {
+    //     const lastGroupPoint = await UserPoints.findAll({
+    //       attributes: [[Sequelize.fn('sum', Sequelize.col('point')), 'totalQuizPoints']],
+    //       where: {
+    //         userId: payment.userId,
+    //         lessonId: {
+    //           [Sequelize.Op.in]: group.lastGroup.lessonIds,
+    //         },
+    //       },
+    //       raw: true,
+    //     });
+    //     userCours.takenQuizzes = lastGroupPoint.totalQuizPoints;
+    //     userCours.totalPoints = lastGroupPoint.totalQuizPoints;
+    //     await userCours.save()
+    //   }
+    // }
 
     res.send({ success: true, count: 1, id: payment.groupId });
     //////////////
