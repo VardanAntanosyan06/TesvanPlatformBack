@@ -69,7 +69,7 @@ const paymentUrlForAdmin = async (req, res) => {
       orderNumber,
       paymentWay,
       status: 'Pending',
-      groupId,
+      groupId: null,
       userId,
       type,
       amount: Math.round(thisCoursePrice)
