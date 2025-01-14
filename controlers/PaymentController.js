@@ -272,7 +272,8 @@ const nextPaymentAdmin = async (req, res) => {
     const paymentData = await PaymentWays.findAll({
       where: {
         adminId: admin.creatorId
-      }
+      },
+      attributes: ["price", "discount", "type"]
     });
 
     return res.status(200).json({ success: true, nextPaymentDate, paymentData });
