@@ -50,19 +50,19 @@ const paymentUrlForAdmin = async (req, res) => {
     let amount = Math.ceil(+Math.round(thisCoursePrice) * 100);
 
     let paymentResponse
-    if (paymentWay === "ARCA") {
-      const data = `userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}&amount=${amount}&currency=${process.env.CURRENCY}&language=en&orderNumber=${orderNumber}&returnUrl=${process.env.RETURNURL}&failUrl=${process.env.FAILURL}&pageView=DESKTOP&description='Payment Tesvan Platform'`;
-      const response = await axios.post(
-        `https://ipay.arca.am/payment/rest/register.do?${data}`,
-      );
-      paymentResponse = response.data;
 
-      if (paymentResponse.errorCode)
-        return res.status(400).json({
-          success: false,
-          errorMessage: paymentResponse.errorMessage,
-        });
-    };
+    const data = `userName=${process.env.PAYMENT_USERNAME}&password=${process.env.PAYMENT_PASSWORD}&amount=${amount}&currency=${process.env.CURRENCY}&language=en&orderNumber=${orderNumber}&returnUrl=${process.env.RETURNURL}&failUrl=${process.env.FAILURL}&pageView=DESKTOP&description='Payment Tesvan Platform'`;
+    const response = await axios.post(
+      `https://ipay.arca.am/payment/rest/register.do?${data}`,
+    );
+    paymentResponse = response.data;
+
+    if (paymentResponse.errorCode)
+      return res.status(400).json({
+        success: false,
+        errorMessage: paymentResponse.errorMessage,
+      });
+
 
     const { id } = Payment.create({
       orderKey: paymentResponse ? paymentResponse.orderId : null,
@@ -653,14 +653,14 @@ const paymentIdram = async (req, res) => {
           });
           if (!payment) {
             console.log(100);
-            
+
             return res.send('Error');
           }
 
           // For Admin subscription to a service
           if (payment.adminId) {
             console.log(111);
-            
+
             const admin = await Users.findOne({ where: { id: payment.userId, role: "ADMIN" } });
             if (!admin) {
               return res.send('Error');
