@@ -652,11 +652,15 @@ const paymentIdram = async (req, res) => {
             where: { orderNumber: request.EDP_BILL_NO },
           });
           if (!payment) {
+            console.log(100);
+            
             return res.send('Error');
           }
 
           // For Admin subscription to a service
           if (payment.adminId) {
+            console.log(111);
+            
             const admin = await Users.findOne({ where: { id: payment.userId, role: "ADMIN" } });
             if (!admin) {
               return res.send('Error');
