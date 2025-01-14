@@ -269,7 +269,13 @@ const nextPaymentAdmin = async (req, res) => {
 
     const nextPaymentDate = new Date() <= new Date(admin.userStatus.dataValues.endDate) ? admin.userStatus.dataValues.endDate : new Date()
 
-    return res.status(200).json({ success: true, nextPaymentDate });
+    const paymentData = await PaymentWays.findAll({
+      where: {
+        adminId: admin.creatorId
+      }
+    });
+
+    return res.status(200).json({ success: true, nextPaymentDate, paymentData });
 
   } catch (error) {
     console.log(error);
