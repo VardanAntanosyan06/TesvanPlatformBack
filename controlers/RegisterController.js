@@ -376,9 +376,17 @@ const getMembers = async (req, res) => {
       return aggr
     }, [])
 
+    const adminCreatorStudents = await Users.findAll({
+      where: {
+        role: 'STUDENT',
+        creatorId: userId
+      },
+      attributes: ["id", "firstName", "lastName", "image", "role", "createdAt"]
+    })
+
     // Make objects unique based on the 'id' property
     const uniqueStudents = Array.from(
-      new Map(students.map((obj) => [obj.id, obj])).values()
+      new Map([...students, ...adminCreatorStudents].map((obj) => [obj.id, obj])).values()
     );
 
     const members = {
