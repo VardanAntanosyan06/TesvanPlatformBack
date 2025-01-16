@@ -24,6 +24,7 @@ const {
 const { v4 } = require('uuid');
 const sequelize = require('sequelize'); // Make sure the path is correct
 const { Op } = require('sequelize');
+const { finished } = require('nodemailer/lib/xoauth2');
 
 const CreateGroup = async (req, res) => {
   try {
@@ -1065,6 +1066,7 @@ const findGroups = async (req, res) => {
             where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
           },
           attributes: ['userId'],
+          limit: 3
         },
       ],
     });
@@ -1457,6 +1459,164 @@ const getAllGroupForTeacher = async (req, res) => {
     return res.status(500).json({ message: 'Something Went Wrong !' });
   }
 }
+
+
+const getAllGroupForTeacherDashbord = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { language } = req.query;
+    let group = await UserCourses.findAll({
+      where: { UserId: userId },
+      attributes: ['id', ['UserId', 'userId']],
+      include: [
+        {
+          model: GroupCourses,
+          include: [
+            {
+              model: Groups,
+              where: {
+                finished: false
+              },
+              include: [
+                {
+                  model: Users,
+                  where: { role: 'STUDENT' },
+                  attributes: ['firstName', 'lastName', 'image', 'role'],
+                },
+              ],
+              attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt"]
+            }
+          ],
+        },
+      ],
+    });
+
+    let creatorGroup = await Groups.findAll({
+      where: {
+        creatorId: userId,
+        finished: false
+      },
+      include: [
+        {
+          model: Users,
+          where: { role: 'STUDENT' },
+          attributes: ['firstName', 'lastName', 'image', 'role'],
+        },
+      ],
+      attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt"]
+    });
+
+    creatorGroup = creatorGroup.reduce((aggr, value) => {
+      const firstGroup = value;
+      if (!firstGroup) return aggr;
+
+      const group = firstGroup.toJSON();
+      const users = group?.Users || [];
+
+      group.usersCount = users.length;
+      group.GroupsPerUsers = users.slice(0, 3);
+      delete group?.Users;
+
+      aggr.push(group);
+      return aggr;
+    }, [])
+
+    group = group.reduce((aggr, value) => {
+      const firstGroup = value?.GroupCourse?.Groups?.[0];
+      if (!firstGroup) return aggr; // Skip if no group exists
+
+      const group = firstGroup.toJSON();
+      const users = group?.Users || []; // Default to empty array if Users is undefined
+
+      group.usersCount = users.length; // Count the number of users
+      group.GroupsPerUsers = users.slice(0, 3); // Get first 3 users
+      delete group?.Users; // Remove Users from dataValues
+
+      aggr.push(group);
+      return aggr;
+    }, []);
+
+    const resData = Array.from(
+      new Map([...creatorGroup, ...group].map(e => [e.id, e])).values()
+    );
+
+    return res.status(200).json({ success: true, group: resData });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something Went Wrong !' });
+  }
+}
+
+const getAllGroupForAdminDashbord = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+    const { creatorId } = await Users.findByPk(userId)
+    const teacher = await Users.findAll({
+      where: {
+        role: "TEACHER",
+        creatorId: +userId
+      },
+      attributes: ["id", "firstName", "lastName", "image", "role"]
+    });
+
+    const teacherIds = teacher.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, []);
+    let group = await Groups.findAll({
+      where: {
+        creatorId: [userId, creatorId, ...teacherIds],
+        finished: false
+      },
+      attributes: ['id', ['name_en', 'name'], 'assignCourseId'],
+      order: [['id', 'DESC']],
+      include: [
+        {
+          model: GroupsPerUsers,
+          required: false,
+          include: {
+            model: Users,
+            attributes: ['firstName', 'lastName', 'image', 'role'],
+            where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
+          },
+          attributes: ['userId'],
+          limit: 3
+        },
+      ],
+    });
+
+    group = await Promise.all(
+      group.map(async (grp) => {
+        const a = await Promise.all(
+          grp.GroupsPerUsers.map(async (e) => {
+            let user = e.toJSON();
+            delete user.dataValues;
+            user.firstName = user.User.firstName;
+            user.lastName = user.User.lastName;
+            user.image = user.User.image;
+            user.role = user.User.role;
+            delete user.User;
+            return user;
+          }),
+        );
+
+        const usersCount = await GroupsPerUsers.count({
+          where: { groupId: grp.id, userRole: "STUDENT" },
+        });
+
+        return {
+          ...grp.dataValues,
+          usersCount,
+          GroupsPerUsers: a,
+        };
+      }),
+    );
+    return res.status(200).json({ success: true, group });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
 
 module.exports = {
   CreateGroup,
