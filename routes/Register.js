@@ -20,4 +20,6 @@ router.delete('/deleteMembers/:id', checkAuth(['ADMIN']), controller.deleteMembe
 
 router.patch('/editAvatar/', checkAuth(['ADMIN', 'TEACHER', 'STUDENT']), controller.editImage);
 
+router.get('/getMembersSuperAdmin', checkAuth(['SUPERADMIN']), controller.getMembersSuperAdmin);
+
 module.exports = router;

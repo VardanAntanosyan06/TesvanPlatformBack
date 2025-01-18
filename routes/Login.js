@@ -9,7 +9,7 @@ router.get('/ForgotPassword', controller.sendEmailForForgotPassword);
 router.patch('/ChangePassword', controller.forgotPassword);
 router.post('/ChangeEmail', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.changeEmail);
 
-router.get('/authMe', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.authMe);
+router.get('/authMe', checkAuth(['STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN']), controller.authMe);
 router.put('/changeUserData', checkAuth(['STUDENT', 'TEACHER']), controller.changeUserData);
 router.patch(
   '/changeUserImage',

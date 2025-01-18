@@ -446,9 +446,16 @@ const getMembersSuperAdmin = async (req, res) => {
       where: whereCondition,
       order: [['id', 'DESC']],
     });
+    const admins = await Users.findAll({
+      where: {
+        role: 'ADMIN',
+      },
+      order: [['id', 'DESC']],
+    });
     const members = {
       teachers,
       students,
+      admins
     };
     res.send(members);
   } catch (error) {
@@ -762,4 +769,5 @@ module.exports = {
   editImage,
   RegisterTesting,
   changeEmail,
+  getMembersSuperAdmin
 };

@@ -493,31 +493,56 @@ const paymentArca = async (req, res) => {
     groupChats.members = newMembers;
 
     await groupChats.save();
-    //////new    
-    // if (group.lastGroup) {
-    //   const userLastGroup = await GroupsPerUsers.findOne({
-    //     where: {
-    //       groupId: group.lastGroup.groupId,
-    //       userId: payment.userId
-    //     }
-    //   });
 
-    //   if (userLastGroup) {
-    //     const lastGroupPoint = await UserPoints.findAll({
-    //       attributes: [[Sequelize.fn('sum', Sequelize.col('point')), 'totalQuizPoints']],
-    //       where: {
-    //         userId: payment.userId,
-    //         lessonId: {
-    //           [Sequelize.Op.in]: group.lastGroup.lessonIds,
-    //         },
-    //       },
-    //       raw: true,
-    //     });
-    //     userCours.takenQuizzes = lastGroupPoint.totalQuizPoints;
-    //     userCours.totalPoints = lastGroupPoint.totalQuizPoints;
-    //     await userCours.save()
-    //   }
-    // }
+    //////new    
+    if (group.lastGroup) {
+      const userLastGroup = await GroupsPerUsers.findOne({
+        where: {
+          groupId: group.lastGroup.groupId,
+          userId: payment.userId
+        }
+      });
+
+      if (userLastGroup) {
+        const lastGroupQuizPoint = await UserPoints.findAll({
+          attributes: [[Sequelize.fn('sum', Sequelize.col('point')), 'totalQuizPoints']],
+          where: {
+            userId: payment.userId,
+            lessonId: {
+              [Sequelize.Op.in]: group.lastGroup.lessonIds,
+            },
+          },
+          raw: true,
+        });
+
+        const lastGroupHomeworkPoint = await UserHomework.findAll({
+          attributes: [[Sequelize.fn('sum', Sequelize.col('points')), 'totalHomeworkPoints']],
+          where: {
+            UserId: payment.userId,
+            LessonId: {
+              [Sequelize.Op.in]: group.lastGroup.lessonIds,
+            },
+          },
+          raw: true,
+        });
+
+        userCours.takenHomework = lastGroupHomeworkPoint?.totalHomeworkPoints;
+        userCours.takenQuizzes = lastGroupQuizPoint?.totalQuizPoints;
+        userCours.totalPoints = +lastGroupQuizPoint?.totalQuizPoints + +lastGroupHomeworkPoint?.totalHomeworkPoints;
+        await userCours.save()
+
+        await Payment.create({
+          orderKey: "last cours payment",
+          orderNumber: "last cours payment",
+          paymentWay: payment.paymentWay,
+          status: "Success",
+          userId: payment.userId,
+          groupId: payment.groupId,
+          type: "monthly",
+          amount: payment.amount
+        })
+      }
+    }
 
     res.send({ success: true, count: 1, id: payment.groupId });
     //////////////
