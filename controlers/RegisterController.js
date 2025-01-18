@@ -404,10 +404,10 @@ const getMembersSuperAdmin = async (req, res) => {
 
   try {
     const { userName, order = "DESC" } = req.query;
+    const orderOption = order.toUpperCase() === "DESC" ? "DESC" : "ASC";
     const searchTerms = userName ? userName.trim().split(" ") : [];
     const whereCondition = searchTerms.length
       ? {
-        role: 'STUDENT',
         [Op.or]: [
           // Single search term: match either first or last name
           ...(searchTerms.length === 1
@@ -434,23 +434,27 @@ const getMembersSuperAdmin = async (req, res) => {
         ]
       }
       : {
-        role: 'STUDENT',
       };
     const teachers = await Users.findAll({
       where: {
-        role: 'TEACHER',
+        ...whereCondition,
+        role: 'TEACHER'
       },
-      order: [['id', 'DESC']],
+      order: [['id', orderOption]],
     });
     const students = await Users.findAll({
-      where: whereCondition,
-      order: [['id', 'DESC']],
+      where: {
+        ...whereCondition,
+        role: 'STUDENT'
+      },
+      order: [['id', orderOption]],
     });
     const admins = await Users.findAll({
       where: {
-        role: 'ADMIN',
+        ...whereCondition,
+        role: 'ADMIN'
       },
-      order: [['id', 'DESC']],
+      order: [['id', orderOption]],
     });
     const members = {
       teachers,
