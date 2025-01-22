@@ -25,11 +25,11 @@ router.get("/nextPaymentAdmin", checkAuth(["ADMIN"]), controller.nextPaymentAdmi
 
 router.get("/paymentCount", checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controller.paymentCount)
 
-router.get('/downloadInvoice', checkAuth(["TEACHER", "ADMIN", "STUDENT"]), controller.downloadInvoice)
+router.get('/downloadInvoice', checkAuth(["TEACHER", "ADMIN", "STUDENT", "SUPERADMIN"]), controller.downloadInvoice)
 
 router.get('/getAllSubscriptionsForSuperAdmin', checkAuth(["SUPERADMIN"]), controller.getAllSubscriptionsForSuperAdmin)
 
-router.get('/getAdminPaymentsForSuperAdmin', checkAuth(["SUPERADMIN"]), controller.getAdminPaymentsForSuperAdmin)
+router.get('/getAdminPaymentsForSuperAdmin/:id', checkAuth(["SUPERADMIN"]), controller.getAdminPaymentsForSuperAdmin)
 
 
 // router.post("/monthlyPaymentIdram", controller.monthlyPaymentIdram, controller.paymentIdram);
