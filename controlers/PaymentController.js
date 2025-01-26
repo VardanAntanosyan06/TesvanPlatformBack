@@ -534,6 +534,26 @@ const paymentArca = async (req, res) => {
           raw: true,
         });
 
+        const lastQuizzPoint = await UserPoints.findAll({
+          where: {
+            userId: payment.userId,
+            courseId: lastGroup?.assignCourseId,
+            lessonId: {
+              [Sequelize.Op.in]: group.lastGroup?.lessnIds || [],
+            },
+          }
+        })
+
+        const copyQuizzPoint = lastQuizzPoint.reduce((aggr, value) => {
+          value = value.toJSON();
+          delete value.id
+          value.courseId = group.assignCourseId;
+          aggr.push(value);
+          return aggr;
+        }, []);
+
+        await UserPoints.bulkCreate(copyQuizzPoint);
+
         const lastGroupHomework = await UserHomework.findAll({
           where: {
             UserId: payment.userId,
@@ -546,14 +566,17 @@ const paymentArca = async (req, res) => {
 
         const copyHomework = lastGroupHomework.reduce((aggr, value) => {
           value = value.toJSON()
+          delete value.id
           value.GroupCourseId = group.assignCourseId
-          return aggr.push(value)
+          aggr.push(value)
+          return aggr
         }, [])
 
         await UserHomework.bulkCreate(copyHomework);
 
         const copyHomeworkIds = copyHomework.reduce((aggr, value) => {
-          return aggr.push(value.HomeworkId)
+          aggr.push(value.HomeworkId)
+          return aggr
         }, [])
 
         const lastGroupHomeworkFile = await HomeWorkFiles.findAll({
@@ -609,11 +632,12 @@ const paymentArca = async (req, res) => {
             point: quizz.point
           });
 
+          const quizzId = newQuizz.id;
           // Create associated UserAnswersOption for the new quiz
           const userAnswersOptions = quizz.userAnswersOption || [];
           for (const option of userAnswersOptions) {
             await UserAnswersOption.create({
-              userAnswersQuizzId: newQuizz.id,
+              userAnswerQuizzId: quizzId,
               title_am: option.title_am,
               title_en: option.title_en,
               title_ru: option.title_ru,
@@ -623,9 +647,16 @@ const paymentArca = async (req, res) => {
           }
         }
 
-        userCours.takenHomework = lastGroupHomeworkPoint?.totalHomeworkPoints;
-        userCours.takenQuizzes = lastGroupQuizPoint?.totalQuizPoints;
-        userCours.totalPoints = +lastGroupQuizPoint?.totalQuizPoints + +lastGroupHomeworkPoint?.totalHomeworkPoints;
+        const userCours = await UserCourses.findOne({
+          where: {
+            GroupCourseId: group.assignCourseId,
+            UserId: payment.userId,
+          }
+        });
+
+        userCours.takenHomework = +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
+        userCours.takenQuizzes = +lastGroupQuizPoint[0]?.totalQuizPoints;
+        userCours.totalPoints = +lastGroupQuizPoint[0]?.totalQuizPoints + +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
         await userCours.save()
 
         await Payment.create({
@@ -991,6 +1022,26 @@ const paymentIdram = async (req, res) => {
                 raw: true,
               });
 
+              const lastQuizzPoint = await UserPoints.findAll({
+                where: {
+                  userId: payment.userId,
+                  courseId: lastGroup?.assignCourseId,
+                  lessonId: {
+                    [Sequelize.Op.in]: group.lastGroup?.lessnIds || [],
+                  },
+                }
+              })
+
+              const copyQuizzPoint = lastQuizzPoint.reduce((aggr, value) => {
+                value = value.toJSON();
+                delete value.id
+                value.courseId = group.assignCourseId;
+                aggr.push(value);
+                return aggr;
+              }, []);
+
+              await UserPoints.bulkCreate(copyQuizzPoint);
+
               const lastGroupHomework = await UserHomework.findAll({
                 where: {
                   UserId: payment.userId,
@@ -1003,14 +1054,17 @@ const paymentIdram = async (req, res) => {
 
               const copyHomework = lastGroupHomework.reduce((aggr, value) => {
                 value = value.toJSON()
+                delete value.id
                 value.GroupCourseId = group.assignCourseId
-                return aggr.push(value)
+                aggr.push(value)
+                return aggr
               }, [])
 
               await UserHomework.bulkCreate(copyHomework);
 
               const copyHomeworkIds = copyHomework.reduce((aggr, value) => {
-                return aggr.push(value.HomeworkId)
+                aggr.push(value.HomeworkId)
+                return aggr
               }, [])
 
               const lastGroupHomeworkFile = await HomeWorkFiles.findAll({
@@ -1066,11 +1120,12 @@ const paymentIdram = async (req, res) => {
                   point: quizz.point
                 });
 
+                const quizzId = newQuizz.id;
                 // Create associated UserAnswersOption for the new quiz
                 const userAnswersOptions = quizz.userAnswersOption || [];
                 for (const option of userAnswersOptions) {
                   await UserAnswersOption.create({
-                    userAnswersQuizzId: newQuizz.id,
+                    userAnswerQuizzId: quizzId,
                     title_am: option.title_am,
                     title_en: option.title_en,
                     title_ru: option.title_ru,
@@ -1080,9 +1135,16 @@ const paymentIdram = async (req, res) => {
                 }
               }
 
-              userCours.takenHomework = lastGroupHomeworkPoint?.totalHomeworkPoints;
-              userCours.takenQuizzes = lastGroupQuizPoint?.totalQuizPoints;
-              userCours.totalPoints = +lastGroupQuizPoint?.totalQuizPoints + +lastGroupHomeworkPoint?.totalHomeworkPoints;
+              const userCours = await UserCourses.findOne({
+                where: {
+                  GroupCourseId: group.assignCourseId,
+                  UserId: payment.userId,
+                }
+              });
+
+              userCours.takenHomework = +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
+              userCours.takenQuizzes = +lastGroupQuizPoint[0]?.totalQuizPoints;
+              userCours.totalPoints = +lastGroupQuizPoint[0]?.totalQuizPoints + +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
               await userCours.save()
 
               await Payment.create({
@@ -1618,7 +1680,7 @@ const downloadInvoice = async (req, res) => {
         return res.status(404).send('Payment not found');
       };
 
-      const user = await Users.findByPk(userId);
+      const user = await Users.findByPk(payment.userId);
 
       const group = await Groups.findOne({
         where: { id: payment.groupId },

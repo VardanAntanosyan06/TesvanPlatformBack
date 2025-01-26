@@ -642,7 +642,7 @@ const addMember = async (req, res) => {
           },
         });
 
-        const userCours = await UserCourses.create({
+        await UserCourses.create({
           GroupCourseId: group.assignCourseId,
           UserId: user.id,
         });
@@ -716,7 +716,7 @@ const addMember = async (req, res) => {
         ///new ==delete member==
         if (group.lastGroup) {
           if (userLastGroup) {
-            const lastGroupQuizPoint = await UserPoints.findOne({
+            const lastGroupQuizPoint = await UserPoints.findAll({
               attributes: [[Sequelize.fn("COALESCE", Sequelize.fn("SUM", Sequelize.col("point")), 0), "totalQuizPoints"]],
               where: {
                 userId,
@@ -740,6 +740,26 @@ const addMember = async (req, res) => {
               raw: true,
             });
 
+            const lastQuizzPoint = await UserPoints.findAll({
+              where: {
+                userId: user.id,
+                courseId: lastGroup?.assignCourseId,
+                lessonId: {
+                  [Sequelize.Op.in]: group.lastGroup?.lessnIds || [],
+                },
+              }
+            })
+
+            const copyQuizzPoint = lastQuizzPoint.reduce((aggr, value) => {
+              value = value.toJSON();
+              delete value.id
+              value.courseId = group.assignCourseId;
+              aggr.push(value);
+              return aggr;
+            }, []);
+
+            await UserPoints.bulkCreate(copyQuizzPoint);
+
             const lastGroupHomework = await UserHomework.findAll({
               where: {
                 UserId: userId,
@@ -751,15 +771,18 @@ const addMember = async (req, res) => {
             });
 
             const copyHomework = lastGroupHomework.reduce((aggr, value) => {
-              value = value.toJSON()
-              value.GroupCourseId = group.assignCourseId
-              return aggr.push(value)
-            }, [])
+              value = value.toJSON();
+              delete value.id
+              value.GroupCourseId = group.assignCourseId;
+              aggr.push(value);
+              return aggr;
+            }, []);
 
             await UserHomework.bulkCreate(copyHomework);
 
             const copyHomeworkIds = copyHomework.reduce((aggr, value) => {
-              return aggr.push(value.HomeworkId)
+              aggr.push(value.HomeworkId)
+              return aggr
             }, [])
 
             const lastGroupHomeworkFile = await HomeWorkFiles.findAll({
@@ -815,11 +838,12 @@ const addMember = async (req, res) => {
                 point: quizz.point
               });
 
+              const quizzId = newQuizz.id;
               // Create associated UserAnswersOption for the new quiz
               const userAnswersOptions = quizz.userAnswersOption || [];
               for (const option of userAnswersOptions) {
                 await UserAnswersOption.create({
-                  userAnswersQuizzId: newQuizz.id,
+                  userAnswerQuizzId: quizzId,
                   title_am: option.title_am,
                   title_en: option.title_en,
                   title_ru: option.title_ru,
@@ -829,9 +853,16 @@ const addMember = async (req, res) => {
               }
             }
 
-            userCours.takenHomework = lastGroupHomeworkPoint?.totalHomeworkPoints;
-            userCours.takenQuizzes = lastGroupQuizPoint?.totalQuizPoints;
-            userCours.totalPoints = +lastGroupQuizPoint?.totalQuizPoints + +lastGroupHomeworkPoint?.totalHomeworkPoints;
+            const userCours = await UserCourses.findOne({
+              where: {
+                GroupCourseId: group.assignCourseId,
+                UserId: user.id,
+              }
+            });
+
+            userCours.takenHomework = +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
+            userCours.takenQuizzes = +lastGroupQuizPoint[0]?.totalQuizPoints;
+            userCours.totalPoints = +lastGroupQuizPoint[0]?.totalQuizPoints + +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
             await userCours.save()
 
             const payment = await PaymentWays.findOne({
@@ -1416,6 +1447,7 @@ const deleteMember = async (req, res) => {
     await UserPoints.destroy({
       where: {
         userId,
+        courseId: assignCourseId
       },
     });
 
@@ -1455,6 +1487,13 @@ const deleteMember = async (req, res) => {
     const groupChats = await GroupChats.findOne({
       where: { groupId: groupId },
     });
+
+    await UserAnswersQuizz.destroy({
+      where: {
+        userId,
+        courseId: assignCourseId
+      }
+    })
 
     if (groupChats) {
 
