@@ -216,9 +216,9 @@ const getAdmins = async (req, res) => {
         firstName: value.firstName,
         lastName: value.lastName,
         image: value.image,
-        teacherCount: value.teachers?.length,
-        groupCount: adminDate[value.id]?.length,
-        userCount: adminDate[value.id]?.reduce((aggr, e) => { return aggr + +e.users }, 0),
+        teacherCount: value.teachers?.length || 0,
+        groupCount: adminDate[value.id]?.length || 0,
+        userCount: adminDate[value.id]?.reduce((aggr, e) => { return aggr + +e.users }, 0) || 0,
         isActive: value.userStatus.isActive
       })
       return aggr
