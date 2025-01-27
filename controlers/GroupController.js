@@ -713,9 +713,14 @@ const addMember = async (req, res) => {
 
         await groupChats.save();
 
-        ///new ==delete member==
         if (group.lastGroup) {
-          if (userLastGroup) {
+          const userLastGroupMember = await GroupsPerUsers.findOne({
+            where: {
+              groupId: group.lastGroup.groupId,
+              userId
+            }
+          });
+          if (userLastGroupMember) {
             const lastGroupQuizPoint = await UserPoints.findAll({
               attributes: [[Sequelize.fn("COALESCE", Sequelize.fn("SUM", Sequelize.col("point")), 0), "totalQuizPoints"]],
               where: {

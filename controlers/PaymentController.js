@@ -500,7 +500,6 @@ const paymentArca = async (req, res) => {
 
     await groupChats.save();
 
-    //////new    
     if (group.lastGroup) {
       const userLastGroup = await GroupsPerUsers.findOne({
         where: {
@@ -812,7 +811,6 @@ const paymentIdram = async (req, res) => {
 
           // For Admin subscription to a service
           if (payment.adminId) {
-            console.log(111);
 
             const admin = await Users.findOne({ where: { id: payment.userId, role: "ADMIN" } });
             if (!admin) {
