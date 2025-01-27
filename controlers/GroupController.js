@@ -1776,6 +1776,7 @@ const getAllGroupForTeacherDashbord = async (req, res) => {
 const getAllGroupForAdminDashbord = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
+    const { language } = req.query;
     const { creatorId } = await Users.findByPk(userId)
     const teacher = await Users.findAll({
       where: {
@@ -1794,7 +1795,7 @@ const getAllGroupForAdminDashbord = async (req, res) => {
         creatorId: [userId, creatorId, ...teacherIds],
         finished: false
       },
-      attributes: ['id', ['name_en', 'name'], 'assignCourseId'],
+      attributes: ['id', [`name_${language}`, 'name'], 'assignCourseId'],
       order: [['id', 'DESC']],
       include: [
         {
@@ -1844,6 +1845,63 @@ const getAllGroupForAdminDashbord = async (req, res) => {
   }
 };
 
+const getAllGroupForSuperAdminDashbord = async (req, res) => {
+  try {
+    const { language } = req.query;
+    let group = await Groups.findAll({
+      where: {
+        finished: false
+      },
+      attributes: ['id', [`name_${language}`, 'name'], 'assignCourseId'],
+      order: [['id', 'DESC']],
+      include: [
+        {
+          model: GroupsPerUsers,
+          required: false,
+          include: {
+            model: Users,
+            attributes: ['firstName', 'lastName', 'image', 'role'],
+            where: { role: { [Op.in]: ['TEACHER', 'STUDENT'] } },
+          },
+          attributes: ['userId'],
+          limit: 3
+        },
+      ],
+    });
+
+    group = await Promise.all(
+      group.map(async (grp) => {
+        const a = await Promise.all(
+          grp.GroupsPerUsers.map(async (e) => {
+            let user = e.toJSON();
+            delete user.dataValues;
+            user.firstName = user.User.firstName;
+            user.lastName = user.User.lastName;
+            user.image = user.User.image;
+            user.role = user.User.role;
+            delete user.User;
+            return user;
+          }),
+        );
+
+        const usersCount = await GroupsPerUsers.count({
+          where: { groupId: grp.id, userRole: "STUDENT" },
+        });
+
+        return {
+          ...grp.dataValues,
+          usersCount,
+          GroupsPerUsers: a,
+        };
+      }),
+    );
+    return res.status(200).json({ success: true, group });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+}
+
 module.exports = {
   CreateGroup,
   findOne,
@@ -1864,5 +1922,6 @@ module.exports = {
   deleteMember,
   groupInfo,
   getAllAdmin,
-  getAllGroupForTeacher
+  getAllGroupForTeacher,
+  getAllGroupForSuperAdminDashbord
 };
