@@ -271,7 +271,7 @@ const nextPaymentAdmin = async (req, res) => {
       ],
     });
 
-    const nextPaymentDate = new Date() <= new Date(admin.userStatus.dataValues.endDate) ? admin.userStatus.dataValues.endDate : new Date()
+    const nextPaymentDate = new Date() <= new Date(admin.userStatus?.dataValues.endDate) ? admin.userStatus?.dataValues.endDate : new Date()
 
     const paymentData = await PaymentWays.findAll({
       where: {
@@ -1597,7 +1597,7 @@ const downloadInvoice = async (req, res) => {
         const userName = `${user.firstName} ${user.lastName}`;
         const dateOptions = { year: '2-digit', month: '2-digit', day: '2-digit' };
         const formattedDate = payment.updatedAt.toLocaleDateString('hy-AM', dateOptions);
-        const courseName = group.dataValues.name;
+        const courseName = group?.dataValues.name;
         const status = payment.status === "Success" ? payment.status : payment.status = "Fail"
         const paymentMethod = payment.paymentWay
         const type = payment.type === "full" ? payment.type = "Full" : payment.type = "Monthly"
@@ -1688,7 +1688,7 @@ const downloadInvoice = async (req, res) => {
       const userName = `${user.firstName} ${user.lastName}`;
       const dateOptions = { year: '2-digit', month: '2-digit', day: '2-digit' };
       const formattedDate = payment.updatedAt.toLocaleDateString('hy-AM', dateOptions);
-      const courseName = payment.groupId ? group.dataValues.name : false;
+      const courseName = payment.groupId ? group?.dataValues.name : false;
       const status = payment.status === "Success" ? payment.status : payment.status = "Fail"
       const paymentMethod = payment.paymentWay
       const type = payment.type === "full" ? payment.type = "Full" : payment.type = "Monthly"
