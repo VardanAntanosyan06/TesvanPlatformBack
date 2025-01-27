@@ -152,7 +152,8 @@ const getAdmins = async (req, res) => {
           where: {
             role: "TEACHER"
           },
-          attributes: ["id", "creatorId"]
+          attributes: ["id", "creatorId"],
+          required: false
         },
         {
           model: UserStatus,
@@ -215,9 +216,9 @@ const getAdmins = async (req, res) => {
         firstName: value.firstName,
         lastName: value.lastName,
         image: value.image,
-        teacherCount: value.teachers.length,
-        groupCount: adminDate[value.id].length,
-        userCount: adminDate[value.id].reduce((aggr, e) => { return aggr + +e.users }, 0),
+        teacherCount: value.teachers?.length,
+        groupCount: adminDate[value.id]?.length,
+        userCount: adminDate[value.id]?.reduce((aggr, e) => { return aggr + +e.users }, 0),
         isActive: value.userStatus.isActive
       })
       return aggr
