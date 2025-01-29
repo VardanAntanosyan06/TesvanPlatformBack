@@ -488,7 +488,7 @@ const deleteAdmin = async (req, res) => {
 
       await UserStatus.destroy({
         where: {
-          userId
+          userId: id
         }
       })
 
