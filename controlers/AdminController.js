@@ -7,7 +7,6 @@ const {
   UserHomework,
   UserPoints,
   UserCourses,
-  UserStatus,
 } = require('../models');
 const { sequelize } = require('../models');
 const Sequelize = require('sequelize')
