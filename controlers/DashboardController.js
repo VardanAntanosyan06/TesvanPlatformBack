@@ -399,7 +399,7 @@ const getSuperAdminStatistics = async (req, res) => {
         aggr.push(value);
       };
       return aggr
-    })
+    }, [])   
 
     return res.status(200).json({
       adminCount: adminIds.length,
