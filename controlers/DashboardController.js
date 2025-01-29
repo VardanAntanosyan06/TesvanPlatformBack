@@ -376,9 +376,14 @@ const getSuperAdminStatistics = async (req, res) => {
             model: Users,
             attributes: ['id', 'firstName', 'lastName', 'role', 'image'],
           },
+          required: false
         },
       ],
     });
+
+    const course = await GroupCourses.count({
+        where: { creatorId: [...teacherIds, userId, ...adminIds] },
+    })
 
     const userData = groups.reduce((aggr, value) => {
       aggr = [...aggr, ...value.GroupsPerUsers]
@@ -389,19 +394,20 @@ const getSuperAdminStatistics = async (req, res) => {
       new Map(userData.map(value => [value.User.id, value.User])).keys()
     );
 
-    // const subscribers = admins.reduce((aggr, value) => {
-    //   if (value.userStatus.isActive) {
-    //     aggr.push(value);
-    //   };
-    //   return aggr
-    // })
+    const subscribers = admins.reduce((aggr, value) => {
+      if (value.userStatus.isActive) {
+        aggr.push(value);
+      };
+      return aggr
+    })
 
     return res.status(200).json({
       adminCount: adminIds.length,
       teacherCount: teacherIds.length,
       groupCount: groups.length,
       studentCount: userIds.length,
-      // subscriberCount: subscribers.length
+      subscriberCount: subscribers.length,
+      courseCount: course
     })
 
   } catch (error) {
