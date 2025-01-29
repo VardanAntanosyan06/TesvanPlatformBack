@@ -292,6 +292,13 @@ const paymentUrl = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { paymentWay, groupId, type } = req.body;
+
+    const group = await Groups.findByPk(groupId)
+
+    if (group.finished) {
+      return res.status(400).json({ success: false, message: "This course finished" });
+    }
+
     const thisCourse = await PaymentWays.findOne({
       where: {
         groupId,
@@ -1365,6 +1372,12 @@ const monthlyPaymentUrl = async (req, res, next) => {
     const { groupId } = req.query;
     const { paymentWay } = req.body;
     const type = "monthly";
+
+    const group = await Groups.findByPk(groupId)
+
+    if (group.finished) {
+      return res.status(400).json({ success: false, message: "This course finished" });
+    }
 
     const paymentWays = await PaymentWays.findOne({
       where: {
