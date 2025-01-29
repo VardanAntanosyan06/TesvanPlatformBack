@@ -6,7 +6,8 @@ const {
   UserLesson,
   UserHomework,
   UserPoints,
-  UserCourses
+  UserCourses,
+  UserStatus,
 } = require('../models');
 const { sequelize } = require('../models');
 const Sequelize = require('sequelize')
@@ -172,6 +173,12 @@ const createAdmin = async (req, res) => {
       tokenCreatedAt: new Date().toISOString(),
       creatorId: userId
     });
+
+    await UserStatus.create({
+      userId: User.id,
+      isActive: false,
+      endDate: new Date().toISOString()
+    })
 
     const oneMonthInSeconds = 30 * 24 * 60 * 60;
 
