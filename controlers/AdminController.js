@@ -486,6 +486,12 @@ const deleteAdmin = async (req, res) => {
         transaction
       });
 
+      await UserStatus.destroy({
+        where: {
+          userId
+        }
+      })
+
       const deleteAdmin = await Users.destroy({
         where: { id: [+id, ...teacherIds] },
         transaction

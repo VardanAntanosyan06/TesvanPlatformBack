@@ -13,7 +13,8 @@ const {
   Homework,
   UserHomework,
   Quizz,
-  Question
+  Question,
+  UserStatus
 } = require('../models');
 const sequelize = require('sequelize');
 
