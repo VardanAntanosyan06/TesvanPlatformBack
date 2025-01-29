@@ -340,6 +340,11 @@ const getSuperAdminStatistics = async (req, res) => {
             role: "TEACHER"
           },
           attributes: ["id"],
+        },
+        {
+          model: UserStatus,
+          as: "userStatus",
+          attributes: ["isActive", "endDate"],
         }
       ]
     })
@@ -383,11 +388,19 @@ const getSuperAdminStatistics = async (req, res) => {
       new Map(userData.map(value => [value.User.id, value.User])).keys()
     );
 
+    // const subscribers = admins.reduce((aggr, value) => {
+    //   if (value.userStatus.isActive) {
+    //     aggr.push(value);
+    //   };
+    //   return aggr
+    // })
+
     return res.status(200).json({
       adminCount: adminIds.length,
       teacherCount: teacherIds.length,
       groupCount: groups.length,
-      studentCount: userIds.length
+      studentCount: userIds.length,
+      // subscriberCount: subscribers.length
     })
 
   } catch (error) {
