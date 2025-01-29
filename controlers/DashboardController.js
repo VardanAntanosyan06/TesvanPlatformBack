@@ -341,6 +341,7 @@ const getSuperAdminStatistics = async (req, res) => {
             role: "TEACHER"
           },
           attributes: ["id"],
+          required: false
         },
         {
           model: UserStatus,
