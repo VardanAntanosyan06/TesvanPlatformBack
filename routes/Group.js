@@ -41,7 +41,7 @@ router.delete('/delete/:id', checkAuth(['ADMIN', 'TEACHER']), controller.deleteG
 router.get('/groupInfo/:id', checkAuth(['TEACHER', 'ADMIN']), controller.groupInfo)
 router.get('/getAllAdmin', checkAuth(['ADMIN']), controller.getAllAdmin);
 router.get('/getAllGroupForSuperAdminDashbord', checkAuth(['SUPERADMIN']), controller.getAllGroupForSuperAdminDashbord);
-router.get('/getAllGroupForAdminDashbord', checkAuth(['SUPERADMIN']), controller.getAllGroupForAdminDashbord);
-router.get('/getAllGroupForTeacherDashbord', checkAuth(['SUPERADMIN']), controller.getAllGroupForTeacherDashbord);
+router.get('/getAllGroupForAdminDashbord', checkAuth(['ADMIN']), controller.getAllGroupForAdminDashbord);
+router.get('/getAllGroupForTeacherDashbord', checkAuth(['TEACHER']), controller.getAllGroupForTeacherDashbord);
 
 module.exports = router
