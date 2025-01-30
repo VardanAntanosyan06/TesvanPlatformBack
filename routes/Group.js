@@ -42,5 +42,6 @@ router.get('/groupInfo/:id', checkAuth(['TEACHER', 'ADMIN']), controller.groupIn
 router.get('/getAllAdmin', checkAuth(['ADMIN']), controller.getAllAdmin);
 router.get('/getAllGroupForSuperAdminDashbord', checkAuth(['SUPERADMIN']), controller.getAllGroupForSuperAdminDashbord);
 router.get('/getAllGroupForAdminDashbord', checkAuth(['SUPERADMIN']), controller.getAllGroupForAdminDashbord);
+router.get('/getAllGroupForTeacherDashbord', checkAuth(['SUPERADMIN']), controller.getAllGroupForTeacherDashbord);
 
 module.exports = router

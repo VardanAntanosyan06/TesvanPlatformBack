@@ -1928,6 +1928,7 @@ module.exports = {
   groupInfo,
   getAllAdmin,
   getAllGroupForTeacher,
+  getAllGroupForTeacherDashbord,
   getAllGroupForAdminDashbord,
   getAllGroupForSuperAdminDashbord
 };

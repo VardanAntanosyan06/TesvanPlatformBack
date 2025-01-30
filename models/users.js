@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       Users.hasMany(models.Users, { foreignKey: "creatorId", as: "teachers" });
       Users.belongsTo(models.Users, { foreignKey: "creatorId", as: "admin" });
       Users.hasMany(models.Groups, { foreignKey: "creatorId", as: "teacherGroups" })
-
     }
   }
   Users.init(
