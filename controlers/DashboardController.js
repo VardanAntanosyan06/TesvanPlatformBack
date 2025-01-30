@@ -391,9 +391,9 @@ const getSuperAdminStatistics = async (req, res) => {
       return aggr;
     }, []);
 
-    const userIds = Array.from(
-      new Map(userData.map(value => [value.User.id, value.User])).keys()
-    );
+    // const userIds = Array.from(
+    //   new Map(userData.map(value => [value.User.id, value.User])).keys()
+    // );
 
     const subscribers = admins.reduce((aggr, value) => {
       if (value.userStatus.isActive) {
@@ -406,7 +406,7 @@ const getSuperAdminStatistics = async (req, res) => {
       adminCount: adminIds.length,
       teacherCount: teacherIds.length,
       groupCount: groups.length,
-      studentCount: userIds.length,
+      studentCount: userData.length,
       subscriberCount: subscribers.length,
       courseCount: course
     })

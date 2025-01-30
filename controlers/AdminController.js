@@ -339,7 +339,7 @@ const getAdmins = async (req, res) => {
         aggr[value.creatorId] = Array.from(existingGroups.values());
       }
       return aggr
-    }, {})
+    }, {});
 
     const resAdminDate = admins.reduce((aggr, value) => {
       aggr.push({
