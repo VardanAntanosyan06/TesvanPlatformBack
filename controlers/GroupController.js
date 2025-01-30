@@ -1249,7 +1249,7 @@ const findGroups = async (req, res) => {
       where: {
         creatorId: [userId, creatorId, ...teacherIds]
       },
-      attributes: ['id', ['name_en', 'name'], 'assignCourseId'],
+      attributes: ['id', ['name_en', 'name'], 'assignCourseId', "finished"],
       order: [['id', 'DESC']],
       include: [
         {
@@ -1928,5 +1928,6 @@ module.exports = {
   groupInfo,
   getAllAdmin,
   getAllGroupForTeacher,
+  getAllGroupForAdminDashbord,
   getAllGroupForSuperAdminDashbord
 };
