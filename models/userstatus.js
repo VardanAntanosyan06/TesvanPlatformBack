@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   UserStatus.init({
     userId: DataTypes.INTEGER,
-    isActive: DataTypes.BOOLEAN
+    isActive: DataTypes.BOOLEAN,
+    endDate: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'UserStatus',

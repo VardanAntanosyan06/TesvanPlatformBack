@@ -1,8 +1,52 @@
 const { where } = require('sequelize')
-const { UserHomework, Quizz, Question, Option, UserAnswersQuizz, UserAnswersOption, CoursesContents, Users } = require('./models')
+const { UserHomework, UserStatus,Payment, Quizz, Question, Option, UserAnswersQuizz, UserAnswersOption, CoursesContents, Users } = require('./models')
 const { log } = require('console')
 const users = [3, 163, 754, 900, 907, 890, 879]
 const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
+// async function paymentAdmin() {
+//     const payment = await Payment.findOne({
+//         where: { id: 625 },
+//     });
+
+//     const adminStatus = await UserStatus.findOne({
+//         where: {
+//             userId: 5,
+//         }
+//     });
+
+//     if (!adminStatus.isActive) {
+//         if (payment.type === "monthly") {
+//             const oneMonthLater = new Date();
+//             oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+//             adminStatus.endDate = oneMonthLater;
+//             await adminStatus.save()
+//         } else if (payment.type === "full") {
+//             const oneYearLater = new Date();
+//             oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+//             adminStatus.endDate = oneYearLater;
+//             await adminStatus.save()
+//         }
+//     } else {
+//         if (payment.type === "monthly") {
+//             const oneMonthLater = new Date(adminStatus.endDate);
+//             oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+//             adminStatus.endDate = oneMonthLater;
+//             console.log(oneMonthLater, 66);
+            
+//         } else if (payment.type === "full") {
+//             const oneYearLater = new Date(adminStatus.endDate);
+//             oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+//             adminStatus.endDate = oneYearLater;
+//             console.log(oneYearLater, 55);
+
+//             await adminStatus.save()
+//         }
+//     }
+//     adminStatus.isActive = true;
+//     await adminStatus.save()
+// }
+// paymentAdmin()
+
 // async function add() {
 //     await Promise.all(
 //         lessons.map(async (id) => {
@@ -27,7 +71,7 @@ const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
 
 // async function userAnswer(params) {
 
-//   // const question = await 
+//   // const question = await
 //     const userAnswersQuizz = await UserAnswersQuizz.findAll({
 //         where: {
 //           testId: 56, //poxvi lessonId
@@ -181,7 +225,7 @@ const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
 //             `;
 
 //         const options = { format: 'A4' };
-//         const outputFilePath = path.join(__dirname, 'output.pdf'); 
+//         const outputFilePath = path.join(__dirname, 'output.pdf');
 
 //         pdf.create(htmlWithStyles, options).toFile(outputFilePath, (err, res) => {
 //             if (err) {
