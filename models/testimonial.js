@@ -14,9 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Testimonial.init({
-    name: DataTypes.STRING,
+    fullName_en: DataTypes.STRING,
+    fullName_am: DataTypes.STRING,
+    fullName_ru: DataTypes.STRING,
     staff: DataTypes.STRING,
-    testimonial: DataTypes.TEXT
+    testimonial_en: DataTypes.TEXT,
+    testimonial_am: DataTypes.TEXT,
+    testimonial_ru: DataTypes.TEXT,
+    img: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Testimonial',

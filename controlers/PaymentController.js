@@ -128,20 +128,24 @@ const paymentArcaForAdmin = async (req, res) => {
         const oneMonthLater = new Date();
         oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
         adminStatus.endDate = oneMonthLater;
+        await adminStatus.save()
       } else if (payment.type === "full") {
         const oneYearLater = new Date();
         oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
         adminStatus.endDate = oneYearLater;
+        await adminStatus.save()
       }
     } else {
       if (payment.type === "monthly") {
         const oneMonthLater = new Date(adminStatus.endDate);
         oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
         adminStatus.endDate = oneMonthLater;
+        await adminStatus.save()
       } else if (payment.type === "full") {
         const oneYearLater = new Date(adminStatus.endDate);
         oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
         adminStatus.endDate = oneYearLater;
+        await adminStatus.save()
       }
     }
     adminStatus.isActive = true;

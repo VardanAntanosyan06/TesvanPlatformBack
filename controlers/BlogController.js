@@ -1,16 +1,41 @@
 const { Blog } = require('../models');
+const uuid = require('uuid');
+const path = require('path');
+const fs = require('fs');
+const allowedFormats = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'application/pdf',              // PDF files
+    'application/msword',           // .doc files
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx files
+    'application/vnd.ms-excel',     // .xls files
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx files
+    'application/json', //.json files
+    'text/plain',
+    "application/xml"
+  ];
 
 // Create a new blog
 const createBlog = async (req, res) => {
     try {
-        const { title_en, title_am, title_ru, description_en, description_am, description_ru, img } = req.body;
-        const newBlog = await Blog.create({ title_en, title_am, title_ru, description_en, description_am, description_ru, img });
+        const { title_en, title_am, title_ru, description_en, description_am, description_ru } = req.body;
+        const { file } = req.files;
+
+        if (!allowedFormats.includes(file.mimetype)) {
+            return res.status(400).json({ success: false, message: 'Unsupported file format' });
+        };
+
+        const type = file.mimetype.split('/')[1];
+        const fileName = uuid.v4() + '.' + type;
+        await file.mv(path.resolve(__dirname, '../', 'static', fileName));
+
+        const newBlog = await Blog.create({ title_en, title_am, title_ru, description_en, description_am, description_ru, img: fileName });
         res.status(200).json({ success: true });
     } catch (error) {
         res.status(500).json({ message: "Error creating blog", error: error.message });
     }
 };
-
 
 // Get all blogs with optional language filter
 const getBlogs = async (req, res) => {
@@ -51,7 +76,7 @@ const getBlogById = async (req, res) => {
 const updateBlog = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title_en, title_am, title_ru, description_en, description_am, description_ru, img } = req.body;
+        const { title_en, title_am, title_ru, description_en, description_am, description_ru } = req.body;
 
         const blog = await Blog.findByPk(id);
 
@@ -59,8 +84,25 @@ const updateBlog = async (req, res) => {
             return res.status(404).json({ message: "Blog not found" });
         }
 
-        await blog.update(
-            { title_en, title_am, title_ru, description_en, description_am, description_ru, img },
+        let fileName
+        if(req.files.file){
+            const { file } = req.files;
+
+            if (!allowedFormats.includes(file.mimetype)) {
+                return res.status(400).json({ success: false, message: 'Unsupported file format' });
+            };
+
+            fs.unlinkSync(path.resolve(__dirname, "../", "static", blog.img));
+    
+            const type = file.mimetype.split('/')[1];
+            fileName = uuid.v4() + '.' + type;
+            await file.mv(path.resolve(__dirname, '../', 'static', fileName));
+        } else {
+            fileName = blog.img
+        };
+
+        await Blog.update(
+            { title_en, title_am, title_ru, description_en, description_am, description_ru, img: fileName },
             { where: { id } }
         );
         res.status(200).json({ success: true });
@@ -75,12 +117,15 @@ const deleteBlog = async (req, res) => {
         const { id } = req.params;
 
         const blog = await Blog.findByPk(id);
-
+        
         if (!blog) {
             return res.status(404).json({ message: "Blog not found" });
-        }
+        };
 
-        await blog.destroy({ where: { id } });
+        await Blog.destroy({ where: { id } });
+
+        fs.unlinkSync(path.resolve(__dirname, "../", "static", blog.img));
+
         res.status(200).json({ success: true });
     } catch (error) {
         res.status(500).json({ message: "Error deleting blog", error: error.message });
