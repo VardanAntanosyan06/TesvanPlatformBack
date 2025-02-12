@@ -1187,6 +1187,13 @@ const finishGroup = async (req, res) => {
         message: `Group with ID ${id} not defined`,
       });
 
+    if (Group.finished) {
+      return res.json({
+        success: false,
+        message: `Group finished`,
+      });
+    }
+
     const { title: courseName } = await CoursesContents.findOne({
       where: { courseId: Group.assignCourseId, language },
     });
