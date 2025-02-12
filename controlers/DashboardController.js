@@ -46,6 +46,7 @@ const getUserStatictis = async (req, res) => {
     const userCoursPoints = +isIndividual.totalPoints
     const userCoursQuizzPoints = +isIndividual.takenQuizzes
     const userCoursHomeworkPoints = +isIndividual.takenHomework
+    const userCoursInterviewPoint = +isIndividual.takenInterview
 
     if (
       isIndividual &&
@@ -202,7 +203,7 @@ const getUserStatictis = async (req, res) => {
       },
       interview: {
         maxInterviewPoint: +maxPoint.maxInterviewPoint,
-        userCoursInterviewPoint: 0
+        userCoursInterviewPoint: parseFloat(userCoursInterviewPoint.toFixed(2)),
       },
 
       totalPoints: parseFloat(userCoursPoints.toFixed(2)),

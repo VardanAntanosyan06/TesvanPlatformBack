@@ -34,7 +34,7 @@ router.get(
 );
 
 router.put('/update/:groupId', checkAuth(['ADMIN', 'TEACHER']), controller.update);
-router.get('/finishGroup/:id', checkAuth(['ADMIN', 'TEACHER']), controller.finishGroup);
+router.get('/finishGroup/:id',  controller.finishGroup);
 
 router.delete('/deleteMember', checkAuth(['ADMIN', 'TEACHER']), controller.deleteMember);
 router.delete('/delete/:id', checkAuth(['ADMIN', 'TEACHER']), controller.deleteGroup);
