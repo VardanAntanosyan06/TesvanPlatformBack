@@ -43,6 +43,7 @@ const BlogRoutes = require('./routes/Blog');
 const CareerRoutes = require('./routes/Career');
 const ContactRoutes = require('./routes/Contact');
 const TestimonialRoutes = require('./routes/Testimonial');
+const PromoCodeRouter = require('./routes/PromoCode');
 var app = express();
 var express = require('express');
 var router = express.Router();
@@ -103,6 +104,7 @@ app.use('/api/v2/blog', BlogRoutes);
 app.use('/api/v2/career', CareerRoutes);
 app.use('/api/v2/contact', ContactRoutes);
 app.use('/api/v2/testimonial', TestimonialRoutes);
+app.use('/api/v2/promocode', PromoCodeRouter);
 app.use(router.post("/payment/configidram", paymentController.paymentIdram));
 
 const port = normalizePort(process.env.PORT || '4000');
