@@ -717,7 +717,8 @@ const addMember = async (req, res) => {
           const userLastGroupMember = await GroupsPerUsers.findOne({
             where: {
               groupId: group.lastGroup.lastGroupId,
-              userId
+              userId,
+              userRole: "STUDENT"
             }
           });
           if (userLastGroupMember) {
