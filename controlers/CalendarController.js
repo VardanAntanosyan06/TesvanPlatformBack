@@ -1,3 +1,4 @@
+const { finished } = require('nodemailer/lib/xoauth2');
 const { Calendar, Groups, Users, GroupsPerUsers, UserInterview, UserCourses, GroupCourses, CoursesContents } = require('../models');
 const { Op, where } = require('sequelize');
 
@@ -294,6 +295,7 @@ const getUsers = async (req, res) => {
 
     let Group = await Groups.findAll({
       where: {
+        finished: false,
         creatorId: [userId, creatorId, ...teacherIds]
       },
       include: [
@@ -359,6 +361,7 @@ const getUsersForTeacher = async (req, res) => {
             },
             {
               model: Groups,
+              where: { finished: false},
               include: [
                 {
                   model: Users,
