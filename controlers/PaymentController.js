@@ -510,8 +510,9 @@ const paymentArca = async (req, res) => {
     if (group.lastGroup) {
       const userLastGroup = await GroupsPerUsers.findOne({
         where: {
-          groupId: group.lastGroup.groupId,
-          userId: payment.userId
+          groupId: group.lastGroup.lastGroupId,
+          userId: payment.userId,
+          userRole: "STUDENT"
         }
       });
 
@@ -997,8 +998,9 @@ const paymentIdram = async (req, res) => {
           if (group.lastGroup) {
             const userLastGroup = await GroupsPerUsers.findOne({
               where: {
-                groupId: group.lastGroup.groupId,
-                userId: payment.userId
+                groupId: group.lastGroup.lastGroupId,
+                userId: payment.userId,
+                userRole: "STUDENT"
               }
             });
 
