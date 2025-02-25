@@ -1257,7 +1257,7 @@ const findGroups = async (req, res) => {
       where: {
         creatorId: [userId, creatorId, ...teacherIds]
       },
-      attributes: ['id', ['name_en', 'name'], 'assignCourseId', "finished"],
+      attributes: ['id', ['name_en', 'name'], 'assignCourseId', "finished", "startDate"],
       order: [['id', 'DESC']],
       include: [
         {
@@ -1276,6 +1276,10 @@ const findGroups = async (req, res) => {
 
     group = await Promise.all(
       group.map(async (grp) => {
+        const group = grp.toJSON();
+        const date = new Date(group.startDate);
+        const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(date);
+        const year = date.getFullYear();
         const a = await Promise.all(
           grp.GroupsPerUsers.map(async (e) => {
             let user = e.toJSON();
@@ -1295,6 +1299,7 @@ const findGroups = async (req, res) => {
 
         return {
           ...grp.dataValues,
+          name: `${group.name} - ${monthName} ${year}`,
           usersCount,
           GroupsPerUsers: a,
         };
@@ -1637,7 +1642,7 @@ const getAllGroupForTeacher = async (req, res) => {
                   attributes: ['firstName', 'lastName', 'image', 'role'],
                 },
               ],
-              attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt"]
+              attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt", "startDate"]
             }
           ],
         },
@@ -1655,7 +1660,7 @@ const getAllGroupForTeacher = async (req, res) => {
           attributes: ['firstName', 'lastName', 'image', 'role'],
         },
       ],
-      attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt"]
+      attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt", "startDate"]
     });
 
     creatorGroup = creatorGroup.reduce((aggr, value) => {
@@ -1664,6 +1669,11 @@ const getAllGroupForTeacher = async (req, res) => {
 
       const group = firstGroup.toJSON();
       const users = group?.Users || [];
+
+      const date = group.startDate
+      const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(date);
+      const year = new Date(group.startDate).getFullYear();
+      group.name = group.name + " - " + monthName + " " + year
 
       group.usersCount = users.length;
       group.GroupsPerUsers = users.slice(0, 3);
@@ -1676,10 +1686,13 @@ const getAllGroupForTeacher = async (req, res) => {
     group = group.reduce((aggr, value) => {
       const firstGroup = value?.GroupCourse?.Groups?.[0];
       if (!firstGroup) return aggr; // Skip if no group exists
-
       const group = firstGroup.toJSON();
-      const users = group?.Users || []; // Default to empty array if Users is undefined
+      const date = group.startDate
+      const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(date);
+      const year = new Date(group.startDate).getFullYear();
 
+      const users = group?.Users || []; // Default to empty array if Users is undefined
+      group.name = group.name + " - " + monthName + " " + year
       group.usersCount = users.length; // Count the number of users
       group.GroupsPerUsers = users.slice(0, 3); // Get first 3 users
       delete group?.Users; // Remove Users from dataValues
@@ -1723,7 +1736,7 @@ const getAllGroupForTeacherDashbord = async (req, res) => {
                   attributes: ['firstName', 'lastName', 'image', 'role'],
                 },
               ],
-              attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt"]
+              attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt", "startDate"]
             }
           ],
         },
@@ -1742,7 +1755,7 @@ const getAllGroupForTeacherDashbord = async (req, res) => {
           attributes: ['firstName', 'lastName', 'image', 'role'],
         },
       ],
-      attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt"]
+      attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt", "startDate"]
     });
 
     creatorGroup = creatorGroup.reduce((aggr, value) => {
@@ -1752,6 +1765,10 @@ const getAllGroupForTeacherDashbord = async (req, res) => {
       const group = firstGroup.toJSON();
       const users = group?.Users || [];
 
+      const date = group.startDate
+      const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(date);
+      const year = new Date(group.startDate).getFullYear();
+      group.name = group.name + " - " + monthName + " " + year
       group.usersCount = users.length;
       group.GroupsPerUsers = users.slice(0, 3);
       delete group?.Users;
@@ -1765,8 +1782,12 @@ const getAllGroupForTeacherDashbord = async (req, res) => {
       if (!firstGroup) return aggr; // Skip if no group exists
 
       const group = firstGroup.toJSON();
+      const date = group.startDate
+      const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(date);
+      const year = new Date(group.startDate).getFullYear();
       const users = group?.Users || []; // Default to empty array if Users is undefined
 
+      group.name = group.name + " - " + monthName + " " + year
       group.usersCount = users.length; // Count the number of users
       group.GroupsPerUsers = users.slice(0, 3); // Get first 3 users
       delete group?.Users; // Remove Users from dataValues
@@ -1808,7 +1829,7 @@ const getAllGroupForAdminDashbord = async (req, res) => {
         creatorId: [userId, creatorId, ...teacherIds],
         finished: false
       },
-      attributes: ['id', [`name_${language}`, 'name'], 'assignCourseId'],
+      attributes: ['id', [`name_${language}`, 'name'], 'assignCourseId', "startDate"],
       order: [['id', 'DESC']],
       include: [
         {
@@ -1827,6 +1848,10 @@ const getAllGroupForAdminDashbord = async (req, res) => {
 
     group = await Promise.all(
       group.map(async (grp) => {
+        const group = grp.toJSON();
+        const date = new Date(group.startDate);
+        const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(date);
+        const year = date.getFullYear();
         const a = await Promise.all(
           grp.GroupsPerUsers.map(async (e) => {
             let user = e.toJSON();
@@ -1846,6 +1871,7 @@ const getAllGroupForAdminDashbord = async (req, res) => {
 
         return {
           ...grp.dataValues,
+          name: `${group.name} - ${monthName} ${year}`,
           usersCount,
           GroupsPerUsers: a,
         };
@@ -1865,7 +1891,7 @@ const getAllGroupForSuperAdminDashbord = async (req, res) => {
       where: {
         finished: false
       },
-      attributes: ['id', [`name_${language}`, 'name'], 'assignCourseId'],
+      attributes: ['id', [`name_${language}`, 'name'], 'assignCourseId', "startDate"],
       order: [['id', 'DESC']],
       include: [
         {
@@ -1884,6 +1910,10 @@ const getAllGroupForSuperAdminDashbord = async (req, res) => {
 
     group = await Promise.all(
       group.map(async (grp) => {
+        const group = grp.toJSON();
+        const date = new Date(group.startDate);
+        const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(date);
+        const year = date.getFullYear();
         const a = await Promise.all(
           grp.GroupsPerUsers.map(async (e) => {
             let user = e.toJSON();
@@ -1903,6 +1933,7 @@ const getAllGroupForSuperAdminDashbord = async (req, res) => {
 
         return {
           ...grp.dataValues,
+          name: `${group.name} - ${monthName} ${year}`,
           usersCount,
           GroupsPerUsers: a,
         };
