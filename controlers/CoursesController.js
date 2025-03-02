@@ -140,6 +140,36 @@ const getCourseTitles = async (req, res) => {
         description: item?.CoursesContents[0].description,
       };
     });
+
+    const courseIds = Courses.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, []);
+
+    const groups =  await Groups.findAll({
+      where: {
+        assignCourseId: courseIds
+      },
+      attributes: ["finished", "assignCourseId"]
+    });
+
+    const groupFinihed = groups.reduce((aggr, value) => {
+      aggr[value.assignCourseId] = value.finished
+      return aggr
+    }, {})
+
+    Courses = Courses.reduce((aggr, value)=> {
+      if(groupFinihed[value.id]===true){
+        value.type = "inProgress"
+      } else if (groupFinihed[value.id]===false){
+        value.type = "seperatey"
+      } else {
+        value.type = "none"
+      };
+      aggr.push(value);
+      return aggr
+    }, []);
+
     return res.status(200).json(Courses);
   } catch (error) {
     console.log(error);
@@ -150,9 +180,7 @@ const getCourseTitles = async (req, res) => {
 const getCourseTitleForTeacher = async (req, res) => {
   try {
 
-
     const { user_id: userId } = req.user;
-
 
     const { language } = req.query;
     let courses = await UserCourses.findAll({
@@ -166,7 +194,7 @@ const getCourseTitleForTeacher = async (req, res) => {
               model: CoursesContents,
               where: { language },
               attributes: ["courseId", "title", "description"]
-            }
+            },
           ],
         },
       ],
@@ -192,10 +220,39 @@ const getCourseTitleForTeacher = async (req, res) => {
       attributes: [["courseId", "id"], "title", "description"]
     });
 
-    courses = [...courses, ...teacherCourses]
+    courses = [...teacherCourses, ...courses ]
     courses = Array.from(
       new Map(courses.map(e => [e.id, e])).values()
     );
+
+    const courseIds = courses.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, []);
+
+    const groups =  await Groups.findAll({
+      where: {
+        assignCourseId: courseIds
+      },
+      attributes: ["finished", "assignCourseId"]
+    });
+
+    const groupFinihed = groups.reduce((aggr, value) => {
+      aggr[value.assignCourseId] = value.finished
+      return aggr
+    }, {})
+
+    courses = courses.reduce((aggr, value)=> {
+      if(groupFinihed[value.id]===true){
+        value.type = "finished"
+      } else if (groupFinihed[value.id]===false){
+        value.type = "seperate"
+      } else {
+        value.type = "none"
+      };
+      aggr.push(value);
+      return aggr
+    }, [])
 
     return res.status(200).json(courses);
   } catch (error) {
