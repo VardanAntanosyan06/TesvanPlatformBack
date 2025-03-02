@@ -4,6 +4,9 @@ const { Op } = require('sequelize');
 const findAllStudents = async (req, res) => {
   try {
     let certificates = await Certificates.findAll({
+      where: {
+        groupId: req.query.groupId,
+      },
       include: [
         {
           model: Users,

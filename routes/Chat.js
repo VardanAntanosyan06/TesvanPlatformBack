@@ -28,4 +28,10 @@ router.delete(
     controller.deleteChat
 );
 
+router.get(
+    "/getAdminChats",
+    checkAuth(["STUDENT","TEACHER", "ADMIN"]),
+    controller.getAdminChats
+);
+
 module.exports = router;

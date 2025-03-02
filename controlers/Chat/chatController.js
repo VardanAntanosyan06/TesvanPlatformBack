@@ -209,5 +209,6 @@ module.exports = {
     createChat,
     getChat,
     getChats,
-    deleteChat
+    deleteChat,
+    getAdminChats
 }
