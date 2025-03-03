@@ -160,11 +160,11 @@ const getCourseTitles = async (req, res) => {
 
     Courses = Courses.reduce((aggr, value)=> {
       if(groupFinihed[value.id]===true){
-        value.type = "inProgress"
+        value.type = "finished"
       } else if (groupFinihed[value.id]===false){
-        value.type = "seperatey"
+        value.type = "inProgrss"
       } else {
-        value.type = "none"
+        value.type = null
       };
       aggr.push(value);
       return aggr
@@ -246,9 +246,9 @@ const getCourseTitleForTeacher = async (req, res) => {
       if(groupFinihed[value.id]===true){
         value.type = "finished"
       } else if (groupFinihed[value.id]===false){
-        value.type = "seperate"
+        value.type = "inProgress"
       } else {
-        value.type = "none"
+        value.type = null
       };
       aggr.push(value);
       return aggr
