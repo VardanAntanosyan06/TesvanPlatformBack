@@ -9,7 +9,7 @@ router.get('/emailExist/:email', controller.EmailExist);
 router.get('/sendEmail', controller.UserRegistartionSendEmail);
 router.patch('/verification', controller.UserRegistartionVerification);
 router.post('/testing', checkAuth(['ADMIN']), controller.RegisterTesting);
-router.post('/addUser', checkAuth(['ADMIN']), controller.AddMember);
+router.post('/addUser', checkAuth(['ADMIN', 'SUPERADMIN']), controller.AddMember);
 router.get('/getMembers', checkAuth(['ADMIN']), controller.getMembers);
 router.get('/getMember/:id', checkAuth(['ADMIN', 'TEACHER', 'SUPERADMIN']), controller.getMember);
 router.patch('/changeEmail/', checkAuth(['ADMIN', 'TEACHER', 'STUDENT']), controller.changeEmail);
