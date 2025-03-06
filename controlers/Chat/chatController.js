@@ -1,4 +1,4 @@
-const { Chats, Users } = require("../../models");
+const { Chats, Users, GroupCourses } = require("../../models");
 const { Op, Model } = require('sequelize');
 
 
@@ -191,10 +191,11 @@ const getAdminChats = async (req, res) => {
         });
 
         courses = courses.reduce((aggr, value) => {
-            value.toJson()
+            value = value.toJSON()
             value.members = value.courses;
             delete value.courses
-            return [...aggr, value]
+            aggr.push(value)
+            return aggr;
         }, []);
 
         return res.status(200).json(courses)
