@@ -1662,9 +1662,9 @@ const downloadInvoice = async (req, res) => {
         if (userName.split("").length <= 17) {
           doc.text(userName, 28, 335);
         } else {
-          const Name = userName.split(" ");
+          const Name = userName.trim().split(" ");
           doc.text(Name[0], 28, 329);
-          doc.text(Name[2], 28, 342);
+          doc.text(Name[1], 28, 342);            
         };
         doc.text(paymentMethod, 185, 335, { align: 'left' });
         doc.text(formattedDate, 280, 335, { align: 'left' });
@@ -1758,9 +1758,9 @@ const downloadInvoice = async (req, res) => {
       if (userName.split("").length <= 18) {
         doc.text(userName, 28, 335);
       } else {
-        const Name = userName.split(" ");
+        const Name = userName.trim().split(" ");
         doc.text(Name[0], 28, 329);
-        doc.text(Name[2], 28, 342);
+        doc.text(Name[1], 28, 342);
       };
       doc.text(paymentMethod, 185, 335, { align: 'left' });
       doc.text(formattedDate, 280, 335, { align: 'left' });
