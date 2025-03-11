@@ -1528,7 +1528,7 @@ const getAllPayment = async (req, res) => {
         }
       }
       aggr[value.userId].type = value.type
-      aggr[value.userId].type = value.paymentWay
+      aggr[value.userId].paymentWay = value.paymentWay
 
       return aggr;
     }, {});
