@@ -1528,6 +1528,8 @@ const getAllPayment = async (req, res) => {
         }
       }
       aggr[value.userId].type = value.type
+      aggr[value.userId].type = value.paymentWay
+
       return aggr;
     }, {});
 
