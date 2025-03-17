@@ -35,4 +35,6 @@ router.post('/createTest/', checkAuth(['STUDENT']), controller.createTest);
 router.delete('/delete/:id', checkAuth(['ADMIN', "TEACHER"]), controller.deleteCourse);
 router.put('/update/:courseId', checkAuth(['ADMIN', 'TEACHER']), controller.updateCourse);
 
+router.get('/getCourseTitlesForCreateGroup', checkAuth(['TEACHER']), controller.getCourseTitlesForCreateGroup);
+
 module.exports = router;

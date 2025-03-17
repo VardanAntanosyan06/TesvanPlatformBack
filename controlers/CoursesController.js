@@ -1718,6 +1718,90 @@ const IndividualGetOne = async (req, res) => {
   }
 };
 
+const getCourseTitlesForCreateGroup = async (req, res) => {
+  try {
+
+    const { user_id: userId } = req.user;
+
+    const { language } = req.query;
+    let courses = await UserCourses.findAll({
+      where: { UserId: userId },
+      attributes: ['id', ['UserId', 'userId']],
+      include: [
+        {
+          model: GroupCourses,
+          include: [
+            {
+              model: CoursesContents,
+              where: { language },
+              attributes: ["courseId", "title", "description"]
+            },
+          ],
+        },
+      ],
+
+    });
+
+    courses = courses.reduce((aggr, value) => {
+
+      const content = {
+        id: value.GroupCourse.CoursesContents[0].courseId,
+        title: value.GroupCourse.CoursesContents[0].title,
+        description: value.GroupCourse.CoursesContents[0].description,
+      };
+      aggr.push(content)
+      return aggr
+    }, [])
+
+    const teacherCourses = await CoursesContents.findAll({
+      where: {
+        creatorId: userId,
+        language
+      },
+      attributes: [["courseId", "id"], "title", "description"]
+    });
+
+    courses = [...teacherCourses, ...courses ]
+    courses = Array.from(
+      new Map(courses.map(e => [e.id, e])).values()
+    );
+
+    const courseIds = courses.reduce((aggr, value) => {
+      aggr.push(value.id)
+      return aggr;
+    }, []);
+
+    const groups =  await Groups.findAll({
+      where: {
+        assignCourseId: courseIds
+      },
+      attributes: ["finished", "assignCourseId"]
+    });
+
+    const groupFinihed = groups.reduce((aggr, value) => {
+      aggr[value.assignCourseId] = value.finished
+      return aggr
+    }, {})
+
+    courses = courses.reduce((aggr, value)=> {
+      if(groupFinihed[value.id]===true){
+        value.type = "finished"
+      } else if (groupFinihed[value.id]===false){
+        value.type = "inProgress"
+      } else {
+        value.type = null
+        aggr.push(value);
+      };
+      return aggr
+    }, [])
+
+    return res.status(200).json(courses);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+}
+
 module.exports = {
   getAllCourses,
   getCoursesByFilter,
@@ -1735,4 +1819,5 @@ module.exports = {
   getOneGroup,
   deleteCourse,
   getCourseForAdmin,
+  getCourseTitlesForCreateGroup
 };
