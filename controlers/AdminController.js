@@ -276,7 +276,8 @@ const getAdmins = async (req, res) => {
         teacherCount: value.teachers?.length || 0,
         groupCount: adminDate[value.id]?.length || 0,
         userCount: adminDate[value.id]?.reduce((aggr, e) => { return aggr + +e.users }, 0) || 0,
-        isActive: value.userStatus.isActive
+        isActive: value.userStatus.isActive,
+        // type: value.lastName? "individual" : "company"
       })
       return aggr
     }, [])
@@ -312,6 +313,8 @@ const getAdmin = async (req, res) => {
       })
     };
 
+    // admin.setDataValue('type', admin.lastName? "individual" : "company");
+
     return res.status(200).json({
       success: true,
       admin
@@ -325,7 +328,7 @@ const getAdmin = async (req, res) => {
 const updateAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, phoneNumber, birthday, gender, city, country } = req.body;
+    const { firstName, lastName, email, phoneNumber, birthday, gender, city, country } = req.body; //add type
 
     if (isNaN(+id)) {
       return res.status(400).json({ success: false, message: "Invalid ID. Must be a number." });
