@@ -630,7 +630,7 @@ const addMember = async (req, res) => {
       users.map(async (userId) => {
         const user = await Users.findOne({ where: { id: userId } });
 
-        const userLastGroup = await GroupsPerUsers.findOrCreate({
+        await GroupsPerUsers.findOrCreate({
           where: {
             groupId: group.id,
             userId: user.id,
@@ -803,8 +803,10 @@ const addMember = async (req, res) => {
 
             const copyHomeworkFile = lastGroupHomeworkFile.reduce((aggr, value) => {
               value = value.toJSON()
+              delete value.id
               value.courseId = group.assignCourseId
-              return aggr.push(value)
+              aggr.push(value)
+              return aggr
             }, [])
 
             await HomeWorkFiles.bulkCreate(copyHomeworkFile);
@@ -869,25 +871,9 @@ const addMember = async (req, res) => {
             userCours.takenHomework = +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
             userCours.takenQuizzes = +lastGroupQuizPoint[0]?.totalQuizPoints;
             userCours.totalPoints = +lastGroupQuizPoint[0]?.totalQuizPoints + +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
-            await userCours.save()
-
-            const payment = await PaymentWays.findOne({
-              where: {
-                groupId: group.id,
-                type: "monthly"
-              }
-            })
-            const thisCoursePrice = payment.price * (1 - payment.discount / 100);
-            await Payment.create({
-              orderKey: "last cours payment",
-              orderNumber: "last cours payment",
-              paymentWay: "ARCA",
-              status: "Success",
-              userId,
-              groupId: group.id,
-              type: "monthly",
-              amount: Math.round(thisCoursePrice)
-            })
+            await userCours.save();
+            console.log(+lastGroupHomeworkPoint[0]?.totalHomeworkPoints, +lastGroupQuizPoint[0]?.totalQuizPoints, +lastGroupQuizPoint[0]?.totalQuizPoints + +lastGroupHomeworkPoint[0]?.totalHomeworkPoints, 55);
+            
           }
         }
       }),

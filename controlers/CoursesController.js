@@ -16,6 +16,8 @@ const {
   HomeworkPerLesson,
   UserHomework,
   Question,
+  continuingGroups,
+  Payment
 } = require('../models');
 
 const { CoursesContents } = require('../models');
@@ -146,7 +148,7 @@ const getCourseTitles = async (req, res) => {
       return aggr;
     }, []);
 
-    const groups =  await Groups.findAll({
+    const groups = await Groups.findAll({
       where: {
         assignCourseId: courseIds
       },
@@ -158,10 +160,10 @@ const getCourseTitles = async (req, res) => {
       return aggr
     }, {})
 
-    Courses = Courses.reduce((aggr, value)=> {
-      if(groupFinihed[value.id]===true){
+    Courses = Courses.reduce((aggr, value) => {
+      if (groupFinihed[value.id] === true) {
         value.type = "finished"
-      } else if (groupFinihed[value.id]===false){
+      } else if (groupFinihed[value.id] === false) {
         value.type = "inProgrss"
       } else {
         value.type = null
@@ -220,7 +222,7 @@ const getCourseTitleForTeacher = async (req, res) => {
       attributes: [["courseId", "id"], "title", "description"]
     });
 
-    courses = [...teacherCourses, ...courses ]
+    courses = [...teacherCourses, ...courses]
     courses = Array.from(
       new Map(courses.map(e => [e.id, e])).values()
     );
@@ -230,7 +232,7 @@ const getCourseTitleForTeacher = async (req, res) => {
       return aggr;
     }, []);
 
-    const groups =  await Groups.findAll({
+    const groups = await Groups.findAll({
       where: {
         assignCourseId: courseIds
       },
@@ -242,10 +244,10 @@ const getCourseTitleForTeacher = async (req, res) => {
       return aggr
     }, {})
 
-    courses = courses.reduce((aggr, value)=> {
-      if(groupFinihed[value.id]===true){
+    courses = courses.reduce((aggr, value) => {
+      if (groupFinihed[value.id] === true) {
         value.type = "finished"
-      } else if (groupFinihed[value.id]===false){
+      } else if (groupFinihed[value.id] === false) {
         value.type = "inProgress"
       } else {
         value.type = null
@@ -1203,11 +1205,63 @@ const getOneGroup = async (req, res) => {
       ],
     });
 
-    const { price, discount } = await PaymentWays.findByPk(priceId);
+    let { price, discount } = await PaymentWays.findByPk(priceId);
 
     Courses = Courses.toJSON();
     delete Courses.dataValues;
     // return res.json({Courses})
+
+    const jwt = require("jsonwebtoken");
+    const token = req.headers?.authorization?.split(" ")[1];
+    let thisCoursePrice
+    if (token) {
+      const decoded = jwt.verify(token, process.env.SECRET);
+      const paymentWay = await PaymentWays.findByPk(priceId);
+      const group = await Groups.findOne({
+        where: {
+          id: paymentWay?.groupId
+        },
+        include: [
+          {
+            model: continuingGroups,
+            as: "lastGroup",
+            require: false
+          }
+        ]
+      });
+      if (!group) {
+        return res.status(400).json({ success: false, message: "This course not found" });
+      };
+      if (group.finished) {
+        return res.status(400).json({ success: false, message: "This course finished" });
+      };
+
+      const lastCoursePayment = await Payment.findAll({
+        where: {
+          userId: decoded.user_id,
+          groupId: group.lastGroup.lastGroupId,
+          status: "Success"
+        }
+      })
+
+      const lastCourse = await PaymentWays.findOne({
+        where: {
+          groupId: group.lastGroup.lastGroupId,
+          type: paymentWay.type,
+        },
+      });
+
+      if (group.lastGroup && paymentWay.type === "full" && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
+        
+        thisCoursePrice = (paymentWay.price * (1 - lastCourse.discount / 100)) * (paymentWay.durationMonths - 1) / paymentWay.durationMonths
+      } else {
+        thisCoursePrice = paymentWay.price * (1 - paymentWay.discount / 100);
+      }
+    };
+
+    thisCoursePrice = Math.ceil(+Math.round(thisCoursePrice));
+    const saledValue = thisCoursePrice ? thisCoursePrice : price > 0 ? price - Math.round(price * discount) / 100 : price;
+
 
     Courses = {
       title: Courses[`name_${language}`],
@@ -1225,7 +1279,7 @@ const getOneGroup = async (req, res) => {
       //       days[language],
       price,
       sale: discount,
-      saledValue: price > 0 ? price - Math.round(price * discount) / 100 : price,
+      saledValue
     };
 
     return res.status(200).json(Courses);
@@ -1761,7 +1815,7 @@ const getCourseTitlesForCreateGroup = async (req, res) => {
       attributes: [["courseId", "id"], "title", "description"]
     });
 
-    courses = [...teacherCourses, ...courses ]
+    courses = [...teacherCourses, ...courses]
     courses = Array.from(
       new Map(courses.map(e => [e.id, e])).values()
     );
@@ -1771,7 +1825,7 @@ const getCourseTitlesForCreateGroup = async (req, res) => {
       return aggr;
     }, []);
 
-    const groups =  await Groups.findAll({
+    const groups = await Groups.findAll({
       where: {
         assignCourseId: courseIds
       },
@@ -1783,10 +1837,10 @@ const getCourseTitlesForCreateGroup = async (req, res) => {
       return aggr
     }, {})
 
-    courses = courses.reduce((aggr, value)=> {
-      if(groupFinihed[value.id]===true){
+    courses = courses.reduce((aggr, value) => {
+      if (groupFinihed[value.id] === true) {
         value.type = "finished"
-      } else if (groupFinihed[value.id]===false){
+      } else if (groupFinihed[value.id] === false) {
         value.type = "inProgress"
       } else {
         value.type = null

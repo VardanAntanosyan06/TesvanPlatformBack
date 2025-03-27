@@ -179,86 +179,6 @@ const getAdminPayment = async (req, res) => {
 const nextPaymentAdmin = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    // const adminPayments = await Payment.findAll({
-    //   where: {
-    //     userId
-    //   },
-    //   order: [['updatedAt', 'DESC']]
-    // })
-
-    // let nextPaymentDate
-
-    // function dateDifferenceInDays(date1, date2) {
-    //   const diffInTime = date1.getTime() - date2.getTime();
-    //   const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
-    //   return diffInDays;
-    // }
-
-    // if (adminPayments[0].type === "monthly") {
-    //   if (adminPayments[1].type === "monthly") {
-    //     const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
-    //     if (daysOlder >= 30) {
-    //       const paymentDate = new Date(adminPayments[0].updatedAt);
-    //       paymentDate.setMonth(paymentDate.getMonth() + 1);
-    //       nextPaymentDate = paymentDate
-    //     } else {
-    //       const paymentDate = new Date(adminPayments[0].updatedAt);
-    //       paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
-    //       paymentDate.setMonth(paymentDate.getMonth() + 1);
-    //       nextPaymentDate = paymentDate
-    //     }
-    //   } else if (adminPayments[1].type === "full") {
-    //     const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
-    //     if (daysOlder >= 365) {
-    //       const paymentDate = new Date(adminPayments[0].updatedAt);
-    //       paymentDate.setMonth(paymentDate.getMonth() + 1);
-    //       nextPaymentDate = paymentDate
-    //     } else {
-    //       const paymentDate = new Date(adminPayments[0].updatedAt);
-    //       paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
-    //       paymentDate.setMonth(paymentDate.getMonth() + 1);
-    //       nextPaymentDate = paymentDate
-    //     }
-    //   }
-    // } else if (adminPayments[0].type === "full") {
-    //   if (adminPayments[1].type === "monthly") {
-    //     const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt)
-    //     if (daysOlder >= 30) {
-    //       const paymentDate = new Date(adminPayments[0].updatedAt);
-    //       paymentDate.setFullYear(paymentDate.getFullYear() + 1);
-    //       nextPaymentDate = paymentDate
-    //     } else {
-    //       const paymentDate = new Date(adminPayments[0].updatedAt);
-    //       paymentDate.setDate(paymentDate.getDate() + (30 - daysOlder));
-    //       paymentDate.setFullYear(paymentDate.getFullYear() + 1);
-    //       nextPaymentDate = paymentDate
-    //     }
-    //   } else if (adminPayments[1].type === "full") {
-    //     const daysOlder = dateDifferenceInDays(adminPayments[0].updatedAt, adminPayments[1].updatedAt);
-    //     if (daysOlder >= 365) {
-    //       const paymentDate = new Date(adminPayments[0].updatedAt);
-    //       paymentDate.setFullYear(paymentDate.getFullYear() + 1);
-    //       nextPaymentDate = paymentDate
-    //     } else {
-    //       const paymentDate = new Date(adminPayments[0].updatedAt);
-    //       paymentDate.setDate(paymentDate.getDate() + (365 - daysOlder));
-    //       paymentDate.setFullYear(paymentDate.getFullYear() + 1);
-    //       nextPaymentDate = paymentDate
-    //     }
-    //   }
-    // };
-
-    // let paymentActive = true
-
-    // if (adminPayments[1].type === "monthly") {
-    //   const oneMonthLater = new Date(adminPayments[1].updatedAt);
-    //   oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
-    //   paymentActive = oneMonthLater <= new Date()
-    // } else if (adminPayments[1].type === "monthly") {
-    //   const oneYearLater = new Date(adminPayments[1].updatedAt);
-    //   oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-    //   paymentActive = oneMonthLater <= new Date()
-    // }
 
     const admin = await Users.findOne({
       where: { id: userId },
@@ -293,7 +213,18 @@ const paymentUrl = async (req, res) => {
     const { user_id: userId } = req.user;
     const { paymentWay, groupId, type } = req.body;
 
-    const group = await Groups.findByPk(groupId)
+    const group = await Groups.findOne({
+      where: {
+        id: groupId
+      },
+      include: [
+        {
+          model: continuingGroups,
+          as: "lastGroup",
+          require: false
+        }
+      ]
+    });
 
     if (group.finished) {
       return res.status(400).json({ success: false, message: "This course finished" });
@@ -307,8 +238,44 @@ const paymentUrl = async (req, res) => {
     });
     if (!thisCourse) {
       return res.status(409).json({ success: false });
+    };
+
+    const lastCoursePayment = await Payment.findAll({
+      where: {
+        userId,
+        groupId: group.lastGroup.lastGroupId,
+        status: "Success"
+      }
+    })
+
+    const lastCourse = await PaymentWays.findOne({
+      where: {
+        groupId: group.lastGroup.lastGroupId,
+        type,
+      },
+    });
+
+    let thisCoursePrice
+    if (group.lastGroup && thisCourse.type === "full" && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
+      const userLastGroupMember = await GroupsPerUsers.findOne({
+        where: {
+          groupId: group.lastGroup.lastGroupId,
+          userId,
+          userRole: "STUDENT"
+        }
+      });
+
+      if (userLastGroupMember) {
+
+        thisCoursePrice = (thisCourse.price * (1 - lastCourse.discount / 100)) * (thisCourse.durationMonths - 1) / thisCourse.durationMonths
+      } else {
+        thisCoursePrice = thisCourse.price * (1 - thisCourse.discount / 100);
+      }
+    } else {
+      thisCoursePrice = thisCourse.price * (1 - thisCourse.discount / 100);
     }
-    const thisCoursePrice = thisCourse.price * (1 - thisCourse.discount / 100);
+
+    // const thisCoursePrice = thisCourse.price * (1 - thisCourse.discount / 100);
     const orderNumber = Math.floor(Date.now() * Math.random());
     let amount = Math.ceil(+Math.round(thisCoursePrice) * 100);
 
@@ -598,8 +565,10 @@ const paymentArca = async (req, res) => {
 
         const copyHomeworkFile = lastGroupHomeworkFile.reduce((aggr, value) => {
           value = value.toJSON()
+          delete value.id
           value.courseId = group.assignCourseId
-          return aggr.push(value)
+          aggr.push(value)
+          return aggr
         }, [])
 
         await HomeWorkFiles.bulkCreate(copyHomeworkFile);
@@ -665,17 +634,6 @@ const paymentArca = async (req, res) => {
         userCours.takenQuizzes = +lastGroupQuizPoint[0]?.totalQuizPoints;
         userCours.totalPoints = +lastGroupQuizPoint[0]?.totalQuizPoints + +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
         await userCours.save()
-
-        await Payment.create({
-          orderKey: "last cours payment",
-          orderNumber: "last cours payment",
-          paymentWay: "ARCA",
-          status: "Success",
-          userId: payment.userId,
-          groupId: payment.groupId,
-          type: "monthly",
-          amount: payment.amount
-        })
       }
     }
 
@@ -1086,9 +1044,11 @@ const paymentIdram = async (req, res) => {
 
               const copyHomeworkFile = lastGroupHomeworkFile.reduce((aggr, value) => {
                 value = value.toJSON()
+                delete value.id
                 value.courseId = group.assignCourseId
-                return aggr.push(value)
-              }, [])
+                aggr.push(value)
+                return aggr
+              }, []);
 
               await HomeWorkFiles.bulkCreate(copyHomeworkFile);
 
@@ -1153,17 +1113,6 @@ const paymentIdram = async (req, res) => {
               userCours.takenQuizzes = +lastGroupQuizPoint[0]?.totalQuizPoints;
               userCours.totalPoints = +lastGroupQuizPoint[0]?.totalQuizPoints + +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
               await userCours.save()
-
-              await Payment.create({
-                orderKey: "last cours payment",
-                orderNumber: "last cours payment",
-                paymentWay: "ARCA",
-                status: "Success",
-                userId: payment.userId,
-                groupId: payment.groupId,
-                type: "monthly",
-                amount: payment.amount
-              })
             }
           };
 
@@ -1265,6 +1214,47 @@ const getUserPayment = async (req, res) => {
       ]
     });
 
+    const group = await Groups.findOne({
+      where: {
+        id: groupId
+      },
+      include: [
+        {
+          model: continuingGroups,
+          as: "lastGroup",
+          require: false
+        }
+      ]
+    });
+
+    let courseStartDate
+    if (group.lastGroup) {
+      const lastCoursePayment = await Payment.findAll({
+        where: {
+          userId,
+          groupId: group.lastGroup?.lastGroupId,
+          status: "Success"
+        }
+      })
+
+      const lastCourse = await PaymentWays.findOne({
+        where: {
+          groupId: group.lastGroup?.lastGroupId,
+          type: "monthly",
+        },
+      });
+
+
+      if (group.lastGroup && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
+        courseStartDate = new Date(paymentWays.group.startDate);
+        courseStartDate.setMonth(courseStartDate.getMonth() + 1);
+      } else {
+        courseStartDate = paymentWays.group.startDate
+      };
+    } else {
+      courseStartDate = paymentWays.group.startDate
+    }
+
     function getMonthCount(startDate, endDate, paymentCount) {
       const nowDate = new Date()
       const start = new Date(startDate);
@@ -1293,15 +1283,11 @@ const getUserPayment = async (req, res) => {
 
 
     const paymentCount = payments.filter((payment) => payment.status === "Success")
-    const durationMonths = getMonthCount(paymentWays.group.startDate, paymentWays.group.endDate, paymentCount.length)
-
-    let nextPaymentDate = new Date(paymentWays.group.startDate);
-    nextPaymentDate.setDate(nextPaymentDate.getDate() + (durationMonths * 30));
-
+    const durationMonths = getMonthCount(courseStartDate, paymentWays.group.endDate, paymentCount.length)
+    let nextPaymentDate = new Date(courseStartDate);
+    nextPaymentDate.setMonth(nextPaymentDate.getMonth() + durationMonths);
     const priceCourse = paymentWays.price * (1 - paymentWays.discount / 100) * paymentWays.durationMonths
     const userUnpaidSum = priceCourse / paymentWays.durationMonths
-
-
 
     const userPaidSum = payments.reduce((aggr, value) => {
       if (value.status === "Success") {
@@ -1315,7 +1301,7 @@ const getUserPayment = async (req, res) => {
         nextPayment: true,
         userPaidSum,
         userUnpaidSum,
-        nextPaymentDate: paymentWays.group.startDate
+        nextPaymentDate: courseStartDate
       };
       return res.status(200).json({
         success: true,
@@ -1664,7 +1650,7 @@ const downloadInvoice = async (req, res) => {
         } else {
           const Name = userName.trim().split(" ");
           doc.text(Name[0], 28, 329);
-          doc.text(Name[1], 28, 342);            
+          doc.text(Name[1], 28, 342);
         };
         doc.text(paymentMethod, 185, 335, { align: 'left' });
         doc.text(formattedDate, 280, 335, { align: 'left' });
