@@ -1235,25 +1235,28 @@ const getOneGroup = async (req, res) => {
       if (group.finished) {
         return res.status(400).json({ success: false, message: "This course finished" });
       };
+      if (group.lastGroup) {
+        const lastCoursePayment = await Payment.findAll({
+          where: {
+            userId: decoded.user_id,
+            groupId: group.lastGroup.lastGroupId,
+            status: "Success"
+          }
+        })
 
-      const lastCoursePayment = await Payment.findAll({
-        where: {
-          userId: decoded.user_id,
-          groupId: group.lastGroup.lastGroupId,
-          status: "Success"
+        const lastCourse = await PaymentWays.findOne({
+          where: {
+            groupId: group.lastGroup.lastGroupId,
+            type: paymentWay.type,
+          },
+        });
+
+        if (group.lastGroup && paymentWay.type === "full" && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
+
+          thisCoursePrice = (paymentWay.price * (1 - lastCourse.discount / 100)) * (paymentWay.durationMonths - 1) / paymentWay.durationMonths
+        } else {
+          thisCoursePrice = paymentWay.price * (1 - paymentWay.discount / 100);
         }
-      })
-
-      const lastCourse = await PaymentWays.findOne({
-        where: {
-          groupId: group.lastGroup.lastGroupId,
-          type: paymentWay.type,
-        },
-      });
-
-      if (group.lastGroup && paymentWay.type === "full" && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
-        
-        thisCoursePrice = (paymentWay.price * (1 - lastCourse.discount / 100)) * (paymentWay.durationMonths - 1) / paymentWay.durationMonths
       } else {
         thisCoursePrice = paymentWay.price * (1 - paymentWay.discount / 100);
       }

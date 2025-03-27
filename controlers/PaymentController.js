@@ -240,33 +240,24 @@ const paymentUrl = async (req, res) => {
       return res.status(409).json({ success: false });
     };
 
-    const lastCoursePayment = await Payment.findAll({
-      where: {
-        userId,
-        groupId: group.lastGroup.lastGroupId,
-        status: "Success"
-      }
-    })
-
-    const lastCourse = await PaymentWays.findOne({
-      where: {
-        groupId: group.lastGroup.lastGroupId,
-        type,
-      },
-    });
-
     let thisCoursePrice
-    if (group.lastGroup && thisCourse.type === "full" && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
-      const userLastGroupMember = await GroupsPerUsers.findOne({
+    if (group.lastGroup) {
+      const lastCoursePayment = await Payment.findAll({
+        where: {
+          userId,
+          groupId: group.lastGroup.lastGroupId,
+          status: "Success"
+        }
+      })
+
+      const lastCourse = await PaymentWays.findOne({
         where: {
           groupId: group.lastGroup.lastGroupId,
-          userId,
-          userRole: "STUDENT"
-        }
+          type,
+        },
       });
 
-      if (userLastGroupMember) {
-
+      if (thisCourse.type === "full" && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
         thisCoursePrice = (thisCourse.price * (1 - lastCourse.discount / 100)) * (thisCourse.durationMonths - 1) / thisCourse.durationMonths
       } else {
         thisCoursePrice = thisCourse.price * (1 - thisCourse.discount / 100);
