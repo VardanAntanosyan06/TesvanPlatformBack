@@ -1235,8 +1235,16 @@ const getUserPayment = async (req, res) => {
         },
       });
 
+      const lastGroup = await GroupsPerUsers.findOne({
+        where: {
+          groupId: group.lastGroup?.lastGroupId,
+          userId,
+          userRole: "STUDENT"
+        }
+      })
 
-      if (group.lastGroup && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
+
+      if (lastGroup && group.lastGroup && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
         courseStartDate = new Date(paymentWays.group.startDate);
         courseStartDate.setMonth(courseStartDate.getMonth() + 1);
       } else {

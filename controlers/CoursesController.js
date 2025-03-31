@@ -1251,7 +1251,15 @@ const getOneGroup = async (req, res) => {
           },
         });
 
-        if (group.lastGroup && paymentWay.type === "full" && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
+        const lastGroup = await GroupsPerUsers.findOne({
+          where: {
+            groupId: group.lastGroup?.lastGroupId,
+            userId: decoded.user_id,
+            userRole: "STUDENT"
+          }
+        })
+
+        if (lastGroup && group.lastGroup && paymentWay.type === "full" && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
 
           thisCoursePrice = (paymentWay.price * (1 - lastCourse.discount / 100)) * (paymentWay.durationMonths - 1) / paymentWay.durationMonths
         } else {
