@@ -495,6 +495,51 @@ const readChatMessage = async (req, res) => {
     }
 }
 
+const findChatMessage = async (req, res) => {
+    try {
+        const { user_id: userId } = req.user;
+        const { chatId } = req.params;
+        const { text } = req.body;
+        const chat = await Chats.findOne({
+            where: {
+                id: chatId,
+                [Op.or]: [{ secondId: userId }, { firstId: userId }]
+            },
+        });
+        if (!chat) return res.status(404).json({ message: 'Chat not found' });
+        const messages = await ChatMessages.findAll({
+            where: {
+                chatId: chatId,
+                text: {
+                    [Op.like]: `%${text}%`
+                }
+            },
+            include: [
+                {
+                    model: Users,
+                    attributes: ["id", "firstName", "lastName", "image"],
+                },
+                {
+                    model: ChatMessages,
+                    as: "Reply",
+                    include: [
+                        {
+                            model: Users,
+                            attributes: ["id", "firstName", "lastName", "image"],
+                        },
+                    ],
+                }
+            ],
+            order: [['createdAt', 'DESC']],
+        });
+        if (!messages) return res.status(404).json({ message: 'Message not found' });
+        return res.status(200).json(messages)
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error.message)
+    };
+}
+
 module.exports = {
     createChatMessage,
     replyChatMessage,

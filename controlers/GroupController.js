@@ -1414,19 +1414,16 @@ const getUsers = async (req, res) => {
 const deleteMember = async (req, res) => {
   try {
     const { groupId, userId } = req.query;
-
-    const { assignCourseId, lastGroup } = await Groups.findOne({
+    const { assignCourseId, finished } = await Groups.findOne({
       where: {
         id: groupId
       },
-      include: [
-        {
-          model: continuingGroups,
-          as: "lastGroup",
-          require: false
-        }
-      ],
     });
+
+    if(finished) {
+      return res.status(400).json({ message: 'You cannot remove members from a finished group.' });
+    }
+
     await GroupsPerUsers.destroy({
       where: {
         groupId,
@@ -1470,23 +1467,6 @@ const deleteMember = async (req, res) => {
         GroupCourseId: assignCourseId
       }
     })
-
-    const lastCoursePayment = await Payment.findOne({
-      where: {
-        groupId: lastGroup?.groupId,
-        userId,
-        orderKey: "last cours payment",
-        orderNumber: "last cours payment"
-      }
-    })
-
-    if (lastCoursePayment) {
-      await Payment.destroy({
-        where: {
-          id: lastCoursePayment.id
-        }
-      })
-    };
 
     const groupChats = await GroupChats.findOne({
       where: { groupId: groupId },
