@@ -186,29 +186,29 @@ const findOne = async (req, res) => {
       attributes: [['courseId', 'id'], 'title'],
     });
 
-    const payment_en = [];
-    const payment_ru = [];
-    const payment_am = [];
-    const payment = group.payment.forEach((pay) => {
-      payment_en.push({
-        title_en: pay.title_en,
-        description_en: pay.description_en,
-        price_en: pay.price,
-        discount_en: pay.discount,
-      });
-      payment_ru.push({
-        title_ru: pay.title_ru,
-        description_ru: pay.description_ru,
-        price_ru: pay.price,
-        discount_ru: pay.discount,
-      });
-      payment_am.push({
-        title_am: pay.title_am,
-        description_am: pay.description_am,
-        price_am: pay.price,
-        discount_am: pay.discount,
-      });
-    });
+    // const payment_en = [];
+    // const payment_ru = [];
+    // const payment_am = [];
+    // const payment = group.payment.forEach((pay) => {
+    //   payment_en.push({
+    //     title_en: pay.title_en,
+    //     description_en: pay.description_en,
+    //     price_en: pay.price,
+    //     discount_en: pay.discount,
+    //   });
+    //   payment_ru.push({
+    //     title_ru: pay.title_ru,
+    //     description_ru: pay.description_ru,
+    //     price_ru: pay.price,
+    //     discount_ru: pay.discount,
+    //   });
+    //   payment_am.push({
+    //     title_am: pay.title_am,
+    //     description_am: pay.description_am,
+    //     price_am: pay.price,
+    //     discount_am: pay.discount,
+    //   });
+    // });
     const groupedUsers = {
       id: group.id,
       name_en: group.name_en,
@@ -220,9 +220,9 @@ const findOne = async (req, res) => {
       price: group.price,
       sale: group.sale,
       payment: group.payment,
-      payment_am,
-      payment_en,
-      payment_ru,
+      // payment_am,
+      // payment_en,
+      // payment_ru,
       course: course,
       TEACHER: [],
       STUDENT: [],

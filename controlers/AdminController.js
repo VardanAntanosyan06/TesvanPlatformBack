@@ -30,7 +30,7 @@ const mailgun = require('mailgun-js')({
 const createAdmin = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { firstName, lastName, email, phoneNumber, birthday, gender, city, country } = req.body; // add type
+    const { firstName, lastName, email, phoneNumber, birthday, gender, city, country, type, name } = req.body; // add type
 
     const hashPassword = await bcrypt.hash(v4(), BCRYPT_HASH_SALT);
 
@@ -44,60 +44,60 @@ const createAdmin = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Mail already registered' });
     };
 
-    // let User
-    // if (type === "individual") {
-    //   User = await Users.create({
-    //     role: "ADMIN",
-    //     firstName,
-    //     lastName,
-    //     email: email.toLowerCase(),
-    //     phoneNumber,
-    //     birthday,
-    //     gender,
-    //     password: hashPassword,
-    //     isVerified: true,
-    //     country,
-    //     city,
-    //     education: '',
-    //     backgroundInQA: 'true',
-    //     tokenCreatedAt: new Date().toISOString(),
-    //     creatorId: userId
-    //   });
+    let User
+    if (type === "individual") {
+      User = await Users.create({
+        role: "ADMIN",
+        firstName,
+        lastName,
+        email: email.toLowerCase(),
+        phoneNumber,
+        birthday,
+        gender,
+        password: hashPassword,
+        isVerified: true,
+        country,
+        city,
+        education: '',
+        backgroundInQA: 'true',
+        tokenCreatedAt: new Date().toISOString(),
+        creatorId: userId
+      });
 
-    // } else if (type === "company") {
-    //   User = await Users.create({
-    //     role: "ADMIN",
-    //     firstName,
-    //     email: email.toLowerCase(),
-    //     phoneNumber,
-    //     password: hashPassword,
-    //     isVerified: true,
-    //     country,
-    //     city,
-    //     education: '',
-    //     backgroundInQA: 'true',
-    //     tokenCreatedAt: new Date().toISOString(),
-    //     creatorId: userId
-    //   });
-    // }
+    } else if (type === "company") {
+      User = await Users.create({
+        role: "ADMIN",
+        firstName: name,
+        email: email.toLowerCase(),
+        phoneNumber,
+        password: hashPassword,
+        isVerified: true,
+        country,
+        city,
+        education: '',
+        backgroundInQA: 'true',
+        tokenCreatedAt: new Date().toISOString(),
+        creatorId: userId
+      });
+    }
 
-    const User = await Users.create({
-      role: "ADMIN",
-      firstName,
-      lastName,
-      email: email.toLowerCase(),
-      phoneNumber,
-      birthday,
-      gender,
-      password: hashPassword,
-      isVerified: true,
-      country,
-      city,
-      education: '',
-      backgroundInQA: 'true',
-      tokenCreatedAt: new Date().toISOString(),
-      creatorId: userId
-    });
+    // const User = await Users.create({
+    //   role: "ADMIN",
+    //   firstName,
+    //   lastName,
+    //   email: email.toLowerCase(),
+    //   phoneNumber,
+    //   birthday,
+    //   gender,
+    //   password: hashPassword,
+    //   isVerified: true,
+    //   country,
+    //   city,
+    //   education: '',
+    //   backgroundInQA: 'true',
+    //   tokenCreatedAt: new Date().toISOString(),
+    //   creatorId: userId
+    // });
 
     await UserStatus.create({
       userId: User.id,

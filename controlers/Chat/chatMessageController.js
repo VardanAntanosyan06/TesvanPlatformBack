@@ -511,7 +511,7 @@ const findChatMessage = async (req, res) => {
             where: {
                 chatId: chatId,
                 text: {
-                    [Op.like]: `%${text}%`
+                    [Op.iLike]: `%${text}%`
                 }
             },
             include: [
