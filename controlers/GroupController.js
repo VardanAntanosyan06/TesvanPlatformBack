@@ -1369,8 +1369,45 @@ const deleteGroup = async (req, res) => {
 const getUsers = async (req, res) => {
   try {
     const { id } = req.params;
+    const { userName } = req.query;
+
+    const searchTerms = userName ? userName.trim().split(" ") : [];
+    const whereCondition = searchTerms.length
+      ? {
+        [Op.or]: [
+          // Single search term: match either first or last name
+          ...(searchTerms.length === 1
+            ? [
+              { firstName: { [Op.iLike]: `%${searchTerms[0]}%` } },
+              { lastName: { [Op.iLike]: `%${searchTerms[0]}%` } }
+            ]
+            : [
+              // Two terms: assume firstName and lastName separately
+              {
+                [Op.and]: [
+                  { firstName: { [Op.iLike]: `%${searchTerms[0]}%` } },
+                  { lastName: { [Op.iLike]: `%${searchTerms[1]}%` } }
+                ]
+              },
+              // Try the reverse case in case they typed last name first
+              {
+                [Op.and]: [
+                  { firstName: { [Op.iLike]: `%${searchTerms[1]}%` } },
+                  { lastName: { [Op.iLike]: `%${searchTerms[0]}%` } }
+                ]
+              }
+            ])
+        ]
+      }
+      : null;
 
     const users = await Users.findAll({
+      where: {
+        ...whereCondition,
+        role: {
+          [Op.or]: ['STUDENT', 'TEACHER'],
+        },
+      },
       include: [
         {
           model: GroupsPerUsers,
@@ -1378,11 +1415,11 @@ const getUsers = async (req, res) => {
           required: false,
         },
       ],
-      where: {
-        role: {
-          [Op.or]: ['STUDENT', 'TEACHER'],
-        },
-      },
+      // where: {
+      //   role: {
+      //     [Op.or]: ['STUDENT', 'TEACHER'],
+      //   },
+      // },
       attributes: ['id', 'firstName', 'lastName', 'role'],
       order: [["createdAt", "DESC"]]
     });
