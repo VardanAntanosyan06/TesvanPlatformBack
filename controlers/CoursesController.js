@@ -757,6 +757,11 @@ const getUserCourse = async (req, res) => {
       return res.json({ lessons: newLesson, quizz, finalInterview });
     }
 
+    if (id == 1092) {
+      const newLesson = lessons.slice(0, 5);
+      return res.json({ lessons: newLesson, quizz, finalInterview });
+    }
+
     return res.json({ lessons, quizz, finalInterview });
   } catch (error) {
     console.log(error);
