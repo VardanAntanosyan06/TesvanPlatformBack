@@ -1561,7 +1561,7 @@ const paymentCount = async (req, res) => {
 const downloadInvoice = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { paymentId, orderId, paymentIds } = req.query;
+    const { paymentId, orderId, paymentIds, orderNumber } = req.query;
     if (paymentIds) {
       const paymentIdsArray = Array.isArray(paymentIds)
         ? paymentIds
@@ -1668,6 +1668,12 @@ const downloadInvoice = async (req, res) => {
       let payment;
       if (paymentId) {
         payment = await Payment.findByPk(paymentId);
+      } else if (orderNumber) {
+        payment = await Payment.findOne({
+          where: {
+            orderNumber
+          }
+        });
       } else {
         payment = await Payment.findOne({
           where: {

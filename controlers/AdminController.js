@@ -67,13 +67,15 @@ const createAdmin = async (req, res) => {
     } else if (type === "company") {
       User = await Users.create({
         role: "ADMIN",
-        firstName: name,
+        firstName,
+        lastName:"",
         email: email.toLowerCase(),
         phoneNumber,
         password: hashPassword,
         isVerified: true,
         country,
         city,
+        gender: "Other",
         education: '',
         backgroundInQA: 'true',
         tokenCreatedAt: new Date().toISOString(),
