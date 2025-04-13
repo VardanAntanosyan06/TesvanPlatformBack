@@ -1693,7 +1693,7 @@ const downloadInvoice = async (req, res) => {
         attributes: [[`name_en`, 'name']]
       });
 
-      const userName = `${user.firstName} ${user.lastName}`;
+      const userName = `${user.firstName} ${user.lastName ? user.lastName : ""}`;
       const dateOptions = { year: '2-digit', month: '2-digit', day: '2-digit' };
       const formattedDate = payment.updatedAt.toLocaleDateString('hy-AM', dateOptions);
       const courseName = payment.groupId ? group?.dataValues.name : false;
@@ -1745,6 +1745,9 @@ const downloadInvoice = async (req, res) => {
         doc.font('Helvetica-Bold');
       }
       doc.fillColor('#12222D')
+      if (!payment.groupId) {
+        doc.fillColor('#12222D').rect(300, 100, 100, 50).fill();
+      }
       doc.fontSize(12)
       if (userName.split("").length <= 17) {
         doc.text(userName, 28, 335);

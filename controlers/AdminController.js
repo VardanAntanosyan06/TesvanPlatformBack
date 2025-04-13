@@ -21,6 +21,7 @@ require('dotenv').config();
 const { Op } = require('sequelize');
 const { group } = require('console');
 const { image } = require('pdfkit');
+const { type } = require('os');
 const BCRYPT_HASH_SALT = 10;
 const mailgun = require('mailgun-js')({
   apiKey: process.env.MAILGUN_API_KEY,
@@ -68,7 +69,7 @@ const createAdmin = async (req, res) => {
       User = await Users.create({
         role: "ADMIN",
         firstName,
-        lastName:"",
+        lastName: "",
         email: email.toLowerCase(),
         phoneNumber,
         password: hashPassword,
@@ -279,7 +280,7 @@ const getAdmins = async (req, res) => {
         groupCount: adminDate[value.id]?.length || 0,
         userCount: adminDate[value.id]?.reduce((aggr, e) => { return aggr + +e.users }, 0) || 0,
         isActive: value.userStatus.isActive,
-        // type: value.lastName? "individual" : "company"
+        type: value.lastName? "individual" : "company"
       })
       return aggr
     }, [])
@@ -319,7 +320,7 @@ const getAdmin = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      admin
+      admin: { ...admin.toJSON(), type: admin.lastName ? "individual" : "company" }
     })
   } catch (error) {
     console.log(error);
