@@ -206,10 +206,39 @@ const getAdminChats = async (req, res) => {
     }
 }
 
+const getSuperAdminChats = async (req, res) => {
+    try {
+        let courses = await GroupCourses.findAll({
+            include: [
+                {
+                    model: Users,
+                    as: 'courses',
+                    attributes: ["id", "firstName", "lastName", "image", "role"]
+                }
+            ]
+        });
+
+        courses = courses.reduce((aggr, value) => {
+            value = value.toJSON()
+            value.members = value.courses;
+            delete value.courses
+            aggr.push(value)
+            return aggr;
+        }, []);
+
+        return res.status(200).json(courses)
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error.message)
+    }
+}
+
 module.exports = {
     createChat,
     getChat,
     getChats,
     deleteChat,
-    getAdminChats
+    getAdminChats,
+    getSuperAdminChats
 }
