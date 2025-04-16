@@ -1412,7 +1412,18 @@ const getAllPayment = async (req, res) => {
       return res.status(400).json({ success: false, message: "groupId is required" });
     }
 
-    const group = await Groups.findByPk(groupId)
+    const group = await Groups.findOne({
+      where: {
+        id: groupId
+      },
+      include: [
+        {
+          model: continuingGroups,
+          as: "lastGroup",
+          require: false
+        }
+      ]
+    });
 
     function getMonthCount(startDate, endDate) {
       const start = new Date(startDate);
@@ -1480,6 +1491,54 @@ const getAllPayment = async (req, res) => {
       order: [["id", "ASC"]]
     });
 
+    let lastCourseUserPayments = {};
+    if (group.lastGroup) {
+      const lastCoursePayment = await Payment.findAll({
+        where: {
+          groupId: group.lastGroup.lastGroupId,
+          status: "Success"
+        },
+        include: [
+          {
+            model: Users,
+            as: "user",
+            where: whereCondition,
+            attributes: ["id", "firstName", "lastName", "image"],
+          }
+        ],
+        attributes: { exclude: ["orderKey", "orderNumber", "createdAt"] },
+        order: [["id", "ASC"]]
+      })
+
+      const lastCourse = await PaymentWays.findOne({
+        where: {
+          groupId: group.lastGroup.lastGroupId,
+          type: "monthly",
+        },
+      });
+
+      lastCourseUserPayments = lastCoursePayment.reduce((aggr, value) => {
+        value = value.toJSON()
+        if (!aggr[value.userId]) {
+          aggr[value.userId] = [{id:value.id, type:value.type, durationMonths: lastCourse.durationMonths}]
+        } else {
+          aggr[value.userId].push({id:value.id, type:value.type, durationMonths: lastCourse.durationMonths})
+        }
+        return aggr;
+
+      }, {})
+
+      // lastCoursePayment.reduce((aggr, value) => {
+      //   value = value.toJSON()
+      //   if (value.type === "full" || lastCoursePayment.length >= lastCourse.durationMonths) {
+
+      //   };
+      //   return aggr;
+      // }, {});
+
+
+    }
+
     const orders = payments.reduce((aggr, value) => {
       value = value.toJSON()
       if (!aggr[value.userId]) {
@@ -1514,7 +1573,13 @@ const getAllPayment = async (req, res) => {
       }
       aggr[value.userId].type = value.type
       aggr[value.userId].paymentWay = value.paymentWay
-
+      const successPayment = aggr[value.userId].orderStatus.filter(value => value === "Success")
+      aggr[value.userId].thisPaymentCount = successPayment.length
+      if(lastCourseUserPayments[value.userId] && (lastCourseUserPayments[value.userId][0].type === "full" || lastCourseUserPayments[value.userId].length >= lastCourseUserPayments[value.userId][0].durationMonths)) {
+        aggr[value.userId].lastPaymentCount = 1
+      } else {
+        aggr[value.userId].lastPaymentCount = 0
+      }
       return aggr;
     }, {});
 
