@@ -1,4 +1,4 @@
-const { Chats, Users, GroupCourses } = require("../../models");
+const { Chats, Users, GroupCourses, Groups } = require("../../models");
 const { Op, Model } = require('sequelize');
 
 
@@ -186,6 +186,10 @@ const getAdminChats = async (req, res) => {
                     model: Users,
                     as: 'courses',
                     attributes: ["id", "firstName", "lastName", "image", "role"]
+                },
+                {
+                    model: Groups,
+                    attributes: [`name_${language}`],
                 }
             ]
         });
@@ -193,6 +197,8 @@ const getAdminChats = async (req, res) => {
         courses = courses.reduce((aggr, value) => {
             value = value.toJSON()
             value.members = value.courses;
+            value.name = value.Groups[0][`name_${language}`]
+            delete value.Groups
             delete value.courses
             aggr.push(value)
             return aggr;
@@ -208,12 +214,17 @@ const getAdminChats = async (req, res) => {
 
 const getSuperAdminChats = async (req, res) => {
     try {
+        const { language } = req.query;
         let courses = await GroupCourses.findAll({
             include: [
                 {
                     model: Users,
                     as: 'courses',
                     attributes: ["id", "firstName", "lastName", "image", "role"]
+                },
+                {
+                    model: Groups,
+                    attributes: [`name_${language}`],
                 }
             ]
         });
@@ -221,6 +232,8 @@ const getSuperAdminChats = async (req, res) => {
         courses = courses.reduce((aggr, value) => {
             value = value.toJSON()
             value.members = value.courses;
+            value.name = value.Groups[0][`name_${language}`]
+            delete value.Groups
             delete value.courses
             aggr.push(value)
             return aggr;
