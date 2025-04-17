@@ -118,34 +118,20 @@ const paymentArcaForAdmin = async (req, res) => {
     };
 
     const adminStatus = await UserStatus.findOne({
-      where: {
-        userId: payment.userId,
-      }
-    });
+      where: { userId: payment.userId },
+    }); 
 
-    if (!adminStatus.isActive) {
-      if (payment.type === "monthly") {
-        const oneMonthLater = new Date();
-        oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
-        adminStatus.endDate = oneMonthLater;
-      } else if (payment.type === "full") {
-        const oneYearLater = new Date();
-        oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-        adminStatus.endDate = oneYearLater;
-      }
-    } else {
-      if (payment.type === "monthly") {
-        const oneMonthLater = new Date(adminStatus.endDate);
-        oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
-        adminStatus.endDate = oneMonthLater;
-      } else if (payment.type === "full") {
-        const oneYearLater = new Date(adminStatus.endDate);
-        oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-        adminStatus.endDate = oneYearLater;
-      }
+    const currentEndDate = adminStatus.isActive ? new Date(adminStatus.endDate) : new Date();
+    
+    if (payment.type === "monthly") {
+      currentEndDate.setMonth(currentEndDate.getMonth() + 1);
+    } else if (payment.type === "full") {
+      currentEndDate.setFullYear(currentEndDate.getFullYear() + 1);
     }
+
+    adminStatus.endDate = currentEndDate;
     adminStatus.isActive = true;
-    await adminStatus.save()
+    await adminStatus.save();
 
     return res.status(200).json({ success: true });
 
@@ -1520,9 +1506,9 @@ const getAllPayment = async (req, res) => {
       lastCourseUserPayments = lastCoursePayment.reduce((aggr, value) => {
         value = value.toJSON()
         if (!aggr[value.userId]) {
-          aggr[value.userId] = [{id:value.id, type:value.type, durationMonths: lastCourse.durationMonths}]
+          aggr[value.userId] = [{ id: value.id, type: value.type, durationMonths: lastCourse.durationMonths }]
         } else {
-          aggr[value.userId].push({id:value.id, type:value.type, durationMonths: lastCourse.durationMonths})
+          aggr[value.userId].push({ id: value.id, type: value.type, durationMonths: lastCourse.durationMonths })
         }
         return aggr;
 
@@ -1575,7 +1561,7 @@ const getAllPayment = async (req, res) => {
       aggr[value.userId].paymentWay = value.paymentWay
       const successPayment = aggr[value.userId].orderStatus.filter(value => value === "Success")
       aggr[value.userId].thisPaymentCount = successPayment.length
-      if(lastCourseUserPayments[value.userId] && (lastCourseUserPayments[value.userId][0].type === "full" || lastCourseUserPayments[value.userId].length >= lastCourseUserPayments[value.userId][0].durationMonths)) {
+      if (lastCourseUserPayments[value.userId] && (lastCourseUserPayments[value.userId][0].type === "full" || lastCourseUserPayments[value.userId].length >= lastCourseUserPayments[value.userId][0].durationMonths)) {
         aggr[value.userId].lastPaymentCount = 1
       } else {
         aggr[value.userId].lastPaymentCount = 0
