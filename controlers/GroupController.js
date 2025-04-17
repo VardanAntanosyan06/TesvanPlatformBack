@@ -1661,10 +1661,13 @@ const getAllGroupForTeacher = async (req, res) => {
           model: Users,
           where: { role: 'STUDENT' },
           attributes: ['firstName', 'lastName', 'image', 'role'],
+          required: false,
         },
       ],
       attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt", "startDate"]
     });
+    console.log(creatorGroup);
+    
 
     creatorGroup = creatorGroup.reduce((aggr, value) => {
       const firstGroup = value;
