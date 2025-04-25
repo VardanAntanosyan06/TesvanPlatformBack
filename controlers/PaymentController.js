@@ -119,10 +119,10 @@ const paymentArcaForAdmin = async (req, res) => {
 
     const adminStatus = await UserStatus.findOne({
       where: { userId: payment.userId },
-    }); 
+    });
 
     const currentEndDate = adminStatus.isActive ? new Date(adminStatus.endDate) : new Date();
-    
+
     if (payment.type === "monthly") {
       currentEndDate.setMonth(currentEndDate.getMonth() + 1);
     } else if (payment.type === "full") {
@@ -243,7 +243,7 @@ const paymentUrl = async (req, res) => {
         },
       });
 
-      if (thisCourse.type === "full" && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
+      if (thisCourse.type === "full" && lastCoursePayment.length > 0 && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
         thisCoursePrice = (thisCourse.price * (1 - lastCourse.discount / 100)) * (thisCourse.durationMonths - 1) / thisCourse.durationMonths
       } else {
         thisCoursePrice = thisCourse.price * (1 - thisCourse.discount / 100);
@@ -1230,7 +1230,7 @@ const getUserPayment = async (req, res) => {
       })
 
 
-      if (lastGroup && group.lastGroup && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
+      if (lastGroup && group.lastGroup && lastCoursePayment.length > 0 && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
         courseStartDate = new Date(paymentWays.group.startDate);
         courseStartDate.setMonth(courseStartDate.getMonth() + 1);
       } else {
@@ -1513,16 +1513,6 @@ const getAllPayment = async (req, res) => {
         return aggr;
 
       }, {})
-
-      // lastCoursePayment.reduce((aggr, value) => {
-      //   value = value.toJSON()
-      //   if (value.type === "full" || lastCoursePayment.length >= lastCourse.durationMonths) {
-
-      //   };
-      //   return aggr;
-      // }, {});
-
-
     }
 
     const orders = payments.reduce((aggr, value) => {

@@ -36,7 +36,7 @@ const CircularJSON = require('circular-json');
 const { v4 } = require('uuid');
 const moment = require('moment');
 const path = require('path');
-const { group } = require('console');
+const { group, log } = require('console');
 const quizz = require('../models/quizz');
 const { lang } = require('moment/moment');
 const { title } = require('process');
@@ -564,6 +564,8 @@ const createTest = async (req, res) => {
   }
 };
 
+const { courseBlock } = require('../service/CourseBlock')
+
 const getUserCourses = async (req, res) => {
   try {
     const { user_id: id } = req.user;
@@ -595,40 +597,49 @@ const getUserCourses = async (req, res) => {
         },
       ],
     });
-    courses = courses.map((e) => {
-      e = e.toJSON();
-      delete e.dataValues;
-      if (e.GroupCourse?.CoursesContents[0].courseType === 'Individual') {
-        const IndividualCourse = {
-          id: e.GroupCourse.id,
-          userId: e.userId,
-          groupCourseId: e.GroupCourse.id,
-          startDate: null,
-          title: e.GroupCourse.CoursesContents[0].title,
-          description: e.GroupCourse.CoursesContents[0].description,
-          percent: 0,
-        };
-        return IndividualCourse;
-      }
-      const groupCourse = e.GroupCourse;
-      const groups = groupCourse?.Groups || [];
-      const coursesContents = groupCourse?.CoursesContents || [];
-      const startDate = groups[0]?.startDate || null;
-      const formattedDate = startDate
-        ? new Date(startDate).toISOString().split('T')[0].slice(5).replace('-', '.')
-        : null;
-      const year = startDate ? new Date(startDate).getFullYear() : null;
+    courses = await Promise.all(
+      courses = courses.map(async (e) => {
+        e = e.toJSON();
+        delete e.dataValues;
+        if (e.GroupCourse?.CoursesContents[0].courseType === 'Individual') {
+          const IndividualCourse = {
+            id: e.GroupCourse.id,
+            userId: e.userId,
+            groupCourseId: e.GroupCourse.id,
+            startDate: null,
+            title: e.GroupCourse.CoursesContents[0].title,
+            description: e.GroupCourse.CoursesContents[0].description,
+            percent: 0,
+          };
+          return IndividualCourse;
+        }
+        const groupCourse = e.GroupCourse;
+        const groups = groupCourse?.Groups || [];
+        const coursesContents = groupCourse?.CoursesContents || [];
+        const startDate = groups[0]?.startDate || null;
+        const formattedDate = startDate
+          ? new Date(startDate).toISOString().split('T')[0].slice(5).replace('-', '.')
+          : null;
+        const year = startDate ? new Date(startDate).getFullYear() : null;
 
-      e['id'] = groups[0]?.id || null;
-      e['groupCourseId'] = groups[0]?.assignCourseId || null;
-      e['startDate'] = formattedDate && formattedDate.replace('/', '.');
-      e['title'] = coursesContents[0]?.title || null;
-      e['description'] = coursesContents[0]?.description || null;
-      e['percent'] = 0;
+        e['id'] = groups[0]?.id || null;
+        e['groupCourseId'] = groups[0]?.assignCourseId || null;
+        e['startDate'] = formattedDate && formattedDate.replace('/', '.');
+        e['title'] = coursesContents[0]?.title || null;
+        e['description'] = coursesContents[0]?.description || null;
+        e['percent'] = 0;
 
-      delete e.GroupCourse;
-      return e;
-    });
+        try {
+          e['blocked'] = await courseBlock(groups[0]?.id, id);
+        } catch (error) {
+          e['blocked'] = false;
+        }
+
+        delete e.GroupCourse;
+        return e;
+      })
+    )
+
     return res.send({ courses });
   } catch (error) {
     console.log(error);
@@ -1264,7 +1275,7 @@ const getOneGroup = async (req, res) => {
           }
         })
 
-        if (lastGroup && group.lastGroup && paymentWay.type === "full" && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
+        if (lastGroup && group.lastGroup && paymentWay.type === "full" && lastCoursePayment.length > 0 && (lastCoursePayment[0].type === "full" || lastCoursePayment.length >= lastCourse.durationMonths)) {
 
           thisCoursePrice = (paymentWay.price * (1 - lastCourse.discount / 100)) * (paymentWay.durationMonths - 1) / paymentWay.durationMonths
         } else {

@@ -63,36 +63,11 @@ const getPromoCodeGroup = async (req, res) => {
     console.log(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
-}
+};
 
-const addMemberGroup = async (req, res) => {
+
+const addMemberGroupPromocode = async (groupId, userId) => {
   try {
-    const { groupId, promoCode } = req.body;
-    const { user_id: userId } = req.user;
-
-    const groupPromoCode = await PromoCode.findOne({
-      where: { groupId, code: promoCode }
-    });
-
-    if (!groupPromoCode) {
-      return res.json({ success: false, message: 'Promo code not found' });
-    };
-
-    if (groupPromoCode.count) {
-      if (+groupPromoCode.count <= +groupPromoCode.userCount) {
-        return res.json({ success: false, message: 'Promo code not active' });
-      };
-      groupPromoCode.userCount = +groupPromoCode.userCount + 1;
-      await groupPromoCode.save()
-    };
-
-    if (groupPromoCode.endDate) {
-      if (groupPromoCode.endDate < new Date()) {
-        return res.json({ success: false, message: 'Promo code not active' });
-      };
-      groupPromoCode.userCount = +groupPromoCode.userCount + 1;
-      await groupPromoCode.save()
-    };
 
     const group = await Groups.findOne({
       where: {
@@ -364,6 +339,56 @@ const addMemberGroup = async (req, res) => {
         })
       }
     };
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
+const addMemberGroup = async (req, res) => {
+  try {
+    const { groupId, promoCode } = req.body;
+    const { user_id: userId } = req.user;
+
+    const groupPromoCode = await PromoCode.findOne({
+      where: { groupId, code: promoCode }
+    });
+
+    if (!groupPromoCode) {
+      return res.json({ success: false, message: 'Promo code not found' });
+    };
+
+    if (groupPromoCode.count) {
+      if (+groupPromoCode.count <= +groupPromoCode.userCount) {
+        return res.json({ success: false, message: 'Promo code not active' });
+      };
+      groupPromoCode.userCount = +groupPromoCode.userCount + 1;
+      await groupPromoCode.save()
+    };
+
+    if (groupPromoCode.endDate) {
+      if (groupPromoCode.endDate < new Date()) {
+        return res.json({ success: false, message: 'Promo code not active' });
+      };
+      groupPromoCode.userCount = +groupPromoCode.userCount + 1;
+      await groupPromoCode.save()
+    };
+
+    if (groupPromoCode.type === 'addMember') {
+      await addMemberGroupPromocode(groupId, userId);
+    } else if (groupPromoCode.type === 'addMemberFree') {
+      await addMemberGroupPromocode(groupId, userId);
+      await Payment.create({
+        orderKey: "Promo code",
+        orderNumber: "Promo code",
+        paymentWay: "Promo code",
+        status: "Success",
+        userId,
+        groupId,
+        type: "full",
+        amount: 0
+      })
+    }
 
     return res.send({ success: true });
   } catch (error) {
