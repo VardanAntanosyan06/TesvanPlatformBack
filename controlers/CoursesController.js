@@ -661,11 +661,11 @@ const getUserCourse = async (req, res) => {
       },
     });
 
-    const block = await courseBlock(groups.id, id);
+    // const block = await courseBlock(groups.id, id);
 
-    if (block) {
-      return res.status(401).json({ message: "Your course is inactive due to payment." });
-    };
+    // if (block) {
+    //   return res.status(401).json({ message: "Your course is inactive due to payment." });
+    // };
 
     let lessons = await CoursesPerLessons.findAll({
       where: { courseId },
