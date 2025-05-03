@@ -70,7 +70,7 @@ const courseBlock = async (groupId, userId) => {
     try {
 
         const user = await Users.findByPk(userId);
-        if(user.role === "ADMIN"){
+        if (user.role === "ADMIN") {
             return false
         }
 
@@ -109,15 +109,21 @@ const courseBlock = async (groupId, userId) => {
         let nextPaymentDate = new Date(paymentWays.group.startDate);
         nextPaymentDate.setMonth(nextPaymentDate.getMonth() + durationMonths);
 
+
         if (new Date() > nextPaymentDate) {
+            if (paymentWays.group.endDate < new Date() && durationMonths === payments.length) {
+                return false
+            }
             return true
         }
+
+
 
         return false;
 
     } catch (error) {
         console.log(error);
-        return true;
+        return false;
     }
 }
 
