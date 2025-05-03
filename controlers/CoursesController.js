@@ -41,6 +41,7 @@ const quizz = require('../models/quizz');
 const { lang } = require('moment/moment');
 const { title } = require('process');
 // const { finished } = require('stream/promises');
+const { courseBlock } = require('../service/CourseBlock')
 
 const getAllCourses = async (req, res) => {
   try {
@@ -564,8 +565,6 @@ const createTest = async (req, res) => {
   }
 };
 
-const { courseBlock } = require('../service/CourseBlock')
-
 const getUserCourses = async (req, res) => {
   try {
     const { user_id: id } = req.user;
@@ -624,7 +623,7 @@ const getUserCourses = async (req, res) => {
 
         e['id'] = groups[0]?.id || null;
         e['groupCourseId'] = groups[0]?.assignCourseId || null;
-        e['startDate'] = formattedDate && formattedDate.replace('/', '.');
+        e['startDate'] = formattedDate && `${formattedDate.replace('/', '.')}.${year}`;
         e['title'] = coursesContents[0]?.title || null;
         e['description'] = coursesContents[0]?.description || null;
         e['percent'] = 0;
@@ -650,11 +649,24 @@ const getUserCourses = async (req, res) => {
 const getUserCourse = async (req, res) => {
   try {
     const { user_id: id } = req.user;
-    const { courseId } = req.params;
+    const { courseId } = req.params; 
     const { language } = req.query;
     if (!id) {
-      return res.status(500).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found' });
     }
+
+    let groups = await GroupCourses.findOne({
+      where: {
+        id: courseId,
+      },
+    });
+
+    const block = await courseBlock(groups.id, id);
+
+    if (block) {
+      return res.status(401).json({ message: "Your course is inactive due to payment." });
+    };
+
     let lessons = await CoursesPerLessons.findAll({
       where: { courseId },
       order: [['number', 'ASC']],
@@ -725,11 +737,7 @@ const getUserCourse = async (req, res) => {
       maxFinalQuizPoint
     };
 
-    let groups = await GroupCourses.findOne({
-      where: {
-        id: courseId,
-      },
-    });
+
     let finalInterview = await Calendar.findOne({
       where: {
         groupId: groups.id,

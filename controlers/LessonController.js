@@ -34,6 +34,7 @@ const allowedFormats = [
   "video/mp4",
   "video/mpeg"
 ];
+const { courseBlock } = require('../service/CourseBlock')
 
 const getLessons = async (req, res) => {
   try {
@@ -176,6 +177,12 @@ const getLesson = async (req, res) => {
     const { id } = req.params;
     const { user_id: userId } = req.user;
     const { language, courseId } = req.query;
+
+    const block = await courseBlock(id,userId);
+
+    if (block) {
+      return res.status(401).json({ message: "Your course is inactive due to payment." });
+    };
 
     const lessonTime = await LessonTime.findOne({
       where: {
