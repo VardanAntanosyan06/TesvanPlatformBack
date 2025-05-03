@@ -117,7 +117,7 @@ const courseBlock = async (groupId, userId) => {
 
     } catch (error) {
         console.log(error);
-        return false;
+        return true;
     }
 }
 
