@@ -1,6 +1,6 @@
 const { Payment, PaymentWays, GroupsPerUsers, Groups, Users, continuingGroups } = require('../models');
 
-function getMonthCount(startDate, endDate, paymentCount) {
+function getPayMonthCount(startDate, endDate, paymentCount) {
 
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -9,8 +9,21 @@ function getMonthCount(startDate, endDate, paymentCount) {
     const monthsDifference = end.getMonth() - start.getMonth();
 
     // Total number of months between the two dates
+    
+    
     const totalMonths = (yearsDifference * 12) + monthsDifference;
+    console.log(totalMonths, 88);
     return totalMonths - (totalMonths - paymentCount)
+}
+
+function getMonthCount(startDate, endDate){
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const yearsDifference = end.getFullYear() - start.getFullYear();
+    const monthsDifference = end.getMonth() - start.getMonth();
+    
+    return totalMonths = (yearsDifference * 12) + monthsDifference;
 }
 
 
@@ -105,13 +118,12 @@ const courseBlock = async (groupId, userId) => {
             return false;
         };
 
-        const durationMonths = getMonthCount(startDateCourse(groupId, userId, paymentWays.group.startDate), paymentWays.group.endDate, payments.length);
+        const durationMonths = getPayMonthCount(await startDateCourse(groupId, userId, paymentWays.group.startDate), paymentWays.group.endDate, payments.length);
         let nextPaymentDate = new Date(paymentWays.group.startDate);
         nextPaymentDate.setMonth(nextPaymentDate.getMonth() + durationMonths);
-
-        if (new Date() > nextPaymentDate) {
-            if (paymentWays.group.endDate < new Date() && durationMonths === payments.length) {
-                return false
+        if (new Date() > nextPaymentDate) {           
+            if (paymentWays.group.endDate < new Date() && (getMonthCount(await startDateCourse(groupId, userId, paymentWays.group.startDate), paymentWays.group.endDate) === payments.length)) {
+                throw new Error("")
             }
             return true
         }
