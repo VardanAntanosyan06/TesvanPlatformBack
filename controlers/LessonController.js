@@ -19,7 +19,8 @@ const {
   UserHomework,
   CoursesPerLessons,
   Users,
-  GroupCourses
+  GroupCourses,
+  Groups
 } = require('../models');
 const { v4 } = require('uuid');
 const path = require('path');
@@ -178,11 +179,17 @@ const getLesson = async (req, res) => {
     const { user_id: userId } = req.user;
     const { language, courseId } = req.query;
 
-    // const block = await courseBlock(id,userId);
+    let groups = await Groups.findOne({
+      where: {
+        assignCourseId: courseId,
+      },
+    });
 
-    // if (block) {
-    //   return res.status(401).json({ message: "Your course is inactive due to payment." });
-    // };
+    const block = await courseBlock(groups.id, userId);
+
+    if (block) {
+      return res.status(401).json({ message: "Your course is inactive due to payment." });
+    };
 
     const lessonTime = await LessonTime.findOne({
       where: {

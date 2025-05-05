@@ -109,15 +109,12 @@ const courseBlock = async (groupId, userId) => {
         let nextPaymentDate = new Date(paymentWays.group.startDate);
         nextPaymentDate.setMonth(nextPaymentDate.getMonth() + durationMonths);
 
-
         if (new Date() > nextPaymentDate) {
             if (paymentWays.group.endDate < new Date() && durationMonths === payments.length) {
                 return false
             }
             return true
         }
-
-
 
         return false;
 

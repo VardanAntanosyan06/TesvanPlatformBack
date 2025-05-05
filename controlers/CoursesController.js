@@ -649,23 +649,23 @@ const getUserCourses = async (req, res) => {
 const getUserCourse = async (req, res) => {
   try {
     const { user_id: id } = req.user;
-    const { courseId } = req.params; 
+    const { courseId } = req.params;
     const { language } = req.query;
     if (!id) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    let groups = await GroupCourses.findOne({
+    let groups = await Groups.findOne({
       where: {
-        id: courseId,
+        assignCourseId: courseId,
       },
     });
 
-    // const block = await courseBlock(groups.id, id);
+    const block = await courseBlock(groups.id, id);
 
-    // if (block) {
-    //   return res.status(401).json({ message: "Your course is inactive due to payment." });
-    // };
+    if (block) {
+      return res.status(401).json({ message: "Your course is inactive due to payment." });
+    };
 
     let lessons = await CoursesPerLessons.findAll({
       where: { courseId },
