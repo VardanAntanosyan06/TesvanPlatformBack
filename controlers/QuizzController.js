@@ -1,4 +1,5 @@
 const { Op, where } = require('sequelize');
+const { sequelize } = require('../models');
 const {
   Quizz,
   Option,
@@ -226,23 +227,22 @@ const getQuizzesAdmin = async (req, res) => {
 };
 
 const submitQuizz = async (req, res) => {
-  try {
-    const { user_id: userId } = req.user;
+  let transaction;
 
+  try {
+    transaction = await sequelize.transaction(); // sequelize-ը քո instance-ն է
+
+    const { user_id: userId } = req.user;
     const { quizzId, questionId, optionId } = req.body;
     const { courseId, lessonId } = req.query;
 
     const quizz = await Quizz.findOne({
-      where: {
-        id: quizzId
-      },
+      where: { id: quizzId },
       include: [
         {
           model: Question,
           attributes: ['id', 'quizzId', 'title_ru', 'title_en', 'title_am', 'points'],
-          where: {
-            id: questionId
-          },
+          where: { id: questionId },
           include: [
             {
               model: Option,
@@ -251,17 +251,22 @@ const submitQuizz = async (req, res) => {
           ],
         },
       ],
-      order: [[Question, "id", "ASC"]]
-    })
-
-    quizz.Questions.forEach((question) => {
-      question.Options = question.Options.sort((a, b) => a.id - b.id);
+      order: [[Question, 'id', 'ASC']],
+      transaction,
     });
 
-    UserAnswersQuizz.destroy({
+    if (!quizz || !quizz.Questions.length) {
+      await transaction.rollback();
+      return res.status(404).json({ message: 'Question not found in quizz.' });
+    }
+
+    const question = quizz.Questions[0];
+    question.Options.sort((a, b) => a.id - b.id);
+
+    await UserAnswersQuizz.destroy({
       where: { userId, testId: quizzId, questionId, courseId },
+      transaction,
     });
-
 
     const { id: userAnswerQuizzId } = await UserAnswersQuizz.create({
       userId,
@@ -269,41 +274,34 @@ const submitQuizz = async (req, res) => {
       questionId,
       optionId,
       courseId,
-      lessonId: +lessonId ? +lessonId : 0,
-      questionTitle_en: quizz.Questions[0].title_en,
-      questionTitle_am: quizz.Questions[0].title_am,
-      questionTitle_ru: quizz.Questions[0].title_ru,
-      point: quizz.Questions[0].points
-    });
+      lessonId: +lessonId || 0,
+      questionTitle_en: question.title_en,
+      questionTitle_am: question.title_am,
+      questionTitle_ru: question.title_ru,
+      point: question.points,
+    }, { transaction });
 
-    // quizz.Questions[0].Options.forEach(async (option) => {
-    //    await UserAnswersOption.create({
-    //     userAnswerQuizzId: userAnswerQuizzId,
-    //     title_en: option.title_en,
-    //     title_am: option.title_am,
-    //     title_ru: option.title_ru,
-    //     isCorrect: option.isCorrect,
-    //     userAnswer: option.id === optionId ? true : false,
-    //   })
-    // });
-
-    for (const option of quizz.Questions[0].Options) {
+    for (const option of question.Options) {
       await UserAnswersOption.create({
-        userAnswerQuizzId: userAnswerQuizzId,
+        userAnswerQuizzId,
         title_en: option.title_en,
         title_am: option.title_am,
         title_ru: option.title_ru,
         isCorrect: option.isCorrect,
-        userAnswer: +option.id === +optionId ? true : false,
-      });
+        userAnswer: +option.id === +optionId,
+      }, { transaction });
     }
 
+    await transaction.commit();
     return res.status(200).json({ success: true });
+
   } catch (error) {
-    console.log(error.message);
+    if (transaction) await transaction.rollback();
+    console.error(error);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
 
 
 const finishQuizz = async (req, res) => {
