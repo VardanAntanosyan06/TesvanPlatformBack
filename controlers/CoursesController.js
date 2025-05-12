@@ -9,7 +9,6 @@ const {
   PaymentWays,
   CoursesPerQuizz,
   Quizz,
-  IndividualCourses,
   UserPoints,
   Calendar,
   UserInterview,
@@ -26,22 +25,16 @@ const { Levels } = require('../models');
 const { CourseType } = require('../models');
 const { Format } = require('../models');
 const { Users } = require('../models');
-const { CourseProgram } = require('../models');
 const { Trainer } = require('../models');
 const { UserLesson } = require('../models');
 const { Lesson } = require('../models');
 const { Op } = require('sequelize');
 const sequelize = require('sequelize');
-const CircularJSON = require('circular-json');
 const { v4 } = require('uuid');
 const moment = require('moment');
 const path = require('path');
-const { group, log } = require('console');
-const quizz = require('../models/quizz');
-const { lang } = require('moment/moment');
-const { title } = require('process');
-// const { finished } = require('stream/promises');
 const { courseBlock } = require('../service/CourseBlock')
+const { courseSlice } = require('../service/CourseSlice')
 
 const getAllCourses = async (req, res) => {
   try {
@@ -661,14 +654,25 @@ const getUserCourse = async (req, res) => {
       },
     });
 
-    const block = await courseBlock(groups.id, id);
+    //--- if need block ---
+    // const block = await courseBlock(groups.id, id);
+    // if (block) {
+    //   return res.status(401).json({ message: "Your course is inactive due to payment." });
+    // };
 
-    if (block) {
-      return res.status(401).json({ message: "Your course is inactive due to payment." });
-    };
+    const courseSliceDate = await courseSlice(groups.id, id)
+    console.log(courseSliceDate, 87);
+    
 
     let lessons = await CoursesPerLessons.findAll({
-      where: { courseId },
+      where: {
+        courseId,
+        ...(courseSliceDate && {
+          createdAt: {
+            [Op.lt]: courseSliceDate,
+          },
+        }),
+      },
       order: [['number', 'ASC']],
       include: [
         {

@@ -5,13 +5,11 @@ const {
   Lesson,
   Quizz,
   Question,
-  Option,
   Video,
   LessonsPerQuizz,
   UserCourses,
   Message,
   HomeworkPerLesson,
-  UserAnswersQuizz,
   Homework,
   Presentations,
   UserPoints,
@@ -27,8 +25,6 @@ const path = require('path');
 const uuid = require('uuid');
 const fs = require('fs');
 const { Op } = require('sequelize');
-
-const lessonsperquizz = require('../models/lessonsperquizz');
 const { userSockets } = require('../userSockets');
 
 const allowedFormats = [
@@ -36,6 +32,7 @@ const allowedFormats = [
   "video/mpeg"
 ];
 const { courseBlock } = require('../service/CourseBlock')
+const { courseSlice } = require('../service/CourseSlice')
 
 const getLessons = async (req, res) => {
   try {
@@ -185,11 +182,26 @@ const getLesson = async (req, res) => {
       },
     });
 
-    const block = await courseBlock(groups.id, userId);
+    //--- if need block ---
+    // const block = await courseBlock(groups.id, userId);
+    // if (block) {
+    //   return res.status(401).json({ message: "Your course is inactive due to payment." });
+    // };
 
-    if (block) {
-      return res.status(401).json({ message: "Your course is inactive due to payment." });
-    };
+    const courseSliceDate = await courseSlice(groups.id, userId)
+
+    if (courseSliceDate) {
+      let coursesPerLesson = await CoursesPerLessons.findOne({
+        where: {
+          courseId,
+          lessonId: id,
+        }
+      })
+
+      if (coursesPerLesson.createdAt > courseSliceDate) {
+        return res.status(401).json({ message: "Your course is inactive due to payment." });
+      };
+    }
 
     const lessonTime = await LessonTime.findOne({
       where: {

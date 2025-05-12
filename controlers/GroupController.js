@@ -35,7 +35,7 @@ const Sequelize = require('sequelize')
 const CreateGroup = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
-    const { name_en, name_am, name_ru, assignCourseId, users, startDate, endDate, payment } =
+    const { name_en, name_am, name_ru, assignCourseId, users, startDate, endDate, payment, type } =
       req.body;
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
@@ -53,7 +53,8 @@ const CreateGroup = async (req, res) => {
       endDate,
       price: price,
       sale: discount,
-      creatorId: userId
+      creatorId: userId,
+      type
     });
 
     function getMonthAndDayCount(startDate, endDate) {
