@@ -24,7 +24,8 @@ const {
   Payment,
   HomeWorkFiles,
   UserAnswersOption,
-  UserAnswersQuizz
+  UserAnswersQuizz,
+  IndividualGroupParams
 } = require('../models');
 const { v4 } = require('uuid');
 const sequelize = require('sequelize'); // Make sure the path is correct
@@ -37,12 +38,14 @@ const CreateGroup = async (req, res) => {
     const { user_id: userId } = req.user;
     const { name_en, name_am, name_ru, assignCourseId, users, startDate, endDate, payment, type } =
       req.body;
+
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
     let { price, discount } = payment.reduce(
       (min, item) => (item.price_en < min.price_en ? item : min),
       payment[0],
     );
+
     const task = await Groups.create({
       name_am,
       name_ru,
@@ -54,7 +57,7 @@ const CreateGroup = async (req, res) => {
       price: price,
       sale: discount,
       creatorId: userId,
-      type
+      type: type.toLowerCase()
     });
 
     function getMonthAndDayCount(startDate, endDate) {
@@ -96,7 +99,8 @@ const CreateGroup = async (req, res) => {
         price: e.price,
         discount: e.discount,
         groupId: task.id,
-        durationMonths: durationMonths.months
+        durationMonths: durationMonths.months,
+        type: e.title.toLowerCase()
       });
     });
 
@@ -111,6 +115,7 @@ const CreateGroup = async (req, res) => {
         const lessons = await CoursesPerLessons.findAll({
           where: { courseId: task.assignCourseId },
         });
+
         await Promise.all(
           lessons.map(async (e) => {
             await UserLesson.create({
@@ -142,6 +147,7 @@ const CreateGroup = async (req, res) => {
         role: "ADMIN"
       }
     })
+
     await GroupChats.create({
       adminId: admin.id,
       image: img,
@@ -187,29 +193,6 @@ const findOne = async (req, res) => {
       attributes: [['courseId', 'id'], 'title'],
     });
 
-    // const payment_en = [];
-    // const payment_ru = [];
-    // const payment_am = [];
-    // const payment = group.payment.forEach((pay) => {
-    //   payment_en.push({
-    //     title_en: pay.title_en,
-    //     description_en: pay.description_en,
-    //     price_en: pay.price,
-    //     discount_en: pay.discount,
-    //   });
-    //   payment_ru.push({
-    //     title_ru: pay.title_ru,
-    //     description_ru: pay.description_ru,
-    //     price_ru: pay.price,
-    //     discount_ru: pay.discount,
-    //   });
-    //   payment_am.push({
-    //     title_am: pay.title_am,
-    //     description_am: pay.description_am,
-    //     price_am: pay.price,
-    //     discount_am: pay.discount,
-    //   });
-    // });
     const groupedUsers = {
       id: group.id,
       name_en: group.name_en,
@@ -221,15 +204,10 @@ const findOne = async (req, res) => {
       price: group.price,
       sale: group.sale,
       payment: group.payment,
-      // payment_am,
-      // payment_en,
-      // payment_ru,
       course: course,
       TEACHER: [],
       STUDENT: [],
     };
-    // console.log(course)
-    // console.log(group.assignCourseId);
     group.GroupsPerUsers.forEach((userCourse) => {
       const user = userCourse.User;
       if (user) {
@@ -467,14 +445,11 @@ const update = async (req, res) => {
       sale,
     } = req.body;
 
-    console.log(groupId, userId);
-
-
     let groupeKey = `${process.env.HOST}-joinLink-${v4()}`;
 
     let { price, discount } = payment.reduce(
       (min, item) => (item.price_en < min.price_en ? item : min),
-      payment,
+      payment[0],
     );
     const group = await Groups.findOne({
       where: {
@@ -490,11 +465,6 @@ const update = async (req, res) => {
         },
       ],
     })
-
-    // const studentIds = group.Users.reduce((aggr, value) => {
-    //   aggr.push(value.id)
-    //   return aggr;
-    // }, []);
 
     if (!group) return res.status(400).json({ success: false, message: "You do not have permission to update this groupe." })
 
@@ -515,7 +485,6 @@ const update = async (req, res) => {
         name_ru,
         name_en,
         groupeKey,
-        assignCourseId,
         startDate,
         endDate,
         price,
@@ -538,7 +507,8 @@ const update = async (req, res) => {
         price: e.price,
         discount: e.discount,
         groupId,
-        durationMonths: month
+        durationMonths: month,
+        type: e.title.toLowerCase()
       });
     });
 
@@ -631,6 +601,24 @@ const addMember = async (req, res) => {
       users.map(async (userId) => {
         const user = await Users.findOne({ where: { id: userId } });
 
+        /// for individual groupes
+        if (group.type = "individual" && user.role === "STUDENT") {
+          await IndividualGroupParams.create({
+            userId,
+            groupId: group.id,
+            courseId: group.assignCourseId,
+            lessonCount: 1
+          })
+        };
+
+        const groupChats = await GroupChats.findOne({
+          where: { groupId: group.id },
+        });
+        const newMembers = [user.id, ...groupChats.members];
+        const uniqueUsers = [...new Set(newMembers)];
+        groupChats.members = uniqueUsers;
+        await groupChats.save();
+
         await GroupsPerUsers.findOrCreate({
           where: {
             groupId: group.id,
@@ -660,18 +648,6 @@ const addMember = async (req, res) => {
             required: false,
           }
         });
-
-        // await UserPoints.findOrCreate({
-        //   where: {
-        //     userId: user.id,
-        //   },
-        //   defaults: {
-        //     userId: user.id,
-        //     lesson: 0,
-        //     quizz: 0,
-        //     finalInterview: 0,
-        //   },
-        // });
 
         lessons.map((lesson) => {
 
@@ -704,15 +680,6 @@ const addMember = async (req, res) => {
             },
           });
         });
-
-        const groupChats = await GroupChats.findOne({
-          where: { groupId: group.id },
-        });
-        const newMembers = [user.id, ...groupChats.members];
-        const uniqueUsers = [...new Set(newMembers)];
-        groupChats.members = uniqueUsers;
-
-        await groupChats.save();
 
         if (group.lastGroup) {
           const userLastGroupMember = await GroupsPerUsers.findOne({
@@ -874,7 +841,7 @@ const addMember = async (req, res) => {
             userCours.totalPoints = +lastGroupQuizPoint[0]?.totalQuizPoints + +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
             await userCours.save();
             console.log(+lastGroupHomeworkPoint[0]?.totalHomeworkPoints, +lastGroupQuizPoint[0]?.totalQuizPoints, +lastGroupQuizPoint[0]?.totalQuizPoints + +lastGroupHomeworkPoint[0]?.totalHomeworkPoints, 55);
-            
+
           }
         }
       }),
@@ -929,106 +896,6 @@ const SingleUserStatics = async (req, res) => {
     const userCoursPoints = +isIndividual.totalPoints
     const userCoursQuizzPoints = +isIndividual.takenQuizzes
     const userCoursHomeworkPoints = +isIndividual.takenHomework
-
-    if (
-      isIndividual &&
-      isIndividual.CoursesContent &&
-      isIndividual.CoursesContent.courseType == 'Individual'
-    ) {
-
-      let course = await GroupCourses.findByPk(id, {
-        include: {
-          model: CoursesContents,
-        },
-      });
-      const students = await UserCourses.count({
-        where: { GroupCourseId: course.assignCourseId },
-      });
-
-      const lessons = await CoursesPerLessons.count({
-        where: {
-          courseId: course.assignCourseId,
-        },
-      });
-
-      const mySkils = await Skills.findAll({
-        where: { userId },
-      })
-
-      let charts = await LessonTime.findAll({
-        where: {
-          userId,
-        },
-      });
-
-      charts = charts.map((e) => e.time);
-      const allQuizz = await CoursesPerLessons.count({
-        where: { courseId: course.assignCourseId },
-        include: [
-          {
-            model: Lesson,
-            include: [
-              {
-                model: Quizz,
-                as: 'quizz',
-                required: true,
-              },
-            ],
-            required: true,
-          },
-        ],
-      });
-      //const language = "am";
-      const allHomework = await CoursesPerLessons.count({
-        where: { courseId: course.assignCourseId },
-        include: [
-          {
-            model: Lesson,
-            include: [
-              {
-                model: Homework,
-                as: 'homework',
-                through: {
-                  attributes: [],
-                },
-                attributes: [
-                  'id',
-                  [`title_${language}`, 'title'],
-                  [`description_${language}`, 'description'],
-                ],
-              },
-            ],
-            required: true,
-          },
-        ],
-      });
-
-      const userSubmitedHomework = 5;
-      const response = {
-        lesson: 0,
-        homework: {
-          taken: 1,
-          all: allQuizz,
-          percent: 100,
-        },
-        quizzes: {
-          taken: userSubmitedHomework,
-          all: allHomework,
-          percent: (userSubmitedHomework / allHomework) * 100,
-        },
-        // totalPoints: (group.lessons + group.homeWork + group.quizzes) / 3,
-        totalPoints: 0,
-        mySkils,
-        charts,
-        course: {
-          students,
-          lessons,
-          lessonType: isIndividual.CoursesContent.level,
-        },
-      };
-
-      return res.json(response);
-    }
 
     const group = await GroupsPerUsers.findOne({
       where: {
@@ -1350,6 +1217,10 @@ const deleteGroup = async (req, res) => {
       });
     };
 
+    await PaymentWays.destroy({
+      where: { groupId: id }
+    })
+
     await Certificates.destroy({ where: { groupId: id } });
 
     await Groups.destroy({ where: { id } });
@@ -1452,13 +1323,13 @@ const getUsers = async (req, res) => {
 const deleteMember = async (req, res) => {
   try {
     const { groupId, userId } = req.query;
-    const { assignCourseId, finished } = await Groups.findOne({
+    const { assignCourseId, finished, type } = await Groups.findOne({
       where: {
         id: groupId
       },
     });
 
-    if(finished) {
+    if (finished) {
       return res.status(400).json({ message: 'You cannot remove members from a finished group.' });
     }
 
@@ -1516,6 +1387,16 @@ const deleteMember = async (req, res) => {
         courseId: assignCourseId
       }
     })
+
+    if (type === "individual") {
+      await IndividualGroupParams.destroy({
+        where: {
+          userId,
+          groupId,
+          courseId: assignCourseId,
+        }
+      })
+    }
 
     if (groupChats) {
 
@@ -1668,7 +1549,7 @@ const getAllGroupForTeacher = async (req, res) => {
       attributes: ["id", [`name_${language}`, 'name'], "assignCourseId", "finished", "createdAt", "startDate"]
     });
     console.log(creatorGroup);
-    
+
 
     creatorGroup = creatorGroup.reduce((aggr, value) => {
       const firstGroup = value;

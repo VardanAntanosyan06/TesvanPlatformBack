@@ -615,66 +615,7 @@ const paymentArca = async (req, res) => {
     }
 
     res.send({ success: true, count: 1, id: payment.groupId });
-    //////////////
-    if (payment.type == 'Individual') {
-      const user = await Users.findOne({ where: { id: payment.userId } });
-      const course = await GroupCourses.findByPk(payment.groupId);
-      if (!course) {
-        return res.status(404).json({ success: false, message: 'Course not found' });
-      }
 
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      await UserCourses.create({
-        GroupCourseId: payment.groupId,
-        UserId: payment.userId,
-      });
-      const lessons = await CoursesPerLessons.findAll({
-        where: { courseId: payment.groupId },
-      });
-      // await UserPoints.findOrCreate({
-      //   where: {
-      //     userId: payment.userId,
-      //   },
-      //   defaults: {
-      //     userId: payment.userId,
-      //     lesson: 0,
-      //     quizz: 0,
-      //     finalInterview: 0,
-      //   },
-      // });
-      lessons.map((e) => {
-        UserLesson.create({
-          GroupCourseId: payment.groupId,
-          UserId: payment.userId,
-          LessonId: e.lessonId,
-        });
-      });
-
-      const boughtTests = await Tests.findAll({
-        where: {
-          [sequelize.Op.or]: [{ courseId: payment.groupId }, { courseId: null }],
-        },
-      });
-
-      boughtTests.map((test) => {
-        UserTests.findOrCreate({
-          where: {
-            testId: test.id,
-            userId: payment.userId,
-            courseId: test.courseId,
-            language: test.language,
-            type: 'Group',
-          },
-          defaults: {
-            testId: test.id,
-            userId: payment.userId,
-          },
-        });
-      });
-      res.send({ success: true, count: 1 });
-    }
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: 'Something Went Wrong' });
@@ -1093,65 +1034,6 @@ const paymentIdram = async (req, res) => {
             }
           };
 
-          ////////////
-          if (payment.type === 'Individual') {
-            const user = await Users.findOne({ where: { id: payment.userId } });
-            const course = await GroupCourses.findByPk(payment.groupId);
-            if (!course) {
-              return res.status(404).json({ success: false, message: 'Course not found' });
-            }
-
-            if (!user) {
-              return res.status(404).json({ message: 'User not found' });
-            }
-            await UserCourses.create({
-              GroupCourseId: payment.groupId,
-              UserId: payment.userId,
-            });
-            const lessons = await CoursesPerLessons.findAll({
-              where: { courseId: payment.groupId },
-            });
-            // await UserPoints.findOrCreate({
-            //   where: {
-            //     userId: payment.userId,
-            //   },
-            //   defaults: {
-            //     userId: payment.userId,
-            //     lesson: 0,
-            //     quizz: 0,
-            //     finalInterview: 0,
-            //   },
-            // });
-            lessons.forEach(async (e) => {
-              await UserLesson.create({
-                GroupCourseId: payment.groupId,
-                UserId: payment.userId,
-                LessonId: e.lessonId,
-              });
-            });
-
-            const boughtTests = await Tests.findAll({
-              where: {
-                [sequelize.Op.or]: [{ courseId: payment.groupId }, { courseId: null }],
-              },
-            });
-
-            boughtTests.forEach(async (test) => {
-              await UserTests.findOrCreate({
-                where: {
-                  testId: test.id,
-                  userId: payment.userId,
-                  courseId: test.courseId,
-                  language: test.language,
-                  type: 'Group',
-                },
-                defaults: {
-                  testId: test.id,
-                  userId: payment.userId,
-                },
-              });
-            });
-          }
         } else {
           let payment = await Payment.findOne({
             where: { orderNumber: request.EDP_BILL_NO },

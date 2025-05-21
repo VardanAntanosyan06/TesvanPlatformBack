@@ -9,20 +9,20 @@ function getPayMonthCount(startDate, endDate, paymentCount) {
     const monthsDifference = end.getMonth() - start.getMonth();
 
     // Total number of months between the two dates
-    
-    
+
+
     const totalMonths = (yearsDifference * 12) + monthsDifference;
     console.log(totalMonths, 88);
     return totalMonths - (totalMonths - paymentCount)
 }
 
-function getMonthCount(startDate, endDate){
+function getMonthCount(startDate, endDate) {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
     const yearsDifference = end.getFullYear() - start.getFullYear();
     const monthsDifference = end.getMonth() - start.getMonth();
-    
+
     return totalMonths = (yearsDifference * 12) + monthsDifference;
 }
 
@@ -110,6 +110,8 @@ const courseBlock = async (groupId, userId) => {
             ]
         });
 
+        const startGroupDate = await startDateCourse(groupId, userId, paymentWays.group.startDate)
+
         if (payments.length === 0) {
             return true;
         };
@@ -118,10 +120,10 @@ const courseBlock = async (groupId, userId) => {
             return false;
         };
 
-        const durationMonths = getPayMonthCount(await startDateCourse(groupId, userId, paymentWays.group.startDate), paymentWays.group.endDate, payments.length);
-        let nextPaymentDate = new Date(paymentWays.group.startDate);
+        const durationMonths = getPayMonthCount(startGroupDate, paymentWays.group.endDate, payments.length);
+        let nextPaymentDate = new Date(startGroupDate);
         nextPaymentDate.setMonth(nextPaymentDate.getMonth() + durationMonths);
-        if (new Date() > nextPaymentDate) {           
+        if (new Date() > nextPaymentDate) {
             if (paymentWays.group.endDate < new Date() && (getMonthCount(await startDateCourse(groupId, userId, paymentWays.group.startDate), paymentWays.group.endDate) === payments.length)) {
                 throw new Error("")
             }

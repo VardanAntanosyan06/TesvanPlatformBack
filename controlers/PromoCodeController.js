@@ -18,7 +18,8 @@ const {
   HomeWorkFiles,
   UserAnswersOption,
   UserAnswersQuizz,
-  PromoCode
+  PromoCode,
+  IndividualGroupParams
 } = require('../models');
 
 const createPromoCodeGroup = async (req, res) => {
@@ -87,8 +88,6 @@ const addMemberGroupPromocode = async (groupId, userId) => {
     };
 
     const lastGroup = await Groups.findByPk(group.lastGroup?.lastGroupId)
-
-
 
     const user = await Users.findOne({ where: { id: userId } });
 
@@ -320,23 +319,15 @@ const addMemberGroupPromocode = async (groupId, userId) => {
         userCours.totalPoints = +lastGroupQuizPoint[0]?.totalQuizPoints + +lastGroupHomeworkPoint[0]?.totalHomeworkPoints;
         await userCours.save()
 
-        const payment = await PaymentWays.findOne({
-          where: {
+        /// for individual groupes
+        if (group.type = "individual") {
+          await IndividualGroupParams.create({
+            userId,
             groupId: group.id,
-            type: "monthly"
-          }
-        })
-        const thisCoursePrice = payment.price * (1 - payment.discount / 100);
-        await Payment.create({
-          orderKey: "last cours payment",
-          orderNumber: "last cours payment",
-          paymentWay: "ARCA",
-          status: "Success",
-          userId,
-          groupId: group.id,
-          type: "monthly",
-          amount: Math.round(thisCoursePrice)
-        })
+            courseId: group.assignCourseId,
+            lessonCount: 1
+          })
+        };
       }
     };
   } catch (error) {

@@ -36,117 +36,17 @@ const getUserStatictis = async (req, res) => {
       ],
     });
 
-    const isIndividual = await UserCourses.findOne({
+    const userCourse = await UserCourses.findOne({
       where: {
         UserId: userId,
         GroupCourseId: course.assignCourseId,
       },
       include: [CoursesContents],
     });
-    const userCoursPoints = +isIndividual.totalPoints
-    const userCoursQuizzPoints = +isIndividual.takenQuizzes
-    const userCoursHomeworkPoints = +isIndividual.takenHomework
-    const userCoursInterviewPoint = +isIndividual.takenInterview
-
-    if (
-      isIndividual &&
-      isIndividual.CoursesContent &&
-      isIndividual.CoursesContent.courseType == 'Individual'
-    ) {
-
-      let course = await GroupCourses.findByPk(id, {
-        include: {
-          model: CoursesContents,
-        },
-      });
-      const students = await UserCourses.count({
-        where: { GroupCourseId: course.assignCourseId },
-      });
-
-      const lessons = await CoursesPerLessons.count({
-        where: {
-          courseId: course.assignCourseId,
-        },
-      });
-
-      const mySkils = await Skills.findAll({
-        where: { userId },
-      })
-
-      let charts = await LessonTime.findAll({
-        where: {
-          userId,
-        },
-      });
-
-      charts = charts.map((e) => e.time);
-      const allQuizz = await CoursesPerLessons.count({
-        where: { courseId: course.assignCourseId },
-        include: [
-          {
-            model: Lesson,
-            include: [
-              {
-                model: Quizz,
-                as: 'quizz',
-                required: true,
-              },
-            ],
-            required: true,
-          },
-        ],
-      });
-      //const language = "am";
-      const allHomework = await CoursesPerLessons.count({
-        where: { courseId: course.assignCourseId },
-        include: [
-          {
-            model: Lesson,
-            include: [
-              {
-                model: Homework,
-                as: 'homework',
-                through: {
-                  attributes: [],
-                },
-                attributes: [
-                  'id',
-                  [`title_${language}`, 'title'],
-                  [`description_${language}`, 'description'],
-                ],
-              },
-            ],
-            required: true,
-          },
-        ],
-      });
-
-      const userSubmitedHomework = 5;
-      const response = {
-        lesson: 0,
-        homework: {
-          taken: 1,
-          all: allQuizz,
-          percent: 100,
-        },
-        quizzes: {
-          taken: userSubmitedHomework,
-          all: allHomework,
-          percent: (userSubmitedHomework / allHomework) * 100,
-        },
-        // totalPoints: (group.lessons + group.homeWork + group.quizzes) / 3,
-        totalPoints: 0,
-        mySkils,
-        charts,
-        course: {
-          students,
-          lessons,
-          lessonType: isIndividual.CoursesContent.level,
-        },
-      };
-
-      return res.json(response);
-    }
+    const userCoursPoints = +userCourse.totalPoints
+    const userCoursQuizzPoints = +userCourse.takenQuizzes
+    const userCoursHomeworkPoints = +userCourse.takenHomework
+    const userCoursInterviewPoint = +userCourse.takenInterview
 
     const group = await GroupsPerUsers.findOne({
       where: {

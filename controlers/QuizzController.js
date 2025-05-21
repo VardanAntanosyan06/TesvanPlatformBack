@@ -14,7 +14,9 @@ const {
   UserPoints,
   UserLesson,
   UserAnswersOption,
-  Users
+  Users,
+  Groups,
+  IndividualGroupParams
 } = require('../models');
 
 const createQuizz = async (req, res) => {
@@ -324,6 +326,21 @@ const finishQuizz = async (req, res) => {
     const userCourses = await UserCourses.findOne({
       where: { UserId: userId, GroupCourseId: courseId },
     });
+
+    const group = await Groups.findOne({ where: { assignCourseId: courseId } })
+    if (group.type === "individual") {
+      const openLessonCount = await IndividualGroupParams.findOne({
+        where: {
+          groupId: group.id,
+          courseId: group.assignCourseId,
+          userId
+        }
+      });
+
+      const newCount = openLessonCount.lessonCount++;
+      openLessonCount.openLessonCount = newCount;
+      await openLessonCount.save()
+    }
 
     let point = 0
     let correctAnswers = 0
