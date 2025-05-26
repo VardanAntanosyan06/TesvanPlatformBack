@@ -751,20 +751,6 @@ const getUserCourse = async (req, res) => {
       return e;
     });
 
-    //919 907//////////////////////////////////////////
-    if (id == 919 || id == 907) {
-      return res.json({ lessons: [], quizz, finalInterview });
-    }
-    if (id == 927) {
-      const newLesson = lessons.slice(0, 8);
-      return res.json({ lessons: newLesson, quizz, finalInterview });
-    }
-
-    if (id == 1092) {
-      const newLesson = lessons.slice(0, 5);
-      return res.json({ lessons: newLesson, quizz, finalInterview });
-    }
-
     if (groups.type === "individual") {
       const openLessonCount = await IndividualGroupParams.findOne({
         where: {
