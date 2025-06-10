@@ -182,12 +182,6 @@ const getLesson = async (req, res) => {
       },
     });
 
-    //--- if need block ---
-    // const block = await courseBlock(groups.id, userId);
-    // if (block) {
-    //   return res.status(401).json({ message: "Your course is inactive due to payment." });
-    // };
-
     const courseSliceDate = await courseSlice(groups.id, userId)
 
     if (courseSliceDate) {

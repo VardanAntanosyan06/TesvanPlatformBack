@@ -35,7 +35,8 @@ const { v4 } = require('uuid');
 const moment = require('moment');
 const path = require('path');
 const { courseBlock } = require('../service/CourseBlock')
-const { courseSlice } = require('../service/CourseSlice')
+const { courseSlice } = require('../service/CourseSlice');
+const { type } = require('os');
 
 const getAllCourses = async (req, res) => {
   try {
@@ -433,6 +434,7 @@ const getOne = async (req, res) => {
       lessonsCount,
       trainers: trainers,
       payment,
+      type: groups.type,
     };
     return res.send(course);
   } catch (error) {
