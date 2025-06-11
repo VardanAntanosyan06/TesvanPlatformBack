@@ -1019,7 +1019,7 @@ const getCoursesByFilter = async (req, res) => {
       ],
       // order: orderTypes[order] ? [orderTypes[order]] : [["id", "ASC"]],
       limit,
-      attributes: ['id', [`name_${language}`, 'title'], 'startDate', 'endDate', 'price', 'sale'],
+      attributes: ['id', [`name_${language}`, 'title'], 'startDate', 'endDate', 'price', 'sale', 'type'],
       require: true,
     });
 
@@ -1053,7 +1053,6 @@ const getCoursesByFilter = async (req, res) => {
 
       e.img = `https://platform.tesvan.com/server/${e.GroupCourse.img}`;
       e.description = e.GroupCourse.CoursesContents[0].description;
-      e.courseType = e.GroupCourse.CoursesContents[0].courseType;
       e.lessonType = e.GroupCourse.CoursesContents[0].lessonType;
       e.level = e.GroupCourse.CoursesContents[0].level;
       e.courseStartDate = moment(e.startDate).format('ll');
