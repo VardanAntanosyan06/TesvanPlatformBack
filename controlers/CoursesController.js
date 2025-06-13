@@ -627,6 +627,8 @@ const getUserCourses = async (req, res) => {
         try {
           e['blocked'] = await courseBlock(groups[0]?.id, id);
         } catch (error) {
+          console.log(87987);
+          
           e['blocked'] = false;
         }
 

@@ -1060,7 +1060,7 @@ const getUserPayment = async (req, res) => {
     const { groupId } = req.query
     const type = "monthly";
 
-    const paymentWays = await PaymentWays.findOne({
+    let paymentWays = await PaymentWays.findOne({
       where: {
         groupId,
         type
@@ -1072,6 +1072,21 @@ const getUserPayment = async (req, res) => {
         }
       ]
     });
+
+    if (!paymentWays) {
+      paymentWays = await PaymentWays.findOne({
+        where: {
+          groupId,
+          type: "full",
+        },
+        include: [
+          {
+            model: Groups,
+            as: "group"
+          }
+        ]
+      });
+    }
 
     const group = await Groups.findOne({
       where: {
@@ -1096,12 +1111,21 @@ const getUserPayment = async (req, res) => {
         }
       })
 
-      const lastCourse = await PaymentWays.findOne({
+      let lastCourse = await PaymentWays.findOne({
         where: {
           groupId: group.lastGroup?.lastGroupId,
           type: "monthly",
         },
       });
+
+      if (!lastCourse) {
+        lastCourse = await PaymentWays.findOne({
+          where: {
+            groupId: group.lastGroup?.lastGroupId,
+            type: "full",
+          },
+        });
+      }
 
       const lastGroup = await GroupsPerUsers.findOne({
         where: {
@@ -1234,12 +1258,21 @@ const monthlyPaymentUrl = async (req, res, next) => {
       return res.status(400).json({ success: false, message: "This course finished" });
     }
 
-    const paymentWays = await PaymentWays.findOne({
+    let paymentWays = await PaymentWays.findOne({
       where: {
         groupId,
         type
       }
     });
+
+    if (!paymentWays) {
+      paymentWays = await PaymentWays.findOne({
+        where: {
+          groupId,
+          type: "full",
+        },
+      });
+    }
 
     const priceCourse = paymentWays.price * (1 - paymentWays.discount / 100) * paymentWays.durationMonths
 
@@ -1378,12 +1411,21 @@ const getAllPayment = async (req, res) => {
         order: [["id", "ASC"]]
       })
 
-      const lastCourse = await PaymentWays.findOne({
+      let lastCourse = await PaymentWays.findOne({
         where: {
           groupId: group.lastGroup.lastGroupId,
           type: "monthly",
         },
       });
+
+      if (!lastCourse) {
+        lastCourse = await PaymentWays.findOne({
+          where: {
+            groupId: group.lastGroup.lastGroupId,
+            type: "full",
+          },
+        });
+      }
 
       lastCourseUserPayments = lastCoursePayment.reduce((aggr, value) => {
         value = value.toJSON()

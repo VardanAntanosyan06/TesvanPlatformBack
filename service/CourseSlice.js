@@ -51,12 +51,21 @@ async function startDateCourse(groupId, userId, paymentWaysStartDate) {
             }
         })
 
-        const lastCourse = await PaymentWays.findOne({
+        let lastCourse = await PaymentWays.findOne({
             where: {
                 groupId: group.lastGroup?.lastGroupId,
                 type: "monthly",
             },
         });
+
+        if (!lastCourse) {
+            lastCourse = await PaymentWays.findOne({
+                where: {
+                    groupId: group.lastGroup?.lastGroupId,
+                    type: "full",
+                },
+            });
+        }
 
         const lastGroup = await GroupsPerUsers.findOne({
             where: {
@@ -97,7 +106,7 @@ const courseSlice = async (groupId, userId) => {
             order: [['createdAt', 'DESC']]
         });
 
-        const paymentWays = await PaymentWays.findOne({
+        let paymentWays = await PaymentWays.findOne({
             where: {
                 groupId,
                 type: "monthly",
@@ -109,6 +118,21 @@ const courseSlice = async (groupId, userId) => {
                 }
             ]
         });
+
+        if (!paymentWays) {
+            paymentWays = await PaymentWays.findOne({
+                where: {
+                    groupId,
+                    type: "full",
+                },
+                include: [
+                    {
+                        model: Groups,
+                        as: "group"
+                    }
+                ]
+            });
+        }
 
         const startGroupDate = await startDateCourse(groupId, userId, paymentWays.group.startDate)
 
@@ -122,7 +146,7 @@ const courseSlice = async (groupId, userId) => {
 
         const durationMonths = getPayMonthCount(startGroupDate, paymentWays.group.endDate, payments.length);
         console.log(durationMonths, 569);
-        
+
         let nextPaymentDate = new Date(startGroupDate);
         nextPaymentDate.setMonth(nextPaymentDate.getMonth() + durationMonths);
         if (new Date() > nextPaymentDate) {
