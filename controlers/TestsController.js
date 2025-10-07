@@ -213,6 +213,7 @@ const finishCourse = async (req, res) => {
         testId,
         status: 'not passed',
         point: 0,
+        language: 'en',
         type: 'Group',
       },
     });
