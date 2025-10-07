@@ -1,8 +1,15 @@
-const { where } = require('sequelize')
-const { UserHomework, UserStatus,Payment, Quizz, Question, Option, UserAnswersQuizz, UserAnswersOption, CoursesContents, Users } = require('./models')
+const { UserHomework, UserStatus,Payment, Quizz, Question, Option, UserAnswersQuizz, UserAnswersOption, CoursesContents, Users, Tests } = require('./models')
 const { log } = require('console')
 const users = [3, 163, 754, 900, 907, 890, 879]
 const lessons = [1, 2, 4, 5, 3, 6, 7, 8, 18, 19]
+async function fuu(){
+ const allTests = await Question.findAll();
+ console.log(allTests);
+}
+
+fuu()
+
+ 
 // async function paymentAdmin() {
 //     const payment = await Payment.findOne({
 //         where: { id: 625 },
