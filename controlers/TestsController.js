@@ -292,8 +292,8 @@ const getUserTestsAll = async (req, res) => {
       include: [
         {
           model: UserTests,
-          where: { userId },
-          required: false, // LEFT JOIN — եթե user-ը չի անցել, UserTests կլինի null
+          // where: { userId },
+          // required: false, // LEFT JOIN — եթե user-ը չի անցել, UserTests կլինի null
         },
       ],
     });
