@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       description: DataTypes.STRING,
       courseId: DataTypes.INTEGER,
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
       language: DataTypes.STRING,
-      uuid:DataTypes.STRING,
+      uuid: DataTypes.STRING,
       type: DataTypes.STRING,
       time: DataTypes.INTEGER,
       percent: {
@@ -36,7 +36,9 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   const TestsQuizz = sequelize.define("TestsQuizz");
+  const UserTests = sequelize.define("UserTests");
 
-  Tests.hasMany(TestsQuizz,{foreignKey:'testId'});
+  Tests.hasMany(TestsQuizz, { foreignKey: 'testId' });
+  Tests.hasMany(UserTests, { foreignKey: 'testId' });
   return Tests;
 };
