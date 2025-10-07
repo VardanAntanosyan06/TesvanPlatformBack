@@ -293,6 +293,7 @@ const getUserTestsAll = async (req, res) => {
         {
           model: UserTests,
           where: { userId },
+          attributes: ['status', 'point', 'passDate'],
           required: false,
         },
       ],
@@ -307,9 +308,9 @@ const getUserTestsAll = async (req, res) => {
       .map((test) => {
         return {
           test: test,
-          // status: test.userTest.length > 0 ? test.userTest[0].status : 'not started',
-          // point: test.userTest.length > 0 ? test.userTest[0].point : 0,
-          // passDate: test.userTest.length > 0 ? test.userTest[0].passDate : null,
+          status: test?.UserTest.length > 0 ? test.UserTest[0].status : 'not started',
+          point: test?.UserTest.length > 0 ? test.UserTest[0].point : 0,
+          passDate: test?.UserTest.length > 0 ? test.UserTest[0].passDate : null,
         };
       });
 
