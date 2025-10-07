@@ -292,8 +292,7 @@ const getUserTestsAll = async (req, res) => {
       include: [
         {
           model: UserTests,
-          where: { userId },
-          required: false, // LEFT JOIN — կբերի նաև այն դեպքերը, որտեղ UserTests չկա
+          required: false,
         },
       ],
     });
@@ -313,7 +312,7 @@ const getUserTestsAll = async (req, res) => {
         };
       });
 
-    return res.status(200).json({ success: true, tests: filteredTests });
+    return res.status(200).json({ success: true, tests: allTests });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Something went wrong.' });
