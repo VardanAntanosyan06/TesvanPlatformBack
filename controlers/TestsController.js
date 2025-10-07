@@ -302,18 +302,18 @@ const getUserTestsAll = async (req, res) => {
       return res.status(404).json({ success: false, message: 'No tests found.' });
     }
 
-    // // // Filter tests where language is "en" and add amId and ruId based on UUID
-    // const filteredTests = allTests
-    //   .map((test) => {
-    //     return {
-    //       test: test,
-    //       status: test.userTest ? test.userTest.status : 'not started',
-    //       point: test.userTest ? test.userTest.point : 0,
-    //       passDate: test.userTest ? test.userTest.passDate : null,
-    //     };
-    //   });
+    // Filter tests where language is "en" and add amId and ruId based on UUID
+    const filteredTests = allTests
+      .map((test) => {
+        return {
+          test: test,
+          status: test.userTest ? test.userTest.status : 'not started',
+          point: test.userTest ? test.userTest.point : 0,
+          passDate: test.userTest ? test.userTest.passDate : null,
+        };
+      });
 
-    return res.status(200).json({ success: true, tests: allTests });
+    return res.status(200).json({ success: true, tests: filteredTests });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Something went wrong.' });
