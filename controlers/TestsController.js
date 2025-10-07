@@ -292,32 +292,34 @@ const getUserTestsAll = async (req, res) => {
       include: [
         {
           model: UserTests,
-          required: false,
+          where: { userId },
+          required: false, // LEFT JOIN — եթե user-ը չի անցել, UserTests կլինի null
         },
       ],
     });
 
-    if (allTests.length === 0) {
-      return res.status(404).json({ success: false, message: 'No tests found for the user.' });
-    };
+    if (!allTests || allTests.length === 0) {
+      return res.status(404).json({ success: false, message: 'No tests found.' });
+    }
 
     // // Filter tests where language is "en" and add amId and ruId based on UUID
     const filteredTests = allTests
       .map((test) => {
         return {
           test: test,
-          status: test?.UserTests[0]?.status || 'not started',
-          point: test?.UserTests[0]?.point || 0,
-          passDate: test?.UserTests[0]?.passDate || null,
+          status: test.userTest ? test.userTest.status : 'not started',
+          point: test.userTest ? test.userTest.point : 0,
+          passDate: test.userTest ? test.userTest.passDate : null,
         };
       });
 
-    return res.status(200).json({ success: true, tests: allTests });
+    return res.status(200).json({ success: true, tests: filteredTests });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: 'Something went wrong.' });
   }
 };
+
 const getUsers = async (req, res) => {
   try {
     // const { user_id: userId } = req.user;
