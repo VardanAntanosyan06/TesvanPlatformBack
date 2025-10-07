@@ -206,7 +206,7 @@ const finishCourse = async (req, res) => {
     //   where: { userId, testId },
     // });
 
-    const data = await UserTests.findOrCreate({
+    const [data, created] = await UserTests.findOrCreate({
       where: { userId, testId },
       defaults: {
         userId,
