@@ -164,7 +164,7 @@ const finishCourse = async (req, res) => {
     const point = Math.round(
       ((correctAnswers.length - new Set(correctAnswers).size) /
         Math.ceil(correctAnswers.length / 2)) *
-        100,
+      100,
     );
 
     const data = await UserTests.findOne({
@@ -199,12 +199,61 @@ const getUserTests = async (req, res) => {
       ],
     });
 
+    await Tests
+
+    if (tests.length === 0) {
+      return res.status(404).json({ success: false, message: 'No tests found for the user.' });
+    };
+
     // Filter tests where language is "en" and add amId and ruId based on UUID
     const filteredTests = tests
       .filter((test) => test.language === 'en')
       .map((test) => {
         const amTest = tests.find((t) => t.language === 'am' && t.Test.uuid === test.Test.uuid);
         const ruTest = tests.find((t) => t.language === 'ru' && t.Test.uuid === test.Test.uuid);
+        return {
+          test: test.Test,
+          status: test.status,
+          point: test.point,
+          passDate: test.passDate,
+          am: amTest ? amTest.id : null,
+          ru: ruTest ? ruTest.id : null,
+        };
+      });
+
+    return res.status(200).json({ success: true, tests: filteredTests });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
+const getUserTestsAll = async (req, res) => {
+  try {
+    const { user_id: userId } = req.user;
+
+    // const tests = await UserTests.findAll({
+    //   where: { userId },
+    //   include: [
+    //     {
+    //       model: Tests,
+    //       // attributes:[""m"title","description","language","time","percent"]
+    //     },
+    //   ],
+    // });
+
+    const allTests = await Tests.findAll();
+
+    if (allTests.length === 0) {
+      return res.status(404).json({ success: false, message: 'No tests found for the user.' });
+    };
+
+    // Filter tests where language is "en" and add amId and ruId based on UUID
+    const filteredTests = allTests
+      .filter((test) => test.language === 'en')
+      .map((test) => {
+        const amTest = allTests.find((t) => t.language === 'am' && t.uuid === test.uuid);
+        const ruTest = allTests.find((t) => t.language === 'ru' && t.uuid === test.uuid);
         return {
           test: test.Test,
           status: test.status,
@@ -253,7 +302,7 @@ const getUsers = async (req, res) => {
 const findCourses = async (req, res) => {
   try {
     // const courses = await
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const findAll = async (req, res) => {
@@ -368,4 +417,5 @@ module.exports = {
   updateTest,
   deleteTest,
   findAll,
+  getUserTestsAll
 };

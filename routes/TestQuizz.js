@@ -20,7 +20,7 @@ router.post(
   checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
   controller.finishCourse,
 );
-router.get('/getUserTests', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getUserTests);
+router.get('/getUserTests', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getUserTestsAll);
 router.get('/getUsers', checkAuth(['TEACHER', 'ADMIN']), controller.getUsers);
 // router.post(
 //   "/HomeworkInProgress/:id",
