@@ -244,25 +244,25 @@ const getUserTestsAll = async (req, res) => {
 
     const allTests = await Tests.findAll();
 
-    if (allTests.length === 0) {
-      return res.status(404).json({ success: false, message: 'No tests found for the user.' });
-    };
+    // if (allTests.length === 0) {
+    //   return res.status(404).json({ success: false, message: 'No tests found for the user.' });
+    // };
 
-    // Filter tests where language is "en" and add amId and ruId based on UUID
-    const filteredTests = allTests
-      .filter((test) => test.language === 'en')
-      .map((test) => {
-        const amTest = allTests.find((t) => t.language === 'am' && t.uuid === test.uuid);
-        const ruTest = allTests.find((t) => t.language === 'ru' && t.uuid === test.uuid);
-        return {
-          test: test.Test,
-          status: test.status,
-          point: test.point,
-          passDate: test.passDate,
-          am: amTest ? amTest.id : null,
-          ru: ruTest ? ruTest.id : null,
-        };
-      });
+    // // Filter tests where language is "en" and add amId and ruId based on UUID
+    // const filteredTests = allTests
+    //   .filter((test) => test.language === 'en')
+    //   .map((test) => {
+    //     const amTest = allTests.find((t) => t.language === 'am' && t.uuid === test.uuid);
+    //     const ruTest = allTests.find((t) => t.language === 'ru' && t.uuid === test.uuid);
+    //     return {
+    //       test: test.Test,
+    //       status: test.status,
+    //       point: test.point,
+    //       passDate: test.passDate,
+    //       am: amTest ? amTest.id : null,
+    //       ru: ruTest ? ruTest.id : null,
+    //     };
+    //   });
 
     return res.status(200).json({ success: true, tests: allTests });
   } catch (error) {
