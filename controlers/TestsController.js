@@ -307,9 +307,9 @@ const getUserTestsAll = async (req, res) => {
       .map((test) => {
         return {
           test: test,
-          status: test.userTest ? test.userTest.status : 'not started',
-          point: test.userTest ? test.userTest.point : 0,
-          passDate: test.userTest ? test.userTest.passDate : null,
+          status: test.userTest.length > 0 ? test.userTest[0].status : 'not started',
+          point: test.userTest.length > 0 ? test.userTest[0].point : 0,
+          passDate: test.userTest.length > 0 ? test.userTest[0].passDate : null,
         };
       });
 
