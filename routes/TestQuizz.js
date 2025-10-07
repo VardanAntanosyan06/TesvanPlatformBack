@@ -4,7 +4,7 @@ var router = express.Router();
 const controller = require('../controlers/TestsController');
 const checkAuth = require('../middleware/checkAuth');
 
-router.post('/create', checkAuth(['TEACHER', 'ADMIN']), controller.createQuizz);
+router.post('/create', checkAuth(['TEACHER', 'ADMIN']), controller.createQuizzAll);
 router.get('/getAll', checkAuth(['ADMIN']), controller.findAll);
 
 // router.post("/open", checkAuth(["TEACHER", "ADMIN"]), controller.open);

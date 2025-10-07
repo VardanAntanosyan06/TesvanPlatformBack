@@ -76,6 +76,41 @@ const createQuizz = async (req, res) => {
   }
 };
 
+const createQuizzAll = async (req, res) => {
+  try {
+    const { title, description, language, time, percent, questions } = req.body;
+
+    let { id: testId } = await Tests.create({
+      title,
+      description,
+      language,
+      time,
+      percent,
+      type: 'Group',
+    });
+    questions.map((e) => {
+      TestsQuizz.create({
+        question: e.question,
+        testId,
+        language,
+      }).then((data) => {
+        e.options.map((i) => {
+          TestsQuizzOptions.create({
+            questionId: data.id,
+            option: i.option,
+            isCorrect: i.isCorrect,
+          });
+        });
+      });
+    });
+
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: 'Something went wrong.' });
+  }
+};
+
 const findTest = async (req, res) => {
   try {
     const { id } = req.params;
@@ -167,8 +202,19 @@ const finishCourse = async (req, res) => {
       100,
     );
 
-    const data = await UserTests.findOne({
+    // const data = await UserTests.findOne({
+    //   where: { userId, testId },
+    // });
+
+    const data = await UserTests.findOrCreate({
       where: { userId, testId },
+      defaults: {
+        userId,
+        testId,
+        status: 'not passed',
+        point: 0,
+        type: 'Group',
+      },
     });
 
     (data.status = point > 30 ? 'passed' : 'not passed'),
@@ -409,5 +455,6 @@ module.exports = {
   updateTest,
   deleteTest,
   findAll,
-  getUserTestsAll
+  getUserTestsAll,
+  createQuizzAll
 };
