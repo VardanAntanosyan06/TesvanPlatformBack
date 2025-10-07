@@ -164,7 +164,7 @@ const finishCourse = async (req, res) => {
     const { testId } = req.params;
 
     let correctAnswers = await Tests.findByPk(testId, {
-      attributes: ['id'],
+      attributes: ['id', 'percent'],
       include: [
         {
           model: TestsQuizz,
@@ -218,7 +218,7 @@ const finishCourse = async (req, res) => {
       },
     });
 
-    (data.status = point > 30 ? 'passed' : 'not passed'),
+    (data.status = point > correctAnswers.parsent ? 'passed' : 'not passed'),
       (data.passDate = new Date().toISOString()),
       (data.point = point),
       await data.save();
@@ -284,12 +284,19 @@ const getUserTestsAll = async (req, res) => {
     //   include: [
     //     {
     //       model: Tests,
-    //       // attributes:[""m"title","description","language","time","percent"]
     //     },
     //   ],
     // });
 
-    const allTests = await Tests.findAll();
+    const allTests = await Tests.findAll({
+      include: [
+        {
+          model: UserTests,
+          where: { userId },
+          required: false, // LEFT JOIN — կբերի նաև այն դեպքերը, որտեղ UserTests չկա
+        },
+      ],
+    });
 
     if (allTests.length === 0) {
       return res.status(404).json({ success: false, message: 'No tests found for the user.' });
@@ -299,7 +306,10 @@ const getUserTestsAll = async (req, res) => {
     const filteredTests = allTests
       .map((test) => {
         return {
-          test: test
+          test: test,
+          status: test?.UserTestss[0]?.status || 'not started',
+          point: test?.UserTestss[0]?.point || 0,
+          passDate: test?.UserTestss[0]?.passDate || null,
         };
       });
 
