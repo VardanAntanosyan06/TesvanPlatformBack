@@ -252,11 +252,7 @@ const getUserTestsAll = async (req, res) => {
     const filteredTests = allTests
       .map((test) => {
         return {
-          test: test.Test,
-          status: test.status,
-          point: test.point,
-          passDate: test.passDate,
-          language: test.language
+          test: test
         };
       });
 
