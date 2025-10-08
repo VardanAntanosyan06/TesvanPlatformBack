@@ -133,7 +133,7 @@ const findTest = async (req, res) => {
       });
     }
 
-    test = test.toJSON();
+    // test = test.toJSON();
 
     // Sort quizzes and their options
     if (Array.isArray(test.TestsQuizzs) && test.TestsQuizzs.length > 0) {
