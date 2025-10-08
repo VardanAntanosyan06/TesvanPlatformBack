@@ -150,7 +150,7 @@ const findTest = async (req, res) => {
 
     return res.json({
       success: true,
-      data: test,
+      test: test,
     });
 
   } catch (error) {
