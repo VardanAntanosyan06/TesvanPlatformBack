@@ -118,19 +118,39 @@ const findTest = async (req, res) => {
 
     const test = await Tests.findOne({
       where: { id, language: testLanguage },
-      include: [{ model: TestsQuizz, include: [TestsQuizzOptions] }],
+      include: [
+        {
+          model: TestsQuizz,
+          include: [TestsQuizzOptions],
+        },
+      ],
     });
 
-    if (!test)
+    if (!test) {
       return res.status(403).json({
         success: false,
-        message: `with ID ${id} or language ${testLanguage} Test not found`,
+        message: `Test with ID ${id} or language ${testLanguage} not found`,
       });
+    }
+
+    // Sort quizzes and their options
+    if (Array.isArray(test.TestsQuizzes) && test.TestsQuizzes.length > 0) {
+      test.TestsQuizzes.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+      for (const quiz of test.TestsQuizzes) {
+        if (Array.isArray(quiz.TestsQuizzOptions) && quiz.TestsQuizzOptions.length > 0) {
+          quiz.TestsQuizzOptions.sort((a, b) => (a.order || 0) - (b.order || 0));
+        }
+      }
+    }
 
     return res.status(200).json({ success: true, test });
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ message: 'Something went wrong.' });
+    console.error('Error finding test:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while fetching test',
+    });
   }
 };
 
