@@ -18,7 +18,7 @@ router.post('/submit/', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.s
 router.post(
   '/finishCourse/:testId',
   checkAuth(['STUDENT', 'TEACHER', 'ADMIN']),
-  controller.finishCourse,
+  controller.finishTestQuiz,
 );
 router.get('/getUserTests', checkAuth(['STUDENT', 'TEACHER', 'ADMIN']), controller.getUserTestsAll);
 router.get('/getUsers', checkAuth(['TEACHER', 'ADMIN']), controller.getUsers);

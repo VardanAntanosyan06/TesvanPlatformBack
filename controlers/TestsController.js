@@ -158,7 +158,7 @@ const submitQuizz = async (req, res) => {
   }
 };
 
-const finishCourse = async (req, res) => {
+const finishTestQuiz = async (req, res) => {
   try {
     const { user_id: userId } = req.user;
     const { testId } = req.params;
@@ -447,8 +447,8 @@ const deleteTest = async (req, res) => {
 
     await Tests.destroy({ where: { id } });
 
-    await TestsQuizz.destroy({ where: { testId: id } });
-    await TestsQuizzOptions.destroy({ where: { questionId: id } });
+    // await TestsQuizz.destroy({ where: { testId: id } });
+    // await TestsQuizzOptions.destroy({ where: { questionId: id } });
     await UserAnswersTests.destroy({ where: { testId: id } });
     await UserTests.destroy({ where: { testId: id } });
 
@@ -463,7 +463,7 @@ module.exports = {
   createQuizz,
   findTest,
   submitQuizz,
-  finishCourse,
+  finishTestQuiz,
   getUserTests,
   getUsers,
   createTest,
