@@ -134,10 +134,10 @@ const findTest = async (req, res) => {
     }
 
     // Sort quizzes and their options
-    if (Array.isArray(test.TestsQuizz) && test.TestsQuizz.length > 0) {
-      test.TestsQuizz.sort((a, b) => (a.id || 0) - (b.id || 0));
+    if (Array.isArray(test.TestsQuizzs) && test.TestsQuizzs.length > 0) {
+      test.TestsQuizzs.sort((a, b) => (a.id || 0) - (b.id || 0));
 
-      for (const quiz of test.TestsQuizz) {
+      for (const quiz of test.TestsQuizzs) {
         if (Array.isArray(quiz.TestsQuizzOptions) && quiz.TestsQuizzOptions.length > 0) {
           quiz.TestsQuizzOptions.sort((a, b) => (a.id || 0) - (b.id || 0));
         }
