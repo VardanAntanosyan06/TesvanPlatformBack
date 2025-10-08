@@ -117,7 +117,7 @@ const findTest = async (req, res) => {
     const { testLanguage } = req.query;
 
     const test = await Tests.findOne({
-      where: { id, language: testLanguage },
+      where: { id },
       include: [
         {
           model: TestsQuizz,
@@ -134,10 +134,10 @@ const findTest = async (req, res) => {
     }
 
     // Sort quizzes and their options
-    if (Array.isArray(test.TestsQuizzes) && test.TestsQuizzes.length > 0) {
-      test.TestsQuizzes.sort((a, b) => (a.id || 0) - (b.id || 0));
+    if (Array.isArray(test.TestsQuizz) && test.TestsQuizz.length > 0) {
+      test.TestsQuizz.sort((a, b) => (a.id || 0) - (b.id || 0));
 
-      for (const quiz of test.TestsQuizzes) {
+      for (const quiz of test.TestsQuizz) {
         if (Array.isArray(quiz.TestsQuizzOptions) && quiz.TestsQuizzOptions.length > 0) {
           quiz.TestsQuizzOptions.sort((a, b) => (a.id || 0) - (b.id || 0));
         }
