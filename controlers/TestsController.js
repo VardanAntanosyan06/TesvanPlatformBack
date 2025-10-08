@@ -449,6 +449,8 @@ const deleteTest = async (req, res) => {
 
     await TestsQuizz.destroy({ where: { testId: id } });
     await TestsQuizzOptions.destroy({ where: { questionId: id } });
+    await UserAnswersTests.destroy({ where: { testId: id } });
+    await UserTests.destroy({ where: { testId: id } });
 
     return res.status(200).json({ success: true, message: 'Test deleted successfully.' });
   } catch (error) {
