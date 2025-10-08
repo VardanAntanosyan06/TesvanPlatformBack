@@ -179,6 +179,7 @@ const finishTestQuiz = async (req, res) => {
         },
       ],
     });
+    const maxPercent = correctAnswers.percent;
 
     correctAnswers = correctAnswers.TestsQuizzs.map((e) => e.TestsQuizzOptions[0].id).sort(
       (a, b) => a.questionId - b.questionId,
@@ -218,7 +219,7 @@ const finishTestQuiz = async (req, res) => {
       },
     });
 
-    (data.status = point > correctAnswers.parsent ? 'passed' : 'not passed'),
+    (data.status = point > maxPercent ? 'passed' : 'not passed'),
       (data.passDate = new Date().toISOString()),
       (data.point = point),
       await data.save();
