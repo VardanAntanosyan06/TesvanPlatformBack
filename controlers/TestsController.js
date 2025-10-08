@@ -116,7 +116,7 @@ const findTest = async (req, res) => {
     const { id } = req.params;
     const { testLanguage } = req.query;
 
-    const test = await Tests.findOne({
+    let test = await Tests.findOne({
       where: { id },
       include: [
         {
@@ -129,22 +129,30 @@ const findTest = async (req, res) => {
     if (!test) {
       return res.status(403).json({
         success: false,
-        message: `Test with ID ${id} or language ${testLanguage} not found`,
+        message: `Test with ID ${id} not found`,
       });
     }
 
+    test = test.toJSON();
+
     // Sort quizzes and their options
     if (Array.isArray(test.TestsQuizzs) && test.TestsQuizzs.length > 0) {
-      test.TestsQuizzs.sort((a, b) => (a - b));
+      // Sort quizzes by id (or another field, like "order")
+      test.TestsQuizzs.sort((a, b) => (a.id || 0) - (b.id || 0));
 
       for (const quiz of test.TestsQuizzs) {
         if (Array.isArray(quiz.TestsQuizzOptions) && quiz.TestsQuizzOptions.length > 0) {
+          // Sort options by id (or another field)
           quiz.TestsQuizzOptions.sort((a, b) => (a.id || 0) - (b.id || 0));
         }
       }
     }
 
-    return res.status(200).json({ success: true, test });
+    return res.json({
+      success: true,
+      data: test,
+    });
+
   } catch (error) {
     console.error('Error finding test:', error);
     return res.status(500).json({
@@ -153,6 +161,8 @@ const findTest = async (req, res) => {
     });
   }
 };
+
+
 
 const submitQuizz = async (req, res) => {
   try {
